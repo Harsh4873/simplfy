@@ -1,12 +1,4 @@
-import { cx } from "../ui/cx";
-import type { StudioApi, ToolId } from "./useStudio";
-
-const TOOLS: { id: ToolId; label: string }[] = [
-  { id: "check", label: "Check" },
-  { id: "map", label: "Map" },
-  { id: "example", label: "Example" },
-  { id: "recall", label: "Recall" },
-];
+import type { StudioApi } from "./useStudio";
 
 export function Masthead({ api }: { api: StudioApi }) {
   const title =
@@ -14,7 +6,7 @@ export function Masthead({ api }: { api: StudioApi }) {
       ? api.topic.module.title
       : api.topic?.source === "library"
         ? api.topic.item.name
-        : "Untitled plate";
+        : "No plate";
 
   return (
     <header className="mast">
@@ -22,8 +14,21 @@ export function Masthead({ api }: { api: StudioApi }) {
         Skip to canvas
       </a>
       <div className="brand">
-        <p className="wordmark">Simplfy</p>
-        <p className="edition">visual study studio</p>
+        <svg className="mast-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" fill="#0c0d0f" />
+          <rect x="12" y="14" width="40" height="36" fill="#fbfaf7" />
+          <path
+            d="M18 20h8M18 20v8M46 20h-8M46 20v8M18 44h8M18 44v-8M46 44h-8M46 44v-8"
+            fill="none"
+            stroke="#141414"
+            strokeWidth="1.4"
+          />
+          <path d="M20 40h24" fill="none" stroke="#c23a4a" strokeWidth="1.6" />
+        </svg>
+        <div>
+          <p className="wordmark">Simplfy</p>
+          <p className="edition">visual study studio</p>
+        </div>
       </div>
       <p className="now" title={title}>
         {title}
@@ -35,23 +40,6 @@ export function Masthead({ api }: { api: StudioApi }) {
         <button type="button" className="ghost tablet-only" onClick={() => api.setDrawer(api.drawer === "dock" ? null : "dock")}>
           Tools
         </button>
-        <div className="tool-switch" role="tablist" aria-label="Studio tools">
-          {TOOLS.map((tool) => (
-            <button
-              key={tool.id}
-              type="button"
-              role="tab"
-              aria-selected={api.tool === tool.id}
-              className={cx(api.tool === tool.id && "is-active")}
-              onClick={() => {
-                api.setTool(tool.id);
-                api.setDrawer("dock");
-              }}
-            >
-              {tool.label}
-            </button>
-          ))}
-        </div>
       </div>
     </header>
   );

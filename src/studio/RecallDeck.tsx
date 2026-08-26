@@ -5,6 +5,7 @@ export function RecallDeck({ api }: { api: StudioApi }) {
     return (
       <div className="dock-empty">
         <p className="kicker">Recall</p>
+        <h2>Deck empty</h2>
         <p>Misses from the check land here. Nothing yet — which is either virtue or under-testing.</p>
       </div>
     );

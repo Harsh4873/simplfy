@@ -34,6 +34,12 @@ const STOP = new Set([
   "such",
   "via",
   "per",
+  "about",
+  "into",
+  "over",
+  "under",
+  "after",
+  "before",
 ]);
 
 export function extractTerms(text: string, limit = 12): { label: string; weight: number }[] {
