@@ -1,0 +1,166 @@
+{
+  "id": "wiki-multiple-comparisons",
+  "title": "Multiple comparisons as a Wikipedia error-rate fork",
+  "dek": "Many tests, several error languages: FWER, FDR, false coverage. Simplfy already owns FWER-ish and FDR plates — this is the fork.",
+  "domain": "stats",
+  "aliases": [
+    "multiple comparisons",
+    "multiple testing Wikipedia",
+    "look elsewhere"
+  ],
+  "tags": [
+    "glossary",
+    "multiple testing",
+    "FWER",
+    "FDR"
+  ],
+  "story": [
+    "Wikipedia's multiple comparisons / multiple testing pages are a fork: once you run m tests, you must name the error you are buying. Family-wise error (any false rejection) is a different contract from FDR (fraction of false discoveries among hits).",
+    "stats-multiple-testing and stats-fdr already do the lab math. This card is the encyclopedia fork so students stop saying 'we corrected for multiple testing' without naming Bonferroni versus BH.",
+    "GWAS 5×10⁻⁸ is a FWER-ish convention, not a law of physics and not an FDR q of 0.05."
+  ],
+  "deepTitle": "Name the loss",
+  "deep": [
+    "Tukey/Dunnett/Scheffé are FWER recipes for designed contrasts (wiki-anova neighbourhood).",
+    "Holm and Šidák are FWER improvements on Bonferroni (sibling cards).",
+    "Dependence (LD, the same isolates) can make naive m a fiction — permutation of a structured null.",
+    "Catalogue screens usually want FDR; drug-licensing claims usually want something stricter. Say which."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Fork in the error language, then named recipes, then the Simplfy plates that already implement two of the contracts.",
+    "layers": [
+      {
+        "title": "Many tests",
+        "nodes": [
+          "m p-values"
+        ]
+      },
+      {
+        "title": "Contract",
+        "nodes": [
+          "FWER",
+          "FDR"
+        ]
+      },
+      {
+        "title": "Recipes",
+        "nodes": [
+          "Bonferroni",
+          "BH"
+        ]
+      },
+      {
+        "title": "Simplfy",
+        "nodes": [
+          "stats-multiple-testing",
+          "stats-fdr"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Multiple comparisons problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multiple_comparisons_problem",
+      "attribution": "English Wikipedia revision 1358729732 (2026-06-10T15:46:27Z). Wikidata Q1038757. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-multiple-testing",
+    "stats-fdr",
+    "wiki-bonferroni",
+    "wiki-fwer",
+    "wiki-bh-procedure",
+    "wiki-sidak",
+    "stats-gwas"
+  ],
+  "example": {
+    "title": "Methods: 'p<0.05 after multiple-testing correction'",
+    "setup": "m=10,000 genes, no method named.",
+    "steps": [
+      {
+        "title": "Name FWER vs FDR",
+        "body": "This fork."
+      },
+      {
+        "title": "Name the recipe",
+        "body": "Bonferroni vs BH vs permutation."
+      },
+      {
+        "title": "If you used 0.05 on BH, you bought FDR, not FWER",
+        "body": "stats-fdr."
+      }
+    ],
+    "takeaway": "Multiple comparisons is a fork. Name the contract."
+  },
+  "check": [
+    {
+      "id": "mc-fork",
+      "kind": "conceptual",
+      "prompt": "This plate's job is to:",
+      "choices": [
+        "Declare Bonferroni the only method",
+        "Force a named error contract (FWER vs FDR) before a recipe",
+        "Replace all likelihoods",
+        "Set α=5e-8 always"
+      ],
+      "answer": "Force a named error contract (FWER vs FDR) before a recipe",
+      "why": "Fork.",
+      "whyWrong": {
+        "Declare Bonferroni the only method": "One FWER recipe.",
+        "Replace all likelihoods": "No.",
+        "Set α=5e-8 always": "GWAS convention, not universal."
+      }
+    },
+    {
+      "id": "mc-gwas",
+      "kind": "calculation",
+      "prompt": "A GWAS 5×10⁻⁸ threshold is closest to:",
+      "choices": [
+        "BH q=0.05 always",
+        "A FWER-ish convention for ~10⁶–10⁷ tests, not automatically an FDR q",
+        "A Bayes factor of 5e-8",
+        "A branch length"
+      ],
+      "answer": "A FWER-ish convention for ~10⁶–10⁷ tests, not automatically an FDR q",
+      "why": "Convention.",
+      "whyWrong": {
+        "BH q=0.05 always": "Different contract.",
+        "A Bayes factor of 5e-8": "No.",
+        "A branch length": "No."
+      }
+    },
+    {
+      "id": "mc-figure",
+      "kind": "figure",
+      "prompt": "Bonferroni and BH sit under recipes to teach:",
+      "choices": [
+        "They are the same contract",
+        "They are different recipes often aimed at different contracts",
+        "They are likelihoods",
+        "They are trees"
+      ],
+      "answer": "They are different recipes often aimed at different contracts",
+      "why": "Third layer under FWER vs FDR.",
+      "whyWrong": {
+        "They are the same contract": "FWER vs FDR above them.",
+        "They are likelihoods": "No.",
+        "They are trees": "No."
+      },
+      "figureHint": "Recipes layer."
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "id": "wiki-m-abscessus",
+  "title": "M. abscessus as a rapid-growing hard NTM",
+  "dek": "Wikipedia's abscessus page is a rapid grower with infamous drug recalcitrance. Not MTBC. Not a TB catalogue.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium abscessus",
+    "M. abscessus complex",
+    "rapid grower abscessus"
+  ],
+  "tags": [
+    "glossary",
+    "NTM",
+    "abscessus",
+    "rapid grower"
+  ],
+  "story": [
+    "M. abscessus on Wikipedia is a rapid-growing NTM pack (abscessus/bolletii/massiliense in various splits) that causes lung disease in structural lung disease and horrible skin/soft-tissue outbreaks when devices are dirty.",
+    "It can grow in days on ordinary media, which is how it ambushes a lab expecting Mtb's calendar. It will not belong in a WHO TB mutation catalogue.",
+    "Inducible macrolide resistance (erm) folklore is NTM genetics, not katG. Do not paste TB DST logic here."
+  ],
+  "deepTitle": "Rapid is a clue",
+  "deep": [
+    "CF and bronchiectasis clinics know this name; TB clinics should too when Xpert is negative and something grows fast.",
+    "Surgical device outbreaks are infection-control, not airborne TB wards by default — still assess the syndrome.",
+    "tb-ntm is the hand-off for not mis-filing the bottle.",
+    "No abscessus dosing on this card."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: calendar speed versus belonging in an MTBC catalogue.",
+    "panels": [
+      {
+        "title": "Growth speed",
+        "bars": [
+          {
+            "label": "abscessus",
+            "value": 9
+          },
+          {
+            "label": "Mtb",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "MTBC catalogue fit",
+        "bars": [
+          {
+            "label": "abscessus",
+            "value": 1
+          },
+          {
+            "label": "Mtb",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "Xpert MTB",
+        "bars": [
+          {
+            "label": "abscessus",
+            "value": 1
+          },
+          {
+            "label": "Mtb",
+            "value": 9
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacteroides abscessus — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacteroides_abscessus",
+      "attribution": "English Wikipedia revision 1364079061 (2026-07-14T10:25:39Z). Wikidata Q6946978. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ntm-glossary",
+    "wiki-mac",
+    "tb-ntm",
+    "tb-smear-culture",
+    "wiki-m-kansasii"
+  ],
+  "example": {
+    "title": "Day-3 AFB in a 'TB culture'",
+    "setup": "Someone reports 'fast TB'.",
+    "steps": [
+      {
+        "title": "Mtb is slow",
+        "body": "Day-3 growth is an NTM alarm."
+      },
+      {
+        "title": "Speciate abscessus-complex if that is the tree",
+        "body": "Rapid grower pack."
+      },
+      {
+        "title": "Do not emit katG calls",
+        "body": "Wrong catalogue."
+      }
+    ],
+    "takeaway": "Abscessus is fast and unwelcome in a TB catalogue."
+  },
+  "check": [
+    {
+      "id": "abs-rapid",
+      "kind": "conceptual",
+      "prompt": "M. abscessus is:",
+      "choices": [
+        "A slow MTBC lineage",
+        "A rapid-growing NTM species/complex, not MTBC",
+        "A rifamycin",
+        "An IGRA tube"
+      ],
+      "answer": "A rapid-growing NTM species/complex, not MTBC",
+      "why": "Identity.",
+      "whyWrong": {
+        "A slow MTBC lineage": "Opposite speed and complex.",
+        "A rifamycin": "No.",
+        "An IGRA tube": "No."
+      }
+    },
+    {
+      "id": "abs-cat",
+      "kind": "calculation",
+      "prompt": "A WHO TB mutation catalogue on an abscessus assembly is:",
+      "choices": [
+        "Gold-standard DST",
+        "A category error; the catalogue assumes MTBC",
+        "How you call BPaLM",
+        "How you call BCG"
+      ],
+      "answer": "A category error; the catalogue assumes MTBC",
+      "why": "Wrong reference.",
+      "whyWrong": {
+        "Gold-standard DST": "No.",
+        "How you call BPaLM": "No.",
+        "How you call BCG": "No."
+      }
+    },
+    {
+      "id": "abs-figure",
+      "kind": "figure",
+      "prompt": "Panel two (catalogue fit) shows abscessus on the floor because:",
+      "choices": [
+        "It is the best H37Rv strain",
+        "It does not belong in an MTBC mutation catalogue",
+        "Xpert always detects it",
+        "It is LTBI"
+      ],
+      "answer": "It does not belong in an MTBC mutation catalogue",
+      "why": "Middle panel.",
+      "whyWrong": {
+        "It is the best H37Rv strain": "Opposite.",
+        "Xpert always detects it": "Panel three says no.",
+        "It is LTBI": "No."
+      },
+      "figureHint": "Middle panel."
+    }
+  ]
+}

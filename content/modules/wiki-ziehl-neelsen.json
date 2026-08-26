@@ -1,0 +1,201 @@
+{
+  "id": "wiki-ziehl-neelsen",
+  "title": "Ziehl–Neelsen as a named acid-fast method",
+  "dek": "Carbol fuchsin, acid-alcohol, methylene blue. Wikipedia's stain recipe. Smear grade and viability stay on tb-smear-culture.",
+  "domain": "tb",
+  "aliases": [
+    "Ziehl-Neelsen",
+    "ZN stain",
+    "carbol fuchsin",
+    "acid-fast stain"
+  ],
+  "tags": [
+    "glossary",
+    "stain",
+    "microscopy",
+    "AFB"
+  ],
+  "story": [
+    "Ziehl–Neelsen on Wikipedia is a staining method: hot carbol fuchsin, destain with acid-alcohol, counterstain. Acid-fast organisms keep fuchsin. That is the encyclopedia recipe card.",
+    "Fluorochrome auramine methods are the high-throughput cousin. Neither stain is a species, a viability assay, or a RIF result.",
+    "IUATLD/WHO smear grading is clinic plate territory. Wikipedia may show pretty rods; it will not replace a WRD-first algorithm."
+  ],
+  "deepTitle": "Recipe versus interpretation",
+  "deep": [
+    "Nocardia can be partially acid-fast. Dead Mtb can still stain.",
+    "Kinyoun is a cold variant of the same idea.",
+    "Do not skip NAAT because the smear is pretty.",
+    "Biosafety of making smears is infection-control, not this recipe."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Named stain steps. Species, viability, and WRD policy are other plates.",
+    "nodes": [
+      {
+        "id": "smear",
+        "label": "Smear",
+        "x": 8,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "fuch",
+        "label": "Carbol fuchsin",
+        "x": 30,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "acid",
+        "label": "Acid-alcohol",
+        "x": 55,
+        "y": 45,
+        "tone": "decision",
+        "detail": "destain others"
+      },
+      {
+        "id": "afb",
+        "label": "AFB red",
+        "x": 80,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "other",
+        "label": "Counterstain",
+        "x": 80,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "smear",
+        "to": "fuch"
+      },
+      {
+        "from": "fuch",
+        "to": "acid"
+      },
+      {
+        "from": "acid",
+        "to": "afb",
+        "label": "retain"
+      },
+      {
+        "from": "acid",
+        "to": "other",
+        "label": "decolorized"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Ziehl–Neelsen stain — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ziehl%E2%80%93Neelsen_stain",
+      "attribution": "English Wikipedia revision 1366404045 (2026-07-27T20:49:27Z). Wikidata Q198921. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Acid-fastness — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Acid-fastness",
+      "attribution": "English Wikipedia revision 1342083793 (2026-03-06T22:03:26Z). Wikidata Q3278217. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-acid-fast",
+    "tb-smear-culture",
+    "tb-diagnosis",
+    "tb-organism",
+    "wiki-auramine",
+    "tb-infection-control"
+  ],
+  "example": {
+    "title": "Beautiful 3+ smear, no Ultra",
+    "setup": "Lab is proud of ZN quality control.",
+    "steps": [
+      {
+        "title": "Stain worked",
+        "body": "AFB are present."
+      },
+      {
+        "title": "Species unknown",
+        "body": "Could theoretically be other AFB."
+      },
+      {
+        "title": "RIF unknown",
+        "body": "Need WRD/DST."
+      }
+    ],
+    "takeaway": "ZN is a named method. It is not a cartridge."
+  },
+  "check": [
+    {
+      "id": "zn-method",
+      "kind": "conceptual",
+      "prompt": "Ziehl–Neelsen is:",
+      "choices": [
+        "A sequencing library kit",
+        "An acid-fast staining method using carbol fuchsin",
+        "An IGRA",
+        "A WHO Group A drug"
+      ],
+      "answer": "An acid-fast staining method using carbol fuchsin",
+      "why": "Recipe node.",
+      "whyWrong": {
+        "A sequencing library kit": "No.",
+        "An IGRA": "No.",
+        "A WHO Group A drug": "No."
+      }
+    },
+    {
+      "id": "zn-dead",
+      "kind": "calculation",
+      "prompt": "AFB seen on ZN after effective treatment more often means:",
+      "choices": [
+        "Proven viable MDR",
+        "Stain can persist on dead bacilli; viability needs culture/NAAT context",
+        "RIF-R",
+        "Failed BCG"
+      ],
+      "answer": "Stain can persist on dead bacilli; viability needs culture/NAAT context",
+      "why": "Stain ≠ live.",
+      "whyWrong": {
+        "Proven viable MDR": "No.",
+        "RIF-R": "No.",
+        "Failed BCG": "No."
+      }
+    },
+    {
+      "id": "zn-figure",
+      "kind": "figure",
+      "prompt": "The destain step on the flow map is:",
+      "choices": [
+        "Smear start",
+        "Acid-alcohol",
+        "Carbol fuchsin as a drug",
+        "Counterstain as NAAT"
+      ],
+      "answer": "Acid-alcohol",
+      "why": "Decision node.",
+      "whyWrong": {
+        "Smear start": "Start.",
+        "Carbol fuchsin as a drug": "Stain, not a drug.",
+        "Counterstain as NAAT": "End node."
+      },
+      "figureHint": "Middle decision."
+    }
+  ]
+}

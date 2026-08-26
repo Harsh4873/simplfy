@@ -1,0 +1,183 @@
+{
+  "id": "wiki-quantiferon",
+  "title": "QuantiFERON as a named IGRA instance",
+  "dek": "In-tube ELISA IFN-γ. Wikipedia product/history node. Grey zones and CD4/CD8 tubes are not a CD4 count.",
+  "domain": "tb",
+  "aliases": [
+    "QuantiFERON",
+    "QFT",
+    "QFT-Plus",
+    "Quantiferon"
+  ],
+  "tags": [
+    "glossary",
+    "IGRA",
+    "ELISA",
+    "QFT"
+  ],
+  "story": [
+    "Quantiferon on Wikipedia is the commercial in-tube IGRA family (now QFT-Plus in many markets). Blood hits antigen-coated tubes; plasma IFN-γ is an ELISA number with a kit cut-point.",
+    "QFT-Plus split tubes marketed around CD4 versus CD8 stimulation are not a clinical CD4 count and not a disease test. The clinic IGRA plate already growled about this; this card names the product.",
+    "Nil and mitogen controls are part of the kit logic (indeterminate when the immune system will not talk). That is assay QC, not RIF status."
+  ],
+  "deepTitle": "Product versus class",
+  "deep": [
+    "T-SPOT is the ELISPOT cousin, not a tube ELISA.",
+    "Conversion/reversion around the cut-point is noise plus biology; serial-testing protocols live in programmes.",
+    "Do not compare IU/mL across kits as if they were a viral load.",
+    "BCG still should not drive QFT, because RD1 peptides are the stimulus."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: QFT as an ELISA instance versus T-SPOT as ELISPOT versus TST as skin. Not a meta-analysis.",
+    "panels": [
+      {
+        "title": "Readout",
+        "bars": [
+          {
+            "label": "QFT ELISA",
+            "value": 8
+          },
+          {
+            "label": "T-SPOT",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "BCG-silent RD1",
+        "bars": [
+          {
+            "label": "QFT",
+            "value": 9
+          },
+          {
+            "label": "TST",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "Disease diagnostic?",
+        "bars": [
+          {
+            "label": "QFT",
+            "value": 1
+          },
+          {
+            "label": "Ultra",
+            "value": 9
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Quantiferon — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Quantiferon",
+      "attribution": "English Wikipedia revision 1322123942 (2025-11-14T13:49:54Z). Wikidata Q2893466. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "T-SPOT.TB — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/T-SPOT.TB",
+      "attribution": "English Wikipedia revision 1347416358 (2026-04-06T15:50:56Z). Wikidata Q7667857. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-igra-glossary",
+    "tb-igra-tst",
+    "wiki-mantoux",
+    "wiki-esat6",
+    "tb-host-ifng"
+  ],
+  "example": {
+    "title": "Indeterminate QFT in advanced HIV",
+    "setup": "Nil/mitogen failed. Team writes 'TB excluded'.",
+    "steps": [
+      {
+        "title": "Indeterminate is QC",
+        "body": "The tube could not show that T cells can make IFN-γ."
+      },
+      {
+        "title": "Disease tests still required",
+        "body": "LAM/Ultra/culture."
+      },
+      {
+        "title": "Do not repeat forever instead of treating a syndrome",
+        "body": "Clinic plate."
+      }
+    ],
+    "takeaway": "QFT is a named ELISA. Indeterminate is not a negative disease test."
+  },
+  "check": [
+    {
+      "id": "qft-inst",
+      "kind": "conceptual",
+      "prompt": "QuantiFERON is:",
+      "choices": [
+        "A WHO-recommended rapid molecular WRD",
+        "A commercial IGRA instance (in-tube ELISA IFN-γ)",
+        "Phenotypic MGIT DST",
+        "A BCG strain"
+      ],
+      "answer": "A commercial IGRA instance (in-tube ELISA IFN-γ)",
+      "why": "Product node.",
+      "whyWrong": {
+        "A WHO-recommended rapid molecular WRD": "That is Xpert-class.",
+        "Phenotypic MGIT DST": "No.",
+        "A BCG strain": "No."
+      }
+    },
+    {
+      "id": "qft-cd4",
+      "kind": "calculation",
+      "prompt": "QFT-Plus extra tubes marketed with CD8 stimulation:",
+      "choices": [
+        "Replace a laboratory CD4 count",
+        "Do not replace a CD4 count or diagnose cavities",
+        "Prove RIF-R",
+        "Measure PZA MIC"
+      ],
+      "answer": "Do not replace a CD4 count or diagnose cavities",
+      "why": "Marketing ≠ immunology panel.",
+      "whyWrong": {
+        "Replace a laboratory CD4 count": "No.",
+        "Prove RIF-R": "No.",
+        "Measure PZA MIC": "No."
+      }
+    },
+    {
+      "id": "qft-figure",
+      "kind": "figure",
+      "prompt": "On panel three, why is Ultra's bar high and QFT's on the floor?",
+      "choices": [
+        "Because QFT is a better WRD",
+        "Because QFT is not a disease diagnostic while Ultra is an mWRD class",
+        "Because ELISA counts colonies",
+        "Because BCG inflates Ultra"
+      ],
+      "answer": "Because QFT is not a disease diagnostic while Ultra is an mWRD class",
+      "why": "Test class.",
+      "whyWrong": {
+        "Because QFT is a better WRD": "Opposite.",
+        "Because ELISA counts colonies": "No.",
+        "Because BCG inflates Ultra": "No."
+      },
+      "figureHint": "Third panel."
+    }
+  ]
+}

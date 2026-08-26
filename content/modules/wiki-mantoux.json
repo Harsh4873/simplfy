@@ -1,0 +1,208 @@
+{
+  "id": "wiki-mantoux",
+  "title": "Mantoux test as a named skin assay",
+  "dek": "Intradermal PPD, millimetres of induration. Wikipedia's method card. Cut-points, boosting, and IGRA comparison stay on tb-igra-tst.",
+  "domain": "tb",
+  "aliases": [
+    "Mantoux",
+    "tuberculin skin test Wikipedia",
+    "PPD skin test",
+    "Pirquet"
+  ],
+  "tags": [
+    "glossary",
+    "TST",
+    "PPD",
+    "infection test"
+  ],
+  "story": [
+    "The Mantoux test on Wikipedia is a method: purified protein derivative intradermally, read as millimetres of induration at 48–72 h. Charles Mantoux's name replaced older scratch tests in most programmes.",
+    "What the encyclopedia will not settle is the cut-point table (HIV, contacts, BCG policy) or two-step boosting. That is tb-igra-tst plus WHO TPT.",
+    "PPD is a mixture of antigens shared with BCG and many NTM. That single biochemical fact is why IGRAs exist as a neighbouring node."
+  ],
+  "deepTitle": "Method versus policy",
+  "deep": [
+    "Erythema is not induration. Measure the bump, not the red.",
+    "TBSTs (antigen-based skin tests) are a newer WHO class; they are not classic PPD Mantoux.",
+    "A positive Mantoux does not diagnose a cavity. A negative one does not exclude TBM.",
+    "Do not dose TPT from this method card."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Method chain for Mantoux. Policy cut-points and IGRA alternatives are other plates.",
+    "nodes": [
+      {
+        "id": "ppd",
+        "label": "PPD ID",
+        "x": 10,
+        "y": 45,
+        "tone": "start",
+        "detail": "0.1 mL classically"
+      },
+      {
+        "id": "wait",
+        "label": "48–72 h",
+        "x": 36,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "mm",
+        "label": "Induration mm",
+        "x": 62,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "cut",
+        "label": "Cut-point policy",
+        "x": 88,
+        "y": 20,
+        "tone": "decision",
+        "detail": "tb-igra-tst"
+      },
+      {
+        "id": "igra",
+        "label": "IGRA option",
+        "x": 88,
+        "y": 75,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "ppd",
+        "to": "wait"
+      },
+      {
+        "from": "wait",
+        "to": "mm"
+      },
+      {
+        "from": "mm",
+        "to": "cut"
+      },
+      {
+        "from": "mm",
+        "to": "igra",
+        "label": "BCG/NTM noise"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mantoux test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mantoux_test",
+      "attribution": "English Wikipedia revision 1368884330 (2026-08-11T16:49:03Z). Wikidata Q908699. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Tuberculin — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tuberculin",
+      "attribution": "English Wikipedia revision 1368407135 (2026-08-08T22:01:28Z). Wikidata Q29505. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-igra-tst",
+    "tb-tpt",
+    "tb-bcg-rd1",
+    "wiki-igra-glossary",
+    "wiki-quantiferon",
+    "wiki-latent-tb",
+    "wiki-bcg-vaccine"
+  ],
+  "example": {
+    "title": "12 mm, neonatal BCG, no exposure",
+    "setup": "Student calls this 'latent TB proven by Wikipedia Mantoux'.",
+    "steps": [
+      {
+        "title": "Method succeeded",
+        "body": "You measured induration."
+      },
+      {
+        "title": "Interpretation needs priors",
+        "body": "BCG shares PPD antigens."
+      },
+      {
+        "title": "IGRA may arbitrate",
+        "body": "RD1 peptides are missing in BCG — clinic plate."
+      }
+    ],
+    "takeaway": "Mantoux is a ruler. Policy is a different plate."
+  },
+  "check": [
+    {
+      "id": "man-method",
+      "kind": "conceptual",
+      "prompt": "Mantoux measures:",
+      "choices": [
+        "CFU in sputum",
+        "Millimetres of induration after intradermal PPD",
+        "rpoB RRDR",
+        "TNF serum half-life"
+      ],
+      "answer": "Millimetres of induration after intradermal PPD",
+      "why": "Method card.",
+      "whyWrong": {
+        "CFU in sputum": "Disease microbiology.",
+        "rpoB RRDR": "Xpert.",
+        "TNF serum half-life": "No."
+      }
+    },
+    {
+      "id": "man-bcg",
+      "kind": "calculation",
+      "prompt": "Neonatal BCG plus 10 mm TST in a low-exposure adult most likely reflects:",
+      "choices": [
+        "XDR-TB",
+        "Possible BCG/NTM cross-reactivity; not microbiologic disease by itself",
+        "Need for immediate BPaLM",
+        "Failed Ultra because TST replaces WRDs"
+      ],
+      "answer": "Possible BCG/NTM cross-reactivity; not microbiologic disease by itself",
+      "why": "Shared antigens.",
+      "whyWrong": {
+        "XDR-TB": "No.",
+        "Need for immediate BPaLM": "No.",
+        "Failed Ultra because TST replaces WRDs": "Wrong class."
+      }
+    },
+    {
+      "id": "man-figure",
+      "kind": "figure",
+      "prompt": "Cut-point policy on the flow map is drawn as:",
+      "choices": [
+        "The start node",
+        "A decision handed to tb-igra-tst",
+        "PPD chemistry",
+        "48–72 h as a drug"
+      ],
+      "answer": "A decision handed to tb-igra-tst",
+      "why": "Upper right decision.",
+      "whyWrong": {
+        "The start node": "PPD ID.",
+        "PPD chemistry": "Start detail.",
+        "48–72 h as a drug": "Wait node."
+      },
+      "figureHint": "Upper right."
+    }
+  ]
+}

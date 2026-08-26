@@ -1,0 +1,212 @@
+{
+  "id": "wiki-bayes-theorem",
+  "title": "Bayes' theorem as a named reweighting identity",
+  "dek": "P(θ|y) ∝ f(y|θ)P(θ). Wikipedia identity. Parameter-Bayesian practice stays on stats-bayesian.",
+  "domain": "stats",
+  "aliases": [
+    "Bayes theorem",
+    "Bayes' rule",
+    "posterior identity"
+  ],
+  "tags": [
+    "glossary",
+    "Bayes",
+    "identity",
+    "posterior"
+  ],
+  "story": [
+    "Bayes' theorem on Wikipedia is an identity about reweighting: the posterior is the likelihood times the prior, normalised by the marginal. Nothing in the identity tells you which prior is honest, or whether θ is a parameter or a disease indicator.",
+    "stats-bayesian already treats θ as a parameter. stats-predictive-values already treats disease as the unknown. This card is the shared identity both plates rest on, so searches for 'Bayes theorem' do not invent a third protocol.",
+    "Diagnostic-test Bayes (prevalence × LR) is the same identity with a binary θ. Do not mix that with MCMC on a hierarchical GLM in one sentence without saying you changed θ."
+  ],
+  "deepTitle": "Identity versus workflow",
+  "deep": [
+    "m(y) = ∫ f(y|θ)p(θ)dθ is the hard part; conjugacy and MCMC are ways to avoid staring at it.",
+    "A likelihood ratio in diagnostic testing is not Wilks' Λ.",
+    "Prior elicitation is stats-priors.",
+    "NIST does not replace a prior with a vibes-based 'uninformative' slogan — Jeffreys has its own card."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Identity as a flow: prior and likelihood in, posterior out. Diagnostic versus parameter uses are different downstream plates.",
+    "nodes": [
+      {
+        "id": "prior",
+        "label": "Prior p(θ)",
+        "x": 10,
+        "y": 30,
+        "tone": "start"
+      },
+      {
+        "id": "lik",
+        "label": "Likelihood f(y|θ)",
+        "x": 10,
+        "y": 70,
+        "tone": "start"
+      },
+      {
+        "id": "id",
+        "label": "Bayes identity",
+        "x": 42,
+        "y": 50,
+        "tone": "process"
+      },
+      {
+        "id": "post",
+        "label": "Posterior",
+        "x": 70,
+        "y": 50,
+        "tone": "process"
+      },
+      {
+        "id": "dx",
+        "label": "Disease θ",
+        "x": 92,
+        "y": 22,
+        "tone": "end",
+        "detail": "PV plates"
+      },
+      {
+        "id": "par",
+        "label": "Parameter θ",
+        "x": 92,
+        "y": 78,
+        "tone": "end",
+        "detail": "stats-bayesian"
+      }
+    ],
+    "edges": [
+      {
+        "from": "prior",
+        "to": "id"
+      },
+      {
+        "from": "lik",
+        "to": "id"
+      },
+      {
+        "from": "id",
+        "to": "post"
+      },
+      {
+        "from": "post",
+        "to": "dx"
+      },
+      {
+        "from": "post",
+        "to": "par"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bayes' theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayes%27_theorem",
+      "attribution": "English Wikipedia revision 1367789148 (2026-08-05T05:39:50Z). Wikidata Q182505. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-priors",
+    "stats-predictive-values",
+    "stats-se-sp",
+    "wiki-bayesian-glossary",
+    "wiki-bayes-factor"
+  ],
+  "example": {
+    "title": "Se 0.9, Sp 0.9, prevalence 1%",
+    "setup": "Positive test. Someone says P(disease)=0.9 because Wikipedia Bayes 'uses sensitivity'.",
+    "steps": [
+      {
+        "title": "Write the identity on disease",
+        "body": "P(D|+) ∝ Se × prevalence."
+      },
+      {
+        "title": "The denominator needs the false-positive path",
+        "body": "stats-predictive-values."
+      },
+      {
+        "title": "0.9 is not the posterior at 1% prevalence",
+        "body": "PPV is small."
+      }
+    ],
+    "takeaway": "Bayes' theorem is an identity. Prevalence still sits in it."
+  },
+  "check": [
+    {
+      "id": "bt-id",
+      "kind": "conceptual",
+      "prompt": "Bayes' theorem is:",
+      "choices": [
+        "A guarantee that your prior is true",
+        "An identity reweighting a prior by a likelihood",
+        "Wilks' nested-model test",
+        "A tree prior"
+      ],
+      "answer": "An identity reweighting a prior by a likelihood",
+      "why": "Identity.",
+      "whyWrong": {
+        "A guarantee that your prior is true": "No.",
+        "Wilks' nested-model test": "stats-lrt / wiki-wilks.",
+        "A tree prior": "One optional use."
+      }
+    },
+    {
+      "id": "bt-ppv",
+      "kind": "calculation",
+      "prompt": "Prevalence 0.01, Se=Sp=0.9. Approximate PPV is:",
+      "choices": [
+        "0.90",
+        "Se×prev / (Se×prev + (1−Sp)(1−prev)) ≈ 0.083, not 0.9",
+        "0.01",
+        "9"
+      ],
+      "answer": "Se×prev / (Se×prev + (1−Sp)(1−prev)) ≈ 0.083, not 0.9",
+      "why": "0.009 / (0.009+0.099) = 0.009/0.108 ≈ 0.083.",
+      "whyWrong": {
+        "0.90": "Ignored prevalence.",
+        "0.01": "That's prevalence.",
+        "9": "No."
+      }
+    },
+    {
+      "id": "bt-figure",
+      "kind": "figure",
+      "prompt": "Two end nodes exist because:",
+      "choices": [
+        "The identity only applies to diseases",
+        "θ might be a disease indicator or a parameter; different Simplfy plates",
+        "MCMC is Bayes' theorem",
+        "Priors are illegal"
+      ],
+      "answer": "θ might be a disease indicator or a parameter; different Simplfy plates",
+      "why": "Fork after posterior.",
+      "whyWrong": {
+        "The identity only applies to diseases": "Opposite.",
+        "MCMC is Bayes' theorem": "Computation.",
+        "Priors are illegal": "No."
+      },
+      "figureHint": "Right end nodes."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "bayes",
+      "label": "Bayes identity",
+      "expression": "p(θ|y) = f(y|θ)p(θ) / m(y)",
+      "note": "Same identity for binary disease or continuous parameters."
+    }
+  ]
+}

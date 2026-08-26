@@ -1,0 +1,150 @@
+{
+  "id": "wiki-credible-interval",
+  "title": "Credible interval as a posterior region",
+  "dek": "Wikipedia credible interval: a set with posterior probability 1−α. Not a confidence interval. HPD versus equal-tail is a reporting choice.",
+  "domain": "stats",
+  "aliases": [
+    "credible interval",
+    "Bayesian interval",
+    "HPD interval"
+  ],
+  "tags": [
+    "glossary",
+    "credible",
+    "posterior",
+    "interval"
+  ],
+  "story": [
+    "A credible interval on Wikipedia is a region C(y) such that P(θ ∈ C | y) = 1−α under a named posterior. That is a probability statement about θ after seeing y.",
+    "A confidence interval is a statement about a procedure's coverage in repeated sampling. stats-confidence-intervals already owns that. Do not rename one as the other in a TB paper.",
+    "HPD (highest posterior density) versus equal-tailed quantiles disagree for skewed posteriors (variance components, rare-variant frequencies)."
+  ],
+  "deepTitle": "Region recipes",
+  "deep": [
+    "If the posterior is Beta(a,b), equal-tail uses Beta quantiles; HPD may need numerical work.",
+    "Calibration of 80% credible intervals is stats-posterior-calibration.",
+    "Transformations: an HPD on logit π is not the HPD on π after pushing through the inverse map.",
+    "Empty-looking MCMC 'intervals' from unconverged chains are not credible intervals."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic posterior (tight) versus a prior (wide). A credible interval is a region under the posterior curve, not a sampling-distribution interval for an MLE.",
+    "xLabel": "parameter (schematic)",
+    "curves": [
+      {
+        "id": "post",
+        "label": "posterior",
+        "mean": 0.2,
+        "sd": 0.45
+      },
+      {
+        "id": "prior",
+        "label": "prior",
+        "mean": -0.4,
+        "sd": 1.3
+      },
+      {
+        "id": "samp",
+        "label": "sampling law of MLE (different object)",
+        "mean": 0.35,
+        "sd": 0.55
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Credible interval — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Credible_interval",
+      "attribution": "English Wikipedia revision 1348305596 (2026-04-11T22:54:49Z). Wikidata Q4439221. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-confidence-intervals",
+    "stats-posterior-calibration",
+    "wiki-bayesian-glossary",
+    "stats-priors"
+  ],
+  "example": {
+    "title": "95% CrI for a resistance probability 0.04–0.22",
+    "setup": "Captioned as '95% CI'.",
+    "steps": [
+      {
+        "title": "Name the object",
+        "body": "If it came from a posterior, it is a CrI."
+      },
+      {
+        "title": "Coverage is a different claim",
+        "body": "Would need a simulation under a DGP."
+      },
+      {
+        "title": "Skew: check HPD vs equal-tail if 0 is near the boundary",
+        "body": "Variance-like parameters."
+      }
+    ],
+    "takeaway": "A credible interval is a posterior region. Coverage is extra work."
+  },
+  "check": [
+    {
+      "id": "cri-def",
+      "kind": "conceptual",
+      "prompt": "A 95% credible interval is:",
+      "choices": [
+        "A region with frequentist coverage 95% by definition",
+        "A region with posterior probability 0.95 under a named posterior",
+        "A p-value of 0.05",
+        "A bootstrap of a tree"
+      ],
+      "answer": "A region with posterior probability 0.95 under a named posterior",
+      "why": "Definition.",
+      "whyWrong": {
+        "A region with frequentist coverage 95% by definition": "That's a CI's aspiration.",
+        "A p-value of 0.05": "No.",
+        "A bootstrap of a tree": "No."
+      }
+    },
+    {
+      "id": "cri-hpd",
+      "kind": "calculation",
+      "prompt": "A right-skewed posterior for a variance. Equal-tail 95% versus HPD:",
+      "choices": [
+        "Must coincide",
+        "Can differ; HPD is the highest-density set, equal-tail splits 2.5% each end on the chosen scale",
+        "Are both p-values",
+        "Are both OLS"
+      ],
+      "answer": "Can differ; HPD is the highest-density set, equal-tail splits 2.5% each end on the chosen scale",
+      "why": "Recipe choice.",
+      "whyWrong": {
+        "Must coincide": "Only if symmetric enough.",
+        "Are both p-values": "No.",
+        "Are both OLS": "No."
+      }
+    },
+    {
+      "id": "cri-figure",
+      "kind": "figure",
+      "prompt": "The sampling-law curve is labelled a different object because:",
+      "choices": [
+        "It is the posterior",
+        "Frequentist sampling distributions are not posterior densities",
+        "Priors are sampling laws",
+        "HPD is OLS"
+      ],
+      "answer": "Frequentist sampling distributions are not posterior densities",
+      "why": "Third curve.",
+      "whyWrong": {
+        "It is the posterior": "That's the tight curve.",
+        "Priors are sampling laws": "No.",
+        "HPD is OLS": "No."
+      },
+      "figureHint": "Third legend."
+    }
+  ]
+}

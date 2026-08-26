@@ -1,0 +1,192 @@
+{
+  "id": "wiki-m-orygis",
+  "title": "M. orygis as an antelope-associated MTBC name",
+  "dek": "A named leaf that human pulmonary services in South Asia and elsewhere do see. Wikipedia membership is the reminder to keep orygis in the barcode.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium orygis",
+    "oryx bacillus",
+    "M. orygis"
+  ],
+  "tags": [
+    "glossary",
+    "zoonosis",
+    "MTBC",
+    "South Asia"
+  ],
+  "story": [
+    "M. orygis entered Wikipedia as an antelope-associated MTBC later recognised in human TB, including in South Asian series. It is a practical speciation target, not a zoo curiosity.",
+    "Pipelines that only emit Mtb versus bovis will mis-file it. The cartridge will often just say MTB detected.",
+    "Treat it as TB disease once named. Do not invent an oryx-specific WHO backbone from the encyclopedia."
+  ],
+  "deepTitle": "Why the leaf earned a plate",
+  "deep": [
+    "Orygis is over-represented relative to its Wikipedia fame in some human WGS collections. That is why it is not lumped solely under 'other animal'.",
+    "Intrinsic-resistance assumptions should be checked, not copied from bovis by analogy without data.",
+    "tb-mtbc remains the method plate; this is the named node for related[].",
+    "Wildlife names on the page are etymology. Human-to-human possibility is an epi question, not a lead-sentence ban."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "A named animal-adapted leaf that still lands in human WGS queues. The failure is a two-state species caller.",
+    "nodes": [
+      {
+        "id": "spec",
+        "label": "Specimen",
+        "x": 12,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "naat",
+        "label": "MTBC NAAT",
+        "x": 38,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "two",
+        "label": "Mtb vs bovis only",
+        "x": 64,
+        "y": 22,
+        "tone": "decision",
+        "detail": "mis-file risk"
+      },
+      {
+        "id": "wgs",
+        "label": "Full barcode",
+        "x": 64,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "ory",
+        "label": "orygis named",
+        "x": 90,
+        "y": 70,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "spec",
+        "to": "naat"
+      },
+      {
+        "from": "naat",
+        "to": "two",
+        "label": "lazy"
+      },
+      {
+        "from": "naat",
+        "to": "wgs"
+      },
+      {
+        "from": "wgs",
+        "to": "ory"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium orygis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_orygis",
+      "attribution": "English Wikipedia revision 1288118116 (2025-04-30T15:25:09Z). Wikidata Q109801739. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-mtbc-members",
+    "wiki-m-bovis",
+    "wiki-m-caprae",
+    "tb-mtbc",
+    "tb-wgs-dst"
+  ],
+  "example": {
+    "title": "Two-state classifier",
+    "setup": "A pipeline emits 'M. bovis' whenever RD9 is lost. Orygis references sit next to the isolate on a tree.",
+    "steps": [
+      {
+        "title": "RD9 is not bovis",
+        "body": "Several animal-adapted leaves share that deletion."
+      },
+      {
+        "title": "Expand the barcode",
+        "body": "Orygis-defining SNPs exist; use them."
+      },
+      {
+        "title": "Fix the report",
+        "body": "Wrong species is a surveillance error even if RIF is correct."
+      }
+    ],
+    "takeaway": "Orygis is why 'not Mtb' is not a species."
+  },
+  "check": [
+    {
+      "id": "ory-name",
+      "kind": "conceptual",
+      "prompt": "M. orygis in a human pulmonary WGS is:",
+      "choices": [
+        "Always a lab mix-up with an antelope",
+        "A documented MTBC cause of human TB that a two-state caller will miss",
+        "MAC",
+        "A virus"
+      ],
+      "answer": "A documented MTBC cause of human TB that a two-state caller will miss",
+      "why": "Named leaf, human disease.",
+      "whyWrong": {
+        "Always a lab mix-up with an antelope": "Human series exist.",
+        "MAC": "No.",
+        "A virus": "No."
+      }
+    },
+    {
+      "id": "ory-rd9",
+      "kind": "calculation",
+      "prompt": "RD9 lost. Possible leaves include bovis, caprae, orygis, africanum. Next step:",
+      "choices": [
+        "Report bovis always",
+        "Use SNP/WGS barcode rather than a single RD",
+        "Report NTM",
+        "Discard PZA forever without pncA"
+      ],
+      "answer": "Use SNP/WGS barcode rather than a single RD",
+      "why": "One marker, many leaves.",
+      "whyWrong": {
+        "Report bovis always": "The point of this plate.",
+        "Report NTM": "Still MTBC.",
+        "Discard PZA forever without pncA": "Need the actual allele/species."
+      }
+    },
+    {
+      "id": "ory-figure",
+      "kind": "figure",
+      "prompt": "The flow map's 'lazy' edge points at:",
+      "choices": [
+        "Full barcode",
+        "A two-state Mtb vs bovis caller",
+        "The specimen",
+        "Orygis named"
+      ],
+      "answer": "A two-state Mtb vs bovis caller",
+      "why": "Upper decision node.",
+      "whyWrong": {
+        "Full barcode": "Lower path.",
+        "The specimen": "Start.",
+        "Orygis named": "End of the good path."
+      },
+      "figureHint": "Upper branch from NAAT."
+    }
+  ]
+}

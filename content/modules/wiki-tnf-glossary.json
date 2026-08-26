@@ -1,0 +1,198 @@
+{
+  "id": "wiki-tnf-glossary",
+  "title": "TNF as a granuloma-maintenance node",
+  "dek": "Wikipedia's tumor necrosis factor page is the cytokine. Anti-TNF reactivation logic stays on tb-tnf-cd4.",
+  "domain": "tb",
+  "aliases": [
+    "TNF",
+    "TNF-alpha",
+    "tumor necrosis factor",
+    "cachectin"
+  ],
+  "tags": [
+    "glossary",
+    "cytokine",
+    "TNF",
+    "granuloma"
+  ],
+  "story": [
+    "TNF on Wikipedia is a trimeric cytokine with jobs in inflammation, cachexia (the old name cachectin), and granuloma maintenance. TB programmes care because blocking it for rheumatoid arthritis and similar diseases reopens mycobacterial control.",
+    "The clinic plate tb-tnf-cd4 already walks screening and TPT around anti-TNF. This card is the molecule in the encyclopedia graph, sitting next to IFN-γ and the granuloma class.",
+    "TNF is not 'the TB toxin' and not an antibiotic. Cachexia in advanced TB is multifactorial; do not reduce it to one Wikipedia lead."
+  ],
+  "deepTitle": "Blockade is the clinic object",
+  "deep": [
+    "Infliximab, adalimumab, etanercept are different agents with different TB reactivation stories; that nuance is clinic, not this glossary.",
+    "Soluble receptor versus monoclonal antibody is a pharmacology fork the encyclopedia will mention; programmes still follow WHO/CDC around testing and TPT.",
+    "TNF from macrophages and T cells is why HIV (CD4 loss) and anti-TNF rhyme.",
+    "Do not prescribe anti-TNF reversal from this card."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "TNF as a maintenance signal on the granuloma. Pharmacologic blockade is the clinical hazard handed to tb-tnf-cd4.",
+    "nodes": [
+      {
+        "id": "mac",
+        "label": "Mϕ / T cell",
+        "group": "enzyme",
+        "x": 14,
+        "y": 40,
+        "sub": "source"
+      },
+      {
+        "id": "tnf",
+        "label": "TNF",
+        "group": "target",
+        "x": 42,
+        "y": 40,
+        "sub": "this node"
+      },
+      {
+        "id": "gr",
+        "label": "Granuloma",
+        "group": "target",
+        "x": 70,
+        "y": 20,
+        "sub": "structure"
+      },
+      {
+        "id": "blk",
+        "label": "Anti-TNF",
+        "group": "drug",
+        "x": 42,
+        "y": 78,
+        "sub": "iatrogenic hole"
+      },
+      {
+        "id": "tb",
+        "label": "Reactivation risk",
+        "group": "drug",
+        "x": 78,
+        "y": 78
+      }
+    ],
+    "edges": [
+      {
+        "from": "mac",
+        "to": "tnf"
+      },
+      {
+        "from": "tnf",
+        "to": "gr",
+        "label": "maintain"
+      },
+      {
+        "from": "blk",
+        "to": "tnf",
+        "label": "block"
+      },
+      {
+        "from": "blk",
+        "to": "tb"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Tumor necrosis factor — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tumor_necrosis_factor",
+      "attribution": "English Wikipedia revision 1368125888 (2026-08-07T04:17:40Z). Wikidata Q21173843. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-tnf-cd4",
+    "tb-granuloma",
+    "tb-tpt",
+    "tb-hiv-synergy",
+    "wiki-ifng-glossary",
+    "wiki-granuloma-glossary"
+  ],
+  "example": {
+    "title": "Starting infliximab",
+    "setup": "Rheumatology wants a one-line TB plan from the TNF Wikipedia page.",
+    "steps": [
+      {
+        "title": "Molecule ≠ protocol",
+        "body": "Open tb-tnf-cd4 and national screening rules."
+      },
+      {
+        "title": "IGRA/TST + disease screen",
+        "body": "Already on infection-test plates."
+      },
+      {
+        "title": "TPT if indicated is WHO",
+        "body": "Not a TNF-article infobox."
+      }
+    ],
+    "takeaway": "TNF is the node. Anti-TNF policy is a clinic plate."
+  },
+  "check": [
+    {
+      "id": "tnf-job",
+      "kind": "conceptual",
+      "prompt": "In TB immunopathology, TNF is most usefully remembered as:",
+      "choices": [
+        "A mycolic acid",
+        "A cytokine that helps keep granulomas organised",
+        "Rifampin's target",
+        "An RD1 antigen"
+      ],
+      "answer": "A cytokine that helps keep granulomas organised",
+      "why": "Maintenance signal.",
+      "whyWrong": {
+        "A mycolic acid": "Envelope.",
+        "Rifampin's target": "RNAP.",
+        "An RD1 antigen": "ESAT-6/CFP-10."
+      }
+    },
+    {
+      "id": "tnf-block",
+      "kind": "calculation",
+      "prompt": "Anti-TNF without a TB screen is hazardous because:",
+      "choices": [
+        "TNF is the only TB antibiotic",
+        "Granuloma control can fail and remote infection can progress to disease",
+        "BCG becomes RIF-R",
+        "Ultra cannot run"
+      ],
+      "answer": "Granuloma control can fail and remote infection can progress to disease",
+      "why": "The clinical rhyme.",
+      "whyWrong": {
+        "TNF is the only TB antibiotic": "It is not an antibiotic.",
+        "BCG becomes RIF-R": "No.",
+        "Ultra cannot run": "No."
+      }
+    },
+    {
+      "id": "tnf-figure",
+      "kind": "figure",
+      "prompt": "On the map, which node is the iatrogenic hole?",
+      "choices": [
+        "Granuloma",
+        "Anti-TNF",
+        "Mϕ / T cell",
+        "TNF itself as a drug"
+      ],
+      "answer": "Anti-TNF",
+      "why": "Lower drug node.",
+      "whyWrong": {
+        "Granuloma": "Structure.",
+        "Mϕ / T cell": "Source.",
+        "TNF itself as a drug": "TNF is the cytokine."
+      },
+      "figureHint": "Node labelled iatrogenic hole."
+    }
+  ]
+}

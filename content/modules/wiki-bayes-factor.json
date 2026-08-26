@@ -1,0 +1,152 @@
+{
+  "id": "wiki-bayes-factor",
+  "title": "Bayes factor as a named marginal-likelihood ratio",
+  "dek": "BF₁₀ = m(y|M1)/m(y|M0). Wikipedia model-odds update. Not Wilks' Λ, not a p-value.",
+  "domain": "stats",
+  "aliases": [
+    "Bayes factor",
+    "marginal likelihood ratio",
+    "Kass Raftery"
+  ],
+  "tags": [
+    "glossary",
+    "Bayes factor",
+    "model comparison",
+    "marginal"
+  ],
+  "story": [
+    "A Bayes factor on Wikipedia is the ratio of marginal likelihoods, the number that updates prior model odds into posterior model odds. It integrates the likelihood against each model's prior, including over parameters you might have profiled in an LRT.",
+    "stats-lrt compares nested maxima. AIC/BIC penalise 2Δℓ. A Bayes factor is a third object. Mixing all three in one table without names is how TB genomics papers become unreadable.",
+    "Improper priors can make m(y) undefined. That is not a software bug; it is the math refusing the question."
+  ],
+  "deepTitle": "Marginal versus maximum",
+  "deep": [
+    "Lindley's paradox: large n can give a tiny p and a BF that still likes a sharp null, depending on the prior.",
+    "BIC is a rough Laplace approximation to a Bayes factor under specific priors — not the BF itself (stats-aic-bic).",
+    "Savage–Dickey is a density-ratio trick for nested nested parameters, not a licence to skip diagnostics.",
+    "Do not call a likelihood-ratio p-value a Bayes factor."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "LRT uses two maxima. A Bayes factor uses two integrated likelihoods. Same pair of names, different functionals of the likelihood.",
+    "reduced": {
+      "label": "M0 integrated",
+      "params": [
+        "m(y|M0)=∫ L p0"
+      ]
+    },
+    "full": {
+      "label": "M1 integrated",
+      "params": [
+        "m(y|M1)=∫ L p1"
+      ]
+    },
+    "statistic": "BF₁₀ = m1/m0  (not 2Δℓ)",
+    "reference": "updates prior odds, not χ²"
+  },
+  "sources": [
+    {
+      "title": "Bayes factor — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayes_factor",
+      "attribution": "English Wikipedia revision 1363773072 (2026-07-12T09:36:08Z). Wikidata Q4165283. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-lrt",
+    "stats-aic-bic",
+    "wiki-wilks",
+    "wiki-bayesian-glossary",
+    "stats-priors"
+  ],
+  "example": {
+    "title": "Λ=10.6 on 2 df, p≈0.005, 'so BF is huge'",
+    "setup": "Nested Bernoulli GLMs.",
+    "steps": [
+      {
+        "title": "You have an LRT",
+        "body": "stats-lrt / wiki-wilks."
+      },
+      {
+        "title": "A BF needs priors and an integral",
+        "body": "Not a χ² tail."
+      },
+      {
+        "title": "BIC might be a crude stand-in if you say so",
+        "body": "stats-aic-bic."
+      }
+    ],
+    "takeaway": "A Bayes factor is a ratio of integrals. A p-value is not that ratio."
+  },
+  "check": [
+    {
+      "id": "bf-def",
+      "kind": "conceptual",
+      "prompt": "A Bayes factor is:",
+      "choices": [
+        "Twice the log-likelihood gap referred to χ²",
+        "A ratio of marginal likelihoods that updates model odds",
+        "A q-value",
+        "A bootstrap proportion"
+      ],
+      "answer": "A ratio of marginal likelihoods that updates model odds",
+      "why": "Definition.",
+      "whyWrong": {
+        "Twice the log-likelihood gap referred to χ²": "LRT.",
+        "A q-value": "FDR.",
+        "A bootstrap proportion": "No."
+      }
+    },
+    {
+      "id": "bf-imp",
+      "kind": "calculation",
+      "prompt": "Improper flat priors on extra parameters in M1 can:",
+      "choices": [
+        "Always make BF well-defined",
+        "Leave the marginal likelihood undefined, so the BF is not a number",
+        "Equal Wilks automatically",
+        "Force FDR=0"
+      ],
+      "answer": "Leave the marginal likelihood undefined, so the BF is not a number",
+      "why": "Improper prior problem.",
+      "whyWrong": {
+        "Always make BF well-defined": "Opposite.",
+        "Equal Wilks automatically": "No.",
+        "Force FDR=0": "No."
+      }
+    },
+    {
+      "id": "bf-figure",
+      "kind": "figure",
+      "prompt": "The caption's 'not 2Δℓ' is teaching:",
+      "choices": [
+        "That BF equals Wilks",
+        "That integration is not maximisation",
+        "That χ² is a prior",
+        "That M0 cannot be nested"
+      ],
+      "answer": "That integration is not maximisation",
+      "why": "Statistic label.",
+      "whyWrong": {
+        "That BF equals Wilks": "Opposite.",
+        "That χ² is a prior": "No.",
+        "That M0 cannot be nested": "Can be, still different functional."
+      },
+      "figureHint": "Statistic line."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "bf",
+      "label": "Bayes factor",
+      "expression": "BF₁₀ = m(y|M₁) / m(y|M₀)",
+      "note": "Posterior odds = BF × prior odds."
+    }
+  ]
+}

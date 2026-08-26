@@ -1,0 +1,195 @@
+{
+  "id": "wiki-relative-risk",
+  "title": "Relative risk as a named ratio of probabilities",
+  "dek": "RR = π1/π0. Wikipedia contrast. Collapses toward 1 as baselines rise even when OR stays put.",
+  "domain": "stats",
+  "aliases": [
+    "relative risk",
+    "risk ratio",
+    "RR Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "risk ratio",
+    "probability",
+    "contrast"
+  ],
+  "story": [
+    "Relative risk on Wikipedia is a ratio of two probabilities, the contrast people think they heard when they heard 'twice as likely'. Log-binomial models and some Poisson-with-robust-SE tricks estimate it directly; logits do not.",
+    "Case-control studies generally do not identify RR without extra information; they do better at OR. That is why the logit celebrity exists.",
+    "Incidence ratios with person-time are a neighbouring object (stats-incidence-prevalence)."
+  ],
+  "deepTitle": "When you can say RR",
+  "deep": [
+    "Cohort/trial with counted events and a defined denominator: RR is on the table.",
+    "Log link + binomial can wander above 1; that is why people use constraints or Poisson tricks.",
+    "Do not convert OR to RR with a bogus formula you found under a Wikipedia talk page without stating π0.",
+    "Risk difference is a third contrast (absolute), often more decision-relevant."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Design first, then which contrast is identified. Case-control points at OR, not at RR, unless extra assumptions enter.",
+    "nodes": [
+      {
+        "id": "des",
+        "label": "Design",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "coh",
+        "label": "Cohort/trial",
+        "x": 40,
+        "y": 20,
+        "tone": "process"
+      },
+      {
+        "id": "cc",
+        "label": "Case-control",
+        "x": 40,
+        "y": 75,
+        "tone": "process"
+      },
+      {
+        "id": "rr",
+        "label": "RR identified",
+        "x": 72,
+        "y": 20,
+        "tone": "end"
+      },
+      {
+        "id": "or",
+        "label": "OR (usual)",
+        "x": 72,
+        "y": 75,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "des",
+        "to": "coh"
+      },
+      {
+        "from": "des",
+        "to": "cc"
+      },
+      {
+        "from": "coh",
+        "to": "rr"
+      },
+      {
+        "from": "cc",
+        "to": "or"
+      },
+      {
+        "from": "coh",
+        "to": "or",
+        "label": "also"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Relative risk — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Relative_risk",
+      "attribution": "English Wikipedia revision 1360187061 (2026-06-19T20:01:58Z). Wikidata Q2142611. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-odds-ratio",
+    "stats-logit",
+    "stats-incidence-prevalence",
+    "stats-poisson",
+    "wiki-logistic"
+  ],
+  "example": {
+    "title": "Case-control TB, 'RR=3 from logistic'",
+    "setup": "No population denominator.",
+    "steps": [
+      {
+        "title": "Design is case-control",
+        "body": "RR not identified without extra."
+      },
+      {
+        "title": "Report OR, or build a risk model with a known baseline",
+        "body": "This plate."
+      },
+      {
+        "title": "Do not launder OR into RR in the abstract",
+        "body": "Honesty."
+      }
+    ],
+    "takeaway": "Relative risk is a ratio of probabilities. Case-control usually hands you odds."
+  },
+  "check": [
+    {
+      "id": "rr-def",
+      "kind": "conceptual",
+      "prompt": "A relative risk is:",
+      "choices": [
+        "A ratio of odds",
+        "A ratio of two probabilities (risks)",
+        "A p-value",
+        "A q-value"
+      ],
+      "answer": "A ratio of two probabilities (risks)",
+      "why": "Definition.",
+      "whyWrong": {
+        "A ratio of odds": "OR.",
+        "A p-value": "No.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "rr-cc",
+      "kind": "calculation",
+      "prompt": "Unmatched case-control without external prevalence:",
+      "choices": [
+        "Identifies RR directly like a cohort",
+        "Generally identifies OR more naturally than RR",
+        "Identifies a tree",
+        "Identifies HWE"
+      ],
+      "answer": "Generally identifies OR more naturally than RR",
+      "why": "Design.",
+      "whyWrong": {
+        "Identifies RR directly like a cohort": "No denominator.",
+        "Identifies a tree": "No.",
+        "Identifies HWE": "No."
+      }
+    },
+    {
+      "id": "rr-figure",
+      "kind": "figure",
+      "prompt": "The case-control end node is OR because:",
+      "choices": [
+        "Case-control always reports RR",
+        "That design typically identifies odds contrasts without extra prevalence data",
+        "OR is FDR",
+        "Cohorts cannot report OR"
+      ],
+      "answer": "That design typically identifies odds contrasts without extra prevalence data",
+      "why": "Lower path.",
+      "whyWrong": {
+        "Case-control always reports RR": "Opposite.",
+        "OR is FDR": "No.",
+        "Cohorts cannot report OR": "They can too (upper also-edge)."
+      },
+      "figureHint": "Lower right."
+    }
+  ]
+}

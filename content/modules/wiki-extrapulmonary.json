@@ -1,0 +1,201 @@
+{
+  "id": "wiki-extrapulmonary",
+  "title": "Extrapulmonary TB as a site glossary",
+  "dek": "Wikipedia splits TB by anatomy: nodes, bone, meninges, miliary. Site names are not specimen instructions and not DST.",
+  "domain": "tb",
+  "aliases": [
+    "extrapulmonary tuberculosis",
+    "EPTB",
+    "scrofula",
+    "Pott disease"
+  ],
+  "tags": [
+    "glossary",
+    "EPTB",
+    "anatomy",
+    "sites"
+  ],
+  "story": [
+    "Wikipedia's extrapulmonary tuberculosis page is a site list: lymph node (historically scrofula), spine (Pott), meninges, pericardium, genitourinary, abdominal, miliary as dissemination. Those names are how clinicians search.",
+    "Simplfy already has dedicated clinic plates for meningitis, miliary, pericarditis, pediatric/extrapulmonary diagnosis. This card is the encyclopedia index that should related[] into them rather than re-teach CSF GeneXpert.",
+    "HIV shifts the mix toward disseminated and extrapulmonary forms. That is pathogenesis, already on tb-hiv-synergy. The glossary just keeps the site words attached."
+  ],
+  "deepTitle": "Site is not a specimen",
+  "deep": [
+    "A Wikipedia 'lymph node TB' sentence does not tell you to skip NAAT on the node or to treat empirically forever.",
+    "Pott disease is vertebral osteomyelitis with a name; imaging and microbiology still required.",
+    "Miliary is a radiographic/anatomic pattern of dissemination, with its own plate.",
+    "Doses for TBM (higher rifamycin questions, steroids) are WHO objects on tb-meningitis, never here."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Site words Wikipedia will serve, mapped toward existing clinic plates rather than toward a single 'EPTB regimen'.",
+    "terms": [
+      {
+        "label": "scrofula / node",
+        "weight": 8
+      },
+      {
+        "label": "Pott / spine",
+        "weight": 8
+      },
+      {
+        "label": "TBM",
+        "weight": 10
+      },
+      {
+        "label": "miliary",
+        "weight": 9
+      },
+      {
+        "label": "pericardium",
+        "weight": 7
+      },
+      {
+        "label": "GU / abdomen",
+        "weight": 6
+      },
+      {
+        "label": "HIV shifts mix",
+        "weight": 8
+      },
+      {
+        "label": "site ≠ DST",
+        "weight": 9
+      },
+      {
+        "label": "specimen still needed",
+        "weight": 10
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Extrapulmonary tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Extrapulmonary_tuberculosis",
+      "attribution": "English Wikipedia revision 1287698853 (2025-04-27T21:59:19Z). Wikidata Q18553330. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Tuberculous meningitis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tuberculous_meningitis",
+      "attribution": "English Wikipedia revision 1366143337 (2026-07-26T14:55:48Z). Wikidata Q3854687. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Pott's disease — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Pott%27s_disease",
+      "attribution": "English Wikipedia revision 1368887859 (2026-08-11T17:14:35Z). Wikidata Q2723627. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterial cervical lymphadenitis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterial_cervical_lymphadenitis",
+      "attribution": "English Wikipedia revision 1345547493 (2026-03-26T17:51:34Z). Wikidata Q4678337. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Miliary tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Miliary_tuberculosis",
+      "attribution": "English Wikipedia revision 1370298870 (2026-08-20T08:15:06Z). Wikidata Q17583. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-extrapulmonary-dx",
+    "tb-meningitis",
+    "tb-miliary",
+    "tb-pericarditis",
+    "tb-hiv-synergy",
+    "wiki-scrofula",
+    "wiki-potts",
+    "wiki-ghon"
+  ],
+  "example": {
+    "title": "Named site, missing specimen",
+    "setup": "Notes say 'Pott disease, start HRZE' with no biopsy/NAAT and no imaging report in the chart.",
+    "steps": [
+      {
+        "title": "The name is a hypothesis",
+        "body": "Wikipedia can name vertebral TB; it cannot replace a specimen."
+      },
+      {
+        "title": "Use the EPTB diagnosis plate",
+        "body": "That is where WRD-on-extra-pulmonary-samples lives."
+      },
+      {
+        "title": "Regimen still waits on disease confirmation and DST class",
+        "body": "Site is not RIF status."
+      }
+    ],
+    "takeaway": "Anatomy words are an index, not a microbiologic result."
+  },
+  "check": [
+    {
+      "id": "eptb-idx",
+      "kind": "conceptual",
+      "prompt": "This glossary card's job is to:",
+      "choices": [
+        "List WHO steroid doses for TBM",
+        "Index site names and point at clinic plates",
+        "Replace Ultra on sputum",
+        "Define BDQ MIC"
+      ],
+      "answer": "Index site names and point at clinic plates",
+      "why": "Encyclopedia index.",
+      "whyWrong": {
+        "List WHO steroid doses for TBM": "Meningitis clinic plate.",
+        "Replace Ultra on sputum": "No.",
+        "Define BDQ MIC": "No."
+      }
+    },
+    {
+      "id": "eptb-hiv",
+      "kind": "calculation",
+      "prompt": "Advanced HIV plus a named EPTB site should raise:",
+      "choices": [
+        "That EPTB is imaginary",
+        "Disseminated/EPTB mix is expected; still need a microbiologic test class",
+        "That IGRA diagnoses TBM",
+        "That BCG treats Pott"
+      ],
+      "answer": "Disseminated/EPTB mix is expected; still need a microbiologic test class",
+      "why": "Pathogenesis plus diagnosis.",
+      "whyWrong": {
+        "That EPTB is imaginary": "Opposite.",
+        "That IGRA diagnoses TBM": "Wrong test class.",
+        "That BCG treats Pott": "No."
+      }
+    },
+    {
+      "id": "eptb-figure",
+      "kind": "figure",
+      "prompt": "On the constellation, TBM is weighted high because:",
+      "choices": [
+        "It is the only EPTB form",
+        "It is a high-stakes named site that already has a dedicated clinic plate",
+        "Wikipedia forbids miliary",
+        "It is an NTM"
+      ],
+      "answer": "It is a high-stakes named site that already has a dedicated clinic plate",
+      "why": "Index toward tb-meningitis.",
+      "whyWrong": {
+        "It is the only EPTB form": "Many sites listed.",
+        "Wikipedia forbids miliary": "No.",
+        "It is an NTM": "No."
+      },
+      "figureHint": "TBM weight 10."
+    }
+  ]
+}

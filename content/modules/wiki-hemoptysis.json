@@ -1,0 +1,170 @@
+{
+  "id": "wiki-hemoptysis",
+  "title": "Hemoptysis as a named symptom, not a species",
+  "dek": "Wikipedia's coughing-blood page is a symptom index. Cavities transmit; the word does not speciate or dose.",
+  "domain": "tb",
+  "aliases": [
+    "hemoptysis",
+    "haemoptysis",
+    "coughing blood"
+  ],
+  "tags": [
+    "glossary",
+    "symptom",
+    "cavity",
+    "transmission"
+  ],
+  "story": [
+    "Hemoptysis on Wikipedia is a symptom: expectorated blood from below the larynx. TB cavities, bronchiectasis, cancer, and aspergilloma sit on the differential list.",
+    "In a TB studio the word matters because cavitary disease drives smear grade and transmission. That is already a pathogenesis/transmission lesson. This card is the search string.",
+    "Massive hemoptysis is an airway emergency. Encyclopedia first-aid is not a bronchoscopy protocol."
+  ],
+  "deepTitle": "Symptom versus lesion",
+  "deep": [
+    "Rasmussen aneurysm folklore is a vascular complication of cavities — pointer, not a radiology SOP.",
+    "Smear-negative hemoptysis still needs a work-up.",
+    "Do not start HRZE from the word alone without a diagnostic class.",
+    "Infection control: blood-stained sputum is still sputum."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Symptom in the middle of a differential. TB is a celebrity cause, not the only one.",
+    "terms": [
+      {
+        "label": "hemoptysis",
+        "weight": 10
+      },
+      {
+        "label": "cavity TB",
+        "weight": 9
+      },
+      {
+        "label": "bronchiectasis",
+        "weight": 7
+      },
+      {
+        "label": "cancer",
+        "weight": 6
+      },
+      {
+        "label": "aspergilloma",
+        "weight": 6
+      },
+      {
+        "label": "≠ species",
+        "weight": 8
+      },
+      {
+        "label": "transmission risk if TB",
+        "weight": 8
+      },
+      {
+        "label": "need a WRD",
+        "weight": 9
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Hemoptysis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hemoptysis",
+      "attribution": "English Wikipedia revision 1359170881 (2026-06-13T15:42:50Z). Wikidata Q647099. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-transmission",
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "tb-diagnosis",
+    "tb-infection-control",
+    "wiki-sputum"
+  ],
+  "example": {
+    "title": "Streaks of blood, no Ultra",
+    "setup": "Ward calls it 'classic TB' and isolates nobody.",
+    "steps": [
+      {
+        "title": "Symptom ≠ species",
+        "body": "Differential is broad."
+      },
+      {
+        "title": "If TB is the working diagnosis, infection control is on",
+        "body": "tb-infection-control."
+      },
+      {
+        "title": "Get a disease test",
+        "body": "mWRD."
+      }
+    ],
+    "takeaway": "Hemoptysis is a word for blood. It is not a barcode."
+  },
+  "check": [
+    {
+      "id": "hem-sym",
+      "kind": "conceptual",
+      "prompt": "Hemoptysis is:",
+      "choices": [
+        "A mycobacterial species",
+        "A symptom (coughing blood) with a differential that includes but is not limited to cavitary TB",
+        "Proof of RIF-R",
+        "An IGRA result"
+      ],
+      "answer": "A symptom (coughing blood) with a differential that includes but is not limited to cavitary TB",
+      "why": "Symptom node.",
+      "whyWrong": {
+        "A mycobacterial species": "No.",
+        "Proof of RIF-R": "No.",
+        "An IGRA result": "No."
+      }
+    },
+    {
+      "id": "hem-ic",
+      "kind": "calculation",
+      "prompt": "Blood-streaked sputum while TB is possible:",
+      "choices": [
+        "Is sterile water",
+        "Is still a respiratory specimen for infection-control and microbiology purposes",
+        "Replaces DST",
+        "Proves NTM"
+      ],
+      "answer": "Is still a respiratory specimen for infection-control and microbiology purposes",
+      "why": "Sputum is sputum.",
+      "whyWrong": {
+        "Is sterile water": "No.",
+        "Replaces DST": "No.",
+        "Proves NTM": "No."
+      }
+    },
+    {
+      "id": "hem-figure",
+      "kind": "figure",
+      "prompt": "Why is 'need a WRD' high-weight?",
+      "choices": [
+        "Because hemoptysis sequences rpoB",
+        "Because the symptom does not diagnose; a disease test class still does",
+        "Because WRD means TST",
+        "Because cancer is TB"
+      ],
+      "answer": "Because the symptom does not diagnose; a disease test class still does",
+      "why": "High-weight term.",
+      "whyWrong": {
+        "Because hemoptysis sequences rpoB": "No.",
+        "Because WRD means TST": "No.",
+        "Because cancer is TB": "No."
+      },
+      "figureHint": "need a WRD weight."
+    }
+  ]
+}

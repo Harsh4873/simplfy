@@ -1,0 +1,218 @@
+{
+  "id": "wiki-m-bovis",
+  "title": "M. bovis as a zoonotic MTBC name",
+  "dek": "Wikipedia's M. bovis page is the dairy/wildlife/BCG parent. Intrinsic PZA-R is a pncA fact, not a surprise MDR.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium bovis",
+    "bovine TB",
+    "zoonotic TB",
+    "Q133447"
+  ],
+  "tags": [
+    "glossary",
+    "zoonosis",
+    "PZA",
+    "BCG"
+  ],
+  "story": [
+    "Mycobacterium bovis is the animal-adapted MTBC member Wikipedia associates with cattle, unpasteurised dairy, and wildlife reservoirs. In humans it still makes TB disease — often extrapulmonary — and it still lights MTBC NAATs.",
+    "The laboratory punchline is intrinsic pyrazinamide resistance from a characteristic pncA allele. Calling that 'acquired MDR' contaminates surveillance. BCG is a passaged bovis derivative; not every bovis is BCG.",
+    "Pasteurisation and slaughter schemes are why many high-income pulmonary services rarely see it. When they do, it is often a missed species call on an MTBC-positive bottle."
+  ],
+  "deepTitle": "What the species page should hand to existing plates",
+  "deep": [
+    "RD9 deletion plus bovis SNPs name the ecotype; the clinic MTBC plate already walks that barcode.",
+    "BCG additional RD losses (RD1 and strain-specific RDs) are the vaccine plate, not this one.",
+    "M. caprae is a close animal-adapted neighbour; do not merge them in a report just because both are 'bovine'.",
+    "Treatment backbones still come from WHO, with PZA omitted because it is inactive — not because Wikipedia said so."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From a bovine reservoir to an MTBC-positive human specimen. The fork is species versus BCG versus Mtb sensu stricto — not 'NAAT failed'.",
+    "nodes": [
+      {
+        "id": "cow",
+        "label": "Cattle / dairy",
+        "x": 10,
+        "y": 40,
+        "tone": "start",
+        "detail": "reservoir"
+      },
+      {
+        "id": "hum",
+        "label": "Human disease",
+        "x": 38,
+        "y": 40,
+        "tone": "process",
+        "detail": "often EPTB"
+      },
+      {
+        "id": "naat",
+        "label": "MTBC NAAT+",
+        "x": 62,
+        "y": 40,
+        "tone": "decision"
+      },
+      {
+        "id": "bov",
+        "label": "M. bovis",
+        "x": 88,
+        "y": 18,
+        "tone": "end",
+        "detail": "PZA intrinsic-R"
+      },
+      {
+        "id": "bcg",
+        "label": "BCG",
+        "x": 88,
+        "y": 50,
+        "tone": "end",
+        "detail": "RD1−"
+      },
+      {
+        "id": "mtb",
+        "label": "Mtb s.s.",
+        "x": 88,
+        "y": 82,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cow",
+        "to": "hum",
+        "label": "zoonosis"
+      },
+      {
+        "from": "hum",
+        "to": "naat"
+      },
+      {
+        "from": "naat",
+        "to": "bov",
+        "label": "SNPs/RD9"
+      },
+      {
+        "from": "naat",
+        "to": "bcg",
+        "label": "RD1"
+      },
+      {
+        "from": "naat",
+        "to": "mtb",
+        "label": "RD9+"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium bovis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_bovis",
+      "attribution": "English Wikipedia revision 1368885364 (2026-08-11T16:56:07Z). Wikidata Q133447. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "BCG vaccine — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/BCG_vaccine",
+      "attribution": "English Wikipedia revision 1369632407 (2026-08-16T04:29:45Z). Wikidata Q798309. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-bcg-rd1",
+    "tb-pnca",
+    "tb-pyrazinamide",
+    "wiki-mtbc-members",
+    "wiki-bcg-vaccine",
+    "wiki-m-caprae"
+  ],
+  "example": {
+    "title": "Cheese and a PZA-R flag",
+    "setup": "Pulmonary-plus-lymph-node disease, MTB detected, RIF not detected, pncA bovis allele, farm exposure.",
+    "steps": [
+      {
+        "title": "Do not start a PZA-containing DS-TB narrative as if this were katG MDR",
+        "body": "Intrinsic PZA-R is the species, not treatment-emergent resistance."
+      },
+      {
+        "title": "Ask dairy/wildlife",
+        "body": "The Wikipedia zoonosis story is the epidemiologic hint; the barcode is the proof."
+      },
+      {
+        "title": "Keep RIF-S meaning",
+        "body": "RIF-S bovis disease is still TB disease; it is not NTM."
+      }
+    ],
+    "takeaway": "Bovis is MTBC with a built-in PZA answer."
+  },
+  "check": [
+    {
+      "id": "bovis-pza",
+      "kind": "conceptual",
+      "prompt": "Why is M. bovis typically pyrazinamide-resistant?",
+      "choices": [
+        "Because Wikipedia lists it as NTM",
+        "Because of a characteristic pncA allele that prevents PZA activation",
+        "Because rpoB S450L is universal in bovis",
+        "Because BCG vaccination induces PZA resistance in the host"
+      ],
+      "answer": "Because of a characteristic pncA allele that prevents PZA activation",
+      "why": "Intrinsic pncA, not acquired MDR theatre.",
+      "whyWrong": {
+        "Because Wikipedia lists it as NTM": "It is MTBC.",
+        "Because rpoB S450L is universal in bovis": "False.",
+        "Because BCG vaccination induces PZA resistance in the host": "Host vaccination does not rewrite pncA."
+      }
+    },
+    {
+      "id": "bovis-rd1",
+      "kind": "calculation",
+      "prompt": "RD1 present, RD9 deleted, pncA bovis allele, not a bladder-cancer patient. Most consistent with:",
+      "choices": [
+        "BCG",
+        "Wild-type M. bovis disease",
+        "M. tuberculosis L4",
+        "M. abscessus"
+      ],
+      "answer": "Wild-type M. bovis disease",
+      "why": "BCG loses RD1; L4 keeps RD9; abscessus is NTM.",
+      "whyWrong": {
+        "BCG": "RD1 would be gone.",
+        "M. tuberculosis L4": "RD9 present.",
+        "M. abscessus": "Wrong complex."
+      }
+    },
+    {
+      "id": "bovis-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, what question does the NAAT node fail to answer?",
+      "choices": [
+        "Whether MTBC nucleic acid is present",
+        "Which ecotype (bovis vs BCG vs Mtb) is present",
+        "Whether the specimen was human",
+        "Whether dairy exists as a concept"
+      ],
+      "answer": "Which ecotype (bovis vs BCG vs Mtb) is present",
+      "why": "Three arrows leave the NAAT box.",
+      "whyWrong": {
+        "Whether MTBC nucleic acid is present": "That is what the NAAT did.",
+        "Whether the specimen was human": "Already assumed.",
+        "Whether dairy exists as a concept": "Not the fork."
+      },
+      "figureHint": "Three outgoing edges from MTBC NAAT+."
+    }
+  ]
+}

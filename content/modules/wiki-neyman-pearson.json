@@ -1,0 +1,157 @@
+{
+  "id": "wiki-neyman-pearson",
+  "title": "Neyman–Pearson lemma as a named UMP slogan",
+  "dek": "Simple H0 vs simple H1: the likelihood-ratio test is most powerful. Composite nested LRTs are a different theorem (Wilks).",
+  "domain": "stats",
+  "aliases": [
+    "Neyman-Pearson lemma",
+    "UMP test",
+    "most powerful test"
+  ],
+  "tags": [
+    "glossary",
+    "Neyman-Pearson",
+    "UMP",
+    "testing"
+  ],
+  "story": [
+    "The Neyman–Pearson lemma on Wikipedia is a simple-versus-simple result: among tests of a given size, the likelihood-ratio rejection region maximises power. It is the slogan behind 'why likelihood ratios'.",
+    "Composite hypotheses (free parameters, nested GLMs) are not this lemma. That is Wilks / Karlin–Rubin / scores. Do not cite NP 1933 for a 4-df LRT in a TB GLM.",
+    "Type I/II language sits on a sibling card. Power as a design object is stats-power."
+  ],
+  "deepTitle": "Simple versus composite",
+  "deep": [
+    "Simple means fully specified densities, no leftover θ.",
+    "One-sided tests with MLR can still have UMP (Karlin–Rubin); two-sided often do not.",
+    "p-values are a later reporting culture, not the 1933 lemma itself.",
+    "Diagnostic LRs (Se/(1−Sp)) rhyme with NP but are not a hypothesis test."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Two fully specified densities. NP says reject where their ratio is large. Composite nested tests are a different picture (wiki-wilks).",
+    "xLabel": "data (schematic)",
+    "curves": [
+      {
+        "id": "h0",
+        "label": "simple H0",
+        "mean": -0.6,
+        "sd": 0.7
+      },
+      {
+        "id": "h1",
+        "label": "simple H1",
+        "mean": 0.8,
+        "sd": 0.7
+      },
+      {
+        "id": "lr",
+        "label": "overlap / hard calls",
+        "mean": 0.1,
+        "sd": 1.1
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Neyman–Pearson lemma — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Neyman%E2%80%93Pearson_lemma",
+      "attribution": "English Wikipedia revision 1359620561 (2026-06-16T07:33:31Z). Wikidata Q1375989. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-wilks",
+    "stats-lrt",
+    "wiki-type-errors",
+    "stats-power",
+    "wiki-pvalue",
+    "stats-likelihood"
+  ],
+  "example": {
+    "title": "Cited NP for a 5-parameter nested GLM",
+    "setup": "Methods sentence only.",
+    "steps": [
+      {
+        "title": "NP is simple vs simple",
+        "body": "Your H0 is composite."
+      },
+      {
+        "title": "Cite Wilks / LRT regularity",
+        "body": "wiki-wilks / stats-lrt."
+      },
+      {
+        "title": "Still write Λ and k",
+        "body": "The lab how-to."
+      }
+    ],
+    "takeaway": "Neyman–Pearson is a simple-vs-simple UMP lemma. Nested GLMs need Wilks."
+  },
+  "check": [
+    {
+      "id": "np-simple",
+      "kind": "conceptual",
+      "prompt": "The Neyman–Pearson lemma applies directly to:",
+      "choices": [
+        "Any nested GLM with 4 extra parameters",
+        "Simple H0 versus simple H1, yielding a most powerful likelihood-ratio test of given size",
+        "FDR control in GWAS",
+        "Phylogenetic bootstraps"
+      ],
+      "answer": "Simple H0 versus simple H1, yielding a most powerful likelihood-ratio test of given size",
+      "why": "Scope.",
+      "whyWrong": {
+        "Any nested GLM with 4 extra parameters": "Wilks territory.",
+        "FDR control in GWAS": "No.",
+        "Phylogenetic bootstraps": "No."
+      }
+    },
+    {
+      "id": "np-size",
+      "kind": "calculation",
+      "prompt": "Among tests with P(reject|H0)=α, NP picks the one that:",
+      "choices": [
+        "Minimises α further",
+        "Maximises power at the specified simple H1",
+        "Maximises FDR",
+        "Minimises BIC"
+      ],
+      "answer": "Maximises power at the specified simple H1",
+      "why": "UMP slogan.",
+      "whyWrong": {
+        "Minimises α further": "Size is fixed.",
+        "Maximises FDR": "No.",
+        "Minimises BIC": "No."
+      }
+    },
+    {
+      "id": "np-figure",
+      "kind": "figure",
+      "prompt": "Two shifted densities on the plate stand for:",
+      "choices": [
+        "A composite nested model",
+        "Two fully specified laws (simple H0 and H1)",
+        "A posterior and a prior only",
+        "A Manhattan plot"
+      ],
+      "answer": "Two fully specified laws (simple H0 and H1)",
+      "why": "Caption.",
+      "whyWrong": {
+        "A composite nested model": "That's Wilks' picture.",
+        "A posterior and a prior only": "Bayesian plate.",
+        "A Manhattan plot": "No."
+      },
+      "figureHint": "H0 vs H1 curves."
+    }
+  ]
+}

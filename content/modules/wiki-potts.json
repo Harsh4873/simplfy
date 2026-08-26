@@ -1,0 +1,162 @@
+{
+  "id": "wiki-potts",
+  "title": "Pott disease as named spinal TB",
+  "dek": "Percivall Pott's eponym for tuberculous spondylitis. An anatomy-and-history card that must hand off to EPTB diagnosis, not to a unique backbone invented on Wikipedia.",
+  "domain": "tb",
+  "aliases": [
+    "Pott disease",
+    "Pott's disease",
+    "tuberculous spondylitis",
+    "spinal TB"
+  ],
+  "tags": [
+    "glossary",
+    "spine",
+    "EPTB",
+    "eponym"
+  ],
+  "story": [
+    "Pott disease is Wikipedia's eponym for tuberculous infection of the spine — vertebral osteomyelitis, often with a cold abscess and kyphosis in neglected disease. The organism is MTBC. The name is 18th-century surgery, not a separate species.",
+    "Modern care is imaging plus microbiology plus WHO TB treatment, with orthopedic decisions that this glossary will not script. Steroids are not automatically 'the Pott protocol' copied from meningitis.",
+    "Differential includes pyogenic osteomyelitis, malignancy, and brucellosis in the right geography. The eponym does not close those."
+  ],
+  "deepTitle": "Eponym hygiene",
+  "deep": [
+    "A Gibbus deformity is a late anatomic headline, not an early sensitive sign.",
+    "NAAT on pus/tissue is the WRD logic from the EPTB diagnosis plate.",
+    "Paraplegia risk is why this site is high-stakes; that still does not make Wikipedia a neurosurgical manual.",
+    "Pediatric spinal TB exists; dosing stays on pediatric treatment plates."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Schematic spine-as-site: vertebra, disc, cold abscess. The eponym names the pattern; it does not replace a specimen from one of these layers.",
+    "layers": [
+      {
+        "id": "cord",
+        "label": "Canal / cord risk",
+        "detail": "why the site is high-stakes",
+        "tone": "core"
+      },
+      {
+        "id": "vert",
+        "label": "Vertebra + disc",
+        "detail": "osteomyelitis / discitis",
+        "tone": "wall"
+      },
+      {
+        "id": "abs",
+        "label": "Cold abscess",
+        "detail": "specimen opportunity",
+        "tone": "space"
+      },
+      {
+        "id": "name",
+        "label": "Eponym: Pott",
+        "detail": "glossary, not a regimen",
+        "tone": "lipid"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Pott's disease — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Pott%27s_disease",
+      "attribution": "English Wikipedia revision 1368887859 (2026-08-11T17:14:35Z). Wikidata Q2723627. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-extrapulmonary",
+    "tb-extrapulmonary-dx",
+    "tb-meningitis",
+    "tb-pediatric-tx",
+    "wiki-scrofula"
+  ],
+  "example": {
+    "title": "Kyphosis without microbiology",
+    "setup": "Radiology: 'consistent with Pott'. No NAAT. Team wants HRZE from the eponym alone.",
+    "steps": [
+      {
+        "title": "Eponym is a differential, not a culture",
+        "body": "Obtain tissue/pus if safe."
+      },
+      {
+        "title": "Look for pulmonary/miliary pairing",
+        "body": "Spine is allowed to be the tip of disseminated disease."
+      },
+      {
+        "title": "Then treat as TB disease with DST class",
+        "body": "The name does not pick Group A drugs."
+      }
+    ],
+    "takeaway": "Pott is a site eponym. Microbiology still has to speak."
+  },
+  "check": [
+    {
+      "id": "pott-org",
+      "kind": "conceptual",
+      "prompt": "Pott disease is caused by:",
+      "choices": [
+        "A unique Mycobacterium pottii",
+        "MTBC at the spine, named eponymously",
+        "Always NTM abscessus",
+        "Vitamin D deficiency alone"
+      ],
+      "answer": "MTBC at the spine, named eponymously",
+      "why": "Same complex, special site.",
+      "whyWrong": {
+        "A unique Mycobacterium pottii": "No such species in this sense.",
+        "Always NTM abscessus": "Different problem.",
+        "Vitamin D deficiency alone": "Rickets is not Pott."
+      }
+    },
+    {
+      "id": "pott-rx",
+      "kind": "calculation",
+      "prompt": "WHO treatment duration/backbone for spinal TB should be taken from:",
+      "choices": [
+        "Percivall Pott's original essay",
+        "WHO TB treatment modules / national guidelines, not this glossary card",
+        "BCG package insert",
+        "Wikidata P2176 only"
+      ],
+      "answer": "WHO TB treatment modules / national guidelines, not this glossary card",
+      "why": "Protocol ranking.",
+      "whyWrong": {
+        "Percivall Pott's original essay": "History.",
+        "BCG package insert": "Vaccine.",
+        "Wikidata P2176 only": "Incomplete therapy edge."
+      }
+    },
+    {
+      "id": "pott-figure",
+      "kind": "figure",
+      "prompt": "Which layer is labelled as a specimen opportunity?",
+      "choices": [
+        "Canal / cord risk",
+        "Cold abscess",
+        "Eponym: Pott",
+        "None"
+      ],
+      "answer": "Cold abscess",
+      "why": "Third layer detail.",
+      "whyWrong": {
+        "Canal / cord risk": "Stakes, not specimen.",
+        "Eponym: Pott": "The name.",
+        "None": "Look at cold abscess."
+      },
+      "figureHint": "Third layer."
+    }
+  ]
+}

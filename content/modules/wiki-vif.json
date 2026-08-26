@@ -1,0 +1,190 @@
+{
+  "id": "wiki-vif",
+  "title": "Variance inflation factor as a named collinearity diagnostic",
+  "dek": "VIF_j = 1/(1−R²_j). Wikipedia collinearity node. Not a causal discovery and not a p-value.",
+  "domain": "stats",
+  "aliases": [
+    "variance inflation factor",
+    "VIF",
+    "collinearity diagnostic"
+  ],
+  "tags": [
+    "glossary",
+    "VIF",
+    "collinearity",
+    "design matrix"
+  ],
+  "story": [
+    "VIF on Wikipedia measures how much the variance of a coefficient is inflated because other covariates already explain that column of X. VIF=1/(1−R²_j) from the regression of X_j on the rest.",
+    "It is a design-matrix diagnostic, not a reason to drop a confounder you needed (stats-confounding / omitted variables). High VIF plus a needed covariate means get more data or a better design, not automatic deletion.",
+    "stats-ols-diagnostics is the residual-and-leverage plate. This card is the named collinearity number."
+  ],
+  "deepTitle": "Inflation versus identification",
+  "deep": [
+    "Perfect collinearity makes VIF infinite and XᵀX singular.",
+    "Dummy traps (all levels plus intercept) are VIF explosions you caused.",
+    "Ridge/shrinkage can buy a finite estimate at the price of bias (bias-variance plate).",
+    "GWAS PCs can be collinear with lineage — that can be a feature."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: VIF as variance inflation, not as a licence to delete confounders.",
+    "panels": [
+      {
+        "title": "R²_j=0",
+        "bars": [
+          {
+            "label": "VIF",
+            "value": 1
+          },
+          {
+            "label": "ok",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "R²_j=0.9",
+        "bars": [
+          {
+            "label": "VIF",
+            "value": 10
+          },
+          {
+            "label": "fragile β",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "Do not auto-drop",
+        "bars": [
+          {
+            "label": "confounder",
+            "value": 8
+          },
+          {
+            "label": "VIF police",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Variance inflation factor — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Variance_inflation_factor",
+      "attribution": "English Wikipedia revision 1343162361 (2026-03-12T17:04:04Z). Wikidata Q13434396. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Multicollinearity — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multicollinearity",
+      "attribution": "English Wikipedia revision 1346497382 (2026-04-01T04:08:51Z). Wikidata Q1332350. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-ols-diagnostics",
+    "wiki-ols",
+    "stats-omitted-variables",
+    "stats-confounding",
+    "stats-bias-variance"
+  ],
+  "example": {
+    "title": "Lineage dummy + PC1, VIF=40, drop lineage",
+    "setup": "The scientific question was lineage.",
+    "steps": [
+      {
+        "title": "VIF told you they overlap",
+        "body": "Diagnostic worked."
+      },
+      {
+        "title": "Dropping the scientific factor is not the repair",
+        "body": "This plate."
+      },
+      {
+        "title": "Drop PCs, or combine, or hierarchical model",
+        "body": "Do not let VIF police the question."
+      }
+    ],
+    "takeaway": "VIF diagnoses collinearity. It does not pick the scientific model."
+  },
+  "check": [
+    {
+      "id": "vif-def",
+      "kind": "conceptual",
+      "prompt": "VIF_j is:",
+      "choices": [
+        "A p-value for X_j",
+        "1/(1−R²_j) from regressing X_j on the other covariates",
+        "A q-value",
+        "A Newick length"
+      ],
+      "answer": "1/(1−R²_j) from regressing X_j on the other covariates",
+      "why": "Definition.",
+      "whyWrong": {
+        "A p-value for X_j": "No.",
+        "A q-value": "No.",
+        "A Newick length": "No."
+      }
+    },
+    {
+      "id": "vif-num",
+      "kind": "calculation",
+      "prompt": "R²_j=0.8. VIF_j is:",
+      "choices": [
+        "0.8",
+        "5",
+        "1.25",
+        "0.2"
+      ],
+      "answer": "5",
+      "why": "1/(1-0.8)=5.",
+      "whyWrong": {
+        "0.8": "That's R².",
+        "1.25": "1/0.8.",
+        "0.2": "1−R²."
+      }
+    },
+    {
+      "id": "vif-figure",
+      "kind": "figure",
+      "prompt": "Panel three's tall confounder bar teaches:",
+      "choices": [
+        "Always drop high-VIF covariates",
+        "Needed confounders are not deleted because VIF is large",
+        "VIF is FDR",
+        "R² is a tree"
+      ],
+      "answer": "Needed confounders are not deleted because VIF is large",
+      "why": "Do not auto-drop.",
+      "whyWrong": {
+        "Always drop high-VIF covariates": "Opposite.",
+        "VIF is FDR": "No.",
+        "R² is a tree": "No."
+      },
+      "figureHint": "Third panel."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "vif",
+      "label": "VIF",
+      "expression": "VIF_j = 1 / (1 − R²_j)",
+      "note": "R²_j from X_j ~ other columns of X."
+    }
+  ]
+}

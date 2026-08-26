@@ -1,0 +1,161 @@
+{
+  "id": "wiki-latin-square",
+  "title": "Latin square as a named blocking grid",
+  "dek": "Wikipedia Latin square: each treatment once per row and column. A blocking tool, not a miracle against every confounder.",
+  "domain": "stats",
+  "aliases": [
+    "Latin square",
+    "Latin square design",
+    "row column design"
+  ],
+  "tags": [
+    "glossary",
+    "design",
+    "blocking",
+    "Latin square"
+  ],
+  "story": [
+    "A Latin square on Wikipedia is an n×n grid of n treatments, each appearing once per row and once per column. Agronomy used rows and columns as two blocking factors. PCR plates can use row and column the same way.",
+    "It is a DoE composition, not an analysis that ignores remaining confounders (time of day, reagent lot if those are not row/column).",
+    "stats-blocking is the verb. This card is the named grid people remember from textbooks."
+  ],
+  "deepTitle": "Two blocks, not infinity",
+  "deep": [
+    "You get n² runs for n treatments — expensive if n is a drug library.",
+    "Greco-Latin squares add a third factor with a second alphabet; aliasing gets real.",
+    "Randomise the symbols onto actual treatments; a pretty square of A–D is not itself randomisation.",
+    "TB example: 4 drugs × 4 incubators × 4 technicians is the fantasy layout; reality is messier."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "A 4×4 Latin square drawn as a grid of treatment letters. Rows and columns are blocks; letters are treatments. Not a mutation table.",
+    "rows": [
+      {
+        "gene": "row1",
+        "drug": "col1 A",
+        "canonical": "once/row",
+        "note": "once/col"
+      },
+      {
+        "gene": "row2",
+        "drug": "col1 B",
+        "canonical": "cycle",
+        "note": "block row+col"
+      },
+      {
+        "gene": "row3",
+        "drug": "col1 C",
+        "canonical": "cycle",
+        "note": "not a third block"
+      },
+      {
+        "gene": "row4",
+        "drug": "col1 D",
+        "canonical": "cycle",
+        "note": "still randomise labels"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Latin square — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Latin_square",
+      "attribution": "English Wikipedia revision 1370629617 (2026-08-22T04:47:32Z). Wikidata Q679367. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-doe",
+    "stats-blocking",
+    "stats-randomization",
+    "wiki-factorial-expt",
+    "wiki-anova"
+  ],
+  "example": {
+    "title": "Pretty A–D square, reagents aliased with row",
+    "setup": "Row 1 was the bad lot, all 'A' happened to be… wait, Latin square puts each treatment in each row once, so lot-as-row is blocked.",
+    "steps": [
+      {
+        "title": "That is the point",
+        "body": "Each treatment meets each row."
+      },
+      {
+        "title": "If the bad lot is a diagonal you did not block, you lose",
+        "body": "Name actual nuisance factors."
+      },
+      {
+        "title": "Randomise letter-to-drug maps",
+        "body": "Pretty is not random."
+      }
+    ],
+    "takeaway": "A Latin square blocks two named factors. Unnamed factors still bite."
+  },
+  "check": [
+    {
+      "id": "ls-def",
+      "kind": "conceptual",
+      "prompt": "A Latin square design places each treatment:",
+      "choices": [
+        "In only one cell of the experiment",
+        "Once in each row and once in each column of an n×n grid",
+        "On a phylogenetic tree",
+        "In a GWAS"
+      ],
+      "answer": "Once in each row and once in each column of an n×n grid",
+      "why": "Definition.",
+      "whyWrong": {
+        "In only one cell of the experiment": "That's not even a replicate.",
+        "On a phylogenetic tree": "No.",
+        "In a GWAS": "No."
+      }
+    },
+    {
+      "id": "ls-block",
+      "kind": "calculation",
+      "prompt": "If incubator shelf is the row block, a Latin square:",
+      "choices": [
+        "Removes all confounding including unmeasured time",
+        "Balances treatments across shelves (rows) and the column factor you named",
+        "Is identical to FDR",
+        "Replaces randomization forever"
+      ],
+      "answer": "Balances treatments across shelves (rows) and the column factor you named",
+      "why": "Two named blocks.",
+      "whyWrong": {
+        "Removes all confounding including unmeasured time": "No.",
+        "Is identical to FDR": "No.",
+        "Replaces randomization forever": "Still randomise labels."
+      }
+    },
+    {
+      "id": "ls-figure",
+      "kind": "figure",
+      "prompt": "The mutation-grid visual is reused as a:",
+      "choices": [
+        "WHO catalogue",
+        "Teaching table of letters-as-treatments in a square",
+        "A Manhattan plot",
+        "A Newick file"
+      ],
+      "answer": "Teaching table of letters-as-treatments in a square",
+      "why": "Caption says not a mutation table.",
+      "whyWrong": {
+        "WHO catalogue": "No.",
+        "A Manhattan plot": "No.",
+        "A Newick file": "No."
+      },
+      "figureHint": "Caption."
+    }
+  ]
+}

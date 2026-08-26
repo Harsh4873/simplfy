@@ -1,0 +1,194 @@
+{
+  "id": "wiki-ifng-glossary",
+  "title": "IFN-γ as a cytokine node",
+  "dek": "Wikipedia's interferon-gamma page is a molecule: gene, receptor, macrophage activation. MSMD and IGRAs stay on tb-host-ifng.",
+  "domain": "tb",
+  "aliases": [
+    "interferon gamma",
+    "IFN-γ Wikipedia",
+    "type II interferon",
+    "IFNG gene"
+  ],
+  "tags": [
+    "glossary",
+    "cytokine",
+    "Th1",
+    "IFN-γ"
+  ],
+  "story": [
+    "Interferon-γ on Wikipedia is type II interferon: a soluble signal from T and NK cells that tells macrophages to harden up (plus a pile of other immunologic jobs). TB is one famous context.",
+    "Simplfy's tb-host-ifng plate is the IL-12 / IFN-γ / STAT1 Mendelian series and the IGRA echo. This card is the molecule those assays detect.",
+    "Recombinant IFN-γ as a drug in rare defects is not a national TB programme tool. Do not turn the encyclopedia pharmacology section into a regimen."
+  ],
+  "deepTitle": "Molecule versus Mendelian series",
+  "deep": [
+    "IFNG, IFNGR1, IFNGR2, STAT1 are different QIDs/pages. The clinic plate groups them as an axis.",
+    "IGRAs measure IFN-γ protein or IFN-γ-secreting cells after RD1 peptides. They do not measure CFU.",
+    "Anti-IFN-γ autoantibodies are an acquired phenocopy mentioned so you hand off to the clinic plate.",
+    "Th1 is the helper-cell Wikipedia neighbour (wiki-th1-glossary)."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Molecule in the middle: IL-12 in, IFN-γ out, macrophage programmes and IGRA readout as side doors.",
+    "nodes": [
+      {
+        "id": "il12",
+        "label": "IL-12",
+        "group": "enzyme",
+        "x": 12,
+        "y": 40,
+        "sub": "from Mϕ"
+      },
+      {
+        "id": "t",
+        "label": "T / NK cell",
+        "group": "drug",
+        "x": 40,
+        "y": 40,
+        "sub": "source"
+      },
+      {
+        "id": "ifn",
+        "label": "IFN-γ",
+        "group": "target",
+        "x": 68,
+        "y": 40,
+        "sub": "this node"
+      },
+      {
+        "id": "mac",
+        "label": "Mϕ activation",
+        "group": "target",
+        "x": 88,
+        "y": 18,
+        "sub": "killing genes"
+      },
+      {
+        "id": "igra",
+        "label": "IGRA readout",
+        "group": "enzyme",
+        "x": 88,
+        "y": 70,
+        "sub": "not CFU"
+      }
+    ],
+    "edges": [
+      {
+        "from": "il12",
+        "to": "t",
+        "label": "license"
+      },
+      {
+        "from": "t",
+        "to": "ifn"
+      },
+      {
+        "from": "ifn",
+        "to": "mac"
+      },
+      {
+        "from": "ifn",
+        "to": "igra",
+        "label": "assay"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Interferon gamma — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Interferon_gamma",
+      "attribution": "English Wikipedia revision 1369108079 (2026-08-12T23:47:32Z). Wikidata Q24741149. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-host-ifng",
+    "tb-igra-tst",
+    "tb-tnf-cd4",
+    "wiki-il12-glossary",
+    "wiki-th1-glossary",
+    "wiki-igra-glossary",
+    "wiki-granuloma-glossary"
+  ],
+  "example": {
+    "title": "IGRA as a cytokine assay",
+    "setup": "Someone asks whether a QFT IU/mL is a bacterial load.",
+    "steps": [
+      {
+        "title": "Name the molecule",
+        "body": "The assay reads IFN-γ (or spots of IFN-γ-making cells)."
+      },
+      {
+        "title": "Name the stimulus",
+        "body": "RD1 peptides, not the whole bacillus burden."
+      },
+      {
+        "title": "Open tb-host-ifng if they want MSMD",
+        "body": "Different depth."
+      }
+    ],
+    "takeaway": "IFN-γ is the molecule. IGRA is one way to see it. CFU is neither."
+  },
+  "check": [
+    {
+      "id": "ifn-mol",
+      "kind": "conceptual",
+      "prompt": "This plate treats IFN-γ as:",
+      "choices": [
+        "A first-line TB antibiotic",
+        "A type II interferon cytokine node that IGRAs read and macrophages hear",
+        "A region of difference in BCG",
+        "A critical concentration"
+      ],
+      "answer": "A type II interferon cytokine node that IGRAs read and macrophages hear",
+      "why": "Molecule card.",
+      "whyWrong": {
+        "A first-line TB antibiotic": "No.",
+        "A region of difference in BCG": "RD1 is ESX-1.",
+        "A critical concentration": "DST."
+      }
+    },
+    {
+      "id": "ifn-cfu",
+      "kind": "calculation",
+      "prompt": "QFT-Plus 3.2 IU/mL versus 0.8 IU/mL in two contacts implies:",
+      "choices": [
+        "4× higher CFU in the first person",
+        "A larger IFN-γ assay signal, not a milligram of bacilli",
+        "Mandatory 2HRZE for the first person",
+        "That the second person is BCG"
+      ],
+      "answer": "A larger IFN-γ assay signal, not a milligram of bacilli",
+      "why": "Units are cytokine, not organisms.",
+      "whyWrong": {
+        "4× higher CFU in the first person": "Category error.",
+        "Mandatory 2HRZE for the first person": "Not a disease test.",
+        "That the second person is BCG": "Need the whole picture."
+      }
+    },
+    {
+      "id": "ifn-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, the IGRA node is labelled 'not CFU' because:",
+      "choices": [
+        "IGRAs count colonies",
+        "The assay reads the cytokine, not burden",
+        "IFN-γ is a stain",
+        "IL-12 is rifampin"
+      ],
+      "answer": "The assay reads the cytokine, not burden",
+      "why": "Side door on the figure.",
+      "whyWrong": {
+        "IGRAs count colonies": "Opposite.",
+        "IFN-γ is a stain": "No.",
+        "IL-12 is rifampin": "No."
+      },
+      "figureHint": "Lower right node."
+    }
+  ]
+}

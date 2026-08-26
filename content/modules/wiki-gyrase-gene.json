@@ -1,0 +1,164 @@
+{
+  "id": "wiki-gyrase-gene",
+  "title": "DNA gyrase as the fluoroquinolone enzyme node",
+  "dek": "Wikipedia DNA gyrase page. QRDR alleles and moxifloxacin/levofloxacin plates already own TB use.",
+  "domain": "tb",
+  "aliases": [
+    "DNA gyrase Wikipedia",
+    "gyrA encyclopedia",
+    "topoisomerase II TB"
+  ],
+  "tags": [
+    "glossary",
+    "gene",
+    "gyrase",
+    "FQ"
+  ],
+  "story": [
+    "DNA gyrase on Wikipedia is the type II topoisomerase that introduces negative supercoils. Fluoroquinolones poison it. Mtb has gyrase (GyrA/GyrB) and does not have the same topoisomerase IV story Gram-negatives do — a glossary distinction that explains why gyrA QRDR is the TB FQ celebrity.",
+    "tb-gyr-qrdr and the named FQ plates own alleles and doses. This card is the enzyme in the encyclopedia graph.",
+    "Do not pick ciprofloxacin from a gyrase infobox."
+  ],
+  "deepTitle": "Enzyme versus QRDR table",
+  "deep": [
+    "QRDR is a short stretch of gyrA/gyrB; the enzyme is larger than the window.",
+    "Xpert XDR looks at a subset of FQ-associated changes — cartridge plate.",
+    "Mtb's lack of ParC/ParE as a second FQ target is why gyrA mutations matter so much.",
+    "No milligrams here."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "GyrA schematic with QRDR marked as a pointer to tb-gyr-qrdr, not as a new catalogue.",
+    "gene": "gyrA (schematic)",
+    "start": 70,
+    "end": 130,
+    "unit": "codon (schematic)",
+    "regions": [
+      {
+        "start": 88,
+        "end": 94,
+        "label": "QRDR hotspot"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 90,
+        "label": "90",
+        "note": "common FQ"
+      },
+      {
+        "pos": 94,
+        "label": "94",
+        "note": "common FQ"
+      },
+      {
+        "pos": 80,
+        "label": "outside",
+        "note": "enzyme continues"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "DNA gyrase — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/DNA_gyrase",
+      "attribution": "English Wikipedia revision 1366112819 (2026-07-26T09:56:08Z). Wikidata Q70551687. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-gyr-qrdr",
+    "tb-moxifloxacin",
+    "tb-levofloxacin",
+    "tb-xpert-xdr",
+    "wiki-fq-class",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Gyrase Wikipedia, wants a MIC",
+    "setup": "Student copies a Gram-negative cipro breakpoint.",
+    "steps": [
+      {
+        "title": "Wrong organism",
+        "body": "Mtb gyrase, TB critical concentrations."
+      },
+      {
+        "title": "Open QRDR plate",
+        "body": "tb-gyr-qrdr."
+      },
+      {
+        "title": "Open named FQ plates for which molecule",
+        "body": "Mfx vs Lfx, not cipro-by-default."
+      }
+    ],
+    "takeaway": "Gyrase is the enzyme. QRDR and WHO own the TB sentence."
+  },
+  "check": [
+    {
+      "id": "gyr-enz",
+      "kind": "conceptual",
+      "prompt": "DNA gyrase in this TB glossary is:",
+      "choices": [
+        "An IGRA",
+        "The FQ target enzyme (GyrA/GyrB); alleles live on tb-gyr-qrdr",
+        "KatG",
+        "PPD"
+      ],
+      "answer": "The FQ target enzyme (GyrA/GyrB); alleles live on tb-gyr-qrdr",
+      "why": "Enzyme node.",
+      "whyWrong": {
+        "An IGRA": "No.",
+        "KatG": "INH.",
+        "PPD": "TST."
+      }
+    },
+    {
+      "id": "gyr-parc",
+      "kind": "calculation",
+      "prompt": "Mtb lacking a Gram-negative-style second FQ target (ParC) means:",
+      "choices": [
+        "FQ resistance cannot exist",
+        "gyrA/gyrB changes carry more of the FQ story than in many other bacteria",
+        "RIF is a gyrase drug",
+        "BCG deletes gyrA"
+      ],
+      "answer": "gyrA/gyrB changes carry more of the FQ story than in many other bacteria",
+      "why": "Why QRDR is central.",
+      "whyWrong": {
+        "FQ resistance cannot exist": "Opposite.",
+        "RIF is a gyrase drug": "RNAP.",
+        "BCG deletes gyrA": "No."
+      }
+    },
+    {
+      "id": "gyr-figure",
+      "kind": "figure",
+      "prompt": "The QRDR hotspot region is marked to:",
+      "choices": [
+        "Replace tb-gyr-qrdr",
+        "Point at the short stretch where many TB FQ alleles cluster",
+        "Name ESAT-6",
+        "Dose moxifloxacin"
+      ],
+      "answer": "Point at the short stretch where many TB FQ alleles cluster",
+      "why": "Region label.",
+      "whyWrong": {
+        "Replace tb-gyr-qrdr": "Hand-off, not replace.",
+        "Name ESAT-6": "No.",
+        "Dose moxifloxacin": "No."
+      },
+      "figureHint": "QRDR hotspot region."
+    }
+  ]
+}

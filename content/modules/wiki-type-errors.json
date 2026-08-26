@@ -1,0 +1,176 @@
+{
+  "id": "wiki-type-errors",
+  "title": "Type I and Type II as named testing mistakes",
+  "dek": "Wikipedia: false rejection versus false retention. Size α and power 1−β. Design lives on stats-power.",
+  "domain": "stats",
+  "aliases": [
+    "type I error",
+    "type II error",
+    "alpha beta errors"
+  ],
+  "tags": [
+    "glossary",
+    "type I",
+    "type II",
+    "power"
+  ],
+  "story": [
+    "Type I/II on Wikipedia are named mistakes in a Neyman–Pearson world: reject a true H0 (I, size α) versus fail to reject a false H0 (II, β). Power is 1−β at a specified alternative.",
+    "stats-power already designs n. This card is the encyclopedia pair so 'we were underpowered' is attached to a named β, not a vibe.",
+    "FDR is not Type I. A q-value is not α. Do not mix the dictionaries."
+  ],
+  "deepTitle": "Named mistakes, specified worlds",
+  "deep": [
+    "α is a property of a procedure under H0, not of a single p-value after the fact (though people treat p<α as a Type I ritual).",
+    "Power needs a specific H1: a 1.1-fold risk is not a 3-fold risk.",
+    "Multiple testing changes the Type I object (family vs per-test).",
+    "Diagnostic false-positive/negative rhyme but are not hypothesis tests unless you force them to be."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: two mistakes plus power. FDR is a different panel on purpose, short, to mark a dictionary split.",
+    "panels": [
+      {
+        "title": "Type I (α)",
+        "bars": [
+          {
+            "label": "false reject",
+            "value": 5
+          },
+          {
+            "label": "keep H0 true",
+            "value": 95
+          }
+        ]
+      },
+      {
+        "title": "Type II at a named H1",
+        "bars": [
+          {
+            "label": "miss",
+            "value": 20
+          },
+          {
+            "label": "power",
+            "value": 80
+          }
+        ]
+      },
+      {
+        "title": "Not this dictionary",
+        "bars": [
+          {
+            "label": "FDR",
+            "value": 2
+          },
+          {
+            "label": "PPV",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Type I and type II errors — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Type_I_and_type_II_errors",
+      "attribution": "English Wikipedia revision 1370571423 (2026-08-21T22:12:33Z). Wikidata Q989120. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-power",
+    "wiki-neyman-pearson",
+    "wiki-pvalue",
+    "stats-se-sp",
+    "wiki-fwer"
+  ],
+  "example": {
+    "title": "n=12 DST errors, 'underpowered so p=0.06 means no effect'",
+    "setup": "One SNP, binary phenotype.",
+    "steps": [
+      {
+        "title": "Name β at a specified OR",
+        "body": "stats-power."
+      },
+      {
+        "title": "p=0.06 is not proof of H0",
+        "body": "Absence of evidence."
+      },
+      {
+        "title": "Type II is the miss risk, not a posterior",
+        "body": "This plate."
+      }
+    ],
+    "takeaway": "Type II is a miss at a named alternative. It is not P(H0)."
+  },
+  "check": [
+    {
+      "id": "t12-def",
+      "kind": "conceptual",
+      "prompt": "Type I error is:",
+      "choices": [
+        "Failing to reject a false H0",
+        "Rejecting a true H0 (false rejection)",
+        "FDR",
+        "A branch length"
+      ],
+      "answer": "Rejecting a true H0 (false rejection)",
+      "why": "Named mistake.",
+      "whyWrong": {
+        "Failing to reject a false H0": "Type II.",
+        "FDR": "Different dictionary.",
+        "A branch length": "No."
+      }
+    },
+    {
+      "id": "t12-pow",
+      "kind": "calculation",
+      "prompt": "Power 80% at OR=2, n=200 means:",
+      "choices": [
+        "Type II β=0.2 at that named alternative, not at every alternative",
+        "α=0.8",
+        "q=0.8",
+        "Se=0.8 as a diagnostic"
+      ],
+      "answer": "Type II β=0.2 at that named alternative, not at every alternative",
+      "why": "Power is 1−β at a specified H1.",
+      "whyWrong": {
+        "α=0.8": "Size is not power.",
+        "q=0.8": "No.",
+        "Se=0.8 as a diagnostic": "Rhyme, different object."
+      }
+    },
+    {
+      "id": "t12-figure",
+      "kind": "figure",
+      "prompt": "Panel three is short to teach:",
+      "choices": [
+        "That FDR is Type I",
+        "That FDR/PPV live in other dictionaries",
+        "That power is FDR",
+        "That α is PPV"
+      ],
+      "answer": "That FDR/PPV live in other dictionaries",
+      "why": "Not this dictionary panel.",
+      "whyWrong": {
+        "That FDR is Type I": "Opposite lesson.",
+        "That power is FDR": "No.",
+        "That α is PPV": "No."
+      },
+      "figureHint": "Third panel title."
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "id": "wiki-bonferroni",
+  "title": "Bonferroni correction as a named FWER bound",
+  "dek": "α/m on each test. Wikipedia union-bound recipe. Conservative when tests are dependent or when FDR was the real loss.",
+  "domain": "stats",
+  "aliases": [
+    "Bonferroni correction",
+    "Bonferroni adjustment",
+    "alpha over m"
+  ],
+  "tags": [
+    "glossary",
+    "Bonferroni",
+    "FWER",
+    "union bound"
+  ],
+  "story": [
+    "Bonferroni on Wikipedia is the union bound: P(any false rejection) ≤ ∑ α_i, so α_i = α/m buys FWER ≤ α in the worst case, even under dependence.",
+    "That worst-case gift is why it is conservative when tests are strongly positively dependent (LD blocks, the same 40 isolates driving every gene).",
+    "stats-multiple-testing already situates it. This card is the named recipe students paste into methods."
+  ],
+  "deepTitle": "Bound versus power",
+  "deep": [
+    "Šidák assumes independence and is slightly less conservative for large m.",
+    "Holm is a stepwise FWER method that dominates Bonferroni.",
+    "Using Bonferroni when you meant FDR is a category error, not extra virtue.",
+    "m must be the number of tests you actually ran, including the ones you did not report."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: Bonferroni threshold versus BH's data-dependent threshold on a schematic mountain of tests. Not a particular dataset.",
+    "panels": [
+      {
+        "title": "m=100, α=0.05",
+        "bars": [
+          {
+            "label": "Bonf",
+            "value": 5
+          },
+          {
+            "label": "raw 0.05",
+            "value": 50
+          }
+        ]
+      },
+      {
+        "title": "Many true hits",
+        "bars": [
+          {
+            "label": "Bonf still tight",
+            "value": 5
+          },
+          {
+            "label": "BH looser",
+            "value": 18
+          }
+        ]
+      },
+      {
+        "title": "FWER vs FDR",
+        "bars": [
+          {
+            "label": "Bonf FWER",
+            "value": 9
+          },
+          {
+            "label": "BH FDR",
+            "value": 4
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bonferroni correction — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bonferroni_correction",
+      "attribution": "English Wikipedia revision 1363822032 (2026-07-12T17:38:50Z). Wikidata Q385989. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-multiple-comparisons",
+    "wiki-fwer",
+    "wiki-sidak",
+    "stats-multiple-testing",
+    "wiki-bh-procedure",
+    "stats-fdr"
+  ],
+  "example": {
+    "title": "m=10,000, α=0.05, Bonferroni p<5e-6, zero hits, BH q<0.1 finds 40",
+    "setup": "Team calls BH 'cheating'.",
+    "steps": [
+      {
+        "title": "Different contracts",
+        "body": "FWER vs FDR."
+      },
+      {
+        "title": "Bonferroni did its FWER job",
+        "body": "Low power."
+      },
+      {
+        "title": "If the scientific loss is false discovery fraction, BH was the right purchase",
+        "body": "stats-fdr."
+      }
+    ],
+    "takeaway": "Bonferroni buys FWER with a union bound. It is not the only honest shop."
+  },
+  "check": [
+    {
+      "id": "bon-union",
+      "kind": "conceptual",
+      "prompt": "Bonferroni uses:",
+      "choices": [
+        "Storey's π0",
+        "A union bound, p_i ≤ α/m to control FWER",
+        "A posterior odds",
+        "A kinship matrix"
+      ],
+      "answer": "A union bound, p_i ≤ α/m to control FWER",
+      "why": "Recipe.",
+      "whyWrong": {
+        "Storey's π0": "q-values.",
+        "A posterior odds": "No.",
+        "A kinship matrix": "GWAS structure."
+      }
+    },
+    {
+      "id": "bon-m",
+      "kind": "calculation",
+      "prompt": "m=20 tests, α=0.05. Bonferroni threshold is:",
+      "choices": [
+        "0.05",
+        "0.0025",
+        "1",
+        "5e-8"
+      ],
+      "answer": "0.0025",
+      "why": "0.05/20.",
+      "whyWrong": {
+        "0.05": "Uncorrected.",
+        "1": "No.",
+        "5e-8": "GWAS convention."
+      }
+    },
+    {
+      "id": "bon-figure",
+      "kind": "figure",
+      "prompt": "Panel two's 'BH looser' bar is teaching:",
+      "choices": [
+        "That BH fails FWER always and is therefore invalid science",
+        "That when many alternatives are true, BH's FDR contract licences a lower p-cut than Bonferroni's FWER bound",
+        "That Bonferroni is FDR",
+        "That m=1"
+      ],
+      "answer": "That when many alternatives are true, BH's FDR contract licences a lower p-cut than Bonferroni's FWER bound",
+      "why": "Data-dependent FDR vs union bound.",
+      "whyWrong": {
+        "That BH fails FWER always and is therefore invalid science": "Different contract, not 'invalid'.",
+        "That Bonferroni is FDR": "No.",
+        "That m=1": "No."
+      },
+      "figureHint": "Middle panel."
+    }
+  ]
+}

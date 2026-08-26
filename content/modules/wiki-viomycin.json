@@ -1,0 +1,170 @@
+{
+  "id": "wiki-viomycin",
+  "title": "Viomycin as a Wikidata therapy-edge leftover",
+  "dek": "P2176 on Q12204 still lists this historic peptide. It is not Group A. Capreomycin is the better-known cousin already plated.",
+  "domain": "tb",
+  "aliases": [
+    "viomycin",
+    "tuberactinomycin",
+    "Q12204 P2176 viomycin"
+  ],
+  "tags": [
+    "glossary",
+    "historic",
+    "peptide",
+    "Wikidata"
+  ],
+  "story": [
+    "Viomycin appears on Wikidata as a drug-or-therapy edge for tuberculosis and has an English Wikipedia page as a tuberactinomycin peptide antibiotic. That is graph fuel: the encyclopedia remembers drugs programmes have largely left.",
+    "Capreomycin is the cousin Simplfy already treats as a named second-line injectable with ototoxicity/renal baggage. Do not resurrect viomycin because SPARQL returned it.",
+    "The pedagogical win is to treat P2176 as a lagging historic list — same lesson as missing bedaquiline on that edge."
+  ],
+  "deepTitle": "Why keep a 'do not use this as a backbone' card",
+  "deep": [
+    "Peptide anti-TB drugs share ribosomal themes with capreomycin/amikacin stories; they are not interchangeable without DST.",
+    "WHO Group C injectables are a clinic ranking, not a SPARQL ranking.",
+    "If a genome pipeline annotates a 'viomycin resistance gene' from an old database, translate to the drugs you actually report.",
+    "No doses here."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "P2176 leftovers versus Group A. Size is a warning, not a recommendation.",
+    "terms": [
+      {
+        "label": "viomycin P2176",
+        "weight": 8
+      },
+      {
+        "label": "capreomycin cousin",
+        "weight": 9
+      },
+      {
+        "label": "missing BDQ on P2176",
+        "weight": 10
+      },
+      {
+        "label": "not Group A",
+        "weight": 10
+      },
+      {
+        "label": "historic peptide",
+        "weight": 7
+      },
+      {
+        "label": "WHO ranks drugs",
+        "weight": 9
+      },
+      {
+        "label": "SPARQL is a graph",
+        "weight": 8
+      },
+      {
+        "label": "no dose here",
+        "weight": 8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Viomycin — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Viomycin",
+      "attribution": "English Wikipedia revision 1332228355 (2026-01-10T17:30:13Z). Wikidata Q12751472. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-capreomycin",
+    "tb-amikacin",
+    "tb-who-groups",
+    "tb-second-line",
+    "wiki-tuberculosis",
+    "wiki-mdr-xdr"
+  ],
+  "example": {
+    "title": "SPARQL-driven formulary",
+    "setup": "A bot proposes a backbone from Q12204 P2176: INH, RIF, PZA, EMB, PAS, ETH, cycloserine, capreomycin, viomycin.",
+    "steps": [
+      {
+        "title": "That is a 20th-century attic",
+        "body": "Missing BDQ/Pa/LZD; extra peptides."
+      },
+      {
+        "title": "Open WHO groups",
+        "body": "tb-who-groups."
+      },
+      {
+        "title": "Keep viomycin as a glossary warning",
+        "body": "This plate."
+      }
+    ],
+    "takeaway": "P2176 is a dusty edge. WHO is the formulary."
+  },
+  "check": [
+    {
+      "id": "vio-p2176",
+      "kind": "conceptual",
+      "prompt": "Viomycin on Wikidata P2176 for TB means:",
+      "choices": [
+        "It is 2024 Group A",
+        "A historic therapy edge that must not override WHO grouping",
+        "It replaced bedaquiline",
+        "It is an IGRA"
+      ],
+      "answer": "A historic therapy edge that must not override WHO grouping",
+      "why": "Graph lag.",
+      "whyWrong": {
+        "It is 2024 Group A": "No.",
+        "It replaced bedaquiline": "Opposite.",
+        "It is an IGRA": "No."
+      }
+    },
+    {
+      "id": "vio-cap",
+      "kind": "calculation",
+      "prompt": "If you need a peptide/injectable cousin, Simplfy already named:",
+      "choices": [
+        "Viomycin as first choice from Wikipedia",
+        "Capreomycin (and amikacin) plates, with WHO ranking, not this leftover",
+        "BCG",
+        "QFT"
+      ],
+      "answer": "Capreomycin (and amikacin) plates, with WHO ranking, not this leftover",
+      "why": "Named cousins.",
+      "whyWrong": {
+        "Viomycin as first choice from Wikipedia": "No.",
+        "BCG": "Vaccine.",
+        "QFT": "IGRA."
+      }
+    },
+    {
+      "id": "vio-figure",
+      "kind": "figure",
+      "prompt": "The highest-weight constellation warnings are:",
+      "choices": [
+        "historic peptide only",
+        "missing BDQ on P2176 and not Group A",
+        "SPARQL as a protocol",
+        "capreomycin as IGRA"
+      ],
+      "answer": "missing BDQ on P2176 and not Group A",
+      "why": "Weight 10 terms.",
+      "whyWrong": {
+        "historic peptide only": "Weight 7.",
+        "SPARQL as a protocol": "Opposite lesson.",
+        "capreomycin as IGRA": "No."
+      },
+      "figureHint": "Weight 10 labels."
+    }
+  ]
+}

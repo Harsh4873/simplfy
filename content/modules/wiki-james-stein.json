@@ -1,0 +1,145 @@
+{
+  "id": "wiki-james-stein",
+  "title": "James–Stein as a named shrinkage surprise",
+  "dek": "Wikipedia Stein paradox: for p≥3, shrinking MLEs toward a point can beat them in total MSE. Partial pooling is the hierarchical sequel.",
+  "domain": "stats",
+  "aliases": [
+    "James-Stein estimator",
+    "Stein paradox",
+    "shrinkage surprise"
+  ],
+  "tags": [
+    "glossary",
+    "James-Stein",
+    "shrinkage",
+    "MSE"
+  ],
+  "story": [
+    "James–Stein on Wikipedia is the surprise that for three or more Gaussian means, the vector of sample means is inadmissible under squared error: shrinking toward a point (or the grand mean) can cut total MSE. It looks like cheating. It is using extra structure.",
+    "stats-partial-pooling and stats-eight-schools are how a TB lab should actually shrink (hierarchies, not a 1961 formula pasted on MICs).",
+    "Cramér–Rao is not violated because James–Stein is biased (wiki-cramer-rao)."
+  ],
+  "deepTitle": "Dimension is the fuel",
+  "deep": [
+    "p=1,2: the surprise does not fire in the same way.",
+    "You can increase MSE for one coordinate while cutting the sum — beware if that coordinate is 'the new drug'.",
+    "Empirical Bayes is the estimation-of-the-prior-view of the same shrinkage (next card).",
+    "Do not shrink a single pre-registered primary endpoint with Stein as perfume."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Unshrunk MLEs sit inside a larger decision problem where a shrinkage rule can dominate in total MSE when p≥3.",
+    "reduced": {
+      "label": "Coordinatewise MLE",
+      "params": [
+        "ȳ₁…ȳ_p"
+      ]
+    },
+    "full": {
+      "label": "James–Stein",
+      "params": [
+        "shrink toward a point",
+        "p≥3"
+      ]
+    },
+    "statistic": "total MSE can drop",
+    "reference": "bias spent on purpose"
+  },
+  "sources": [
+    {
+      "title": "James–Stein estimator — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/James%E2%80%93Stein_estimator",
+      "attribution": "English Wikipedia revision 1363709794 (2026-07-11T21:52:25Z). Wikidata Q6146297. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-empirical-bayes",
+    "stats-partial-pooling",
+    "stats-eight-schools",
+    "wiki-cramer-rao",
+    "stats-bias-variance",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "12 lineage-specific DST error rates, n_i=4 each",
+    "setup": "Someone reports 12 separate ȳ_i, one is 0/4.",
+    "steps": [
+      {
+        "title": "p=12≥3",
+        "body": "Stein territory."
+      },
+      {
+        "title": "Partial pool toward a drug-specific mean",
+        "body": "eight-schools geometry."
+      },
+      {
+        "title": "Do not advertise the 0/4 as a known-zero error rate",
+        "body": "Shrinkage."
+      }
+    ],
+    "takeaway": "James–Stein is the named surprise that vector MLEs can be dominated. Hierarchies are how you use it."
+  },
+  "check": [
+    {
+      "id": "js-p",
+      "kind": "conceptual",
+      "prompt": "James–Stein shrinkage beats the vector of means in total MSE when:",
+      "choices": [
+        "p=1 always",
+        "p≥3 in the Gaussian sequence-model celebrity, under squared error",
+        "p is a p-value",
+        "Always for a single primary endpoint"
+      ],
+      "answer": "p≥3 in the Gaussian sequence-model celebrity, under squared error",
+      "why": "Dimension fuel.",
+      "whyWrong": {
+        "p=1 always": "No.",
+        "p is a p-value": "No.",
+        "Always for a single primary endpoint": "Don't."
+      }
+    },
+    {
+      "id": "js-crlb",
+      "kind": "calculation",
+      "prompt": "JS MSE below the unbiased CRLB floor:",
+      "choices": [
+        "Proves math is wrong",
+        "Is allowed because JS is biased; CRLB assumed unbiasedness",
+        "Proves I=∞",
+        "Proves H0"
+      ],
+      "answer": "Is allowed because JS is biased; CRLB assumed unbiasedness",
+      "why": "Same lesson as wiki-cramer-rao.",
+      "whyWrong": {
+        "Proves math is wrong": "No.",
+        "Proves I=∞": "No.",
+        "Proves H0": "No."
+      }
+    },
+    {
+      "id": "js-figure",
+      "kind": "figure",
+      "prompt": "The outer box includes 'p≥3' because:",
+      "choices": [
+        "Shrinkage needs one observation",
+        "The celebrity dominance result needs dimension at least 3",
+        "p≥3 is BH",
+        "p≥3 is a tree"
+      ],
+      "answer": "The celebrity dominance result needs dimension at least 3",
+      "why": "Full box params.",
+      "whyWrong": {
+        "Shrinkage needs one observation": "No.",
+        "p≥3 is BH": "No.",
+        "p≥3 is a tree": "No."
+      },
+      "figureHint": "Full box."
+    }
+  ]
+}

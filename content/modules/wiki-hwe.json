@@ -1,0 +1,164 @@
+{
+  "id": "wiki-hwe",
+  "title": "Hardy–Weinberg as a named diploid null",
+  "dek": "p², 2pq, q². Wikipedia diploid equilibrium. Bacterial GWAS does not get this null for free; human GWAS uses it as QC.",
+  "domain": "stats",
+  "aliases": [
+    "Hardy-Weinberg",
+    "HWE",
+    "Hardy–Weinberg principle"
+  ],
+  "tags": [
+    "glossary",
+    "HWE",
+    "QC",
+    "diploid"
+  ],
+  "story": [
+    "Hardy–Weinberg on Wikipedia is the diploid random-mating null: genotype frequencies p², 2pq, q². Human GWAS uses HWE p-values as QC (bad assays, relatedness, structure).",
+    "Mtb is haploid and clonal. Pasting HWE filters into a bacterial pipeline is a category error. This card exists so the encyclopedia diploid null does not wander into TB WGS QC uninvited.",
+    "Structure and inbreeding both break HWE in humans; that is why HWE QC can throw away real ancestry signal if you are not careful."
+  ],
+  "deepTitle": "Null as QC, not as biology of Mtb",
+  "deep": [
+    "Exact tests exist for small counts; χ² is the large-count costume.",
+    "Filter HWE in controls, not automatically in cases, if the trait affects viability — a human-GWAS footnote.",
+    "For Mtb, QC is coverage, mapping, mixing, contamination — different plates.",
+    "Do not call a haploid SNP frequency a Hardy–Weinberg equilibrium."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Diploid null on top, human GWAS QC use in the middle, bacterial 'do not paste' at the bottom.",
+    "layers": [
+      {
+        "title": "Diploid null",
+        "nodes": [
+          "p² 2pq q²"
+        ]
+      },
+      {
+        "title": "Human GWAS",
+        "nodes": [
+          "assay QC"
+        ]
+      },
+      {
+        "title": "Breaks",
+        "nodes": [
+          "structure",
+          "nonrandom mating"
+        ]
+      },
+      {
+        "title": "Mtb",
+        "nodes": [
+          "haploid",
+          "do not paste"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Hardy–Weinberg principle — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle",
+      "attribution": "English Wikipedia revision 1367629467 (2026-08-04T06:15:47Z). Wikidata Q49974. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-gwas-glossary",
+    "stats-gwas",
+    "stats-population-structure",
+    "wiki-ld"
+  ],
+  "example": {
+    "title": "TB pipeline config: --hwe 1e-6",
+    "setup": "Copied from a human GATK cookbook.",
+    "steps": [
+      {
+        "title": "Name the diploid assumption",
+        "body": "Mtb is not that."
+      },
+      {
+        "title": "Drop the flag",
+        "body": "This plate."
+      },
+      {
+        "title": "Use bacterial QC",
+        "body": "Coverage, hetero-SNP piles, contamination."
+      }
+    ],
+    "takeaway": "Hardy–Weinberg is a diploid null. It is not Mtb QC."
+  },
+  "check": [
+    {
+      "id": "hwe-dip",
+      "kind": "conceptual",
+      "prompt": "HWE is:",
+      "choices": [
+        "A haploid Mtb law",
+        "A diploid random-mating genotype-frequency null",
+        "An LRT for trees",
+        "A q-value"
+      ],
+      "answer": "A diploid random-mating genotype-frequency null",
+      "why": "Definition.",
+      "whyWrong": {
+        "A haploid Mtb law": "The error.",
+        "An LRT for trees": "No.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "hwe-mtb",
+      "kind": "calculation",
+      "prompt": "Applying a HWE SNP filter to Mtb WGS is:",
+      "choices": [
+        "Best-practice GWAS",
+        "A category error because the null assumes diploids",
+        "Required for Xpert",
+        "Equivalent to Bonferroni"
+      ],
+      "answer": "A category error because the null assumes diploids",
+      "why": "Do not paste.",
+      "whyWrong": {
+        "Best-practice GWAS": "Human arrays, not Mtb.",
+        "Required for Xpert": "No.",
+        "Equivalent to Bonferroni": "No."
+      }
+    },
+    {
+      "id": "hwe-figure",
+      "kind": "figure",
+      "prompt": "The bottom layer 'do not paste' refers to:",
+      "choices": [
+        "Human assay QC",
+        "Copying HWE filters into haploid clonal pipelines",
+        "p² as a drug",
+        "2pq as FDR"
+      ],
+      "answer": "Copying HWE filters into haploid clonal pipelines",
+      "why": "Mtb row.",
+      "whyWrong": {
+        "Human assay QC": "Middle layer.",
+        "p² as a drug": "No.",
+        "2pq as FDR": "No."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "hwe",
+      "label": "HWE frequencies",
+      "expression": "P(AA)=p², P(Aa)=2pq, P(aa)=q²",
+      "note": "Diploid random mating; not an Mtb sampling model."
+    }
+  ]
+}

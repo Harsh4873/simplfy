@@ -1,0 +1,166 @@
+{
+  "id": "wiki-genexpert",
+  "title": "GeneXpert MTB/RIF as a named cartridge platform",
+  "dek": "Wikipedia's GeneXpert MTB/RIF page is the instrument/cartridge node. Ultra trace calls, silent RRDR SNPs, and WRD policy stay on tb-xpert-ultra.",
+  "domain": "tb",
+  "aliases": [
+    "GeneXpert MTB/RIF",
+    "Xpert MTB/RIF Wikipedia",
+    "Cepheid TB cartridge",
+    "Q5531060"
+  ],
+  "tags": [
+    "glossary",
+    "NAAT",
+    "Xpert",
+    "platform"
+  ],
+  "story": [
+    "GeneXpert MTB/RIF on Wikipedia (Q5531060) is a named closed PCR/melt cartridge on a Cepheid instrument that detects MTBC DNA and interrogates rpoB for rifampin resistance. The encyclopedia node is the platform story (development, WHO endorsement as a WRD class).",
+    "Simplfy's tb-xpert-ultra plate is the assay you actually interpret: IS6110/IS1081, trace, I491F outside the window, heteroresistance. This card must not steal those failure modes; it should point at them.",
+    "Searching 'GeneXpert' alone redirected to the company in our ingest. Always cite the assay page, not Cepheid corporate history, when teaching TB."
+  ],
+  "deepTitle": "Platform versus interpretation",
+  "deep": [
+    "TrueNat and TB-LAMP are cousin WRDs on the clinic plate, not this product node.",
+    "Xpert XDR is a different cartridge (tb-xpert-xdr).",
+    "Cycle-threshold folklore as a 'load' is not a CFU and not DST.",
+    "WHO policy of mWRD-first is a programme object, not a Wikipedia timeline."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "What the named classic MTB/RIF cartridge looked at: an rpoB RRDR window plus MTBC detection. Ultra's extra IS targets live on the clinic plate.",
+    "gene": "rpoB RRDR window (schematic)",
+    "start": 426,
+    "end": 452,
+    "unit": "codon numbering (E. coli convention, schematic)",
+    "regions": [
+      {
+        "start": 426,
+        "end": 452,
+        "label": "RRDR"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 450,
+        "label": "S450L",
+        "note": "canonical RIF-R"
+      },
+      {
+        "pos": 445,
+        "label": "H445",
+        "note": "disputed/variable"
+      },
+      {
+        "pos": 431,
+        "label": "window edge",
+        "note": "I491F is outside"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "GeneXpert MTB/RIF — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/GeneXpert_MTB/RIF",
+      "attribution": "English Wikipedia revision 1365299678 (2026-07-21T14:45:13Z). Wikidata Q5531060. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-xpert-ultra",
+    "tb-xpert-xdr",
+    "tb-rifampin",
+    "tb-is6110",
+    "tb-diagnosis",
+    "tb-truenat",
+    "wiki-diagnosis-glossary"
+  ],
+  "example": {
+    "title": "Company page versus assay page",
+    "setup": "Ingest of 'GeneXpert' hit Cepheid (company). Student files it as the TB lesson.",
+    "steps": [
+      {
+        "title": "Wrong node",
+        "body": "Corporate history is not rpoB."
+      },
+      {
+        "title": "Use GeneXpert MTB/RIF / Ultra plates",
+        "body": "Assay Q5531060 plus tb-xpert-ultra."
+      },
+      {
+        "title": "Still not WGS",
+        "body": "Cartridge ≠ catalogue."
+      }
+    ],
+    "takeaway": "Name the assay page. Interpret on the Ultra plate."
+  },
+  "check": [
+    {
+      "id": "gx-node",
+      "kind": "conceptual",
+      "prompt": "Wikipedia's GeneXpert MTB/RIF article is used here as:",
+      "choices": [
+        "A complete Ultra interpretation manual",
+        "A named platform/cartridge node that detects MTBC DNA and an rpoB window",
+        "An IGRA",
+        "A BCG strain"
+      ],
+      "answer": "A named platform/cartridge node that detects MTBC DNA and an rpoB window",
+      "why": "Product/assay node.",
+      "whyWrong": {
+        "A complete Ultra interpretation manual": "tb-xpert-ultra.",
+        "An IGRA": "No.",
+        "A BCG strain": "No."
+      }
+    },
+    {
+      "id": "gx-i491",
+      "kind": "calculation",
+      "prompt": "rpoB I491F relative to a classic MTB/RIF window:",
+      "choices": [
+        "Always lights RIF-R on the cartridge",
+        "Sits outside the usual RRDR window, so the cartridge can look RIF-S",
+        "Is an IGRA antigen",
+        "Deletes RD1"
+      ],
+      "answer": "Sits outside the usual RRDR window, so the cartridge can look RIF-S",
+      "why": "Hand-off to clinic failure modes; figure marks the edge.",
+      "whyWrong": {
+        "Always lights RIF-R on the cartridge": "Opposite problem.",
+        "Is an IGRA antigen": "No.",
+        "Deletes RD1": "No."
+      }
+    },
+    {
+      "id": "gx-figure",
+      "kind": "figure",
+      "prompt": "On the gene track, why is I491F mentioned at the window edge?",
+      "choices": [
+        "Because it is S450L",
+        "To remind that some RIF-R alleles live outside the cartridge's RRDR view",
+        "Because it is IS6110",
+        "Because Wikipedia lists it as PZA"
+      ],
+      "answer": "To remind that some RIF-R alleles live outside the cartridge's RRDR view",
+      "why": "Mark note.",
+      "whyWrong": {
+        "Because it is S450L": "Different codon.",
+        "Because it is IS6110": "Ultra detection target.",
+        "Because Wikipedia lists it as PZA": "No."
+      },
+      "figureHint": "Window-edge mark."
+    }
+  ]
+}

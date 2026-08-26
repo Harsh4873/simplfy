@@ -1,0 +1,157 @@
+{
+  "id": "wiki-m-canettii",
+  "title": "M. canettii as the recombinant edge",
+  "dek": "Smooth colonies and a larger accessory genome. Wikipedia's outlier is a warning label for H37Rv-only pipelines.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium canettii",
+    "smooth TB",
+    "canettii"
+  ],
+  "tags": [
+    "glossary",
+    "recombination",
+    "MTBC",
+    "outlier"
+  ],
+  "story": [
+    "M. canettii sits on Wikipedia as a smooth-colony, putative ancestral-like mycobacterium related to MTBC. The teaching value is not romance about origins. It is that this organism recombines and carries accessory sequence that H37Rv-centric DST pipelines were not built to swallow.",
+    "Human disease is real but uncommon, classically Horn of Africa associations in case series. A canettii assembly is not 'failed TB WGS' because it looks weird on a snapshot tree.",
+    "Do not file it as NTM just because the colony is smooth. Do not file it as L4 because the NAAT said MTBC."
+  ],
+  "deepTitle": "Pipeline hygiene",
+  "deep": [
+    "PE/PPE masking and accessory genes will look like contamination to a strict H37Rv mapper. Inspect the tree before discarding.",
+    "Catalogue translation (WHO mutation catalogue) assumes MTBC clonal structure. Recombination breaks that assumption locally.",
+    "M. canettii is the exception that teaches the clonal rule for the rest of MTBC.",
+    "The clinic MTBC plate already says 'do not force-fit'. This card is the named Wikipedia taxon for that sentence."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Why canettii breaks a clonal MTBC mental model: extra accessory genome and recombination on top of a shared core.",
+    "layers": [
+      {
+        "id": "acc",
+        "label": "Accessory / recombinant tracts",
+        "detail": "not a single H37Rv story",
+        "tone": "lipid"
+      },
+      {
+        "id": "core",
+        "label": "Core MTBC-like chromosome",
+        "detail": "still related",
+        "tone": "wall"
+      },
+      {
+        "id": "pipe",
+        "label": "H37Rv-only DST pipeline",
+        "detail": "will mis-handle PE/PPE and extra sequence",
+        "tone": "core"
+      }
+    ],
+    "annotation": "Smooth colony is a lab clue, not a species-level NAAT."
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium canettii — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_canettii",
+      "attribution": "English Wikipedia revision 1264700658 (2024-12-23T02:42:49Z). Wikidata Q6946999. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium tuberculosis complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex",
+      "attribution": "English Wikipedia revision 1368846963 (2026-08-11T11:48:07Z). Wikidata Q5779917. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-h37rv-genome",
+    "tb-pe-ppe",
+    "tb-wgs-dst",
+    "wiki-mtbc-members",
+    "wiki-mtb-organism"
+  ],
+  "example": {
+    "title": "Smooth and 'contaminated'",
+    "setup": "A Horn of Africa isolate maps poorly to H37Rv, tree-sits beside canettii references, Kraken says MTBC.",
+    "steps": [
+      {
+        "title": "Do not auto-fail QC",
+        "body": "Accessory sequence is expected."
+      },
+      {
+        "title": "Do not report as MAC",
+        "body": "Smooth ≠ avium."
+      },
+      {
+        "title": "Say the name",
+        "body": "M. canettii on the report protects the catalogue from being over-read."
+      }
+    ],
+    "takeaway": "The recombinant edge is a named taxon, not a dirty FASTQ."
+  },
+  "check": [
+    {
+      "id": "can-ntm",
+      "kind": "conceptual",
+      "prompt": "Smooth colonies plus an MTBC-like core genome should first raise:",
+      "choices": [
+        "M. abscessus until proven otherwise",
+        "M. canettii as a named edge taxon, not automatic NTM",
+        "Contamination with E. coli",
+        "Lineage 2 Beijing"
+      ],
+      "answer": "M. canettii as a named edge taxon, not automatic NTM",
+      "why": "Smooth is the Wikipedia clue; the tree is the proof.",
+      "whyWrong": {
+        "M. abscessus until proven otherwise": "Different complex.",
+        "Contamination with E. coli": "Do not start there.",
+        "Lineage 2 Beijing": "Clonal Mtb, not the smooth outlier."
+      }
+    },
+    {
+      "id": "can-pipe",
+      "kind": "calculation",
+      "prompt": "An H37Rv-only mutation caller drops 12% of reads as unmapped in a canettii-like genome. Best next move:",
+      "choices": [
+        "Call the run failed and discard",
+        "Inspect phylogeny/species and avoid over-translating an H37Rv catalogue",
+        "Report all unmapped reads as novel resistance genes",
+        "Treat as BCG because mapping failed"
+      ],
+      "answer": "Inspect phylogeny/species and avoid over-translating an H37Rv catalogue",
+      "why": "The pipeline, not the organism, is misspecified.",
+      "whyWrong": {
+        "Call the run failed and discard": "Expected accessory sequence.",
+        "Report all unmapped reads as novel resistance genes": "Over-call.",
+        "Treat as BCG because mapping failed": "BCG is a bovis derivative with RD deletions, not this pattern."
+      }
+    },
+    {
+      "id": "can-figure",
+      "kind": "figure",
+      "prompt": "In the layered plate, which band is the warning about software rather than biology?",
+      "choices": [
+        "Accessory / recombinant tracts",
+        "Core MTBC-like chromosome",
+        "H37Rv-only DST pipeline",
+        "Smooth colony annotation alone"
+      ],
+      "answer": "H37Rv-only DST pipeline",
+      "why": "Bottom layer is the pipeline.",
+      "whyWrong": {
+        "Accessory / recombinant tracts": "Biology.",
+        "Core MTBC-like chromosome": "Biology.",
+        "Smooth colony annotation alone": "A clue in the caption, not a software layer."
+      },
+      "figureHint": "Bottom layer label."
+    }
+  ]
+}

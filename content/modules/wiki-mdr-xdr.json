@@ -1,0 +1,175 @@
+{
+  "id": "wiki-mdr-xdr",
+  "title": "MDR/XDR as Wikipedia resistance words",
+  "dek": "Encyclopedia definitions lag WHO's 2021 language. Use tb-dr-definitions for the operative grammar; this card is the public search string.",
+  "domain": "tb",
+  "aliases": [
+    "MDR-TB Wikipedia",
+    "XDR-TB Wikipedia",
+    "multidrug-resistant tuberculosis",
+    "extensively drug-resistant"
+  ],
+  "tags": [
+    "glossary",
+    "MDR",
+    "XDR",
+    "definitions"
+  ],
+  "story": [
+    "Wikipedia still teaches MDR-TB as resistance to isoniazid plus rifampicin, and XDR as an extra pile of second-line names. That is the public search string. WHO's 2021 definitions shifted XDR/pre-XDR around Group A drugs (FQ, BDQ, LZD).",
+    "Simplfy's tb-dr-definitions plate is the operative grammar. This card exists so the encyclopedia words related[] into that plate instead of freezing 2010s slogans.",
+    "Neither Wikipedia nor this glossary doses BPaLM. Wikidata's P2176 list is also not Group A."
+  ],
+  "deepTitle": "Lag as the lesson",
+  "deep": [
+    "Pre-XDR as FQ resistance among MDR is a WHO object; Wikipedia may or may not match this year.",
+    "RR-TB (rifampin resistance) is the operational NAAT door, sometimes without confirmed INH yet.",
+    "Surveillance reports must quote WHO, not the infobox.",
+    "tb-who-groups ranks drugs; this card does not."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Public words on top, WHO 2021 grammar in the middle, Simplfy definition plate at the bottom. The lesson is lag.",
+    "layers": [
+      {
+        "title": "Wikipedia words",
+        "nodes": [
+          "MDR",
+          "XDR"
+        ]
+      },
+      {
+        "title": "WHO 2021",
+        "nodes": [
+          "RR",
+          "pre-XDR",
+          "XDR"
+        ]
+      },
+      {
+        "title": "Group A context",
+        "nodes": [
+          "FQ",
+          "BDQ",
+          "LZD"
+        ]
+      },
+      {
+        "title": "Hand-off",
+        "nodes": [
+          "tb-dr-definitions"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Multidrug-resistant tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multidrug-resistant_tuberculosis",
+      "attribution": "English Wikipedia revision 1366520598 (2026-07-28T14:02:24Z). Wikidata Q866602. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Extensively drug-resistant tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Extensively_drug-resistant_tuberculosis",
+      "attribution": "English Wikipedia revision 1334427048 (2026-01-23T13:40:19Z). Wikidata Q1040214. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-dr-definitions",
+    "tb-who-groups",
+    "tb-resistance",
+    "tb-bpalm",
+    "tb-xpert-ultra",
+    "wiki-tuberculosis",
+    "wiki-rifamycin-class"
+  ],
+  "example": {
+    "title": "Infobox XDR versus 2021 XDR",
+    "setup": "A slide copied from Wikipedia lists XDR as INH+RIF plus any FQ plus a second-line injectable.",
+    "steps": [
+      {
+        "title": "Name the lag",
+        "body": "Injectables left Group A; BDQ/LZD/FQ define modern pre-XDR/XDR."
+      },
+      {
+        "title": "Open tb-dr-definitions",
+        "body": "Operative grammar."
+      },
+      {
+        "title": "Do not build a 2011 regimen",
+        "body": "BPaLM/9-month plates exist."
+      }
+    ],
+    "takeaway": "MDR/XDR are search words. WHO owns the current sentence."
+  },
+  "check": [
+    {
+      "id": "mdr-lag",
+      "kind": "conceptual",
+      "prompt": "Wikipedia MDR/XDR pages are licensed here as:",
+      "choices": [
+        "The 2025 WHO definitional authority",
+        "Public search strings that must be checked against tb-dr-definitions because encyclopedia text lags",
+        "Group A dosing cards",
+        "Proof that injectables are back"
+      ],
+      "answer": "Public search strings that must be checked against tb-dr-definitions because encyclopedia text lags",
+      "why": "Lag is the lesson.",
+      "whyWrong": {
+        "The 2025 WHO definitional authority": "WHO modules.",
+        "Group A dosing cards": "No.",
+        "Proof that injectables are back": "No."
+      }
+    },
+    {
+      "id": "mdr-rr",
+      "kind": "calculation",
+      "prompt": "Ultra RIF-R, INH unknown. Operationally this is closest to:",
+      "choices": [
+        "Wikipedia XDR",
+        "RR-TB pending the rest of the DST/catalogue, not a full XDR label from the infobox",
+        "LTBI",
+        "MAC"
+      ],
+      "answer": "RR-TB pending the rest of the DST/catalogue, not a full XDR label from the infobox",
+      "why": "NAAT door.",
+      "whyWrong": {
+        "Wikipedia XDR": "Too much.",
+        "LTBI": "Disease.",
+        "MAC": "No."
+      }
+    },
+    {
+      "id": "mdr-figure",
+      "kind": "figure",
+      "prompt": "Group A names sit on the hierarchy to:",
+      "choices": [
+        "Dose BDQ from Wikipedia",
+        "Show the modern context Wikipedia may lag behind",
+        "Replace tb-dr-definitions",
+        "Name IGRAs"
+      ],
+      "answer": "Show the modern context Wikipedia may lag behind",
+      "why": "Third layer.",
+      "whyWrong": {
+        "Dose BDQ from Wikipedia": "Forbidden.",
+        "Replace tb-dr-definitions": "Bottom is the hand-off.",
+        "Name IGRAs": "No."
+      },
+      "figureHint": "Third layer."
+    }
+  ]
+}

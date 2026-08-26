@@ -1,0 +1,155 @@
+{
+  "id": "wiki-koch-postulates",
+  "title": "Koch's postulates as a slogan that LTBI breaks",
+  "dek": "Isolate, disease, re-isolate. Wikipedia method history. NAAT-positive paucibacillary disease and LTBI are why the slogan is not a lab SOP.",
+  "domain": "tb",
+  "aliases": [
+    "Koch postulates",
+    "Henle-Koch",
+    "causal criteria TB"
+  ],
+  "tags": [
+    "glossary",
+    "history",
+    "causation",
+    "postulates"
+  ],
+  "story": [
+    "Koch's postulates on Wikipedia are a 19th-century causal checklist: found in disease, isolable, sufficient to cause disease, re-isolable. They were a hygiene slogan against miasma, not a PCR protocol.",
+    "Mtb breaks a naive reading constantly: LTBI has evidence of infection without current disease; TBM may be NAAT-positive and culture-stingy; humans are not guinea pigs you ethically re-challenge.",
+    "Modern causal talk in this studio lives closer to stats potential-outcomes and to WHO case definitions. Keep the postulates as history that still ambushes exam questions."
+  ],
+  "deepTitle": "Where the slogan snaps",
+  "deep": [
+    "Asymptomatic infection is the first snap.",
+    "Unculturable or extremely fastidious organisms (leprae) snap isolation.",
+    "Molecular detections without isolates snap 'pure culture'.",
+    "Do not deny TBM because postulates were not fulfilled in the CSF."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "The full slogan demands isolate+challenge; the reduced clinical model accepts NAAT/syndrome. The gap is not a failed diagnosis.",
+    "reduced": {
+      "label": "Clinical TB case",
+      "params": [
+        "syndrome",
+        "mWRD/culture",
+        "imaging"
+      ]
+    },
+    "full": {
+      "label": "Naive postulates",
+      "params": [
+        "always isolate",
+        "animal challenge",
+        "re-isolate",
+        "never latent"
+      ]
+    },
+    "statistic": "Slogan − reality ≠ 0",
+    "reference": "Case definitions > 1880s checklist"
+  },
+  "sources": [
+    {
+      "title": "Koch's postulates — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Koch%27s_postulates",
+      "attribution": "English Wikipedia revision 1361557545 (2026-06-28T18:15:39Z). Wikidata Q19047. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-koch",
+    "wiki-latent-tb",
+    "tb-diagnosis",
+    "tb-meningitis",
+    "wiki-m-leprae",
+    "stats-potential-outcomes"
+  ],
+  "example": {
+    "title": "Culture-negative TBM",
+    "setup": "Team refuses to treat because postulates unmet.",
+    "steps": [
+      {
+        "title": "CSF can be paucibacillary",
+        "body": "NAAT/syndrome/imaging are the case definition."
+      },
+      {
+        "title": "Postulates are history",
+        "body": "This plate."
+      },
+      {
+        "title": "Delay is harm",
+        "body": "tb-meningitis."
+      }
+    ],
+    "takeaway": "Postulates are a slogan. Case definitions treat people."
+  },
+  "check": [
+    {
+      "id": "kp-slogan",
+      "kind": "conceptual",
+      "prompt": "Koch's postulates here are:",
+      "choices": [
+        "The WHO 2024 case definition",
+        "A historic causal slogan that LTBI and paucibacillary disease routinely violate",
+        "An IGRA kit insert",
+        "A DST protocol"
+      ],
+      "answer": "A historic causal slogan that LTBI and paucibacillary disease routinely violate",
+      "why": "History.",
+      "whyWrong": {
+        "The WHO 2024 case definition": "Different object.",
+        "An IGRA kit insert": "No.",
+        "A DST protocol": "No."
+      }
+    },
+    {
+      "id": "kp-ltbi",
+      "kind": "calculation",
+      "prompt": "IGRA-positive, no disease, no isolate. Naive postulates:",
+      "choices": [
+        "Are fully satisfied",
+        "Fail because there is no current disease/isolate, which is why LTBI is an operational label rather than a postulate fulfilment",
+        "Prove XDR",
+        "Prove MAC"
+      ],
+      "answer": "Fail because there is no current disease/isolate, which is why LTBI is an operational label rather than a postulate fulfilment",
+      "why": "First snap.",
+      "whyWrong": {
+        "Are fully satisfied": "No disease, no isolate.",
+        "Prove XDR": "No.",
+        "Prove MAC": "No."
+      }
+    },
+    {
+      "id": "kp-figure",
+      "kind": "figure",
+      "prompt": "The inner reduced box is:",
+      "choices": [
+        "Animal challenge forever",
+        "A clinical case-definition parameter set",
+        "Never latent as a requirement",
+        "Re-isolate or death"
+      ],
+      "answer": "A clinical case-definition parameter set",
+      "why": "Reduced model.",
+      "whyWrong": {
+        "Animal challenge forever": "That's the full slogan.",
+        "Never latent as a requirement": "Full model.",
+        "Re-isolate or death": "Full model."
+      },
+      "figureHint": "Reduced M0 box."
+    }
+  ]
+}

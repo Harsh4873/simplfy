@@ -1,0 +1,164 @@
+{
+  "id": "wiki-fq-class",
+  "title": "Fluoroquinolone as a named gyrase-class",
+  "dek": "Wikipedia class node. Moxifloxacin/levofloxacin plates and gyrA QRDR stay where doses and alleles live.",
+  "domain": "tb",
+  "aliases": [
+    "fluoroquinolone",
+    "quinolone TB",
+    "gyrase inhibitors class"
+  ],
+  "tags": [
+    "glossary",
+    "class",
+    "fluoroquinolone",
+    "gyrase"
+  ],
+  "story": [
+    "Fluoroquinolone on Wikipedia is a broad antibacterial class targeting DNA gyrase/topoisomerase IV. TB programmes care about later-generation members (moxifloxacin, levofloxacin) already plated as named drugs.",
+    "Ciprofloxacin is a Wikipedia celebrity that WHO does not want as a TB backbone. Class pages will not always say that loudly.",
+    "gyrA/gyrB QRDR mutations are the shared resistance grammar (tb-gyr-qrdr). This card is the class name in the graph."
+  ],
+  "deepTitle": "Class celebrity versus Group A",
+  "deep": [
+    "Moxifloxacin versus levofloxacin choice is a WHO/pharmacology plate, not an encyclopedia poll.",
+    "QTc stories with BDQ/CFZ live on monitoring plates.",
+    "Do not treat veterinary FQ exposure folklore as a DST.",
+    "Xpert XDR's FQ targets are a cartridge plate."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Class, the TB members Simplfy already named, the QRDR, and the clinic gene plate.",
+    "layers": [
+      {
+        "title": "Class",
+        "nodes": [
+          "fluoroquinolone"
+        ]
+      },
+      {
+        "title": "TB members",
+        "nodes": [
+          "moxifloxacin",
+          "levofloxacin"
+        ]
+      },
+      {
+        "title": "Not backbone",
+        "nodes": [
+          "ciprofloxacin"
+        ]
+      },
+      {
+        "title": "Resistance",
+        "nodes": [
+          "gyrA QRDR",
+          "tb-gyr-qrdr"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Quinolone antibiotic — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Quinolone_antibiotic",
+      "attribution": "English Wikipedia revision 1356311737 (2026-05-27T00:51:37Z). Wikidata Q13669486. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-moxifloxacin",
+    "tb-levofloxacin",
+    "tb-gyr-qrdr",
+    "tb-xpert-xdr",
+    "tb-who-groups",
+    "wiki-rifamycin-class"
+  ],
+  "example": {
+    "title": "Cipro for RR-TB from a class page",
+    "setup": "Student notes 'fluoroquinolones treat TB' and picks ciprofloxacin.",
+    "steps": [
+      {
+        "title": "Class is not Group A",
+        "body": "WHO names Lfx/Mfx."
+      },
+      {
+        "title": "QRDR still applies if you pick a wrong FQ",
+        "body": "Resistance can be class-wide."
+      },
+      {
+        "title": "Open named-drug plates",
+        "body": "Doses never from Wikipedia."
+      }
+    ],
+    "takeaway": "Fluoroquinolone is a class. TB uses specific members."
+  },
+  "check": [
+    {
+      "id": "fq-class",
+      "kind": "conceptual",
+      "prompt": "In TB teaching, 'fluoroquinolone' should mean:",
+      "choices": [
+        "Any Wikipedia quinolone including cipro as equivalent Group A",
+        "A gyrase-targeting class whose TB-relevant members and alleles live on named plates",
+        "An IGRA",
+        "A stain"
+      ],
+      "answer": "A gyrase-targeting class whose TB-relevant members and alleles live on named plates",
+      "why": "Class node.",
+      "whyWrong": {
+        "Any Wikipedia quinolone including cipro as equivalent Group A": "Cipro is not the backbone.",
+        "An IGRA": "No.",
+        "A stain": "No."
+      }
+    },
+    {
+      "id": "fq-gyr",
+      "kind": "calculation",
+      "prompt": "A gyrA QRDR mutation selected on moxifloxacin often:",
+      "choices": [
+        "Spares levofloxacin by magic",
+        "Threatens the class via gyrase; interpret on tb-gyr-qrdr, not via a class infobox",
+        "Confers RIF-R",
+        "Deletes ESAT-6"
+      ],
+      "answer": "Threatens the class via gyrase; interpret on tb-gyr-qrdr, not via a class infobox",
+      "why": "Shared target.",
+      "whyWrong": {
+        "Spares levofloxacin by magic": "Often cross-resistance.",
+        "Confers RIF-R": "rpoB.",
+        "Deletes ESAT-6": "No."
+      }
+    },
+    {
+      "id": "fq-figure",
+      "kind": "figure",
+      "prompt": "Ciprofloxacin sits on 'not backbone' to teach:",
+      "choices": [
+        "That it is Group A",
+        "That class celebrity ≠ WHO TB member",
+        "That it is RD1",
+        "That it is BCG"
+      ],
+      "answer": "That class celebrity ≠ WHO TB member",
+      "why": "Third layer.",
+      "whyWrong": {
+        "That it is Group A": "Opposite.",
+        "That it is RD1": "No.",
+        "That it is BCG": "No."
+      },
+      "figureHint": "Not backbone layer."
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "id": "wiki-latent-tb",
+  "title": "Latent tuberculosis as an operational label",
+  "dek": "Wikipedia's LTBI page is a test-defined state. It is not DosR physiology and not proof of a named living lesion.",
+  "domain": "tb",
+  "aliases": [
+    "latent tuberculosis",
+    "LTBI Wikipedia",
+    "latent TB infection",
+    "Q4254929"
+  ],
+  "tags": [
+    "glossary",
+    "LTBI",
+    "infection",
+    "IGRA"
+  ],
+  "story": [
+    "Wikipedia's Latent tuberculosis article (Q4254929) describes people with evidence of sensitisation and no active disease. That is an operational category built from TST/IGRA plus a disease work-up, not a PET of a single granuloma.",
+    "Simplfy already splits this three ways: tb-latency-dosr (bacillary physiology), tb-igra-tst (the tests), tb-tpt (what programmes do). This card is the encyclopedia name that students search first.",
+    "Lifetime progression figures (~5–10% in immunocompetent textbook speech) are glossary, not a personalised risk model. HIV, anti-TNF, silicosis, dialysis, and recent infection move the hazard; those belong on pathogenesis and comorbidity plates."
+  ],
+  "deepTitle": "Do not reify the label",
+  "deep": [
+    "A negative IGRA does not prove sterility. A positive IGRA does not prove culturable bacilli today.",
+    "Incipient/subclinical disease language in research is not the Wikipedia LTBI lead sentence. Do not collapse them.",
+    "TPT regimens are WHO objects (3HP, 1HP, 6H, 3HR…). Never dose from this glossary card.",
+    "Pediatric and HIV programmes sometimes offer TPT without a test when disease is excluded. That policy is in the TPT module, not here."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Wikipedia LTBI is the middle box: sensitisation tests after disease is excluded. Physiology and TPT are neighbouring plates.",
+    "nodes": [
+      {
+        "id": "exp",
+        "label": "Exposure",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "dis",
+        "label": "Exclude disease",
+        "x": 36,
+        "y": 45,
+        "tone": "decision",
+        "detail": "mWRD/CXR"
+      },
+      {
+        "id": "tst",
+        "label": "TST/IGRA",
+        "x": 62,
+        "y": 22,
+        "tone": "process"
+      },
+      {
+        "id": "ltbi",
+        "label": "LTBI label",
+        "x": 88,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "tpt",
+        "label": "TPT (WHO)",
+        "x": 88,
+        "y": 70,
+        "tone": "end"
+      },
+      {
+        "id": "dos",
+        "label": "DosR physiology",
+        "x": 62,
+        "y": 70,
+        "tone": "process"
+      }
+    ],
+    "edges": [
+      {
+        "from": "exp",
+        "to": "dis"
+      },
+      {
+        "from": "dis",
+        "to": "tst",
+        "label": "no disease"
+      },
+      {
+        "from": "tst",
+        "to": "ltbi"
+      },
+      {
+        "from": "ltbi",
+        "to": "tpt",
+        "label": "programme"
+      },
+      {
+        "from": "dis",
+        "to": "dos",
+        "label": "not the same object"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Latent tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Latent_tuberculosis",
+      "attribution": "English Wikipedia revision 1368882987 (2026-08-11T16:38:59Z). Wikidata Q4254929. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-tpt",
+    "tb-igra-tst",
+    "tb-latency-dosr",
+    "tb-pathogenesis",
+    "tb-host-ifng",
+    "wiki-mantoux",
+    "wiki-igra-glossary",
+    "wiki-tuberculosis"
+  ],
+  "example": {
+    "title": "Positive IGRA, coughing",
+    "setup": "QFT-Plus positive, two weeks of cough, no CXR yet. Someone files 'LTBI, start 3HP'.",
+    "steps": [
+      {
+        "title": "The Wikipedia label requires disease exclusion",
+        "body": "Cough is a disease work-up, not TPT."
+      },
+      {
+        "title": "IGRA is not Ultra",
+        "body": "Order the mWRD/CXR path."
+      },
+      {
+        "title": "If disease is found, TPT is the wrong object",
+        "body": "You are now on diagnosis/treatment plates."
+      }
+    ],
+    "takeaway": "LTBI is a residual category, not a cough protocol."
+  },
+  "check": [
+    {
+      "id": "ltbi-def",
+      "kind": "conceptual",
+      "prompt": "On Wikipedia and in programmes, LTBI is primarily:",
+      "choices": [
+        "Culture-proven necrotic caseum",
+        "Sensitisation without current TB disease, an operational label",
+        "A DosR transcriptome",
+        "RIF-R on Ultra"
+      ],
+      "answer": "Sensitisation without current TB disease, an operational label",
+      "why": "Test-defined residual category.",
+      "whyWrong": {
+        "Culture-proven necrotic caseum": "That would be pathology of disease/lesion.",
+        "A DosR transcriptome": "Physiology plate.",
+        "RIF-R on Ultra": "Disease diagnostic."
+      }
+    },
+    {
+      "id": "ltbi-tpt",
+      "kind": "calculation",
+      "prompt": "IGRA+, normal CXR, no symptoms, HIV-negative adult contact. The glossary label is LTBI. The regimen:",
+      "choices": [
+        "Must be read from this Wikipedia card",
+        "Comes from WHO/CDC TPT modules (e.g. rifamycin-based short courses), not from Q4254929",
+        "Is always 2HRZE",
+        "Is BCG revaccination"
+      ],
+      "answer": "Comes from WHO/CDC TPT modules (e.g. rifamycin-based short courses), not from Q4254929",
+      "why": "WHO > CDC > Wikipedia for regimens.",
+      "whyWrong": {
+        "Must be read from this Wikipedia card": "Forbidden by studio rules.",
+        "Is always 2HRZE": "Disease regimen.",
+        "Is BCG revaccination": "Not TPT."
+      }
+    },
+    {
+      "id": "ltbi-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, DosR physiology is drawn as:",
+      "choices": [
+        "The same box as LTBI label",
+        "A parallel object, not identical to the operational label",
+        "A TPT dose",
+        "An mWRD"
+      ],
+      "answer": "A parallel object, not identical to the operational label",
+      "why": "Lower branch from exclude-disease.",
+      "whyWrong": {
+        "The same box as LTBI label": "They are separate ends.",
+        "A TPT dose": "TPT is the other end node.",
+        "An mWRD": "That lives in exclude-disease."
+      },
+      "figureHint": "Lower right process node."
+    }
+  ]
+}

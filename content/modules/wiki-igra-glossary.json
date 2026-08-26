@@ -1,0 +1,165 @@
+{
+  "id": "wiki-igra-glossary",
+  "title": "IGRA as an RD1 blood assay class",
+  "dek": "Wikipedia's interferon-gamma release assay page names the class. QFT versus T-SPOT and disease-exclusion rules stay on tb-igra-tst.",
+  "domain": "tb",
+  "aliases": [
+    "IGRA Wikipedia",
+    "interferon gamma release assay",
+    "Q6046438"
+  ],
+  "tags": [
+    "glossary",
+    "IGRA",
+    "RD1",
+    "infection test"
+  ],
+  "story": [
+    "IGRA on Wikipedia (Q6046438) is a class: blood assays that stimulate lymphocytes with Mtb antigens and read IFN-γ. The usual antigens are ESAT-6 and CFP-10 from RD1, which BCG deleted — the point of the class versus PPD.",
+    "QuantiFERON (ELISA in tubes) and T-SPOT.TB (ELISPOT) are named instances. This card is the class; those instances get their own glossary plates so the concept map can fork.",
+    "The class still does not diagnose disease, grade RIF, or follow treatment. That sentence is repeated because Wikipedia leads sometimes wander into 'diagnosis of TB' language."
+  ],
+  "deepTitle": "Class, instances, failure modes",
+  "deep": [
+    "Anergy (HIV, steroids, anti-IFN) is a false-negative mechanism, not a lab accident by default.",
+    "Grey-zone reproducibility around cut-points is a protocol issue on the clinic plate.",
+    "TBST skin tests using similar antigens are cousins, not IGRAs.",
+    "Do not order an IGRA to 'check if Ultra was right'."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Class at the top, named commercial instances, then the clinic plate that actually owns cut-points and TPT.",
+    "layers": [
+      {
+        "title": "Class Q6046438",
+        "nodes": [
+          "IGRA"
+        ]
+      },
+      {
+        "title": "Antigens",
+        "nodes": [
+          "ESAT-6",
+          "CFP-10"
+        ]
+      },
+      {
+        "title": "Instances",
+        "nodes": [
+          "QFT",
+          "T-SPOT"
+        ]
+      },
+      {
+        "title": "Clinic hand-off",
+        "nodes": [
+          "tb-igra-tst"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Interferon gamma release assay — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Interferon_gamma_release_assay",
+      "attribution": "English Wikipedia revision 1343296287 (2026-03-13T12:23:40Z). Wikidata Q6046438. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-igra-tst",
+    "tb-bcg-rd1",
+    "tb-host-ifng",
+    "wiki-quantiferon",
+    "wiki-mantoux",
+    "wiki-esat6",
+    "wiki-latent-tb"
+  ],
+  "example": {
+    "title": "Wikipedia says 'used to diagnose TB'",
+    "setup": "A student quotes the IGRA article lead as if it were Ultra.",
+    "steps": [
+      {
+        "title": "Class is infection/sensitisation",
+        "body": "Disease needs mWRD/culture/imaging."
+      },
+      {
+        "title": "RD1 explains BCG advantage",
+        "body": "That part of the encyclopedia is true."
+      },
+      {
+        "title": "Open tb-igra-tst for programmes",
+        "body": "Cut-points live there."
+      }
+    ],
+    "takeaway": "IGRA is a class of IFN-γ assays. It is not a WRD."
+  },
+  "check": [
+    {
+      "id": "igra-class",
+      "kind": "conceptual",
+      "prompt": "An IGRA, as a Wikipedia class, measures:",
+      "choices": [
+        "RIF resistance in rpoB",
+        "IFN-γ (or IFN-γ-secreting cells) after Mtb antigens, usually RD1 peptides",
+        "Acid-fastness",
+        "PZA MIC"
+      ],
+      "answer": "IFN-γ (or IFN-γ-secreting cells) after Mtb antigens, usually RD1 peptides",
+      "why": "Class definition.",
+      "whyWrong": {
+        "RIF resistance in rpoB": "Xpert.",
+        "Acid-fastness": "Stain.",
+        "PZA MIC": "DST."
+      }
+    },
+    {
+      "id": "igra-cavity",
+      "kind": "calculation",
+      "prompt": "Positive IGRA plus a cavity:",
+      "choices": [
+        "Completes microbiologic diagnosis and DST",
+        "Shows sensitisation; still needs a disease diagnostic class",
+        "Rules out TB",
+        "Replaces culture"
+      ],
+      "answer": "Shows sensitisation; still needs a disease diagnostic class",
+      "why": "Same as clinic plate.",
+      "whyWrong": {
+        "Completes microbiologic diagnosis and DST": "No.",
+        "Rules out TB": "No.",
+        "Replaces culture": "No."
+      }
+    },
+    {
+      "id": "igra-figure",
+      "kind": "figure",
+      "prompt": "QFT and T-SPOT sit on the hierarchy as:",
+      "choices": [
+        "The class QID",
+        "Named instances of the class",
+        "WHO Group A drugs",
+        "RD deletions in BCG only"
+      ],
+      "answer": "Named instances of the class",
+      "why": "Third layer.",
+      "whyWrong": {
+        "The class QID": "Top.",
+        "WHO Group A drugs": "No.",
+        "RD deletions in BCG only": "Antigen row is ESAT-6/CFP-10."
+      },
+      "figureHint": "Instances layer."
+    }
+  ]
+}

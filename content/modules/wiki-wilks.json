@@ -1,0 +1,169 @@
+{
+  "id": "wiki-wilks",
+  "title": "Wilks' theorem as a regularity result",
+  "dek": "Λ →d χ²_k under nesting and interior regularity. Complementary to stats-lrt, which already owns the lab how-to. Title avoids stealing that search.",
+  "domain": "stats",
+  "aliases": [
+    "Wilks theorem",
+    "Wilks 1938",
+    "chi-square nested regularity"
+  ],
+  "tags": [
+    "glossary",
+    "Wilks",
+    "regularity",
+    "chi-square"
+  ],
+  "story": [
+    "Wilks' theorem on Wikipedia is the regularity result behind nested likelihood-ratio tests: twice the log-likelihood gap goes to χ² with degrees of freedom equal to the number of restrictions, when the truth is interior and information is well behaved.",
+    "stats-lrt already teaches nesting, the statistic, and TB-lab worked examples. This card is the named theorem, plus the boundary caveats the encyclopedia lists (variance components at 0, mixture weights) that phylogeny and random-effect TB models hit.",
+    "Samuel S. Wilks 1938 is citation-only. We do not ingest the paper."
+  ],
+  "deepTitle": "When the χ² costume rips",
+  "deep": [
+    "Testing σ²=0 is on the boundary: the null limit is a mixture of χ², not χ²_1.",
+    "Non-nested models are outside Wilks — Vuong or AIC, not a fake Λ.",
+    "Profile versus maximised likelihood in the presence of many nuisance parameters can break the simple χ² (incidental parameters).",
+    "Wald and score are first-order equivalent under the same regularity — sibling cards."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic: a χ²-like reference the theorem promises under regularity, versus a more piled-up mixture you get on a boundary. Not a fitted density from data.",
+    "xLabel": "Λ (schematic)",
+    "curves": [
+      {
+        "id": "chi",
+        "label": "χ²_k interior",
+        "mean": 2.0,
+        "sd": 1.4
+      },
+      {
+        "id": "mix",
+        "label": "boundary mixture (schematic)",
+        "mean": 0.8,
+        "sd": 1.1
+      },
+      {
+        "id": "null0",
+        "label": "point mass flavour at 0",
+        "mean": 0.1,
+        "sd": 0.35
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Wilks' theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Wilks%27_theorem",
+      "attribution": "English Wikipedia revision 1363296902 (2026-07-09T08:31:58Z). Wikidata Q56273825. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Likelihood-ratio test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Likelihood-ratio_test",
+      "attribution": "English Wikipedia revision 1365280967 (2026-07-21T11:39:02Z). Wikidata Q585740. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Wilks, S. S. (1938). The large-sample distribution of the likelihood ratio for testing composite hypotheses.",
+      "attribution": "Named as the regularity result. Paper text was not ingested.",
+      "license": "Citation only"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-lrt",
+    "stats-wald-score",
+    "stats-aic-bic",
+    "wiki-neyman-pearson",
+    "wiki-score-test",
+    "wiki-wald-test",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "Random-effect variance tested at 0",
+    "setup": "Someone reports P(χ²_1) for Λ on a mixed model.",
+    "steps": [
+      {
+        "title": "Name the boundary",
+        "body": "σ²=0 is the edge of the parameter space."
+      },
+      {
+        "title": "Wilks' interior χ² is the wrong costume",
+        "body": "This plate."
+      },
+      {
+        "title": "Use a mixture reference or a simulation",
+        "body": "stats-mixed-models."
+      }
+    ],
+    "takeaway": "Wilks is a regularity theorem. Boundaries void the plain χ²."
+  },
+  "check": [
+    {
+      "id": "wilks-reg",
+      "kind": "conceptual",
+      "prompt": "Wilks' theorem, on this plate, is:",
+      "choices": [
+        "A licence for non-nested AIC p-values",
+        "A regularity result giving Λ →d χ²_k for nested interior hypotheses",
+        "A Bayesian prior",
+        "A q-value recipe"
+      ],
+      "answer": "A regularity result giving Λ →d χ²_k for nested interior hypotheses",
+      "why": "Theorem node. The how-to remains stats-lrt.",
+      "whyWrong": {
+        "A licence for non-nested AIC p-values": "Outside Wilks.",
+        "A Bayesian prior": "No.",
+        "A q-value recipe": "No."
+      }
+    },
+    {
+      "id": "wilks-bound",
+      "kind": "calculation",
+      "prompt": "Testing a variance component at 0 with a naive χ²_1 tail is typically:",
+      "choices": [
+        "Exact and conservative",
+        "Anti-conservative relative to the boundary mixture, so p-values look too small",
+        "Identical to a Bayes factor",
+        "Forbidden in Gaussian models only"
+      ],
+      "answer": "Anti-conservative relative to the boundary mixture, so p-values look too small",
+      "why": "Mass at 0 shrinks the null for Λ.",
+      "whyWrong": {
+        "Exact and conservative": "Wrong direction.",
+        "Identical to a Bayes factor": "No.",
+        "Forbidden in Gaussian models only": "Many models hit this."
+      }
+    },
+    {
+      "id": "wilks-figure",
+      "kind": "figure",
+      "prompt": "The 'point mass flavour at 0' curve is teaching:",
+      "choices": [
+        "Interior χ² always",
+        "Boundary nulls put extra mass near zero Λ",
+        "That Λ is a prior",
+        "That Wikipedia forbids mixed models"
+      ],
+      "answer": "Boundary nulls put extra mass near zero Λ",
+      "why": "Third curve.",
+      "whyWrong": {
+        "Interior χ² always": "First curve.",
+        "That Λ is a prior": "No.",
+        "That Wikipedia forbids mixed models": "No."
+      },
+      "figureHint": "Third legend."
+    }
+  ]
+}

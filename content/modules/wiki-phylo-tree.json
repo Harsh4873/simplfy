@@ -1,0 +1,160 @@
+{
+  "id": "wiki-phylo-tree",
+  "title": "Phylogenetic tree as a Wikipedia diagram type",
+  "dek": "Rooted/unrooted, topology versus lengths, Newick. The sampling-model likelihood stays on stats-trees.",
+  "domain": "stats",
+  "aliases": [
+    "phylogenetic tree Wikipedia",
+    "cladogram",
+    "phylogram encyclopedia"
+  ],
+  "tags": [
+    "glossary",
+    "tree",
+    "phylogeny",
+    "diagram"
+  ],
+  "story": [
+    "Wikipedia's phylogenetic tree page is a diagram type: a graph of recency of common ancestry. Cladograms ignore lengths; phylograms use branch lengths; chronograms map lengths to time under a clock.",
+    "stats-trees already treats the tree as a sampling model (Markov process, Felsenstein pruning). This card is the encyclopedia diagram, plus Newick as a sibling card, so a pretty figure is not mistaken for a likelihood.",
+    "In TB, a tree is often a picture of lineage. Transmission inference is extra (stats-transmission-genomics)."
+  ],
+  "deepTitle": "Picture versus joint law",
+  "deep": [
+    "Rooting (outgroup, midpoint) is an extra claim.",
+    "Bootstrapping columns is not resampling independent outbreaks (stats-trees deep).",
+    "Recombination makes a single tree the wrong geometry.",
+    "Do not read a ladder as a march of progress."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Diagram type, then what the picture still is not. Likelihood lives one plate down.",
+    "layers": [
+      {
+        "title": "Diagram",
+        "nodes": [
+          "tree"
+        ]
+      },
+      {
+        "title": "Flavours",
+        "nodes": [
+          "cladogram",
+          "phylogram"
+        ]
+      },
+      {
+        "title": "Not automatically",
+        "nodes": [
+          "likelihood",
+          "time",
+          "transmission"
+        ]
+      },
+      {
+        "title": "Hand-off",
+        "nodes": [
+          "stats-trees"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Phylogenetic tree — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Phylogenetic_tree",
+      "attribution": "English Wikipedia revision 1369889041 (2026-08-17T20:39:55Z). Wikidata Q242125. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-trees",
+    "wiki-newick",
+    "wiki-neighbor-joining",
+    "wiki-parsimony",
+    "wiki-coalescent",
+    "stats-molecular-clock",
+    "stats-transmission-genomics"
+  ],
+  "example": {
+    "title": "Unrooted NJ tree pasted as 'the phylogeny'",
+    "setup": "No model, no support, midpoint rooted in PowerPoint.",
+    "steps": [
+      {
+        "title": "Name the diagram",
+        "body": "A neighbour-joining picture."
+      },
+      {
+        "title": "Rooting was a slide choice",
+        "body": "This plate."
+      },
+      {
+        "title": "If you need a likelihood, open stats-trees",
+        "body": "Pruning, Q, not NJ folklore."
+      }
+    ],
+    "takeaway": "A phylogenetic tree is a diagram type. A likelihood is extra."
+  },
+  "check": [
+    {
+      "id": "tree-diag",
+      "kind": "conceptual",
+      "prompt": "This glossary treats a phylogenetic tree as:",
+      "choices": [
+        "Automatically a dated transmission chain",
+        "A diagram of hypothesized relatedness, with likelihood/time/transmission as extra claims",
+        "A Manhattan plot",
+        "An FDR"
+      ],
+      "answer": "A diagram of hypothesized relatedness, with likelihood/time/transmission as extra claims",
+      "why": "Diagram node.",
+      "whyWrong": {
+        "Automatically a dated transmission chain": "Two extra claims.",
+        "A Manhattan plot": "No.",
+        "An FDR": "No."
+      }
+    },
+    {
+      "id": "tree-clado",
+      "kind": "calculation",
+      "prompt": "A cladogram versus a phylogram:",
+      "choices": [
+        "Is the same as a likelihood ratio",
+        "Omits versus includes branch lengths as a display choice, not a test",
+        "Is BH versus Bonferroni",
+        "Is HWE"
+      ],
+      "answer": "Omits versus includes branch lengths as a display choice, not a test",
+      "why": "Flavour.",
+      "whyWrong": {
+        "Is the same as a likelihood ratio": "No.",
+        "Is BH versus Bonferroni": "No.",
+        "Is HWE": "No."
+      }
+    },
+    {
+      "id": "tree-figure",
+      "kind": "figure",
+      "prompt": "stats-trees sits on the hand-off row because:",
+      "choices": [
+        "Wikipedia is the sampling model",
+        "The joint law / pruning likelihood is the existing Simplfy plate",
+        "Newick is a test",
+        "Cladograms are CIs"
+      ],
+      "answer": "The joint law / pruning likelihood is the existing Simplfy plate",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Wikipedia is the sampling model": "Opposite split.",
+        "Newick is a test": "Format card.",
+        "Cladograms are CIs": "No."
+      },
+      "figureHint": "Hand-off layer."
+    }
+  ]
+}

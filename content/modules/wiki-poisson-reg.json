@@ -1,0 +1,177 @@
+{
+  "id": "wiki-poisson-reg",
+  "title": "Poisson regression as a named count GLM",
+  "dek": "Wikipedia Poisson regression: log λ = xᵀβ. Offsets, overdispersion, and quasi-Poisson already have Simplfy plates.",
+  "domain": "stats",
+  "aliases": [
+    "Poisson regression",
+    "log-linear count model",
+    "Poisson GLM Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "Poisson",
+    "counts",
+    "offset"
+  ],
+  "story": [
+    "Poisson regression on Wikipedia is the count celebrity: Y ~ Poisson(λ), log λ = xᵀβ, sometimes with offset log(exposure). It is a GLM, not a separate software button.",
+    "stats-poisson already owns the likelihood. stats-overdispersion already says mean=variance is a marriage you may not have. This card is the encyclopedia name.",
+    "TB colony counts, read depths, and incident-case tallies are the usual lab objects — still not a reason to ignore extra-Poisson variance."
+  ],
+  "deepTitle": "Offset, exposure, and the cousin models",
+  "deep": [
+    "Offset is a coefficient frozen at 1, not a forgotten covariate.",
+    "Negative binomial is a different random component (wiki-negbin).",
+    "Quasi-Poisson keeps V(μ)=φμ without a full NB likelihood.",
+    "Zero-inflation is yet another model, not a Poisson with a Wikipedia footnote."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: Poisson marriage (mean=var) versus overdispersed counts. Not a simulation study.",
+    "panels": [
+      {
+        "title": "Poisson V=μ",
+        "bars": [
+          {
+            "label": "mean",
+            "value": 5
+          },
+          {
+            "label": "var",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "Overdispersed",
+        "bars": [
+          {
+            "label": "mean",
+            "value": 5
+          },
+          {
+            "label": "var",
+            "value": 12
+          }
+        ]
+      },
+      {
+        "title": "Need offset?",
+        "bars": [
+          {
+            "label": "no expo",
+            "value": 2
+          },
+          {
+            "label": "person-time",
+            "value": 8
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Poisson regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Poisson_regression",
+      "attribution": "English Wikipedia revision 1307700255 (2025-08-25T06:03:04Z). Wikidata Q954529. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-poisson",
+    "stats-overdispersion",
+    "stats-quasi-likelihood",
+    "wiki-glm",
+    "wiki-negbin",
+    "stats-glm-link"
+  ],
+  "example": {
+    "title": "Counts per plate, different areas",
+    "setup": "Someone fits Poisson without log(area).",
+    "steps": [
+      {
+        "title": "λ is a rate times exposure",
+        "body": "Offset log(area)."
+      },
+      {
+        "title": "Skipping offset attributes area to covariates",
+        "body": "Biased β."
+      },
+      {
+        "title": "Then check overdispersion",
+        "body": "stats-overdispersion."
+      }
+    ],
+    "takeaway": "Poisson regression is a named count GLM. Exposure still needs a home."
+  },
+  "check": [
+    {
+      "id": "poi-named",
+      "kind": "conceptual",
+      "prompt": "Poisson regression is:",
+      "choices": [
+        "A Gaussian OLS with a French name",
+        "A Poisson GLM, usually with log link, for counts",
+        "An LRT",
+        "A bootstrap of trees"
+      ],
+      "answer": "A Poisson GLM, usually with log link, for counts",
+      "why": "Celebrity count GLM.",
+      "whyWrong": {
+        "A Gaussian OLS with a French name": "No.",
+        "An LRT": "No.",
+        "A bootstrap of trees": "No."
+      }
+    },
+    {
+      "id": "poi-off",
+      "kind": "calculation",
+      "prompt": "Two plates, areas 1 and 10, same density. Without offset, a 'plate dummy' will:",
+      "choices": [
+        "Be unbiased for density",
+        "Soak up the 10-fold exposure as if it were a rate ratio",
+        "Be an OR of 10 for Bernoulli",
+        "Delete the likelihood"
+      ],
+      "answer": "Soak up the 10-fold exposure as if it were a rate ratio",
+      "why": "Offset job.",
+      "whyWrong": {
+        "Be unbiased for density": "No.",
+        "Be an OR of 10 for Bernoulli": "Wrong family.",
+        "Delete the likelihood": "No."
+      }
+    },
+    {
+      "id": "poi-figure",
+      "kind": "figure",
+      "prompt": "Panel two teaches you to:",
+      "choices": [
+        "Always trust mean=var",
+        "Look at extra-Poisson variance and the overdispersion plate",
+        "Drop the offset always",
+        "Use logit on counts"
+      ],
+      "answer": "Look at extra-Poisson variance and the overdispersion plate",
+      "why": "Var bar taller than mean.",
+      "whyWrong": {
+        "Always trust mean=var": "That's panel one.",
+        "Drop the offset always": "Panel three says the opposite.",
+        "Use logit on counts": "Wrong family."
+      },
+      "figureHint": "Middle panel."
+    }
+  ]
+}

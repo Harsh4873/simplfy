@@ -1,0 +1,177 @@
+{
+  "id": "wiki-negbin",
+  "title": "Negative binomial as a named overdispersed-count cousin",
+  "dek": "Wikipedia NB: extra-Poisson variance. stats-overdispersion and stats-poisson already own the TB-count lecture.",
+  "domain": "stats",
+  "aliases": [
+    "negative binomial",
+    "NB regression",
+    "overdispersed counts Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "negative binomial",
+    "overdispersion",
+    "counts"
+  ],
+  "story": [
+    "Negative binomial on Wikipedia is a count distribution with a variance larger than the mean, often written as a Poisson–gamma mixture. It is the named cousin when colony counts or incident-case tallies refuse Poisson marriage.",
+    "stats-overdispersion already says when to leave Poisson. stats-quasi-likelihood keeps V(μ)=φμ without a full NB density. This card is the encyclopedia random component.",
+    "NB-1 versus NB-2 variance functions are a software fork; say which."
+  ],
+  "deepTitle": "Mixture versus quasi",
+  "deep": [
+    "If the extra variance is a few huge outliers, NB still may be the wrong story (robustness).",
+    "Zero-inflation is another extra story, not automatic NB.",
+    "A GLM with NB random component still needs a link and a linear predictor (wiki-glm).",
+    "Do not 'fix' overdispersion by deleting the interesting high-count lineage."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Mean held, variance grows: Poisson versus NB. Teaching bars, not a fitted dataset.",
+    "panels": [
+      {
+        "title": "Poisson",
+        "bars": [
+          {
+            "label": "mean",
+            "value": 6
+          },
+          {
+            "label": "var",
+            "value": 6
+          }
+        ]
+      },
+      {
+        "title": "NB",
+        "bars": [
+          {
+            "label": "mean",
+            "value": 6
+          },
+          {
+            "label": "var",
+            "value": 16
+          }
+        ]
+      },
+      {
+        "title": "Quasi cousin",
+        "bars": [
+          {
+            "label": "full density",
+            "value": 2
+          },
+          {
+            "label": "V(μ) only",
+            "value": 8
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Negative binomial distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Negative_binomial_distribution",
+      "attribution": "English Wikipedia revision 1370496589 (2026-08-21T12:57:08Z). Wikidata Q743364. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-poisson",
+    "stats-overdispersion",
+    "stats-quasi-likelihood",
+    "wiki-poisson-reg",
+    "wiki-expfam-glossary",
+    "wiki-glm"
+  ],
+  "example": {
+    "title": "Colony counts var=40, mean=8",
+    "setup": "Poisson GLM SEs look heroic.",
+    "steps": [
+      {
+        "title": "Mean≠var",
+        "body": "Leave Poisson."
+      },
+      {
+        "title": "NB or quasi-Poisson",
+        "body": "This plate / overdispersion."
+      },
+      {
+        "title": "Then ask if a few plates are contamination",
+        "body": "Science before the random component."
+      }
+    ],
+    "takeaway": "Negative binomial is a named extra-Poisson count law. It is not a licence to ignore outliers."
+  },
+  "check": [
+    {
+      "id": "nb-def",
+      "kind": "conceptual",
+      "prompt": "A negative binomial count model is used here as:",
+      "choices": [
+        "A Gaussian OLS",
+        "A named extra-Poisson count distribution / GLM random component",
+        "An LRT for trees",
+        "A Manhattan plot"
+      ],
+      "answer": "A named extra-Poisson count distribution / GLM random component",
+      "why": "Cousin.",
+      "whyWrong": {
+        "A Gaussian OLS": "No.",
+        "An LRT for trees": "No.",
+        "A Manhattan plot": "No."
+      }
+    },
+    {
+      "id": "nb-var",
+      "kind": "calculation",
+      "prompt": "If var=4×mean, a Poisson variance function is:",
+      "choices": [
+        "Correct",
+        "Too small; SEs will be optimistic unless you move to NB/quasi",
+        "A prior",
+        "A q-value"
+      ],
+      "answer": "Too small; SEs will be optimistic unless you move to NB/quasi",
+      "why": "Overdispersion.",
+      "whyWrong": {
+        "Correct": "Poisson wants var=mean.",
+        "A prior": "No.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "nb-figure",
+      "kind": "figure",
+      "prompt": "Panel three's tall V(μ) only bar marks:",
+      "choices": [
+        "That quasi-likelihood is a full NB density",
+        "That a quasi cousin can keep a variance function without the NB pmf",
+        "That Poisson is NB",
+        "That mean is FDR"
+      ],
+      "answer": "That a quasi cousin can keep a variance function without the NB pmf",
+      "why": "Quasi cousin panel.",
+      "whyWrong": {
+        "That quasi-likelihood is a full NB density": "Opposite.",
+        "That Poisson is NB": "No.",
+        "That mean is FDR": "No."
+      },
+      "figureHint": "Third panel."
+    }
+  ]
+}

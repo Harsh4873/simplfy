@@ -1,0 +1,165 @@
+{
+  "id": "wiki-logistic",
+  "title": "Logistic regression as a named Bernoulli GLM",
+  "dek": "Wikipedia logistic page is the celebrity GLM. Odds ratios and separation live on stats-logit.",
+  "domain": "stats",
+  "aliases": [
+    "logistic regression",
+    "logit model Wikipedia",
+    "binary GLM"
+  ],
+  "tags": [
+    "glossary",
+    "logistic",
+    "Bernoulli",
+    "odds"
+  ],
+  "story": [
+    "Logistic regression on Wikipedia is the celebrity: Bernoulli (or binomial) with logit link, coefficients as log odds ratios. It is a GLM, not a separate kingdom.",
+    "stats-logit already walks odds versus risk, complete separation, and Firth. This card is the encyclopedia celebrity that students search before they will search 'Bernoulli GLM'.",
+    "Do not read exp(β) as a risk ratio. That error has its own stats plate energy and an odds-ratio glossary sibling."
+  ],
+  "deepTitle": "Celebrity versus the GLM machine",
+  "deep": [
+    "Probit and cloglog are sibling Bernoulli GLMs with different links.",
+    "Case-control sampling changes intercept interpretation more than slopes under a logit — a design note, not Wikipedia methods paste.",
+    "GWAS per-SNP logistics are still this celebrity, plus structure covariates (stats-gwas).",
+    "Calibration of predicted π is a different object (posterior-calibration / reliability)."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Logit maps a real linear predictor onto (0,1). The three curves are schematic: a latent-ish linear predictor, the implied Bernoulli mean, and a misread linear-probability mean that can leave [0,1].",
+    "xLabel": "linear predictor η (schematic)",
+    "curves": [
+      {
+        "id": "logit",
+        "label": "logit mean in (0,1)",
+        "mean": 0.0,
+        "sd": 0.8
+      },
+      {
+        "id": "lpm",
+        "label": "identity mean (can escape)",
+        "mean": 1.2,
+        "sd": 0.9
+      },
+      {
+        "id": "probit",
+        "label": "probit sibling",
+        "mean": -0.2,
+        "sd": 0.7
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Logistic regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Logistic_regression",
+      "attribution": "English Wikipedia revision 1368293703 (2026-08-08T05:56:38Z). Wikidata Q1132755. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-logit",
+    "stats-glm-link",
+    "wiki-glm",
+    "wiki-odds-ratio",
+    "stats-gwas",
+    "wiki-roc"
+  ],
+  "example": {
+    "title": "exp(β)=1.8 reported as '80% more risk'",
+    "setup": "Rare-event TB hospitalisation, logit fit.",
+    "steps": [
+      {
+        "title": "1.8 is an odds ratio",
+        "body": "wiki-odds-ratio / stats-logit."
+      },
+      {
+        "title": "Risk ratio needs the baseline π or a different link/model",
+        "body": "Not automatic."
+      },
+      {
+        "title": "If the event is rare, they are close; say that if you use it",
+        "body": "Approximation, not identity."
+      }
+    ],
+    "takeaway": "Logistic is a named Bernoulli GLM. exp(β) is odds, not risk, until proven otherwise."
+  },
+  "check": [
+    {
+      "id": "log-cel",
+      "kind": "conceptual",
+      "prompt": "Logistic regression is:",
+      "choices": [
+        "A Cox model",
+        "A Bernoulli/binomial GLM with logit link, the encyclopedia celebrity",
+        "OLS on log y",
+        "An LRT without nesting"
+      ],
+      "answer": "A Bernoulli/binomial GLM with logit link, the encyclopedia celebrity",
+      "why": "Celebrity child.",
+      "whyWrong": {
+        "A Cox model": "Survival plate.",
+        "OLS on log y": "Different.",
+        "An LRT without nesting": "No."
+      }
+    },
+    {
+      "id": "log-or",
+      "kind": "calculation",
+      "prompt": "β̂_tx = log(2) on the logit scale. exp(β̂) is:",
+      "choices": [
+        "A risk difference of 2",
+        "An odds ratio of 2 for the coded contrast, not automatically a risk ratio",
+        "A p-value",
+        "A branch length"
+      ],
+      "answer": "An odds ratio of 2 for the coded contrast, not automatically a risk ratio",
+      "why": "exp(β) = 2.",
+      "whyWrong": {
+        "A risk difference of 2": "Wrong scale.",
+        "A p-value": "No.",
+        "A branch length": "No."
+      }
+    },
+    {
+      "id": "log-figure",
+      "kind": "figure",
+      "prompt": "The identity-mean curve is drawn escaped to teach:",
+      "choices": [
+        "That logit always leaves [0,1]",
+        "That a linear probability mean need not respect (0,1), unlike a logit mean",
+        "That probit is OLS",
+        "That Wikipedia forbids links"
+      ],
+      "answer": "That a linear probability mean need not respect (0,1), unlike a logit mean",
+      "why": "Middle curve label.",
+      "whyWrong": {
+        "That logit always leaves [0,1]": "Opposite.",
+        "That probit is OLS": "No.",
+        "That Wikipedia forbids links": "No."
+      },
+      "figureHint": "identity mean curve."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "logit",
+      "label": "Logit link",
+      "expression": "logit(π) = log(π/(1−π)) = xᵀβ",
+      "note": "Canonical Bernoulli link."
+    }
+  ]
+}

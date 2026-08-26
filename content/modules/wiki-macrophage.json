@@ -1,0 +1,157 @@
+{
+  "id": "wiki-macrophage",
+  "title": "Macrophage as the intracellular niche",
+  "dek": "Wikipedia's macrophage page is the cell type. Phagosome arrest and ESX-1 stay on dedicated TB plates.",
+  "domain": "tb",
+  "aliases": [
+    "macrophage",
+    "alveolar macrophage",
+    "Kupffer",
+    "Mϕ"
+  ],
+  "tags": [
+    "glossary",
+    "cell",
+    "phagocyte",
+    "niche"
+  ],
+  "story": [
+    "Macrophage on Wikipedia is the professional phagocyte: bone-marrow origin, tissue residents (alveolar macrophage in the lung), jobs in eating, cytokine talk, and antigen presentation.",
+    "Mtb's career is to live there rather than be digested. The TB-specific tricks (phagosome arrest, ESX-1, lipid bodies/foamy cells) are already Simplfy plates. This card is the host cell those tricks assume.",
+    "Epithelioid and foamy macrophages in granulomas are differentiated states of this cell, not new taxa."
+  ],
+  "deepTitle": "Cell type versus bacterial programme",
+  "deep": [
+    "Alveolar macrophages meet droplet nuclei first — pathogenesis flow.",
+    "IFN-γ activation is a software update to this cell, not a different cell.",
+    "Do not treat 'macrophage' as a stain for TB on a slide (that is AFB).",
+    "Monocyte versus tissue macrophage nuances belong in immunology textbooks; here we only need the niche."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Host cell as a stack of jobs. Mtb interference is a hand-off to phagosome/ESX plates.",
+    "layers": [
+      {
+        "id": "rec",
+        "label": "Recognition / uptake",
+        "detail": "phagocytosis",
+        "tone": "space"
+      },
+      {
+        "id": "phago",
+        "label": "Phagosome",
+        "detail": "wiki-phagosome / tb-phagosome-arrest",
+        "tone": "membrane"
+      },
+      {
+        "id": "kill",
+        "label": "Killing programmes",
+        "detail": "ROS/RNS, IFN-γ licensed",
+        "tone": "wall"
+      },
+      {
+        "id": "talk",
+        "label": "Cytokine talk",
+        "detail": "IL-12, TNF",
+        "tone": "core"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Macrophage — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Macrophage",
+      "attribution": "English Wikipedia revision 1369617614 (2026-08-16T02:18:39Z). Wikidata Q184204. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-phagosome",
+    "tb-phagosome-arrest",
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "wiki-ifng-glossary",
+    "tb-esx-secretion"
+  ],
+  "example": {
+    "title": "Foamy cells on histology",
+    "setup": "Report: foamy macrophages in a necrotic granuloma.",
+    "steps": [
+      {
+        "title": "Still macrophages",
+        "body": "A lipid-laden state in the lesion."
+      },
+      {
+        "title": "PK implications live on caseum/granuloma plates",
+        "body": "Not on the cell-type glossary."
+      },
+      {
+        "title": "Not a species ID",
+        "body": "NTM and fungi can recruit macrophages too."
+      }
+    ],
+    "takeaway": "Macrophage names the niche. Mtb names the unwelcome guest."
+  },
+  "check": [
+    {
+      "id": "mac-niche",
+      "kind": "conceptual",
+      "prompt": "In TB teaching, the macrophage is primarily:",
+      "choices": [
+        "The acid-fast organism",
+        "The host intracellular niche Mtb is adapted to occupy",
+        "A rifamycin",
+        "An IGRA antigen"
+      ],
+      "answer": "The host intracellular niche Mtb is adapted to occupy",
+      "why": "Cell type card.",
+      "whyWrong": {
+        "The acid-fast organism": "That is Mtb.",
+        "A rifamycin": "No.",
+        "An IGRA antigen": "No."
+      }
+    },
+    {
+      "id": "mac-ifn",
+      "kind": "calculation",
+      "prompt": "IFN-γ 'activating macrophages' means:",
+      "choices": [
+        "The cell becomes Mtb",
+        "Transcriptional/killing programmes upregulate; it is still a macrophage",
+        "The phagosome always sterilizes in 20 minutes",
+        "Xpert turns positive"
+      ],
+      "answer": "Transcriptional/killing programmes upregulate; it is still a macrophage",
+      "why": "Software update.",
+      "whyWrong": {
+        "The cell becomes Mtb": "No.",
+        "The phagosome always sterilizes in 20 minutes": "Mtb often survives.",
+        "Xpert turns positive": "Unrelated."
+      }
+    },
+    {
+      "id": "mac-figure",
+      "kind": "figure",
+      "prompt": "Which layer points at the phagosome-arrest clinic plate?",
+      "choices": [
+        "Recognition / uptake",
+        "Phagosome",
+        "Cytokine talk",
+        "The caption's word alveolar"
+      ],
+      "answer": "Phagosome",
+      "why": "Second layer detail.",
+      "whyWrong": {
+        "Recognition / uptake": "Top.",
+        "Cytokine talk": "Bottom.",
+        "The caption's word alveolar": "Not a layer."
+      },
+      "figureHint": "Second layer."
+    }
+  ]
+}

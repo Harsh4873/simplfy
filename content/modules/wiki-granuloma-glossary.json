@@ -1,0 +1,161 @@
+{
+  "id": "wiki-granuloma-glossary",
+  "title": "Granuloma as a histopathology class",
+  "dek": "Wikipedia's granuloma page is broader than TB: foreign-body versus immune, giant cells, sarcoid look-alikes. TB architecture stays on tb-granuloma.",
+  "domain": "tb",
+  "aliases": [
+    "granuloma Wikipedia",
+    "Langhans giant cell",
+    "epithelioid granuloma",
+    "Q1129338"
+  ],
+  "tags": [
+    "glossary",
+    "pathology",
+    "immunity",
+    "granuloma"
+  ],
+  "story": [
+    "Granuloma on Wikipedia (Q1129338) is a tissue pattern: macrophages organised, often with giant cells, in response to something hard to clear. TB is the celebrity example, not the only one (sarcoid, foreign body, fungi, Crohn in some telling).",
+    "Langhans-type giant cells and caseation push the prior toward mycobacteria/fungi, still not a species. Simplfy's tb-granuloma plate is the TB lesion with oxygen and drug gradients. This card is the dictionary class those lesions belong to.",
+    "TNF and IFN-γ appear on the encyclopedia page as organisers of immune granulomas. That is a pointer to host plates, not a biologic licence."
+  ],
+  "deepTitle": "Class versus celebrity example",
+  "deep": [
+    "Foreign-body granulomas lack the same T-cell programme. Do not paste TB immunology onto a suture granuloma.",
+    "Necrotising versus non-necrotising is a useful split; sarcoid is classically non-necrotising, TB often necrotising — with exceptions that wreck slogans.",
+    "Anti-TNF dissolving granulomas is why reactivation TB is a clinic problem (tb-tnf-cd4).",
+    "Do not diagnose from a Wikipedia image board."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Encyclopedia class at the top, TB celebrity example in the middle, Simplfy lesion-PK plate at the bottom.",
+    "layers": [
+      {
+        "title": "Pattern Q1129338",
+        "nodes": [
+          "granuloma"
+        ]
+      },
+      {
+        "title": "Split",
+        "nodes": [
+          "immune",
+          "foreign-body"
+        ]
+      },
+      {
+        "title": "TB example",
+        "nodes": [
+          "caseating",
+          "Langhans"
+        ]
+      },
+      {
+        "title": "Simplfy hand-off",
+        "nodes": [
+          "tb-granuloma",
+          "tb-caseum"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Granuloma — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Granuloma",
+      "attribution": "English Wikipedia revision 1366839019 (2026-07-30T14:54:40Z). Wikidata Q1129338. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-granuloma",
+    "tb-caseum",
+    "tb-tnf-cd4",
+    "tb-host-ifng",
+    "wiki-caseation",
+    "wiki-ifng-glossary",
+    "wiki-tnf-glossary"
+  ],
+  "example": {
+    "title": "Non-necrotising granulomas on transbronchial biopsy",
+    "setup": "Team tattoos 'TB until proven otherwise' from the word granuloma alone.",
+    "steps": [
+      {
+        "title": "Class is broad",
+        "body": "Sarcoid and others live here."
+      },
+      {
+        "title": "Need AFB/NAAT/culture and a syndrome",
+        "body": "The dictionary does not culture."
+      },
+      {
+        "title": "If it is TB, then read lesion PK",
+        "body": "Different plate."
+      }
+    ],
+    "takeaway": "Granuloma is a class. TB is one famous instance."
+  },
+  "check": [
+    {
+      "id": "gr-class",
+      "kind": "conceptual",
+      "prompt": "Wikipedia's granuloma article is licensed here as:",
+      "choices": [
+        "A TB-only lesion PK manual",
+        "A histopathology class that includes TB as a celebrity example",
+        "A DST catalogue",
+        "A BCG strain list"
+      ],
+      "answer": "A histopathology class that includes TB as a celebrity example",
+      "why": "Class versus instance.",
+      "whyWrong": {
+        "A TB-only lesion PK manual": "That is tb-granuloma.",
+        "A DST catalogue": "No.",
+        "A BCG strain list": "No."
+      }
+    },
+    {
+      "id": "gr-tnf",
+      "kind": "calculation",
+      "prompt": "Anti-TNF therapy plus a remote TB exposure is dangerous because immune granulomas are:",
+      "choices": [
+        "TNF-independent bricks",
+        "TNF-dependent organised structures; blockade loosens control of bacilli",
+        "Identical to foreign-body granulomas",
+        "IGRA antigens"
+      ],
+      "answer": "TNF-dependent organised structures; blockade loosens control of bacilli",
+      "why": "Hand-off to tb-tnf-cd4.",
+      "whyWrong": {
+        "TNF-independent bricks": "Opposite.",
+        "Identical to foreign-body granulomas": "Different programme.",
+        "IGRA antigens": "No."
+      }
+    },
+    {
+      "id": "gr-figure",
+      "kind": "figure",
+      "prompt": "The bottom hierarchy row is:",
+      "choices": [
+        "The Wikipedia QID",
+        "Simplfy lesion plates to open next",
+        "Foreign-body only",
+        "Langhans as a drug"
+      ],
+      "answer": "Simplfy lesion plates to open next",
+      "why": "Hand-off row.",
+      "whyWrong": {
+        "The Wikipedia QID": "Top.",
+        "Foreign-body only": "Second row split.",
+        "Langhans as a drug": "Giant cell, not a drug."
+      },
+      "figureHint": "Last layer title."
+    }
+  ]
+}

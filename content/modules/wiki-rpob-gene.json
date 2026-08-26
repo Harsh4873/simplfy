@@ -1,0 +1,165 @@
+{
+  "id": "wiki-rpob-gene",
+  "title": "Bacterial RNA polymerase β as an encyclopedia target",
+  "dek": "Wikipedia's RNA polymerase page is the enzyme. rpoB RRDR alleles and rifamycin plates already own TB DST. Title avoids stealing the rifampin search.",
+  "domain": "tb",
+  "aliases": [
+    "RNA polymerase TB target",
+    "rpoB gene Wikipedia",
+    "RNAP beta subunit",
+    "RRDR encyclopedia"
+  ],
+  "tags": [
+    "glossary",
+    "gene",
+    "RNAP",
+    "resistance"
+  ],
+  "story": [
+    "Bacterial RNA polymerase on Wikipedia is the multi-subunit enzyme that transcribes DNA. The β subunit (rpoB) is where rifamycins bind. That is the encyclopedia enzyme node.",
+    "Simplfy already has tb-rifampin for S450L and friends, tb-xpert-ultra for the cartridge window, and tb-rpoc-compensatory for fitness. This card is the enzyme those alleles live in.",
+    "Eukaryotic RNAP Wikipedia trivia is out of scope. Do not dose rifampin from a polymerase article."
+  ],
+  "deepTitle": "Enzyme versus allele plate",
+  "deep": [
+    "RRDR numbering conventions (E. coli versus Mtb) already confuse reports — clinic plate territory.",
+    "Silent RRDR SNPs that drop Xpert probes are interpretation, not encyclopedia.",
+    "Compensatory rpoC/rpoA alleles are a different plate.",
+    "I491F outside the window is marked on the GeneXpert glossary track."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "Encyclopedia enzyme, TB-relevant window marked as a pointer to the rifampin plate rather than as a new DST table.",
+    "gene": "rpoB (schematic TB numbering)",
+    "start": 1,
+    "end": 1200,
+    "unit": "codon (schematic)",
+    "regions": [
+      {
+        "start": 426,
+        "end": 452,
+        "label": "RRDR"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 450,
+        "label": "450",
+        "note": "tb-rifampin"
+      },
+      {
+        "pos": 445,
+        "label": "445",
+        "note": "variable"
+      },
+      {
+        "pos": 491,
+        "label": "491",
+        "note": "outside many cartridges"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "RNA polymerase — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/RNA_polymerase",
+      "attribution": "English Wikipedia revision 1369620304 (2026-08-16T02:38:32Z). Wikidata Q272631. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-rifampin",
+    "tb-xpert-ultra",
+    "tb-rpoc-compensatory",
+    "wiki-rifamycin-class",
+    "wiki-genexpert",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Student searches polymerase, wants S450L table",
+    "setup": "Wikipedia enzyme page has no codon table.",
+    "steps": [
+      {
+        "title": "Stay on this node for the enzyme",
+        "body": "RNAP is the machine."
+      },
+      {
+        "title": "Open tb-rifampin for alleles",
+        "body": "DST lives there."
+      },
+      {
+        "title": "Do not paste eukaryotic RNAP inhibitors",
+        "body": "Wrong kingdom."
+      }
+    ],
+    "takeaway": "The encyclopedia names the enzyme. The clinic plate names the codon."
+  },
+  "check": [
+    {
+      "id": "rpo-enz",
+      "kind": "conceptual",
+      "prompt": "This plate is about:",
+      "choices": [
+        "IGRA peptides",
+        "Bacterial RNAP as the encyclopedia enzyme that rpoB alleles inhabit",
+        "PZA activation",
+        "LAM strips"
+      ],
+      "answer": "Bacterial RNAP as the encyclopedia enzyme that rpoB alleles inhabit",
+      "why": "Enzyme node.",
+      "whyWrong": {
+        "IGRA peptides": "No.",
+        "PZA activation": "pncA.",
+        "LAM strips": "No."
+      }
+    },
+    {
+      "id": "rpo-hand",
+      "kind": "calculation",
+      "prompt": "S450L interpretation should be read from:",
+      "choices": [
+        "This Wikipedia enzyme card alone",
+        "tb-rifampin / catalogue plates, with WHO for regimens",
+        "BCG strain lists",
+        "QFT IU/mL"
+      ],
+      "answer": "tb-rifampin / catalogue plates, with WHO for regimens",
+      "why": "Hand-off.",
+      "whyWrong": {
+        "This Wikipedia enzyme card alone": "No codon table here as authority.",
+        "BCG strain lists": "No.",
+        "QFT IU/mL": "No."
+      }
+    },
+    {
+      "id": "rpo-figure",
+      "kind": "figure",
+      "prompt": "Codon 491 is marked to remind you:",
+      "choices": [
+        "It is S450L",
+        "Some clinically relevant changes sit outside many cartridge windows",
+        "It is ESAT-6",
+        "It is PZA"
+      ],
+      "answer": "Some clinically relevant changes sit outside many cartridge windows",
+      "why": "Mark note.",
+      "whyWrong": {
+        "It is S450L": "That's 450.",
+        "It is ESAT-6": "No.",
+        "It is PZA": "No."
+      },
+      "figureHint": "491 mark."
+    }
+  ]
+}

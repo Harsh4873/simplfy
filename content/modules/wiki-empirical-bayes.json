@@ -1,0 +1,187 @@
+{
+  "id": "wiki-empirical-bayes",
+  "title": "Empirical Bayes as named prior-from-the-data shrinkage",
+  "dek": "Wikipedia EB: estimate the prior from the ensemble, then shrink. Not fully Bayesian, not a p-value. Catalogue screens love it.",
+  "domain": "stats",
+  "aliases": [
+    "empirical Bayes",
+    "EB shrinkage",
+    "estimated prior"
+  ],
+  "tags": [
+    "glossary",
+    "empirical Bayes",
+    "shrinkage",
+    "ensemble"
+  ],
+  "story": [
+    "Empirical Bayes on Wikipedia estimates the prior (or hyperprior) from the same ensemble you will shrink, then pretends that prior was known. It is a two-step that often works for many parallel units (genes, schools, SNPs, isolates' random effects).",
+    "It is not a full posterior over the prior (that would be hierarchical Bayes with uncertainty in τ). SEs that ignore the estimation of τ are too small.",
+    "stats-partial-pooling is the GLM version. Storey π0 is an EB flavour for p-values (stats-fdr)."
+  ],
+  "deepTitle": "Ensemble as the prior's teacher",
+  "deep": [
+    "If the ensemble is one scientific object (one new drug), EB has nothing to estimate.",
+    "Tweedie's formula is a named EB celebrity for exponential families.",
+    "Selection (only report the big hits) without a selective-inference repair wrecks EB.",
+    "Do not call EB a p-value correction."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Ensemble in, estimate G, shrink units. Uncertainty in G is the part people forget to carry.",
+    "nodes": [
+      {
+        "id": "ens",
+        "label": "many units",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "g",
+        "label": "estimate Ĝ",
+        "x": 38,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "sh",
+        "label": "shrink each",
+        "x": 64,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "ok",
+        "label": "point EB",
+        "x": 90,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "tau",
+        "label": "carry τ uncertainty",
+        "x": 90,
+        "y": 75,
+        "tone": "end",
+        "detail": "full Bayes"
+      }
+    ],
+    "edges": [
+      {
+        "from": "ens",
+        "to": "g"
+      },
+      {
+        "from": "g",
+        "to": "sh"
+      },
+      {
+        "from": "sh",
+        "to": "ok"
+      },
+      {
+        "from": "g",
+        "to": "tau",
+        "label": "often skipped"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Empirical Bayes method — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Empirical_Bayes_method",
+      "attribution": "English Wikipedia revision 1328186485 (2025-12-18T10:51:39Z). Wikidata Q5374241. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-james-stein",
+    "stats-partial-pooling",
+    "stats-hierarchical",
+    "stats-fdr",
+    "stats-eight-schools",
+    "stats-priors"
+  ],
+  "example": {
+    "title": "200 gene-wise logFC, EB shrink, then treat the 10 biggest as z=20 truths",
+    "setup": "SEs from the second step only.",
+    "steps": [
+      {
+        "title": "Ensemble taught G",
+        "body": "EB."
+      },
+      {
+        "title": "Selection + ignored τ",
+        "body": "Too-small SEs."
+      },
+      {
+        "title": "Hierarchical Bayes or a selection model",
+        "body": "Honesty."
+      }
+    ],
+    "takeaway": "Empirical Bayes estimates a prior from the ensemble. It is not full Bayes, and it is not a p-value."
+  },
+  "check": [
+    {
+      "id": "eb-def",
+      "kind": "conceptual",
+      "prompt": "Empirical Bayes, here, is:",
+      "choices": [
+        "A p-value",
+        "Estimating the prior from the ensemble, then shrinking as if it were known",
+        "An LRT only",
+        "A Newick format"
+      ],
+      "answer": "Estimating the prior from the ensemble, then shrinking as if it were known",
+      "why": "Two-step.",
+      "whyWrong": {
+        "A p-value": "No.",
+        "An LRT only": "No.",
+        "A Newick format": "No."
+      }
+    },
+    {
+      "id": "eb-one",
+      "kind": "calculation",
+      "prompt": "n_units=1, no historical ensemble. EB for that unit's prior:",
+      "choices": [
+        "Works as usual",
+        "Has no ensemble to estimate G from; you are back to an ordinary prior choice",
+        "Equals Bonferroni",
+        "Equals HWE"
+      ],
+      "answer": "Has no ensemble to estimate G from; you are back to an ordinary prior choice",
+      "why": "Fuel is the many units.",
+      "whyWrong": {
+        "Works as usual": "No fuel.",
+        "Equals Bonferroni": "No.",
+        "Equals HWE": "No."
+      }
+    },
+    {
+      "id": "eb-figure",
+      "kind": "figure",
+      "prompt": "The 'carry τ uncertainty' node is labelled full Bayes because:",
+      "choices": [
+        "EB always includes a hyperposterior",
+        "Putting a prior on the prior/hyperparameter is the fully Bayesian step EB skips",
+        "τ is a p-value",
+        "τ is r²"
+      ],
+      "answer": "Putting a prior on the prior/hyperparameter is the fully Bayesian step EB skips",
+      "why": "Lower end.",
+      "whyWrong": {
+        "EB always includes a hyperposterior": "Opposite of the skip.",
+        "τ is a p-value": "No.",
+        "τ is r²": "No."
+      },
+      "figureHint": "Lower right."
+    }
+  ]
+}

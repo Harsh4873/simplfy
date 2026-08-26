@@ -1,0 +1,156 @@
+{
+  "id": "wiki-qq",
+  "title": "Q–Q plot as a named distributional display",
+  "dek": "Wikipedia Q–Q: sample quantiles versus theoretical quantiles. Genomic inflation is a GWAS costume of the same idea.",
+  "domain": "stats",
+  "aliases": [
+    "Q-Q plot",
+    "quantile-quantile",
+    "normal probability plot"
+  ],
+  "tags": [
+    "glossary",
+    "QQ",
+    "quantiles",
+    "display"
+  ],
+  "story": [
+    "A Q–Q plot on Wikipedia compares quantiles of a sample to quantiles of a reference law (often Normal, or Uniform for p-values). Points on the diagonal mean 'this reference is a plausible bulk'.",
+    "GWAS λ_GC is a median-based summary of a χ² Q–Q. A skyline Manhattan without a Q–Q is incomplete; a Q–Q with λ=1.5 and a pretty skyline is a structure warning (stats-gwas).",
+    "Residual Q–Q in OLS is stats-ols-diagnostics territory. This card is the encyclopedia display name."
+  ],
+  "deepTitle": "Bulk versus tail",
+  "deep": [
+    "Tails are noisy; a few off-diagonal points can be discoveries or bad QC.",
+    "Plotting −log10 p Q–Q emphasises tails on purpose.",
+    "A straight line with slope ≠1 is a scale problem, not a mean problem.",
+    "Do not 'correct' a Q–Q by deleting the peak SNPs and declaring victory without a scientific null."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic: a reference law versus a sample that is overdispersed in the tail (inflation). Q–Q would bow off the diagonal even if the means match.",
+    "xLabel": "quantile scale (schematic)",
+    "curves": [
+      {
+        "id": "ref",
+        "label": "reference",
+        "mean": 0.0,
+        "sd": 0.8
+      },
+      {
+        "id": "inf",
+        "label": "inflated tail",
+        "mean": 0.0,
+        "sd": 1.4
+      },
+      {
+        "id": "shift",
+        "label": "mean-shifted (different problem)",
+        "mean": 1.1,
+        "sd": 0.8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Q–Q plot — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot",
+      "attribution": "English Wikipedia revision 1340026062 (2026-02-23T15:00:40Z). Wikidata Q378347. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-gwas-glossary",
+    "wiki-manhattan",
+    "stats-gwas",
+    "stats-ols-diagnostics",
+    "stats-population-structure"
+  ],
+  "example": {
+    "title": "GWAS Q–Q λ=1.45, no PCs",
+    "setup": "Team circles the two tallest SNPs only.",
+    "steps": [
+      {
+        "title": "Bulk is wrong",
+        "body": "Inflation, not two discoveries."
+      },
+      {
+        "title": "Structure plate",
+        "body": "PCs/kinship."
+      },
+      {
+        "title": "Then redraw Q–Q",
+        "body": "Display is a check, not a trophy."
+      }
+    ],
+    "takeaway": "A Q–Q plot checks a reference law in the bulk. λ>1 is a warning, not a medal."
+  },
+  "check": [
+    {
+      "id": "qq-def",
+      "kind": "conceptual",
+      "prompt": "A Q–Q plot compares:",
+      "choices": [
+        "Means only",
+        "Sample quantiles to theoretical quantiles of a named reference",
+        "ORs to RRs",
+        "Trees to Newick only"
+      ],
+      "answer": "Sample quantiles to theoretical quantiles of a named reference",
+      "why": "Display.",
+      "whyWrong": {
+        "Means only": "That's a location check.",
+        "ORs to RRs": "No.",
+        "Trees to Newick only": "No."
+      }
+    },
+    {
+      "id": "qq-lam",
+      "kind": "calculation",
+      "prompt": "GWAS λ_GC=1.4 most likely means:",
+      "choices": [
+        "AUC=1.4",
+        "The bulk of test statistics is inflated vs the claimed null χ² (structure, polygenicity, or a bad test)",
+        "OR=1.4",
+        "p=1.4"
+      ],
+      "answer": "The bulk of test statistics is inflated vs the claimed null χ² (structure, polygenicity, or a bad test)",
+      "why": "Inflation.",
+      "whyWrong": {
+        "AUC=1.4": "Impossible AUC.",
+        "OR=1.4": "No.",
+        "p=1.4": "No."
+      }
+    },
+    {
+      "id": "qq-figure",
+      "kind": "figure",
+      "prompt": "The mean-shifted curve is a different problem from inflation because:",
+      "choices": [
+        "They are identical",
+        "A location shift is not the same as extra spread in the tails",
+        "Inflation is a prior",
+        "Q–Q is a tree"
+      ],
+      "answer": "A location shift is not the same as extra spread in the tails",
+      "why": "Third vs second curve.",
+      "whyWrong": {
+        "They are identical": "No.",
+        "Inflation is a prior": "No.",
+        "Q–Q is a tree": "No."
+      },
+      "figureHint": "Third legend."
+    }
+  ]
+}

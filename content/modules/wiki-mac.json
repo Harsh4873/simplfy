@@ -1,0 +1,160 @@
+{
+  "id": "wiki-mac",
+  "title": "M. avium complex as a named NTM pack",
+  "dek": "Wikipedia's MAC page is the avium/intracellulare (and friends) pack. Not MTBC. Not HRZE by default.",
+  "domain": "tb",
+  "aliases": [
+    "MAC",
+    "Mycobacterium avium complex",
+    "M. avium",
+    "M. intracellulare"
+  ],
+  "tags": [
+    "glossary",
+    "NTM",
+    "MAC",
+    "avium"
+  ],
+  "story": [
+    "Mycobacterium avium complex on Wikipedia is a pack of related slow-growing NTM (avium, intracellulare, chimaera in many modern splits). Disseminated MAC in advanced HIV and nodular-bronchiectatic lung disease are the celebrity syndromes.",
+    "A TB lab's failure mode is a MAC bottle reported with a TB catalogue. Xpert should usually stay negative; if someone typed 'TB' from AFB alone, this node is the correction.",
+    "Treatment is macrolide-based NTM therapy in IDSA-ish land, not WHO HRZE. No doses on this glossary card."
+  ],
+  "deepTitle": "Pack versus one species",
+  "deep": [
+    "M. chimaera heater-cooler outbreak stories are why speciation inside MAC sometimes matters.",
+    "Heat-stable MAC in water systems is environmental, not a person-to-person TB outbreak until proven otherwise.",
+    "IGRA RD1 should usually ignore MAC; TST might not.",
+    "tb-ntm remains the lab-hygiene plate."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "MAC as an NTM pack, not an MTBC lineage. Syndromes are why people search the name.",
+    "layers": [
+      {
+        "title": "NTM",
+        "nodes": [
+          "remainder"
+        ]
+      },
+      {
+        "title": "Pack",
+        "nodes": [
+          "MAC"
+        ]
+      },
+      {
+        "title": "Members",
+        "nodes": [
+          "avium",
+          "intracellulare",
+          "chimaera"
+        ]
+      },
+      {
+        "title": "Syndromes",
+        "nodes": [
+          "HIV dissem.",
+          "lung NTM"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium avium complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_avium_complex",
+      "attribution": "English Wikipedia revision 1367564708 (2026-08-03T21:21:50Z). Wikidata Q3311330. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ntm-glossary",
+    "tb-ntm",
+    "tb-hiv-synergy",
+    "tb-igra-tst",
+    "wiki-m-kansasii",
+    "wiki-m-abscessus"
+  ],
+  "example": {
+    "title": "Catalogue on a MAC genome",
+    "setup": "Pipeline emits 'rpoB wild type, RIF-S TB'. Tree is avium.",
+    "steps": [
+      {
+        "title": "Wrong catalogue",
+        "body": "MAC is not MTBC."
+      },
+      {
+        "title": "Wrong disease name",
+        "body": "Report MAC, not DS-TB."
+      },
+      {
+        "title": "Wrong drugs",
+        "body": "Open NTM guidance, not 2HRZE."
+      }
+    ],
+    "takeaway": "MAC is a named NTM pack. It does not sit in the TB mutation catalogue."
+  },
+  "check": [
+    {
+      "id": "mac-not-mtbc",
+      "kind": "conceptual",
+      "prompt": "MAC is:",
+      "choices": [
+        "Lineage 4 Mtb",
+        "A named NTM complex, not MTBC",
+        "BCG",
+        "A rifamycin"
+      ],
+      "answer": "A named NTM complex, not MTBC",
+      "why": "Pack identity.",
+      "whyWrong": {
+        "Lineage 4 Mtb": "No.",
+        "BCG": "MTBC.",
+        "A rifamycin": "No."
+      }
+    },
+    {
+      "id": "mac-hrze",
+      "kind": "calculation",
+      "prompt": "Disseminated avium in CD4 20 should be treated as:",
+      "choices": [
+        "2HRZE because AFB are AFB",
+        "MAC/NTM disease, not default DS-TB HRZE from a TB catalogue",
+        "LTBI 3HP only",
+        "Pott disease by default"
+      ],
+      "answer": "MAC/NTM disease, not default DS-TB HRZE from a TB catalogue",
+      "why": "Wrong disease.",
+      "whyWrong": {
+        "2HRZE because AFB are AFB": "Classic error.",
+        "LTBI 3HP only": "This is disease.",
+        "Pott disease by default": "No."
+      }
+    },
+    {
+      "id": "mac-figure",
+      "kind": "figure",
+      "prompt": "Chimaera sits on the members row to teach:",
+      "choices": [
+        "That MAC is one species forever",
+        "That the pack has named members speciation can split",
+        "That chimaera is MTBC",
+        "That chimaera is an IGRA"
+      ],
+      "answer": "That the pack has named members speciation can split",
+      "why": "Members layer.",
+      "whyWrong": {
+        "That MAC is one species forever": "Opposite.",
+        "That chimaera is MTBC": "No.",
+        "That chimaera is an IGRA": "No."
+      },
+      "figureHint": "Members layer."
+    }
+  ]
+}

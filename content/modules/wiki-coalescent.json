@@ -1,0 +1,186 @@
+{
+  "id": "wiki-coalescent",
+  "title": "Coalescent as a named backward genealogy",
+  "dek": "Wikipedia Kingman coalescent: lineages merge backward. A sampling model for gene genealogies, not a dated transmission tree by itself.",
+  "domain": "stats",
+  "aliases": [
+    "coalescent theory",
+    "Kingman coalescent",
+    "genealogy backward"
+  ],
+  "tags": [
+    "glossary",
+    "coalescent",
+    "genealogy",
+    "population"
+  ],
+  "story": [
+    "The coalescent on Wikipedia is a backward-time process: sample n gene copies, wait exponential times for lineages to merge. Kingman's n=2 rate of 1 is the celebrity. It is a population-genetic sampling model.",
+    "A TB outbreak transmission tree is a different object (who infected whom). Coalescent times can inform Ne and, with a clock, dates, but they do not print names on edges (stats-transmission-genomics).",
+    "Recombination produces an ancestral recombination graph, not a single Kingman tree. Clonal Mtb is closer to one tree; mixed NTM are not."
+  ],
+  "deepTitle": "Backward versus forward",
+  "deep": [
+    "Effective size Ne rescales time. A bottleneck is not a pretty NJ ladder by itself.",
+    "Structured coalescents (migration) are extra parameters, not a Wikipedia lead sentence.",
+    "Tajima's D is a sibling summary of the same genealogy (wiki-tajima if present — we may skip if no plate).",
+    "Do not call a coalescent date a diagnosis date."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Present samples backward to mergers. Time is coalescent time, not automatically calendar years until a clock is named.",
+    "nodes": [
+      {
+        "id": "now",
+        "label": "n samples now",
+        "x": 12,
+        "y": 70,
+        "tone": "start"
+      },
+      {
+        "id": "wait",
+        "label": "wait exp",
+        "x": 36,
+        "y": 50,
+        "tone": "process"
+      },
+      {
+        "id": "merge",
+        "label": "merge 2",
+        "x": 60,
+        "y": 35,
+        "tone": "process"
+      },
+      {
+        "id": "mrca",
+        "label": "MRCA",
+        "x": 86,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "clock",
+        "label": "clock → years",
+        "x": 86,
+        "y": 70,
+        "tone": "end",
+        "detail": "extra"
+      }
+    ],
+    "edges": [
+      {
+        "from": "now",
+        "to": "wait"
+      },
+      {
+        "from": "wait",
+        "to": "merge"
+      },
+      {
+        "from": "merge",
+        "to": "mrca"
+      },
+      {
+        "from": "mrca",
+        "to": "clock",
+        "label": "not free"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Coalescent theory — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Coalescent_theory",
+      "attribution": "English Wikipedia revision 1366074479 (2026-07-26T03:28:03Z). Wikidata Q2698599. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-trees",
+    "stats-molecular-clock",
+    "stats-transmission-genomics",
+    "wiki-phylo-tree",
+    "stats-population-structure"
+  ],
+  "example": {
+    "title": "TMRCA of a Beijing clade reported as 'outbreak started Tuesday'",
+    "setup": "Coalescent date with huge interval.",
+    "steps": [
+      {
+        "title": "TMRCA is a genealogy time",
+        "body": "Not a first-case diary."
+      },
+      {
+        "title": "Clock and Ne assumptions",
+        "body": "stats-molecular-clock."
+      },
+      {
+        "title": "Transmission names need extra data",
+        "body": "stats-transmission-genomics."
+      }
+    ],
+    "takeaway": "The coalescent is a backward genealogy. It does not name who infected whom."
+  },
+  "check": [
+    {
+      "id": "coal-back",
+      "kind": "conceptual",
+      "prompt": "The Kingman coalescent is:",
+      "choices": [
+        "A forward SIR epidemic by default",
+        "A backward genealogy where sampled lineages merge",
+        "An LRT",
+        "A Manhattan plot"
+      ],
+      "answer": "A backward genealogy where sampled lineages merge",
+      "why": "Backward.",
+      "whyWrong": {
+        "A forward SIR epidemic by default": "Different object.",
+        "An LRT": "No.",
+        "A Manhattan plot": "No."
+      }
+    },
+    {
+      "id": "coal-tx",
+      "kind": "calculation",
+      "prompt": "A coalescent TMRCA for a clade:",
+      "choices": [
+        "Equals the index patient's diagnosis date",
+        "Is a genealogy time that needs a clock to become years and still is not a transmission roster",
+        "Is a q-value",
+        "Is HWE"
+      ],
+      "answer": "Is a genealogy time that needs a clock to become years and still is not a transmission roster",
+      "why": "Two extras.",
+      "whyWrong": {
+        "Equals the index patient's diagnosis date": "No.",
+        "Is a q-value": "No.",
+        "Is HWE": "No."
+      }
+    },
+    {
+      "id": "coal-figure",
+      "kind": "figure",
+      "prompt": "The 'clock → years' node is labelled extra because:",
+      "choices": [
+        "Coalescent time is already calendar years",
+        "A clock model is an extra claim not given by Kingman waiting times alone",
+        "MRCA is a p-value",
+        "NJ is Kingman"
+      ],
+      "answer": "A clock model is an extra claim not given by Kingman waiting times alone",
+      "why": "Lower end.",
+      "whyWrong": {
+        "Coalescent time is already calendar years": "Opposite.",
+        "MRCA is a p-value": "No.",
+        "NJ is Kingman": "No."
+      },
+      "figureHint": "Lower right end."
+    }
+  ]
+}

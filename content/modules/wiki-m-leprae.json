@@ -1,0 +1,160 @@
+{
+  "id": "wiki-m-leprae",
+  "title": "M. leprae as the other famous mycobacterium",
+  "dek": "Wikipedia's leprosy bacillus is not NTM in this teaching cut and not MTBC. It exists so TB graphs do not swallow Hansen's disease.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium leprae",
+    "leprosy bacillus",
+    "Hansen bacillus"
+  ],
+  "tags": [
+    "glossary",
+    "leprosy",
+    "differential",
+    "mycobacterium"
+  ],
+  "story": [
+    "M. leprae on Wikipedia is an unculturable (on ordinary media) mycobacterium causing Hansen's disease. It shares genus trivia and some envelope chemistry with Mtb, and it shares neither NAATs nor WHO TB regimens.",
+    "This card is a boundary stone: TB knowledge graphs love to eat neighbouring mycobacteria. Leprae's diagnostic and treatment grammar is a different programme.",
+    "BCG has a messy, modest story in leprosy prevention on encyclopedia pages. That is not TPT for TB contacts."
+  ],
+  "deepTitle": "Shared genus, different disease",
+  "deep": [
+    "Phenolic glycolipid-1 serology and slit-skin smears are leprosy objects.",
+    "Armadillo reservoirs are trivia that do not belong in a pulmonary TB algorithm.",
+    "Genome reduction versus Mtb is a comparative-genomics pointer, not DST.",
+    "If a 'TB' WGS is leprae, the sample/label is the emergency."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Genus with three teaching buckets. Leprae is a named bucket, not a leftover NTM, not a TB lineage.",
+    "layers": [
+      {
+        "title": "Genus",
+        "nodes": [
+          "Mycobacterium"
+        ]
+      },
+      {
+        "title": "Buckets",
+        "nodes": [
+          "MTBC",
+          "leprae",
+          "NTM"
+        ]
+      },
+      {
+        "title": "Diseases",
+        "nodes": [
+          "TB",
+          "Hansen",
+          "NTM disease"
+        ]
+      },
+      {
+        "title": "Programmes",
+        "nodes": [
+          "WHO TB",
+          "WHO leprosy"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium leprae — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_leprae",
+      "attribution": "English Wikipedia revision 1368885368 (2026-08-11T16:56:11Z). Wikidata Q155891. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ntm-glossary",
+    "tb-mtbc",
+    "tb-organism",
+    "wiki-bcg-vaccine",
+    "wiki-mycolic-acid"
+  ],
+  "example": {
+    "title": "Skin smears called AFB-TB",
+    "setup": "Slit-skin AFB, pulmonary team starts HRZE.",
+    "steps": [
+      {
+        "title": "Site and species priors differ",
+        "body": "Leprae lives in cooler skin/nerves."
+      },
+      {
+        "title": "Do not steal TB WRDs as leprosy diagnostics",
+        "body": "Different algorithms."
+      },
+      {
+        "title": "Keep the boundary stone",
+        "body": "This plate."
+      }
+    ],
+    "takeaway": "Leprae is the other famous mycobacterium. Famous ≠ TB."
+  },
+  "check": [
+    {
+      "id": "lep-bucket",
+      "kind": "conceptual",
+      "prompt": "In this teaching cut, M. leprae is:",
+      "choices": [
+        "NTM leftover",
+        "A named non-MTBC mycobacterium causing Hansen's disease",
+        "Mtb L1",
+        "MAC"
+      ],
+      "answer": "A named non-MTBC mycobacterium causing Hansen's disease",
+      "why": "Boundary stone.",
+      "whyWrong": {
+        "NTM leftover": "We kept it out of the NTM remainder.",
+        "Mtb L1": "No.",
+        "MAC": "No."
+      }
+    },
+    {
+      "id": "lep-hrze",
+      "kind": "calculation",
+      "prompt": "Hansen's disease should be treated with:",
+      "choices": [
+        "Copied 2HRZE from Wikipedia TB",
+        "Leprosy programme regimens, not WHO TB backbones from this studio's TB plates",
+        "BPaLM by default",
+        "QFT-Plus"
+      ],
+      "answer": "Leprosy programme regimens, not WHO TB backbones from this studio's TB plates",
+      "why": "Different programme.",
+      "whyWrong": {
+        "Copied 2HRZE from Wikipedia TB": "Wrong disease.",
+        "BPaLM by default": "DR-TB.",
+        "QFT-Plus": "IGRA."
+      }
+    },
+    {
+      "id": "lep-figure",
+      "kind": "figure",
+      "prompt": "WHO leprosy sits on the programmes row to teach:",
+      "choices": [
+        "That leprosy is TB",
+        "That genus-sharing does not merge programmes",
+        "That NTM is leprosy",
+        "That Hansen is an IGRA"
+      ],
+      "answer": "That genus-sharing does not merge programmes",
+      "why": "Bottom layer split.",
+      "whyWrong": {
+        "That leprosy is TB": "Opposite.",
+        "That NTM is leprosy": "No.",
+        "That Hansen is an IGRA": "No."
+      },
+      "figureHint": "Programmes layer."
+    }
+  ]
+}

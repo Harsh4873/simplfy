@@ -1,0 +1,157 @@
+{
+  "id": "wiki-caseation",
+  "title": "Caseous necrosis as a pathology word",
+  "dek": "Cheese-like dead tissue in granulomas. Wikipedia's histopathology term. Lesion PK and hypoxia stay on tb-caseum.",
+  "domain": "tb",
+  "aliases": [
+    "caseous necrosis",
+    "caseation",
+    "caseum Wikipedia",
+    "cheesy necrosis"
+  ],
+  "tags": [
+    "glossary",
+    "pathology",
+    "granuloma",
+    "necrosis"
+  ],
+  "story": [
+    "Caseous necrosis is Wikipedia's name for the crumbly, acellular, lipid-rich dead zone classically sitting in tuberculous granulomas. Pathologists say caseation; pharmacologists say caseum. This card is the dictionary cross-walk.",
+    "The clinic plates already treat caseum as hypoxic, acidic, drug-hostile, and full of slowly replicating bacilli. Do not re-derive PZA and rifamycin lesion PK from the encyclopedia photo caption.",
+    "Caseation is not unique to TB (some fungi, some other mycobacteria), so the word is a pattern, not a species call."
+  ],
+  "deepTitle": "Word versus PK",
+  "deep": [
+    "Liquefaction toward an airway is how a caseous center becomes a cavity — transmission plate territory.",
+    "Mouse models that do not caseate are the wrong PK classroom; that sentence already lives on tb-granuloma.",
+    "Do not dose from a histopathology page.",
+    "Ghon calcification can follow caseation; that is sequence, not sterility."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Pathology word in the core, PK consequences handed to existing plates at the rim.",
+    "layers": [
+      {
+        "id": "cuff",
+        "label": "Lymphocytic cuff",
+        "detail": "tb-granuloma / IFN-γ",
+        "tone": "membrane"
+      },
+      {
+        "id": "mac",
+        "label": "Epithelioid rim",
+        "detail": "still vascularized",
+        "tone": "wall"
+      },
+      {
+        "id": "cas",
+        "label": "Caseous necrosis (this word)",
+        "detail": "hypoxia, lipid, acid",
+        "tone": "core"
+      },
+      {
+        "id": "pk",
+        "label": "Hand-off: caseum PK",
+        "detail": "tb-caseum, not Wikipedia doses",
+        "tone": "lipid"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Caseous necrosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Caseous_necrosis",
+      "attribution": "English Wikipedia revision 1333348796 (2026-01-17T06:09:13Z). Wikidata Q462033. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-caseum",
+    "tb-granuloma",
+    "tb-pathogenesis",
+    "wiki-granuloma-glossary",
+    "wiki-ghon",
+    "tb-first-line"
+  ],
+  "example": {
+    "title": "Pathology report: caseating granulomas",
+    "setup": "Node biopsy, AFB pending, team starts interpreting caseation as proof of INH-only TPT success.",
+    "steps": [
+      {
+        "title": "Caseation is disease anatomy",
+        "body": "This is not an LTBI label."
+      },
+      {
+        "title": "AFB/NAAT still required",
+        "body": "Other granulomatous diseases caseate."
+      },
+      {
+        "title": "PK comes next only after you know it is TB",
+        "body": "Then read tb-caseum, not the dictionary."
+      }
+    ],
+    "takeaway": "Caseation names the cheese. It does not name the drug."
+  },
+  "check": [
+    {
+      "id": "cas-word",
+      "kind": "conceptual",
+      "prompt": "Caseous necrosis is:",
+      "choices": [
+        "A WHO Group A drug",
+        "A histopathology pattern of cheese-like necrosis, classically in TB granulomas but not species-specific",
+        "Proof of sterility",
+        "An IGRA antigen"
+      ],
+      "answer": "A histopathology pattern of cheese-like necrosis, classically in TB granulomas but not species-specific",
+      "why": "Dictionary, not DST.",
+      "whyWrong": {
+        "A WHO Group A drug": "No.",
+        "Proof of sterility": "Opposite.",
+        "An IGRA antigen": "No."
+      }
+    },
+    {
+      "id": "cas-pk",
+      "kind": "calculation",
+      "prompt": "Hypoxic acidic lipid core affecting PZA/rifamycin behaviour should be read from:",
+      "choices": [
+        "This glossary word alone",
+        "The caseum/granuloma clinic plates, with WHO for doses",
+        "BCG strain names",
+        "Wikidata P2176"
+      ],
+      "answer": "The caseum/granuloma clinic plates, with WHO for doses",
+      "why": "Hand-off.",
+      "whyWrong": {
+        "This glossary word alone": "No PK here.",
+        "BCG strain names": "Vaccine node.",
+        "Wikidata P2176": "Therapy edge."
+      }
+    },
+    {
+      "id": "cas-figure",
+      "kind": "figure",
+      "prompt": "The layered plate hands PK to which band?",
+      "choices": [
+        "Lymphocytic cuff",
+        "Hand-off: caseum PK",
+        "Epithelioid rim only",
+        "The word caseation in the prompt"
+      ],
+      "answer": "Hand-off: caseum PK",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Lymphocytic cuff": "Top.",
+        "Epithelioid rim only": "Second.",
+        "The word caseation in the prompt": "Not a layer id."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ]
+}

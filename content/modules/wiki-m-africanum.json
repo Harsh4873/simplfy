@@ -1,0 +1,184 @@
+{
+  "id": "wiki-m-africanum",
+  "title": "M. africanum as a human-adapted name",
+  "dek": "West-African lineages L5/L6 sit inside MTBC. Wikipedia's species page is a geography-and-membership card, not a different DST catalogue.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium africanum",
+    "lineage 5",
+    "lineage 6",
+    "L5 L6"
+  ],
+  "tags": [
+    "glossary",
+    "MTBC",
+    "lineage",
+    "West Africa"
+  ],
+  "story": [
+    "M. africanum is Wikipedia's name for human-adapted MTBC that is not M. tuberculosis sensu stricto — currently discussed as lineages L5 and L6 (with rarer African lineages nearby). It is TB, it is MTBC, and it is geographically concentrated in West Africa.",
+    "Laboratories outside that geography still see it in travellers and in mixed reference collections. The failure mode is forcing every MTBC genome into an L4 prior.",
+    "RD9 is deleted relative to Mtb sensu stricto — the same deletion class as animal-adapted members — which is why a naive RD panel can confuse africanum with bovis if you stop at one marker."
+  ],
+  "deepTitle": "Lineage as covariate, not as drug",
+  "deep": [
+    "Do not invent a different first-line backbone because the Wikipedia lead says 'africanum'. WHO treatment of DS-TB does not fork on this name.",
+    "Mutation-rate and PE/PPE differences are covariates for a GWAS or a catalogue prior, the same warning as on the Beijing plate.",
+    "L9 and other rare African lineages are sampling updates; membership lists lag.",
+    "Speciation reports should say africanum/L5/L6 explicitly when the barcode supports it."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: geographic concentration and RD9 status versus Mtb sensu stricto. Not a prevalence survey.",
+    "panels": [
+      {
+        "title": "West Africa prior",
+        "bars": [
+          {
+            "label": "Mtb s.s.",
+            "value": 4
+          },
+          {
+            "label": "africanum",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "RD9 present",
+        "bars": [
+          {
+            "label": "Mtb s.s.",
+            "value": 9
+          },
+          {
+            "label": "africanum",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "title": "Still TB disease",
+        "bars": [
+          {
+            "label": "Mtb s.s.",
+            "value": 9
+          },
+          {
+            "label": "africanum",
+            "value": 9
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium africanum — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_africanum",
+      "attribution": "English Wikipedia revision 1288117821 (2025-04-30T15:22:41Z). Wikidata Q2918842. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium tuberculosis complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex",
+      "attribution": "English Wikipedia revision 1368846963 (2026-08-11T11:48:07Z). Wikidata Q5779917. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-lineage-beijing",
+    "tb-wgs-dst",
+    "wiki-mtbc-members",
+    "wiki-m-bovis",
+    "wiki-mtb-organism"
+  ],
+  "example": {
+    "title": "One-marker RD9 panic",
+    "setup": "RD9 PCR negative. Someone files the isolate as M. bovis and strips PZA from a pulmonary DS-TB regimen before SNP barcode.",
+    "steps": [
+      {
+        "title": "RD9 is a clade, not a species",
+        "body": "Africanum and animal-adapted MTBC both lose RD9."
+      },
+      {
+        "title": "Add RD1 and SNPs",
+        "body": "RD1 present plus africanum SNPs is not bovis."
+      },
+      {
+        "title": "Treatment fork is DST, not the English name",
+        "body": "DS africanum is still a DS-TB problem once PZA is actually tested/genotyped."
+      }
+    ],
+    "takeaway": "Africanum is human-adapted MTBC with an RD9 trap."
+  },
+  "check": [
+    {
+      "id": "afr-ds",
+      "kind": "conceptual",
+      "prompt": "M. africanum pulmonary disease that is RIF-S on Ultra is best treated as:",
+      "choices": [
+        "NTM MAC therapy",
+        "TB disease inside MTBC; regimen from WHO DS/DR rules, not from the species epithet",
+        "Automatic BPaLM",
+        "BCG lymphadenitis protocol"
+      ],
+      "answer": "TB disease inside MTBC; regimen from WHO DS/DR rules, not from the species epithet",
+      "why": "The name is geography and lineage, not a fourth-line drug.",
+      "whyWrong": {
+        "NTM MAC therapy": "Wrong complex.",
+        "Automatic BPaLM": "That is a DR-TB regimen class.",
+        "BCG lymphadenitis protocol": "Wrong organism."
+      }
+    },
+    {
+      "id": "afr-rd9",
+      "kind": "calculation",
+      "prompt": "RD9 deleted, RD1 present, SNP barcode L5. This is:",
+      "choices": [
+        "BCG",
+        "M. africanum-like human-adapted MTBC",
+        "M. avium",
+        "M. canettii recombinant outbreak"
+      ],
+      "answer": "M. africanum-like human-adapted MTBC",
+      "why": "RD1-present excludes BCG; L5 is africanum.",
+      "whyWrong": {
+        "BCG": "RD1 deleted in BCG.",
+        "M. avium": "NTM.",
+        "M. canettii recombinant outbreak": "Different taxon and epidemiology."
+      }
+    },
+    {
+      "id": "afr-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, what are the 'still TB disease' bars teaching?",
+      "choices": [
+        "That africanum is twice as pathogenic",
+        "That both names are disease-capable MTBC, not a severity score",
+        "That RD9 present diagnoses cavities",
+        "That West Africa has no Mtb sensu stricto"
+      ],
+      "answer": "That both names are disease-capable MTBC, not a severity score",
+      "why": "Panel three is equal bars.",
+      "whyWrong": {
+        "That africanum is twice as pathogenic": "Not what equal bars say.",
+        "That RD9 present diagnoses cavities": "Wrong panel.",
+        "That West Africa has no Mtb sensu stricto": "Panel one is a prior, not a zero."
+      },
+      "figureHint": "Third panel title."
+    }
+  ]
+}

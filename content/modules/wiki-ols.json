@@ -1,0 +1,159 @@
+{
+  "id": "wiki-ols",
+  "title": "Ordinary least squares as a named criterion",
+  "dek": "Wikipedia OLS is argmin of squared residuals. Geometry, Gauss–Markov, and sandwich SEs already have Simplfy plates.",
+  "domain": "stats",
+  "aliases": [
+    "ordinary least squares",
+    "OLS Wikipedia",
+    "least squares criterion"
+  ],
+  "tags": [
+    "glossary",
+    "OLS",
+    "least squares",
+    "criterion"
+  ],
+  "story": [
+    "Ordinary least squares on Wikipedia is a criterion: choose β to minimise ‖y − Xβ‖². It is not automatically a Gaussian likelihood, not automatically causal, and not automatically the BLUE unless Gauss–Markov assumptions hold.",
+    "stats-ols-geometry already draws the projection. stats-gauss-markov already states BLUE. stats-sandwich already handles heteroscedasticity. This card is the encyclopedia name of the criterion.",
+    "NIST's least-squares language is the definitional authority when Wikipedia and a lab notebook disagree about what was optimised."
+  ],
+  "deepTitle": "Criterion versus likelihood versus estimator",
+  "deep": [
+    "Under iid Gaussian errors, OLS = MLE. Without that, OLS is still a projection estimator with a sandwich variance.",
+    "Normal equations XᵀX β̂ = Xᵀy are linear algebra, not a DAG.",
+    "Multicollinearity is a design-matrix story (wiki-vif).",
+    "Do not call a logit fit 'OLS' because the software defaulted to a linear probability model."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "OLS as a reduced criterion (squared residuals) sitting inside the fuller Gaussian-likelihood story. They coincide when errors are iid Normal; they part when they are not.",
+    "reduced": {
+      "label": "OLS criterion",
+      "params": [
+        "min ‖y−Xβ‖²"
+      ]
+    },
+    "full": {
+      "label": "Gaussian MLE",
+      "params": [
+        "iid Normal",
+        "constant σ²",
+        "same argmin"
+      ]
+    },
+    "statistic": "same β̂ iff Gaussian iid",
+    "reference": "otherwise: projection + sandwich"
+  },
+  "sources": [
+    {
+      "title": "Ordinary least squares — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ordinary_least_squares",
+      "attribution": "English Wikipedia revision 1369060865 (2026-08-12T17:17:55Z). Wikidata Q2912993. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Linear regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Linear_regression",
+      "attribution": "English Wikipedia revision 1370851924 (2026-08-23T11:57:31Z). Wikidata Q10861030. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-ols-geometry",
+    "stats-gauss-markov",
+    "stats-ols-diagnostics",
+    "stats-sandwich",
+    "wiki-regression",
+    "wiki-glm",
+    "wiki-vif"
+  ],
+  "example": {
+    "title": "Binary R/S coded 0/1, 'OLS'",
+    "setup": "Linear probability model, SEs from default σ²I.",
+    "steps": [
+      {
+        "title": "Criterion did run",
+        "body": "You minimised squares."
+      },
+      {
+        "title": "Likelihood is misspecified for Bernoulli",
+        "body": "Logit/score plate."
+      },
+      {
+        "title": "Even if you keep OLS, sandwich the SEs",
+        "body": "stats-sandwich."
+      }
+    ],
+    "takeaway": "OLS names a criterion. Gaussian is an extra claim."
+  },
+  "check": [
+    {
+      "id": "ols-crit",
+      "kind": "conceptual",
+      "prompt": "OLS, as Wikipedia uses it here, is:",
+      "choices": [
+        "Always the Gaussian MLE and a causal effect",
+        "The argmin of squared residuals, a criterion that coincides with Gaussian MLE only under extra assumptions",
+        "An LRT",
+        "A tree"
+      ],
+      "answer": "The argmin of squared residuals, a criterion that coincides with Gaussian MLE only under extra assumptions",
+      "why": "Criterion node.",
+      "whyWrong": {
+        "Always the Gaussian MLE and a causal effect": "Two extra claims.",
+        "An LRT": "No.",
+        "A tree": "No."
+      }
+    },
+    {
+      "id": "ols-gm",
+      "kind": "calculation",
+      "prompt": "Gauss–Markov BLUE needs:",
+      "choices": [
+        "Normal errors",
+        "Linear unbiased estimators, spherical errors; Normality is extra",
+        "A prior",
+        "FDR control"
+      ],
+      "answer": "Linear unbiased estimators, spherical errors; Normality is extra",
+      "why": "Hand-off to stats-gauss-markov.",
+      "whyWrong": {
+        "Normal errors": "For MLE/t, not for BLUE.",
+        "A prior": "Bayesian plate.",
+        "FDR control": "No."
+      }
+    },
+    {
+      "id": "ols-figure",
+      "kind": "figure",
+      "prompt": "The inner box is the OLS criterion because:",
+      "choices": [
+        "It is a prior",
+        "Squared-error minimisation is a subset claim of the Gaussian MLE story",
+        "It is χ²_2 always",
+        "It is a phylogeny"
+      ],
+      "answer": "Squared-error minimisation is a subset claim of the Gaussian MLE story",
+      "why": "Nested-models visual.",
+      "whyWrong": {
+        "It is a prior": "No.",
+        "It is χ²_2 always": "No.",
+        "It is a phylogeny": "No."
+      },
+      "figureHint": "Reduced box."
+    }
+  ]
+}

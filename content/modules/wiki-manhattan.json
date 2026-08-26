@@ -1,0 +1,170 @@
+{
+  "id": "wiki-manhattan",
+  "title": "Manhattan plot as a named display of −log10 p",
+  "dek": "Wikipedia genetics plot: genomic position versus −log10 p. It is a display, not a likelihood and not a causal map.",
+  "domain": "stats",
+  "aliases": [
+    "Manhattan plot",
+    "Manhattan plot genetics",
+    "-log10 p plot"
+  ],
+  "tags": [
+    "glossary",
+    "Manhattan",
+    "display",
+    "GWAS"
+  ],
+  "story": [
+    "A Manhattan plot on Wikipedia is a scatter of −log10 p against genomic coordinate, classically looking like a skyline. It is a display of many tests. It is not the GLM, not the kinship, not the FDR contract.",
+    "Peaks are LD blocks (or clonal tags in bacteria), not automatically causal nucleotides. Fine-mapping is extra work.",
+    "Q–Q plots of the same p-values ask whether the bulk looks like Uniform(0,1). Different display, same tests (wiki-qq)."
+  ],
+  "deepTitle": "Display hygiene",
+  "deep": [
+    "Truncating the y-axis to hide a pile of small p-values is a rhetorical move.",
+    "Colour by chromosome is convention, not biology.",
+    "A pretty skyline with λ_GC=1.4 is still a bulk-null problem.",
+    "Do not put a Manhattan in a paper without naming the test and the covariates."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: a skyline is −log10 p, not β, not a posterior, not a tree. Three misreadings.",
+    "panels": [
+      {
+        "title": "What it shows",
+        "bars": [
+          {
+            "label": "−log10 p",
+            "value": 9
+          },
+          {
+            "label": "β",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "Peak is",
+        "bars": [
+          {
+            "label": "region/LD",
+            "value": 8
+          },
+          {
+            "label": "the nucleotide",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "Not a",
+        "bars": [
+          {
+            "label": "likelihood",
+            "value": 1
+          },
+          {
+            "label": "FDR contract",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Manhattan plot — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Manhattan_plot",
+      "attribution": "English Wikipedia revision 1224311661 (2024-05-17T16:12:13Z). Wikidata Q6749330. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-gwas-glossary",
+    "stats-gwas",
+    "wiki-qq",
+    "wiki-ld",
+    "stats-fdr"
+  ],
+  "example": {
+    "title": "Caption: 'Manhattan identifies the causal SNP'",
+    "setup": "One tallest point circled.",
+    "steps": [
+      {
+        "title": "Display of p",
+        "body": "Not a causal model."
+      },
+      {
+        "title": "LD/clonality",
+        "body": "wiki-ld / stats-gwas."
+      },
+      {
+        "title": "Name the GLM",
+        "body": "Covariates, kinship."
+      }
+    ],
+    "takeaway": "A Manhattan plot is a skyline of p-values. It is not a causal map."
+  },
+  "check": [
+    {
+      "id": "manh-disp",
+      "kind": "conceptual",
+      "prompt": "A Manhattan plot is:",
+      "choices": [
+        "The per-SNP likelihood itself",
+        "A display of −log10 p against genomic position",
+        "A phylogenetic tree",
+        "A credible interval"
+      ],
+      "answer": "A display of −log10 p against genomic position",
+      "why": "Display.",
+      "whyWrong": {
+        "The per-SNP likelihood itself": "The test produced p; the plot displays it.",
+        "A phylogenetic tree": "No.",
+        "A credible interval": "No."
+      }
+    },
+    {
+      "id": "manh-peak",
+      "kind": "calculation",
+      "prompt": "The SNP with the smallest p in a peak is:",
+      "choices": [
+        "The causal nucleotide by definition",
+        "A region tag until fine-mapping/function say otherwise, especially under LD/clonality",
+        "A q-value of 0",
+        "A Newick node"
+      ],
+      "answer": "A region tag until fine-mapping/function say otherwise, especially under LD/clonality",
+      "why": "Decoder-ring error.",
+      "whyWrong": {
+        "The causal nucleotide by definition": "The error.",
+        "A q-value of 0": "No.",
+        "A Newick node": "No."
+      }
+    },
+    {
+      "id": "manh-figure",
+      "kind": "figure",
+      "prompt": "Panel two's short 'the nucleotide' bar teaches:",
+      "choices": [
+        "That peaks name causal bases",
+        "That a peak is usually a region/LD tag, not a finished causal claim",
+        "That β is −log10 p",
+        "That FDR is a skyline"
+      ],
+      "answer": "That a peak is usually a region/LD tag, not a finished causal claim",
+      "why": "Middle panel.",
+      "whyWrong": {
+        "That peaks name causal bases": "Opposite.",
+        "That β is −log10 p": "Panel one.",
+        "That FDR is a skyline": "Panel three."
+      },
+      "figureHint": "Middle panel."
+    }
+  ]
+}

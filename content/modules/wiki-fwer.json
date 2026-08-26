@@ -1,0 +1,144 @@
+{
+  "id": "wiki-fwer",
+  "title": "Family-wise error as a named any-mistake contract",
+  "dek": "FWER = P(V≥1). Wikipedia error-rate node. Stricter than FDR; sometimes that is the point.",
+  "domain": "stats",
+  "aliases": [
+    "family-wise error rate",
+    "FWER",
+    "familywise error"
+  ],
+  "tags": [
+    "glossary",
+    "FWER",
+    "error rate",
+    "testing"
+  ],
+  "story": [
+    "Family-wise error rate on Wikipedia is P(at least one false rejection in the family). It is a probability of any mistake, not an expected fraction among hits.",
+    "Confirmatory families (a pre-specified list of primary endpoints, a small set of resistance genes you will act on clinically) often want FWER. Exploratory RNA-seq mountains often want FDR. Name which.",
+    "Holm, Šidák, Bonferroni, closed testing, and maxT permutation are recipes. The contract is this node."
+  ],
+  "deepTitle": "Family is a choice",
+  "deep": [
+    "If you redefine the family after seeing the data, FWER control is theatre.",
+    "Dependence: permutation of labels (or a phylogeny-aware null) can control FWER without paying Bonferroni's full union bound.",
+    "False coverage rate is a selective-inference cousin for intervals.",
+    "Do not report FWER as q-values."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "FWER cares whether V is ever positive. FDR cares about the ratio V/R when R>0. Different functionals of the same (V,R).",
+    "reduced": {
+      "label": "FWER",
+      "params": [
+        "P(V≥1)"
+      ]
+    },
+    "full": {
+      "label": "FDR",
+      "params": [
+        "E[V/R | R>0] P(R>0)"
+      ]
+    },
+    "statistic": "same rejections, different loss",
+    "reference": "name the loss before the recipe"
+  },
+  "sources": [
+    {
+      "title": "Family-wise error rate — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Family-wise_error_rate",
+      "attribution": "English Wikipedia revision 1362430982 (2026-07-03T22:19:09Z). Wikidata Q5433418. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-multiple-comparisons",
+    "wiki-bonferroni",
+    "wiki-sidak",
+    "stats-multiple-testing",
+    "stats-fdr",
+    "wiki-bh-procedure"
+  ],
+  "example": {
+    "title": "Three primary DST endpoints, all p~0.04",
+    "setup": "Team wants BH because 'genomics always uses FDR'.",
+    "steps": [
+      {
+        "title": "Family is small and confirmatory",
+        "body": "FWER is a reasonable contract."
+      },
+      {
+        "title": "Holm is almost free here",
+        "body": "m=3."
+      },
+      {
+        "title": "If they switch to FDR, they should say the loss changed",
+        "body": "Not a software default."
+      }
+    ],
+    "takeaway": "FWER is P(any false rejection). Small confirmatory families often want it."
+  },
+  "check": [
+    {
+      "id": "fwer-def",
+      "kind": "conceptual",
+      "prompt": "FWER is:",
+      "choices": [
+        "E[V/R]",
+        "P(at least one false rejection in the family)",
+        "A posterior mean",
+        "A branch length"
+      ],
+      "answer": "P(at least one false rejection in the family)",
+      "why": "Definition.",
+      "whyWrong": {
+        "E[V/R]": "FDR-ish.",
+        "A posterior mean": "No.",
+        "A branch length": "No."
+      }
+    },
+    {
+      "id": "fwer-fam",
+      "kind": "calculation",
+      "prompt": "You tested 80 extra genes after seeing the three primary hits, then Bonferroni-corrected m=3:",
+      "choices": [
+        "Valid FWER for the whole search",
+        "Invalid as FWER for the search you actually did; m includes the fishing",
+        "A Bayes factor of 3",
+        "Automatic FDR 0"
+      ],
+      "answer": "Invalid as FWER for the search you actually did; m includes the fishing",
+      "why": "Family definition.",
+      "whyWrong": {
+        "Valid FWER for the whole search": "You hid 80 tests.",
+        "A Bayes factor of 3": "No.",
+        "Automatic FDR 0": "No."
+      }
+    },
+    {
+      "id": "fwer-figure",
+      "kind": "figure",
+      "prompt": "The nested visual puts FWER inside FDR's sentence to teach:",
+      "choices": [
+        "That they are identical functionals",
+        "That they are different losses you might compute on the same rejection set",
+        "That FWER is a prior",
+        "That V is a tree"
+      ],
+      "answer": "That they are different losses you might compute on the same rejection set",
+      "why": "Caption: same rejections, different loss.",
+      "whyWrong": {
+        "That they are identical functionals": "Opposite.",
+        "That FWER is a prior": "No.",
+        "That V is a tree": "No."
+      },
+      "figureHint": "Statistic line."
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "id": "wiki-bayesian-glossary",
+  "title": "Bayesian statistics as a Wikipedia school",
+  "dek": "Encyclopedia school: priors, posteriors, reporting a distribution. Computation and calibration stay on existing stats-* plates.",
+  "domain": "stats",
+  "aliases": [
+    "Bayesian statistics",
+    "Bayesian inference Wikipedia",
+    "posterior school"
+  ],
+  "tags": [
+    "glossary",
+    "Bayesian",
+    "school",
+    "posterior"
+  ],
+  "story": [
+    "Wikipedia's Bayesian statistics article is a school name: unknown quantities get probability distributions, updated by Bayes' theorem. It will mention controversies with frequentist testing that this studio refuses to turn into a personality fight.",
+    "stats-bayesian already does the updating. stats-mcmc, stats-priors, stats-conjugacy, stats-eight-schools already do the work. This card is the encyclopedia school node that should related[] into those ids.",
+    "A 'Bayesian analysis' caption that never shows a prior, a diagnostic, or a posterior interval is using the school as perfume."
+  ],
+  "deepTitle": "School versus checklist",
+  "deep": [
+    "Credible intervals are not confidence intervals (wiki-credible-interval).",
+    "Bayes factors are not LRTs (wiki-bayes-factor).",
+    "Hierarchical Bayes is stats-hierarchical / partial pooling.",
+    "WAIC/LOO are predictive criteria closer to AIC than to a posterior probability of a model."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "School-name neighbours. Size is how often a TB-lab notebook actually needs the object.",
+    "terms": [
+      {
+        "label": "posterior",
+        "weight": 10
+      },
+      {
+        "label": "prior",
+        "weight": 9
+      },
+      {
+        "label": "MCMC",
+        "weight": 8
+      },
+      {
+        "label": "conjugacy",
+        "weight": 6
+      },
+      {
+        "label": "credible interval",
+        "weight": 8
+      },
+      {
+        "label": "not a p-value",
+        "weight": 9
+      },
+      {
+        "label": "hierarchy",
+        "weight": 7
+      },
+      {
+        "label": "calibration",
+        "weight": 7
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bayesian statistics — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayesian_statistics",
+      "attribution": "English Wikipedia revision 1370891978 (2026-08-23T16:29:37Z). Wikidata Q4874481. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-priors",
+    "stats-mcmc",
+    "stats-conjugacy",
+    "wiki-bayes-theorem",
+    "wiki-credible-interval",
+    "wiki-mh",
+    "stats-eight-schools"
+  ],
+  "example": {
+    "title": "Caption: 'Bayesian GWAS'",
+    "setup": "No prior, no MCMC diagnostic, a p-value table.",
+    "steps": [
+      {
+        "title": "School name stolen",
+        "body": "You ran a frequentist GLM."
+      },
+      {
+        "title": "Either drop the adjective or do the checklist",
+        "body": "Prior, computation, posterior."
+      },
+      {
+        "title": "GWAS plate still applies",
+        "body": "Structure, LD, FDR."
+      }
+    ],
+    "takeaway": "Bayesian is a school. Perfume is not a posterior."
+  },
+  "check": [
+    {
+      "id": "bay-school",
+      "kind": "conceptual",
+      "prompt": "Wikipedia Bayesian statistics is used here as:",
+      "choices": [
+        "A licence to skip priors",
+        "A school node that must hand off to prior/MCMC/calibration plates",
+        "A replacement for all GLMs",
+        "An FDR q-value"
+      ],
+      "answer": "A school node that must hand off to prior/MCMC/calibration plates",
+      "why": "School.",
+      "whyWrong": {
+        "A licence to skip priors": "Opposite.",
+        "A replacement for all GLMs": "Likelihood still exists.",
+        "An FDR q-value": "No."
+      }
+    },
+    {
+      "id": "bay-p",
+      "kind": "calculation",
+      "prompt": "A 95% credible interval and a 95% confidence interval:",
+      "choices": [
+        "Are the same sentence",
+        "Answer different questions (posterior probability vs long-run coverage of a procedure)",
+        "Are both p-values",
+        "Are both Newick trees"
+      ],
+      "answer": "Answer different questions (posterior probability vs long-run coverage of a procedure)",
+      "why": "wiki-credible-interval / stats-confidence-intervals.",
+      "whyWrong": {
+        "Are the same sentence": "The common error.",
+        "Are both p-values": "No.",
+        "Are both Newick trees": "No."
+      }
+    },
+    {
+      "id": "bay-figure",
+      "kind": "figure",
+      "prompt": "'not a p-value' is large because:",
+      "choices": [
+        "Posteriors are p-values",
+        "The school reports distributions/odds, not automatically a frequentist tail probability",
+        "MCMC is a p-value",
+        "Priors are p-values"
+      ],
+      "answer": "The school reports distributions/odds, not automatically a frequentist tail probability",
+      "why": "High-weight warning.",
+      "whyWrong": {
+        "Posteriors are p-values": "No.",
+        "MCMC is a p-value": "No.",
+        "Priors are p-values": "No."
+      },
+      "figureHint": "not a p-value term."
+    }
+  ]
+}

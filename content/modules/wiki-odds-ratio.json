@@ -1,0 +1,184 @@
+{
+  "id": "wiki-odds-ratio",
+  "title": "Odds ratio as a named logit contrast",
+  "dek": "OR = (p1/(1−p1))/(p0/(1−p0)). Wikipedia contrast. Not a risk ratio unless the baseline is rare. stats-logit owns the GLM.",
+  "domain": "stats",
+  "aliases": [
+    "odds ratio",
+    "OR Wikipedia",
+    "cross product ratio"
+  ],
+  "tags": [
+    "glossary",
+    "odds ratio",
+    "logit",
+    "contrast"
+  ],
+  "story": [
+    "An odds ratio on Wikipedia is a ratio of odds, the contrast logistic regression emits as exp(β). It is symmetric in a useful 2×2 way and invariant to case-control sampling of the intercept (under a logit).",
+    "It is not a risk ratio. At baseline risk 50%, OR=2 is a very different risk change than at baseline 1%. wiki-relative-risk is the sibling.",
+    "TB papers quoting 'twice the risk' from a logit need this card in related[]."
+  ],
+  "deepTitle": "Odds versus risk versus log-odds",
+  "deep": [
+    "OR=1 means no association on the odds scale, not 'no important public-health effect'.",
+    "Confidence intervals for ORs are usually Wald on the log scale, then exponentiated (delta / invariance of MLE).",
+    "Adjusted ORs depend on the covariate set; they are not portable like a physical constant.",
+    "Do not average ORs from heterogeneous studies without a model (wiki-publication-bias neighbourhood)."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Same OR=2 at two baselines. The risk ratio and risk difference move. Teaching bars, not a meta-analysis.",
+    "panels": [
+      {
+        "title": "Baseline 1%",
+        "bars": [
+          {
+            "label": "RR~2",
+            "value": 8
+          },
+          {
+            "label": "RD tiny",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "Baseline 40%",
+        "bars": [
+          {
+            "label": "RR smaller",
+            "value": 4
+          },
+          {
+            "label": "RD larger",
+            "value": 7
+          }
+        ]
+      },
+      {
+        "title": "OR held at 2",
+        "bars": [
+          {
+            "label": "OR",
+            "value": 6
+          },
+          {
+            "label": "OR",
+            "value": 6
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Odds ratio — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Odds_ratio",
+      "attribution": "English Wikipedia revision 1363828739 (2026-07-12T18:37:28Z). Wikidata Q1862216. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-logit",
+    "wiki-logistic",
+    "wiki-relative-risk",
+    "stats-se-sp",
+    "wiki-pvalue"
+  ],
+  "example": {
+    "title": "exp(β)=2.0, baseline resistance 40%",
+    "setup": "Caption: doubled risk.",
+    "steps": [
+      {
+        "title": "Compute π1 from odds",
+        "body": "odds0=0.4/0.6≈0.667; odds1=1.333; π1=0.57."
+      },
+      {
+        "title": "RR=0.57/0.40≈1.43, not 2",
+        "body": "This plate."
+      },
+      {
+        "title": "Say OR, or compute RR properly",
+        "body": "Honesty."
+      }
+    ],
+    "takeaway": "An odds ratio is a ratio of odds. Risk is a different scale."
+  },
+  "check": [
+    {
+      "id": "or-def",
+      "kind": "conceptual",
+      "prompt": "An odds ratio is:",
+      "choices": [
+        "Always a risk ratio",
+        "A ratio of odds, the usual exp(β) from a logit",
+        "A p-value",
+        "A branch length"
+      ],
+      "answer": "A ratio of odds, the usual exp(β) from a logit",
+      "why": "Definition.",
+      "whyWrong": {
+        "Always a risk ratio": "Only a rare-event approximation.",
+        "A p-value": "No.",
+        "A branch length": "No."
+      }
+    },
+    {
+      "id": "or-rare",
+      "kind": "calculation",
+      "prompt": "Baseline π=0.01, OR=2. The risk ratio is approximately:",
+      "choices": [
+        "0.01",
+        "2, because the rare-event approximation holds",
+        "100",
+        "0.5"
+      ],
+      "answer": "2, because the rare-event approximation holds",
+      "why": "Rare-disease OR≈RR.",
+      "whyWrong": {
+        "0.01": "Baseline risk.",
+        "100": "No.",
+        "0.5": "No."
+      }
+    },
+    {
+      "id": "or-figure",
+      "kind": "figure",
+      "prompt": "Panel two versus panel one shows:",
+      "choices": [
+        "OR changing",
+        "RR and RD changing while OR is held",
+        "That OR is FDR",
+        "That baseline never matters"
+      ],
+      "answer": "RR and RD changing while OR is held",
+      "why": "Third panel holds OR.",
+      "whyWrong": {
+        "OR changing": "Panel three is flat.",
+        "That OR is FDR": "No.",
+        "That baseline never matters": "Opposite."
+      },
+      "figureHint": "Compare panels while OR is held."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "or",
+      "label": "Odds ratio",
+      "expression": "OR = [π1/(1−π1)] / [π0/(1−π0)]",
+      "note": "exp(β) in a logit with a 0/1 contrast."
+    }
+  ]
+}
