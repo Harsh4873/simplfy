@@ -1,0 +1,148 @@
+{
+  "id": "tb-second-line",
+  "title": "Major second-line drugs",
+  "dek": "Fluoroquinolones, bedaquiline, linezolid, pretomanid, and the remaining injectables. BPaLM is the regimen grammar; each drug still has a gene.",
+  "domain": "tb",
+  "aliases": [
+    "bedaquiline",
+    "BDQ",
+    "linezolid",
+    "LZD",
+    "pretomanid",
+    "moxifloxacin",
+    "BPaLM",
+    "fluoroquinolone",
+    "amikacin"
+  ],
+  "tags": ["RR-TB", "MDR", "ATP synthase", "gyrase", "23S", "Ddn"],
+  "story": [
+    "Once rifampin is lost, the classical HRZE backbone is gone. WHO-preferred all-oral regimens for eligible RR/MDR-TB now center on bedaquiline, pretomanid, linezolid, with or without moxifloxacin (BPaL / BPaLM). Older injectable-based MDR regimens are the historical layer you still read in genomes and in patients who failed them.",
+    "Moxifloxacin (and levofloxacin) inhibit DNA gyrase (GyrA/GyrB). QRDR substitutions, especially gyrA A90V, D94G/N/Y, are the usual high-confidence resistance route. Bedaquiline binds the c-ring of ATP synthase (atpE); clinical resistance is more often efflux via MmpL5 overexpression after loss of the negative regulator Rv0678 (mmpR5), which also moves clofazimine MICs.",
+    "Linezolid hits the 50S peptidyl-transferase centre (rrl 23S rRNA; rplC L3). Pretomanid (and delamanid) are nitroimidazoles activated by the deazaflavin-dependent nitroreductase Ddn (and F420 biosynthesis genes fbiA/B/C, fgd1). Amikacin/kanamycin still matter as ghosts: rrs 1401 a>g is the canonical 16S map."
+  ],
+  "deepTitle": "Regimen vs gene, and the efflux problem",
+  "deep": [
+    "BPaLM eligibility is a clinical/DST statement (FQ status changes BPaL vs BPaLM). A genome that is FQ-R is not a BPaLM genome. Read the gyrA QRDR before using the acronym.",
+    "atpE mutants are rare but high-level for BDQ. Rv0678 frameshifts are common-ish and give modest MIC shifts that can still matter under drug pressure. PepQ and atpE belong on the same plate. Reporting “no atpE mutation, therefore BDQ-S” is incomplete.",
+    "Linezolid resistance is still uncommon in many surveys; rrl and rplC are the first places to look. Myelosuppression and neuropathy, not resistance, often limit duration — a pharmacology fact that still changes the genomic prior (less drug exposure, less selection, until it doesn’t).",
+    "Cross-resistance: ETH/INH via inhA; BDQ/CFZ via Rv0678; kanamycin/amikacin via rrs; capreomycin additionally cares about tlyA methylation. Draw the Venn diagram before recycling an injectable from an old regimen."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Second-line target map. Efflux (Rv0678 → MmpL5) is drawn as a drug-to-pump relationship because that is how most clinical BDQ resistance actually looks.",
+    "nodes": [
+      { "id": "mxf", "label": "MXF/LFX", "group": "drug", "x": 10, "y": 18 },
+      { "id": "gyr", "label": "GyrA/GyrB", "group": "target", "x": 38, "y": 18, "sub": "QRDR" },
+      { "id": "bdq", "label": "BDQ", "group": "drug", "x": 10, "y": 42 },
+      { "id": "atpe", "label": "AtpE", "group": "target", "x": 38, "y": 38, "sub": "ATP synthase" },
+      { "id": "rv0678", "label": "Rv0678", "group": "enzyme", "x": 38, "y": 54, "sub": "mmpR5" },
+      { "id": "mmp", "label": "MmpL5 efflux", "group": "target", "x": 62, "y": 54 },
+      { "id": "lzd", "label": "LZD", "group": "drug", "x": 10, "y": 72 },
+      { "id": "rrl", "label": "rrl / rplC", "group": "target", "x": 38, "y": 72, "sub": "50S" },
+      { "id": "pa", "label": "Pa / DLM", "group": "drug", "x": 72, "y": 18, "sub": "prodrug" },
+      { "id": "ddn", "label": "Ddn / F420", "group": "enzyme", "x": 90, "y": 18 },
+      { "id": "amk", "label": "AMK", "group": "drug", "x": 72, "y": 72 },
+      { "id": "rrs", "label": "rrs 1401", "group": "target", "x": 90, "y": 72 }
+    ],
+    "edges": [
+      { "from": "mxf", "to": "gyr" },
+      { "from": "bdq", "to": "atpe" },
+      { "from": "bdq", "to": "rv0678", "label": "if regulator lost" },
+      { "from": "rv0678", "to": "mmp" },
+      { "from": "lzd", "to": "rrl" },
+      { "from": "pa", "to": "ddn" },
+      { "from": "amk", "to": "rrs" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO consolidated guidelines on tuberculosis, Module 4: Treatment (DR-TB, BPaLM)",
+      "url": "https://www.who.int/publications/i/item/9789240048126",
+      "attribution": "WHO open DR-TB regimen guidance.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Bedaquiline — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bedaquiline",
+      "attribution": "ATP synthase mechanism adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-first-line", "tb-resistance", "tb-wgs-dst", "tb-rifampin"],
+  "example": {
+    "title": "FQ-R and the M in BPaLM",
+    "setup": "An RR-TB isolate has gyrA D94G. atpE, Rv0678, rrl, rplC, ddn, fbiABC are wild type. The ward asks for BPaLM.",
+    "steps": [
+      {
+        "title": "What D94G means",
+        "body": "gyrA D94G is a high-confidence FQ-resistance mutation. Moxifloxacin should not be counted as an active companion."
+      },
+      {
+        "title": "Regimen grammar",
+        "body": "BPaLM is BPaL plus moxifloxacin for FQ-susceptible disease. This genome points at BPaL (or another FQ-sparing WHO-recommended regimen), not at ignoring D94G because “the acronym has an M.”"
+      },
+      {
+        "title": "What is still intact",
+        "body": "No atpE/Rv0678, no rrl/rplC, no Ddn/F420 hits: BDQ, LZD, and Pa do not have a genomic veto from this panel. Phenotype can still surprise; catalogues are priors."
+      }
+    ],
+    "takeaway": "Read gyrA before you say BPaLM out loud."
+  },
+  "check": [
+    {
+      "id": "sl-bdq",
+      "kind": "conceptual",
+      "prompt": "Most clinical bedaquiline resistance currently maps to which mechanism?",
+      "choices": [
+        "23S rRNA substitutions in rrl",
+        "Loss of Rv0678 leading to MmpL5 efflux, with rare high-level atpE mutants",
+        "katG S315T",
+        "pncA promoter mutations only"
+      ],
+      "answer": "Loss of Rv0678 leading to MmpL5 efflux, with rare high-level atpE mutants",
+      "why": "Efflux regulation is the common clinical route; atpE is the binding-site route and is rarer. rrl is linezolid; katG/pncA are first-line prodrugs.",
+      "whyWrong": {
+        "23S rRNA substitutions in rrl": "Linezolid.",
+        "katG S315T": "Isoniazid.",
+        "pncA promoter mutations only": "Pyrazinamide."
+      }
+    },
+    {
+      "id": "sl-bpam",
+      "kind": "calculation",
+      "prompt": "BPaLM contains bedaquiline, pretomanid, linezolid, and moxifloxacin. A genome with gyrA A90V is:",
+      "choices": [
+        "FQ-S, so Moxi can be assumed fully active",
+        "FQ-R by catalogue, so the M of BPaLM should not be counted as active without a lot of extra evidence",
+        "Automatically BDQ-R",
+        "Resistant to pretomanid because A90V is in ddn"
+      ],
+      "answer": "FQ-R by catalogue, so the M of BPaLM should not be counted as active without a lot of extra evidence",
+      "why": "A90V is a QRDR allele associated with FQ resistance. It is not atpE and not ddn.",
+      "whyWrong": {
+        "FQ-S, so Moxi can be assumed fully active": "A90V is not a susceptible QRDR.",
+        "Automatically BDQ-R": "Wrong gene.",
+        "Resistant to pretomanid because A90V is in ddn": "A90V is gyrA numbering in this question."
+      }
+    },
+    {
+      "id": "sl-figure",
+      "kind": "figure",
+      "prompt": "On the second-line map, why does BDQ have edges to both AtpE and Rv0678?",
+      "figureHint": "BDQ sits mid-left with two rightward arrows.",
+      "choices": [
+        "Because BDQ is a prodrug activated by both proteins",
+        "Because the drug binds ATP synthase, while clinical resistance is often regulatory loss that upregulates efflux",
+        "Because Rv0678 is a gyrase subunit",
+        "Because AtpE methylates 16S rRNA"
+      ],
+      "answer": "Because the drug binds ATP synthase, while clinical resistance is often regulatory loss that upregulates efflux",
+      "why": "Two mechanisms, one drug. The plate is trying to stop the “no atpE mutation ⇒ susceptible” shortcut.",
+      "whyWrong": {
+        "Because BDQ is a prodrug activated by both proteins": "BDQ is direct-acting; Pa/DLM are the nitroimidazole prodrugs.",
+        "Because Rv0678 is a gyrase subunit": "GyrA/GyrB are the FQ nodes.",
+        "Because AtpE methylates 16S rRNA": "That is a confused rrs/tlyA story."
+      }
+    }
+  ]
+}

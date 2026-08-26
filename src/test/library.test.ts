@@ -1,0 +1,37 @@
+import { describe, expect, it } from "vitest";
+import {
+  listLibrary,
+  openStudioDb,
+  putLibraryItem,
+  type LibraryItem,
+} from "../library/db";
+import { parseDroppedFile } from "../library/parse";
+import { extractTerms, firstLineTitle } from "../library/fieldNote";
+
+describe("local library", () => {
+  it("round-trips a pasted note through IndexedDB", async () => {
+    const db = await openStudioDb();
+    const item: LibraryItem = {
+      id: "note-1",
+      kind: "note",
+      name: "Wilks on the bench",
+      mime: "text/plain",
+      size: 40,
+      text: "Twice the log-likelihood gap.",
+      createdAt: 1,
+    };
+    await putLibraryItem(db, item);
+    const listed = await listLibrary(db);
+    expect(listed.some((row) => row.id === "note-1" && row.text.includes("log-likelihood"))).toBe(true);
+  });
+
+  it("parses text files and titles from the first line", async () => {
+    const file = new File(["Likelihood notes\n\nNested models only."], "note.txt", { type: "text/plain" });
+    const parsed = await parseDroppedFile(file);
+    expect(parsed.text).toContain("Nested models");
+    expect(firstLineTitle(parsed.text, "x")).toBe("Likelihood notes");
+    expect(extractTerms(parsed.text).some((term) => term.label.toLowerCase().includes("nested") || term.label.toLowerCase().includes("likelihood"))).toBe(
+      true,
+    );
+  });
+});

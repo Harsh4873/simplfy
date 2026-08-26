@@ -1,0 +1,140 @@
+{
+  "id": "stats-foundations",
+  "title": "Likelihood and estimators",
+  "dek": "A model is a family of distributions. The likelihood is that family read as a function of the parameter. Estimation is what you do with that function.",
+  "domain": "stats",
+  "aliases": [
+    "likelihood",
+    "MLE",
+    "maximum likelihood",
+    "sampling distribution",
+    "estimator",
+    "log-likelihood",
+    "Fisher information"
+  ],
+  "tags": ["foundations", "inference", "information", "bias"],
+  "story": [
+    "Data y are treated as the realized value of a random variable Y ~ f(y | θ). Once y is observed, the same formula, now a function of θ, is the likelihood L(θ | y) = f(y | θ). Nothing mystical happened: you froze the data and unfroze the parameter.",
+    "The maximum-likelihood estimator θ̂(y) is a maximizer of L, or equivalently of ℓ = log L. For regular models, ℓ is approximately quadratic near the peak; the curvature is Fisher information; the sampling distribution of θ̂ is approximately Normal with variance I(θ)⁻¹ / n in the iid case.",
+    "An estimator is a function of the data. Bias, variance, and consistency are properties of that function under the sampling distribution — they are not properties of a single number you already computed. A good MLE can still look embarrassing in n = 12 with a weakly identified parameter."
+  ],
+  "deepTitle": "The objects you actually write down",
+  "deep": [
+    "For independent observations, L(θ) = ∏ f(yᵢ | θ) and ℓ(θ) = Σ log f(yᵢ | θ). The score S(θ) = ∇ℓ, and the MLE solves S(θ̂) = 0 when the maximum is interior. Observed information is −∇²ℓ(θ̂); expected (Fisher) information is E[−∇²ℓ(θ)].",
+    "Invariance: if θ̂ is the MLE of θ, g(θ̂) is the MLE of g(θ). Delta method: √n (g(θ̂) − g(θ)) →d N(0, ∇gᵀ I⁻¹ ∇g). This is how you get a standard error for a transmission probability that was estimated on the logit scale.",
+    "Misspecification: if the true distribution is not in {f(·|θ)}, the MLE converges to the Kullback–Leibler projection, not to “the truth.” Sandwich (Huber–White) variance is the adult response. In TB WGS–DST, the catalogue model is misspecified by design; sandwich and hierarchical residuals are not optional garnish.",
+    "Bayesian analysis uses the same f(y|θ) as a likelihood and multiplies by a prior. The likelihood function does not change teams. What changes is whether you treat θ as unknown-but-fixed or as a random variable."
+  ],
+  "formulas": [
+    {
+      "id": "lik",
+      "label": "Likelihood",
+      "expression": "L(θ | y) = f(y | θ)",
+      "note": "Same function as the sampling model, opposite variable frozen."
+    },
+    {
+      "id": "mle",
+      "label": "MLE and information",
+      "expression": "θ̂ = arg max ℓ(θ),   I(θ) = E[−∇²ℓ(θ)]",
+      "note": "Regularity needed for the χ² and Normal limit theorems that downstream tests use."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "One sampling model, three readings: the data density at a fixed θ, the likelihood as a function of θ after y is observed, and the approximate Normal sampling distribution of the MLE in a regular large sample.",
+    "xLabel": "parameter θ (schematic)",
+    "curves": [
+      { "id": "lik", "label": "Likelihood L(θ | y)", "mean": 0.2, "sd": 0.9 },
+      { "id": "samp", "label": "Sampling law of θ̂", "mean": 0.35, "sd": 0.55 },
+      { "id": "priorish", "label": "A prior you might multiply", "mean": -0.8, "sd": 1.3 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "OpenStax Introductory Statistics — sampling and estimation chapters",
+      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
+      "attribution": "Foundational sampling language aligned with OpenStax CC BY; likelihood treatment is original teaching notes at a higher level than the OpenStax main text.",
+      "license": "CC BY 4.0 / original notes"
+    },
+    {
+      "title": "Likelihood function — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Likelihood_function",
+      "attribution": "Definitional background adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["stats-lrt", "stats-ols-glm", "stats-bayesian", "stats-hierarchical"],
+  "example": {
+    "title": "Bernoulli MLE for a FQ-R proportion",
+    "setup": "n = 50 sequenced RR-TB isolates, y = 8 with a high-confidence gyrA QRDR mutation. Model: Yᵢ iid Bernoulli(π). Estimate π and a Wald interval.",
+    "steps": [
+      {
+        "title": "Write ℓ",
+        "body": "ℓ(π) = 8 log π + 42 log(1−π), for π ∈ (0,1).",
+        "expression": "ℓ(π) = y log π + (n−y) log(1−π)"
+      },
+      {
+        "title": "Maximize",
+        "body": "Score 8/π − 42/(1−π) = 0 ⇒ π̂ = 8/50 = 0.16. This is also the sample mean, as it must be in an exponential family with identity mean map.",
+        "expression": "π̂ = y/n = 0.16"
+      },
+      {
+        "title": "Information and a caution",
+        "body": "I(π) = n / (π(1−π)). Plug-in SE = √(0.16×0.84/50) ≈ 0.052. A Wald interval 0.16 ± 1.96 SE is a large-sample statement; with 8 events, a score or likelihood-ratio interval is less theatrical near 0."
+      }
+    ],
+    "takeaway": "Write ℓ, differentiate, state the sampling claim — and notice when nπ is too small for Wald theatre."
+  },
+  "check": [
+    {
+      "id": "found-lik",
+      "kind": "conceptual",
+      "prompt": "After data are observed, the likelihood L(θ | y) is:",
+      "choices": [
+        "The probability that the parameter equals θ",
+        "The sampling density viewed as a function of θ with y held fixed",
+        "Always a Normal curve in θ",
+        "The p-value function"
+      ],
+      "answer": "The sampling density viewed as a function of θ with y held fixed",
+      "why": "Likelihood is not a probability distribution on θ unless you add a prior and normalize.",
+      "whyWrong": {
+        "The probability that the parameter equals θ": "That would require a prior (or a discrete parameter with a mass function you already believe).",
+        "Always a Normal curve in θ": "Only a local large-sample approximation in regular models.",
+        "The p-value function": "Different object."
+      }
+    },
+    {
+      "id": "found-calc",
+      "kind": "calculation",
+      "prompt": "iid Poisson(λ), n = 4, data 1, 2, 0, 1. What is the MLE λ̂?",
+      "choices": ["0", "1", "2", "4"],
+      "answer": "1",
+      "why": "For Poisson, λ̂ = ȳ = (1+2+0+1)/4 = 1. The likelihood ∏ e^{−λ} λ^{yᵢ}/yᵢ! is maximized at the mean.",
+      "whyWrong": {
+        "0": "That would maximize nothing relevant here.",
+        "2": "That is the maximum observation, not the MLE.",
+        "4": "That is n, not the mean."
+      }
+    },
+    {
+      "id": "found-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, why is a prior curve drawn next to the likelihood?",
+      "figureHint": "Three labeled curves share one θ axis.",
+      "choices": [
+        "Because the prior is the sampling distribution of θ̂",
+        "To show that Bayes multiplies the same likelihood by a prior; the likelihood itself does not change teams",
+        "Because MLE requires a prior to exist",
+        "Because χ² references are priors"
+      ],
+      "answer": "To show that Bayes multiplies the same likelihood by a prior; the likelihood itself does not change teams",
+      "why": "The plate’s point is ontological hygiene: one f(y|θ), two cultures of what you do with θ.",
+      "whyWrong": {
+        "Because the prior is the sampling distribution of θ̂": "Sampling laws live on estimates, priors live on parameters.",
+        "Because MLE requires a prior to exist": "MLE does not.",
+        "Because χ² references are priors": "They are sampling references under H₀."
+      }
+    }
+  ]
+}

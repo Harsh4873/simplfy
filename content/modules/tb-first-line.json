@@ -1,0 +1,146 @@
+{
+  "id": "tb-first-line",
+  "title": "First-line TB drugs",
+  "dek": "HRZE is still the mental model: cidal INH, sterilizing rifamycin, pH-active PZA, companion EMB. The 4-month rifapentine–moxifloxacin regimen is the 2022 update, not a replacement for knowing HRZE.",
+  "domain": "tb",
+  "aliases": [
+    "HRZE",
+    "isoniazid",
+    "INH",
+    "pyrazinamide",
+    "PZA",
+    "ethambutol",
+    "EMB",
+    "rifapentine",
+    "first-line"
+  ],
+  "tags": ["treatment", "KatG", "InhA", "PncA", "EmbB", "sterilizing"],
+  "story": [
+    "Isoniazid is a prodrug. KatG (catalase-peroxidase) activates it; the INH–NAD adduct inhibits InhA and collapses FAS-II mycolate synthesis. It is rapidly cidal against replicating bacilli. katG S315T is the common high-level resistance allele; inhA promoter up-regulation gives lower-level INH resistance and ethionamide cross-resistance.",
+    "Rifampin is the sterilizing rifamycin of the classical backbone (see the rifampin plate). Pyrazinamide is also a prodrug: PncA (pyrazinamidase) yields pyrazinoic acid. Activity is strongly pH-dependent and especially useful in acidic, inflammatory, necrotic lesions. Ethambutol inhibits arabinosyltransferases (EmbCAB, clinically EmbB) and is the companion that protects against resistance while susceptibility is still being proven.",
+    "Standard DS-TB was 2HRZE/4HR. WHO now also recommends a 4-month regimen of isoniazid, rifapentine, moxifloxacin, and pyrazinamide (HPMZ) for eligible patients. Knowing both is part of not being stuck in 2010."
+  ],
+  "deepTitle": "Activation, lesions, and what “first-line” hides",
+  "deep": [
+    "INH and PZA both require bacterial enzymes. Loss-of-function is an easy resistance route: missense in katG, and a long tail of pncA coding and promoter mutations scattered across the gene (no tidy RRDR). That is why pncA needs whole-gene interrogation, not a five-probe cartridge.",
+    "EmbB Met306 variants are the common ethambutol story, but ethambutol DST has always been fiddly; WGS catalogues are more honest if you report confidence grades.",
+    "Rifapentine is a longer-half-life rifamycin used in LTBI (3HP) and in the 4-month HPMZ DS-TB regimen. CYP3A4 induction still happens. Moxifloxacin in HPMZ is a first-line drug in that regimen and a second-line drug in RR-TB — the same molecule, different neighbors.",
+    "HIV, pregnancy, and extensive disease still force regimen thinking beyond a mnemonic. PZA is often used in TB meningitis; EMB’s optic neuropathy is the monitoring tax."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Four classical first-line agents as arrows onto envelope and information machinery. Prodrugs are marked by their activating enzyme.",
+    "nodes": [
+      { "id": "inh", "label": "INH", "group": "drug", "x": 10, "y": 22, "sub": "prodrug" },
+      { "id": "katg", "label": "KatG", "group": "enzyme", "x": 28, "y": 22, "sub": "activation" },
+      { "id": "inha", "label": "InhA / FAS-II", "group": "target", "x": 50, "y": 22, "sub": "mycolate" },
+      { "id": "rif", "label": "RIF", "group": "drug", "x": 10, "y": 50 },
+      { "id": "rpob", "label": "RpoB", "group": "target", "x": 50, "y": 50, "sub": "RNAP β" },
+      { "id": "pza", "label": "PZA", "group": "drug", "x": 10, "y": 78, "sub": "prodrug" },
+      { "id": "pnca", "label": "PncA", "group": "enzyme", "x": 28, "y": 78, "sub": "activation" },
+      { "id": "poa", "label": "POA / CoA stress", "group": "target", "x": 50, "y": 78, "sub": "acid pH" },
+      { "id": "emb", "label": "EMB", "group": "drug", "x": 72, "y": 50 },
+      { "id": "embb", "label": "EmbCAB", "group": "target", "x": 90, "y": 50, "sub": "AG" }
+    ],
+    "edges": [
+      { "from": "inh", "to": "katg" },
+      { "from": "katg", "to": "inha", "label": "INH–NAD" },
+      { "from": "rif", "to": "rpob" },
+      { "from": "pza", "to": "pnca" },
+      { "from": "pnca", "to": "poa" },
+      { "from": "emb", "to": "embb" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO consolidated guidelines on tuberculosis, Module 4: Treatment (DS-TB, including 4-month regimens)",
+      "url": "https://www.who.int/publications/i/item/9789240048126",
+      "attribution": "WHO open treatment guidance.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Isoniazid / Pyrazinamide / Ethambutol — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Isoniazid",
+      "attribution": "Mechanism sketches adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-rifampin", "tb-second-line", "tb-resistance", "tb-organism"],
+  "example": {
+    "title": "Low-level INH resistance and ethionamide",
+    "setup": "WGS: inhA c-15t promoter mutation, katG wild type. Phenotypic INH MIC is 0.25 µg/mL (above the 0.1 critical concentration, below high-level). The team wants to know about ethionamide.",
+    "steps": [
+      {
+        "title": "What c-15t does",
+        "body": "Promoter up-regulation makes more InhA. INH (and ethionamide, which also ends at InhA) need higher concentrations. This is not KatG failure; some INH activity may remain at higher dose in selected regimens, depending on current guidance."
+      },
+      {
+        "title": "Cross-resistance",
+        "body": "Ethionamide/prothionamide share the InhA endpoint. An inhA promoter mutant is a poor candidate for ETH even if katG is intact.",
+        "expression": "inhA promoter ↑  →  INH low-level R  +  ETH cross-R"
+      },
+      {
+        "title": "What you still do not know",
+        "body": "This result does not speak to rifampin, PZA, or FQ. Do not collapse the entire DST into the INH story."
+      }
+    ],
+    "takeaway": "katG vs inhA is a quantitative and a cross-resistance distinction, not two ways to write “INH-R.”"
+  },
+  "check": [
+    {
+      "id": "fl-prodrug",
+      "kind": "conceptual",
+      "prompt": "Which pair are prodrugs that require Mtb enzymes for activation?",
+      "choices": [
+        "Rifampin and ethambutol",
+        "Isoniazid and pyrazinamide",
+        "Ethambutol and moxifloxacin",
+        "Isoniazid and rifampin"
+      ],
+      "answer": "Isoniazid and pyrazinamide",
+      "why": "KatG activates INH; PncA activates PZA. RIF and EMB bind their targets without that activation step.",
+      "whyWrong": {
+        "Rifampin and ethambutol": "Neither is a KatG/PncA prodrug.",
+        "Ethambutol and moxifloxacin": "Direct-acting.",
+        "Isoniazid and rifampin": "INH yes, RIF no."
+      }
+    },
+    {
+      "id": "fl-katg",
+      "kind": "calculation",
+      "prompt": "katG S315T typically produces which INH phenotype, compared with an inhA promoter mutant?",
+      "choices": [
+        "Lower-level INH resistance with ETH cross-resistance",
+        "High-level INH resistance, usually without obligatory ETH cross-resistance",
+        "Isolated PZA resistance",
+        "No INH effect; only streptomycin resistance"
+      ],
+      "answer": "High-level INH resistance, usually without obligatory ETH cross-resistance",
+      "why": "S315T degrades activation of INH while leaving InhA itself intact, so ETH (which uses EthA, then InhA) is often spared. Promoter inhA mutants are the ETH-cross story.",
+      "whyWrong": {
+        "Lower-level INH resistance with ETH cross-resistance": "That is the inhA promoter pattern.",
+        "Isolated PZA resistance": "pncA, not katG.",
+        "No INH effect; only streptomycin resistance": "Wrong drug class."
+      }
+    },
+    {
+      "id": "fl-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, what sits between PZA and “POA / CoA stress”?",
+      "figureHint": "Follow the bottom row of nodes.",
+      "choices": [
+        "KatG",
+        "PncA",
+        "RpoB",
+        "EmbCAB"
+      ],
+      "answer": "PncA",
+      "why": "Pyrazinamidase converts PZA to pyrazinoic acid. KatG is the INH row; RpoB is RIF; EmbCAB is EMB.",
+      "whyWrong": {
+        "KatG": "That is the INH activation node.",
+        "RpoB": "Rifampin target.",
+        "EmbCAB": "Ethambutol target."
+      }
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "id": "tb-rifampin",
+  "title": "Rifampin and rpoB",
+  "dek": "Rifampin binds the β subunit of RNA polymerase. Almost all high-level resistance in M. tuberculosis is a missense mutation in a short stretch of rpoB.",
+  "domain": "tb",
+  "aliases": [
+    "rifampin",
+    "rifampicin",
+    "RIF",
+    "rpoB",
+    "RRDR",
+    "rif",
+    "Xpert RIF"
+  ],
+  "tags": ["RNAP", "first-line", "MDR surrogate", "gene numbering", "NAAT"],
+  "story": [
+    "Rifampin (rifampicin) is the backbone of drug-susceptible TB regimens because it is sterilizing: it helps clear persisting bacilli and makes short-course therapy possible. It binds the β subunit of bacterial DNA-dependent RNA polymerase, encoded by rpoB, and blocks elongation.",
+    "Resistance is not a mysterious multi-locus trait. In clinical M. tuberculosis, high-level rifampin resistance is almost always a substitution in the 81-bp rifampin-resistance-determining region (RRDR) of rpoB. The laboratory-common mutation is Ser450Leu in Mtb codon numbering — the same residue as Escherichia coli Ser531.",
+    "That is why Xpert MTB/RIF (and its Ultra successor) can treat five molecular beacons over the RRDR as a surrogate for rifampin resistance, and why rifampin resistance is used operationally as a marker for MDR-TB. The surrogate is excellent, not perfect: silent SNPs, disputed borderline mutations, and rare non-RRDR resistance exist."
+  ],
+  "deepTitle": "Numbering, probes, and disputed mutations",
+  "deep": [
+    "Two numbering systems are in simultaneous use. M. tuberculosis codon numbering (H37Rv) places the RRDR at codons 426–452; E. coli numbering places the homologous stretch at 507–533. S450L (Mtb) = S531L (E. coli). Papers, WHO catalogues, and older DST literature mix these. A genomics lab that reports “531” without saying which system is doing the reader a disservice.",
+    "Xpert probes A–E tile the RRDR. Probe dropout, not a called base, is the assay’s resistance signal. Mixed (heteroresistant) populations can produce delayed Ct or missing probes depending on the minority fraction. Ultra added melt analysis to recover some disputed positions.",
+    "Not every RRDR missense equals a high MIC. WHO’s mutation catalogue grades variants as associated with resistance, not associated, or uncertain. I491F (Mtb numbering; outside the classical RRDR) is a known Xpert-miss that can still raise rifampin MIC. Borderline mutations (e.g. some 445 and 452 alleles) may fail phenotypic DST at critical concentration while remaining clinically relevant on rifampin, which is why some programmes use rifabutin or MIC methods.",
+    "Rifampin induces CYP3A4 and has brutal interaction tables (bedaquiline, protease inhibitors, warfarin). That is pharmacology, not rpoB, but it belongs on the same plate if the question is “can this patient take RIF?”"
+  ],
+  "formulas": [
+    {
+      "id": "numbering",
+      "label": "RRDR map",
+      "expression": "Mtb rpoB 426–452  ≡  E. coli 507–533",
+      "note": "S450L (Mtb) is S531L (E. coli). Always state the system."
+    }
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "rpoB in M. tuberculosis numbering. The 81-bp RRDR (codons 426–452) is the strip Xpert actually interrogates. S450L is the dominant high-level allele. I491F sits downstream of the classical RRDR and is an Xpert-blind route to rifampin resistance.",
+    "gene": "rpoB",
+    "start": 400,
+    "end": 520,
+    "unit": "codon (Mtb)",
+    "regions": [
+      { "start": 426, "end": 452, "label": "RRDR" }
+    ],
+    "marks": [
+      { "pos": 435, "label": "D435V", "note": "cluster I; often high MIC" },
+      { "pos": 445, "label": "H445Y/D", "note": "sometimes borderline vs rifabutin" },
+      { "pos": 450, "label": "S450L", "note": "dominant clinical allele" },
+      { "pos": 491, "label": "I491F", "note": "outside RRDR; Xpert can miss" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO consolidated guidelines on tuberculosis, Module 3: Diagnosis; Module 4: Treatment",
+      "url": "https://www.who.int/publications/i/item/9789240046764",
+      "attribution": "WHO open-access TB guidelines.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Rifampicin — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Rifampicin",
+      "attribution": "Background on mechanism and induction; adapted, not copied.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO catalogue of mutations in Mycobacterium tuberculosis complex and their association with drug resistance",
+      "url": "https://www.who.int/publications/i/item/9789240028173",
+      "attribution": "Grading of rpoB alleles; teaching summary only.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": ["tb-first-line", "tb-resistance", "tb-wgs-dst", "tb-diagnosis", "tb-second-line"],
+  "example": {
+    "title": "Calling an Xpert-discordant isolate",
+    "setup": "An isolate is Xpert MTB/RIF “RIF susceptible” (all probes present) but phenotypic MGIT rifampin DST is resistant. WGS shows rpoB I491F (Mtb numbering) at ~90% allele frequency, no RRDR missense.",
+    "steps": [
+      {
+        "title": "Locate the residue",
+        "body": "Codon 491 is downstream of 452, so it is outside the 81-bp RRDR. Xpert’s beacons never looked there. Discordance is mechanistically expected, not a lab error by default."
+      },
+      {
+        "title": "Check the catalogue grade",
+        "body": "I491F is a recognized rifampin-resistance mutation in the WHO catalogue, historically under-detected by Xpert. The phenotypic result and the WGS call agree; the NAAT is the limited assay here."
+      },
+      {
+        "title": "Report numbering",
+        "body": "Write “rpoB I491F (Mtb / H37Rv numbering)” so a reader using E. coli coordinates does not go hunting for a non-existent 531-adjacent allele.",
+        "expression": "I491F (Mtb)  ↛  RRDR 426–452"
+      },
+      {
+        "title": "Clinical translation",
+        "body": "This is rifampin-resistant TB. Do not start a DS-TB rifampin backbone. Move to an RR-TB algorithm (and test the rest of the resistance panel — I491F does not speak to INH, FQ, or BDQ)."
+      }
+    ],
+    "takeaway": "Xpert interrogates a window, not the concept of rifampin resistance. WGS and MIC exist for the alleles outside that window."
+  },
+  "check": [
+    {
+      "id": "rif-target",
+      "kind": "conceptual",
+      "prompt": "What is the primary molecular target of rifampin in M. tuberculosis?",
+      "choices": [
+        "InhA in the FAS-II cycle",
+        "The β subunit of RNA polymerase (rpoB)",
+        "ATP synthase c-ring (atpE)",
+        "DNA gyrase subunit A (gyrA)"
+      ],
+      "answer": "The β subunit of RNA polymerase (rpoB)",
+      "why": "Rifampin binds RpoB and blocks elongation. InhA is isoniazid/ethionamide, atpE is bedaquiline, gyrA is fluoroquinolones.",
+      "whyWrong": {
+        "InhA in the FAS-II cycle": "That is the isoniazid/ethionamide target, after KatG or EthA activation.",
+        "ATP synthase c-ring (atpE)": "That is bedaquiline.",
+        "DNA gyrase subunit A (gyrA)": "That is moxifloxacin and the other fluoroquinolones."
+      }
+    },
+    {
+      "id": "rif-numbering",
+      "kind": "calculation",
+      "prompt": "The RRDR is Mtb codons 426–452, homologous to E. coli 507–533. Which statement about S450L is correct?",
+      "choices": [
+        "S450L (Mtb) equals S531L (E. coli) and lies inside the RRDR",
+        "S450L (Mtb) equals S426L (E. coli) and lies outside the RRDR",
+        "S450L is a promoter mutation upstream of rpoB",
+        "S450L cannot be detected by Xpert because 450 > 452"
+      ],
+      "answer": "S450L (Mtb) equals S531L (E. coli) and lies inside the RRDR",
+      "why": "Offset between the two numbering systems is 81 amino acids (531 − 450 = 81, and 507 − 426 = 81). 450 sits inside 426–452, so Xpert can see it.",
+      "whyWrong": {
+        "S450L (Mtb) equals S426L (E. coli) and lies outside the RRDR": "The homology offset is +81, not identity at 426.",
+        "S450L is a promoter mutation upstream of rpoB": "It is a missense in the coding RRDR.",
+        "S450L cannot be detected by Xpert because 450 > 452": "450 is less than 452; it is inside the window. I491F is the classic miss."
+      }
+    },
+    {
+      "id": "rif-figure",
+      "kind": "figure",
+      "prompt": "On the rpoB track, why is I491F drawn to the right of the RRDR box?",
+      "figureHint": "The shaded box is codons 426–452. I491F is marked at 491.",
+      "choices": [
+        "Because I491F is an E. coli coordinate that does not exist in Mtb",
+        "Because codon 491 lies outside the 81-bp region the Xpert beacons tile",
+        "Because I491F is a synonymous change and is not drawn to scale",
+        "Because 491 is the start codon of rpoB"
+      ],
+      "answer": "Because codon 491 lies outside the 81-bp region the Xpert beacons tile",
+      "why": "The plate is a codon map. Positions right of 452 are 3′ of the classical RRDR; I491F is the teaching example of an Xpert-blind resistance allele.",
+      "whyWrong": {
+        "Because I491F is an E. coli coordinate that does not exist in Mtb": "491 is Mtb numbering on this plate.",
+        "Because I491F is a synonymous change and is not drawn to scale": "I491F is missense (Ile→Phe).",
+        "Because 491 is the start codon of rpoB": "rpoB starts far upstream of codon 400 on this zoomed track."
+      }
+    }
+  ]
+}

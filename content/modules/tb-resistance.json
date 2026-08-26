@@ -1,0 +1,135 @@
+{
+  "id": "tb-resistance",
+  "title": "Resistance as a genetic object",
+  "dek": "Most clinical Mtb resistance is chromosomal, target- or activation-site, sometimes efflux. Heteroresistance and disputed alleles are the genomics, not the footnote.",
+  "domain": "tb",
+  "aliases": [
+    "drug resistance",
+    "MDR",
+    "XDR",
+    "heteroresistance",
+    "katG",
+    "pncA",
+    "gyrA"
+  ],
+  "tags": ["mutations", "MIC", "WHO catalogue", "fitness", "DST"],
+  "story": [
+    "M. tuberculosis has no relevant horizontal plasmid DST story in the clinic. Resistance is almost always a chromosomal mutation: target modification (rpoB, gyrA, rrl, rrs), loss of a prodrug activator (katG, pncA, ddn/fbi), promoter overexpression of a target (inhA), or loss of a repressor that unleashes efflux (Rv0678).",
+    "MDR-TB is still defined around isoniazid plus rifampin. Pre-XDR adds fluoroquinolone resistance. XDR adds resistance to a Group A drug (bedaquiline or linezolid) on top of that. Definitions moved; genomes did not get the memo, so a 2015 “XDR” paper and a 2024 “XDR” paper are not the same object.",
+    "A mutation is a hypothesis about MIC, not a MIC. WHO catalogues grade genotype–phenotype association. Heteroresistance (mixed alleles in one culture or one lesion) can make a cartridge, a MGIT, and a WGS pileup tell three different short stories about the same patient."
+  ],
+  "deepTitle": "Priors a computational lab should actually use",
+  "deep": [
+    "Mutation supply scales with burden. Cavities are evolution experiments. Detecting a 5% rpoB S450L subpopulation is a different clinical object from a fixed allele, and variant callers with default 10% filters will lie to you.",
+    "Fitness is not optional flavor. S450L is common partly because it is tolerated, sometimes with rpoC compensatory mutations. Some pncA loss-of-function alleles are cheap; some gyrA D94G backgrounds pay more. Compensatory evolution is why you read the rest of RNAP, not only RRDR.",
+    "Critical concentrations are cut-points on an MIC distribution. Borderline rpoB alleles and moxifloxacin “breakpoint philosophy” are where a binary S/R column in a spreadsheet becomes propaganda. Report the allele, the grade, and the MIC if you have it.",
+    "Epistasis and lineage priors exist (eis promoter in L2, some phylogenetic markers mistaken for resistance). Always subtract the phylogenetic SNPs your catalogue already marked as not-associated."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "A first-wave genotype–drug map. This is not the WHO catalogue. It is the set of alleles you should be able to interpret without opening a tab.",
+    "rows": [
+      { "gene": "katG S315T", "drug": "INH", "canonical": "high-level R", "note": "activation loss" },
+      { "gene": "inhA c-15t", "drug": "INH (±ETH)", "canonical": "low-level R", "note": "target overexpression" },
+      { "gene": "rpoB S450L", "drug": "RIF", "canonical": "high-level R", "note": "RRDR; Xpert visible" },
+      { "gene": "rpoB I491F", "drug": "RIF", "canonical": "R", "note": "outside RRDR; Xpert miss" },
+      { "gene": "pncA coding", "drug": "PZA", "canonical": "usually R", "note": "scattered; whole gene" },
+      { "gene": "embB M306V", "drug": "EMB", "canonical": "often R", "note": "DST historically noisy" },
+      { "gene": "gyrA D94G", "drug": "MXF/LFX", "canonical": "FQ-R", "note": "QRDR" },
+      { "gene": "Rv0678 LOF", "drug": "BDQ (±CFZ)", "canonical": "MIC up", "note": "efflux, not atpE" },
+      { "gene": "rrs 1401 a>g", "drug": "AMK/KAN", "canonical": "R", "note": "16S" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO catalogue of mutations in Mycobacterium tuberculosis complex and their association with drug resistance",
+      "url": "https://www.who.int/publications/i/item/9789240028173",
+      "attribution": "Grading philosophy and canonical alleles; summary, not a dump of the catalogue.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Multidrug-resistant tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multidrug-resistant_tuberculosis",
+      "attribution": "Definition history adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-rifampin", "tb-first-line", "tb-second-line", "tb-wgs-dst", "tb-diagnosis"],
+  "example": {
+    "title": "A 8% S450L minority",
+    "setup": "Direct sputum targeted NGS: rpoB S450L at 8% frequency. Xpert: RIF resistance not detected. MGIT culture later grows a RIF-susceptible majority with a resistant subcolony on 7H11.",
+    "steps": [
+      {
+        "title": "Three assays, three windows",
+        "body": "Xpert needs enough mutant template to drop a probe. 8% often will not. Targeted NGS with a 5% threshold sees it. MGIT critical-concentration DST can report S if the minority is outgrown."
+      },
+      {
+        "title": "Do not average them",
+        "body": "This is heteroresistance, consistent with a mixed lesion or emerging resistance. Clinically it is a rifampin problem, not a voting exercise among assays."
+      },
+      {
+        "title": "Caller settings are part of DST",
+        "body": "If your WGS pipeline filters variants below 10%, you will systematically miss this class. State the allele fraction in the report.",
+        "expression": "AF = 0.08  (below many default filters)"
+      }
+    ],
+    "takeaway": "Frequency is a clinical variable. Binary S/R columns throw it away."
+  },
+  "check": [
+    {
+      "id": "res-mdr",
+      "kind": "conceptual",
+      "prompt": "MDR-TB is defined as resistance to:",
+      "choices": [
+        "Any two second-line injectables",
+        "At least isoniazid and rifampin",
+        "Bedaquiline plus linezolid",
+        "Pyrazinamide alone"
+      ],
+      "answer": "At least isoniazid and rifampin",
+      "why": "That is still the MDR core. FQ makes pre-XDR; BDQ or LZD on top of MDR+FQ is the current XDR idea.",
+      "whyWrong": {
+        "Any two second-line injectables": "Historical and wrong.",
+        "Bedaquiline plus linezolid": "Group A drugs; that is not the MDR definition.",
+        "Pyrazinamide alone": "Mono-resistance, not MDR."
+      }
+    },
+    {
+      "id": "res-hetero",
+      "kind": "calculation",
+      "prompt": "A pipeline reports no rpoB mutations because it drops variants with allele fraction < 0.10. A minority S450L at 8% will be:",
+      "choices": [
+        "Reported as high-confidence RR-TB",
+        "Silent in that pipeline, even though it can be clinically real",
+        "Converted automatically to I491F",
+        "Proof that Xpert must be RIF-R"
+      ],
+      "answer": "Silent in that pipeline, even though it can be clinically real",
+      "why": "0.08 < 0.10. Filter choices are DST choices.",
+      "whyWrong": {
+        "Reported as high-confidence RR-TB": "It was filtered out.",
+        "Converted automatically to I491F": "Different codon.",
+        "Proof that Xpert must be RIF-R": "Xpert often misses low-frequency minorities too."
+      }
+    },
+    {
+      "id": "res-figure",
+      "kind": "figure",
+      "prompt": "In the mutation grid, which row is the teaching example of an Xpert-blind rifampin allele?",
+      "figureHint": "Scan the rpoB rows.",
+      "choices": [
+        "katG S315T",
+        "rpoB S450L",
+        "rpoB I491F",
+        "rrs 1401 a>g"
+      ],
+      "answer": "rpoB I491F",
+      "why": "I491F sits outside the RRDR window. S450L is the opposite: the common Xpert-visible allele.",
+      "whyWrong": {
+        "katG S315T": "Isoniazid.",
+        "rpoB S450L": "Inside RRDR; Xpert usually sees it.",
+        "rrs 1401 a>g": "Aminoglycoside."
+      }
+    }
+  ]
+}

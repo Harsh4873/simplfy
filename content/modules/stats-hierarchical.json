@@ -1,0 +1,144 @@
+{
+  "id": "stats-hierarchical",
+  "title": "Hierarchical models",
+  "dek": "Partial pooling: units share a prior, the prior is estimated from the units. The geometry is plates; the payoff is shrinkage.",
+  "domain": "stats",
+  "aliases": [
+    "hierarchical",
+    "multilevel",
+    "random effects",
+    "mixed model",
+    "partial pooling",
+    "shrinkage",
+    "random intercept"
+  ],
+  "tags": ["Bayes", "GLM", "clustering", "mixed models", "TB surveys"],
+  "story": [
+    "TB data are nested whether you like it or not: reads in isolates, isolates in patients, patients in households, households in districts, districts in surveys. A pooled GLM pretends the rows are iid. A no-pooling GLM fits a separate parameter in every district and overfits the small ones.",
+    "A hierarchical (multilevel, mixed-effects) model puts a distribution over unit-level parameters: θ_j ~ N(μ, τ²), then y_{ij} | θ_j ~ f(θ_j). The data update each θ_j and also estimate μ and τ. Small districts shrink toward μ; large ones keep their identity. That is partial pooling.",
+    "In a genomics lab this is how you should think about drug-specific error rates in gDST, lineage effects on resistance, and lab effects on MIC. A star on a dummy-variable coefficient for “Beijing lineage” is often a poorly pooled hierarchical fact."
+  ],
+  "deepTitle": "The model form, and the boundary problem",
+  "deep": [
+    "Random-intercept GLM: g(E[y_{ij} | b_j]) = x_{ij}ᵀβ + b_j, b_j ~ N(0, τ²). Marginalizing the Gaussian random intercept in a nonlinear GLM does not give a GLM; that is why people use PQL, Gauss–Hermite, Laplace, or MCMC.",
+    "The LRT for H₀: τ = 0 is a boundary test. The null distribution is not χ²_1; it is a 50:50 mixture of χ²_0 and χ²_1. Software that prints a naïve p-value is wrong in a known direction (anti-conservative).",
+    "Bayesian hierarchies need a prior on τ. A prior that piles up at 0 (some improper and some “noninformative” choices) can overshrink. Half-t or exponential priors on scale, and checking by prior predictive, are the adult moves.",
+    "Phylogenetic correlation is a hierarchical model with a different covariance: random effects along a tree, or a Gaussian process on SNP distance. Ignoring relatedness and then claiming a lineage effect is the same error as ignoring clusters in a survey."
+  ],
+  "formulas": [
+    {
+      "id": "ri",
+      "label": "Random-intercept GLM",
+      "expression": "g(E[y_{ij} | b_j]) = x_{ij}ᵀ β + b_j,   b_j ~ N(0, τ²)",
+      "note": "Replace the iid error story with a clustered latent intercept."
+    },
+    {
+      "id": "shrink",
+      "label": "Gaussian–Gaussian shrinkage",
+      "expression": "E[θ_j | y] = λ_j ȳ_j + (1−λ_j) μ,   λ_j = τ² / (τ² + σ²/n_j)",
+      "note": "When n_j is small, λ_j drops and the unit is pulled toward the grand mean."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Partial pooling as nested plates: isolates share a patient, patients share a district, districts share a survey mean. Each level has a variance; ignoring a level dumps that variance into the likelihood as fake independence.",
+    "layers": [
+      { "title": "Survey / lab", "nodes": ["μ, τ_district"] },
+      { "title": "District", "nodes": ["A", "B", "C", "D"] },
+      { "title": "Patient / isolate", "nodes": ["A1", "A2", "B1", "C1", "C2", "C3", "D1"] },
+      { "title": "Reads / phenotype", "nodes": ["gDST", "MIC", "AF"] }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Multilevel model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multilevel_model",
+      "attribution": "Terminology and partial-pooling idea adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — sampling from clusters, extended to random-effects models in original notes",
+      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
+      "attribution": "Original teaching notes on shrinkage and boundary LRTs.",
+      "license": "CC BY 4.0 / original notes"
+    }
+  ],
+  "related": ["stats-bayesian", "stats-ols-glm", "stats-lrt", "tb-wgs-dst", "stats-foundations"],
+  "example": {
+    "title": "District FQ-R rates with n_j = 4",
+    "setup": "Four districts report FQ-R among RR-TB: 0/4, 1/5, 3/40, 12/50. A no-pooling analyst quotes 0%, 20%, 7.5%, 24%. A hierarchical Beta-Binomial (or logit-normal) shares strength.",
+    "steps": [
+      {
+        "title": "No pooling is noisy",
+        "body": "0/4 is compatible with a true rate of 2% and with 30%. Publishing 0% as a district fact is how small-n maps lie."
+      },
+      {
+        "title": "Partial pooling",
+        "body": "A random-intercept logit: logit π_j = μ + b_j, b_j ~ N(0, τ²), y_j ~ Binomial(n_j, π_j). Districts with n = 4 shrink hard toward the survey mean; n = 50 barely moves.",
+        "expression": "λ_j = τ² / (τ² + σ²/n_j)"
+      },
+      {
+        "title": "What you must still check",
+        "body": "If district D is a referral hospital, τ² is soaking up a mixture of epidemiology and ascertainment. A covariate for “referral centre” belongs in the mean, not only in the mystery variance."
+      }
+    ],
+    "takeaway": "Shrinkage is not cheating. It is refusing to treat 0/4 as a different scientific object from 12/50 without a variance model."
+  },
+  "check": [
+    {
+      "id": "hier-pool",
+      "kind": "conceptual",
+      "prompt": "Partial pooling means:",
+      "choices": [
+        "Every cluster gets the identical estimate, equal to the grand mean",
+        "Unit-level parameters share a distribution, so small units shrink toward a shared mean while large units keep more of their data",
+        "You delete small clusters",
+        "You must use OLS"
+      ],
+      "answer": "Unit-level parameters share a distribution, so small units shrink toward a shared mean while large units keep more of their data",
+      "why": "That is the λ_j geometry. Complete pooling is the first wrong choice; no pooling is the second.",
+      "whyWrong": {
+        "Every cluster gets the identical estimate, equal to the grand mean": "That is complete pooling.",
+        "You delete small clusters": "That throws away data and biases toward large centres.",
+        "You must use OLS": "Hierarchical GLMs and Bayes exist."
+      }
+    },
+    {
+      "id": "hier-lrt",
+      "kind": "calculation",
+      "prompt": "Testing H₀: τ = 0 with a likelihood ratio in a random-intercept model is irregular because:",
+      "choices": [
+        "n is always too small",
+        "τ = 0 is on the boundary of the parameter space, so the null is not a regular χ²_1",
+        "Random intercepts are not nested in the fixed-effects model",
+        "The MLE of τ is always negative"
+      ],
+      "answer": "τ = 0 is on the boundary of the parameter space, so the null is not a regular χ²_1",
+      "why": "Variance components cannot be negative. Wilks’ interior-point theorem does not apply. A 50:50 mixture of χ²_0 and χ²_1 is the usual fix for this null.",
+      "whyWrong": {
+        "n is always too small": "The issue is geometry of Θ, not n.",
+        "Random intercepts are not nested in the fixed-effects model": "They are nested: τ = 0 recovers no random intercept.",
+        "The MLE of τ is always negative": "Software usually truncates at 0."
+      }
+    },
+    {
+      "id": "hier-figure",
+      "kind": "figure",
+      "prompt": "On the nested-plates figure, what scientific mistake is “ignoring a level” making?",
+      "figureHint": "Survey → district → patient/isolate → reads/phenotype.",
+      "choices": [
+        "It removes the need for a likelihood",
+        "It treats correlated units as independent, dumping between-unit variance into fake precision",
+        "It forces a Poisson variance",
+        "It converts the model into an LRT automatically"
+      ],
+      "answer": "It treats correlated units as independent, dumping between-unit variance into fake precision",
+      "why": "That is why SEs collapse when you ignore clustering. The plate is a warning about the likelihood’s independence assumption.",
+      "whyWrong": {
+        "It removes the need for a likelihood": "You still have one — a wrong one.",
+        "It forces a Poisson variance": "Unrelated.",
+        "It converts the model into an LRT automatically": "Unrelated."
+      }
+    }
+  ]
+}

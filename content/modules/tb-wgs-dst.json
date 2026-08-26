@@ -1,0 +1,140 @@
+{
+  "id": "tb-wgs-dst",
+  "title": "WGS as drug-susceptibility testing",
+  "dek": "A catalogue, a caller, and a phenotype distribution. Computational DST is a statistical claim with a microbiology residual.",
+  "domain": "tb",
+  "aliases": [
+    "WGS",
+    "whole genome sequencing",
+    "gDST",
+    "mutation catalogue",
+    "Mykrobe",
+    "TBProfiler",
+    "computational genomics"
+  ],
+  "tags": ["bioinformatics", "WHO catalogue", "lineage", "variant calling", "DST"],
+  "story": [
+    "Whole-genome sequencing of MTBC can predict first- and many second-line phenotypes faster than waiting for second-line MGIT, and it gives lineage, mixed infection, and relatedness in the same BAM. The DST part is not magic: it is a lookup from graded mutations plus an implicit prior that unseen mechanisms are rare.",
+    "WHO’s mutation catalogue is the public grading layer: associated with resistance, not associated, interim, uncertain. Tools (TBProfiler, Mykrobe, clockwork, custom Snippy/mtbseq pipelines) differ in what they call, what they filter, and whether they report allele fraction. The tool is not the catalogue.",
+    "Where catalogues are strong (RIF, INH, FQ, AMK), concordance with phenotype is high enough for clinical use in many programmes. Where they are weaker (PZA’s long pncA tail is actually pretty good if you sequence the whole gene; EMB and BDQ need more humility), the residual error is the interesting statistical object, not a rounding error."
+  ],
+  "deepTitle": "Error models a CS+stats person is supposed to write down",
+  "deep": [
+    "False susceptible: minority alleles below threshold, new mechanisms, incomplete promoter coverage, mixed samples called as the majority, and disputed mutations graded cautiously. False resistant: phylogenetic SNPs mislabelled, sequencing error in homopolymers, contamination from a resistant lab strain, and synonymous calls that a naive regex treats as missense.",
+    "A decent report is a vector of (drug, grade, alleles, AF, coverage), not a traffic light. Downstream, a hierarchical model with drug-specific sensitivities and lineage random effects is closer to the truth than a single “WGS accuracy = 95%” slide.",
+    "Relatedness (SNP distance, transmission clustering) is a different likelihood. Masking PE/PPE and repeats is a bioinformatics choice that changes distances. Do not use unmasked core-genome distances as if they were a physical constant.",
+    "Direct-from-sputum sequencing is a depth problem: host DNA dominates. Targeted enrichment and adaptive sampling exist because Poisson coverage on a 4.4 Mb genome at 0.5× is not DST."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "gDST as a pipeline with a statistical residual, not as an oracle. Catalogue grade and allele fraction have to survive into the report.",
+    "nodes": [
+      { "id": "read", "label": "Reads", "x": 10, "y": 48, "tone": "start" },
+      { "id": "qc", "label": "QC / mix detect", "x": 28, "y": 48, "tone": "process" },
+      { "id": "call", "label": "Variant call", "x": 48, "y": 32, "tone": "process", "detail": "AF + DP" },
+      { "id": "lin", "label": "Lineage / relatedness", "x": 48, "y": 68, "tone": "process" },
+      { "id": "cat", "label": "Catalogue grade", "x": 70, "y": 32, "tone": "decision" },
+      { "id": "rep", "label": "gDST report", "x": 88, "y": 32, "tone": "end" },
+      { "id": "mic", "label": "pDST / MIC residual", "x": 88, "y": 68, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "read", "to": "qc" },
+      { "from": "qc", "to": "call" },
+      { "from": "qc", "to": "lin" },
+      { "from": "call", "to": "cat" },
+      { "from": "cat", "to": "rep" },
+      { "from": "cat", "to": "mic", "label": "discordance" },
+      { "from": "lin", "to": "mic", "label": "priors" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO catalogue of mutations in Mycobacterium tuberculosis complex",
+      "url": "https://www.who.int/publications/i/item/9789240028173",
+      "attribution": "Public grading framework for gDST.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CRyPTIC / open methods literature on WGS-DST concordance (cited as a research programme, not copied)",
+      "attribution": "Original teaching notes on error models for computational DST.",
+      "license": "Original notes"
+    }
+  ],
+  "related": ["tb-resistance", "tb-rifampin", "tb-diagnosis", "stats-hierarchical", "stats-lrt"],
+  "example": {
+    "title": "A phylogenetic SNP that is not EMB-R",
+    "setup": "TBProfiler flags an embB synonymous or lineage-associated SNP. A junior report lists ethambutol resistance. EmbB M306 is wild type. Phenotypic EMB is susceptible.",
+    "steps": [
+      {
+        "title": "Separate phylogeny from DST",
+        "body": "MTBC is clonal. Many amino-acid differences from H37Rv are lineage markers. Catalogues mark a large set as not associated with resistance."
+      },
+      {
+        "title": "Look at the grade, not the gene name",
+        "body": "“embB mutation detected” is not a result. “embB M306V, associated with resistance, AF 0.99, DP 120” is a result. A synonymous or not-associated allele should not flip the EMB column."
+      },
+      {
+        "title": "Keep the residual",
+        "body": "If a real M306V were present and phenotype were S, that would be a catalogue/phenotype residual worth logging — not a reason to ignore M306V next time."
+      }
+    ],
+    "takeaway": "gDST is graded alleles plus coverage, not gene-name regex."
+  },
+  "check": [
+    {
+      "id": "wgs-cat",
+      "kind": "conceptual",
+      "prompt": "What does a WHO catalogue grade actually claim?",
+      "choices": [
+        "That the mutation is necessary and sufficient for clinical failure in every patient",
+        "A graded association between that variant and phenotypic resistance, with residual uncertainty",
+        "That H37Rv is the infecting strain",
+        "That the caller’s default AF filter is 1%"
+      ],
+      "answer": "A graded association between that variant and phenotypic resistance, with residual uncertainty",
+      "why": "Catalogues are evidence grades, not destiny. They do not set your pipeline filters.",
+      "whyWrong": {
+        "That the mutation is necessary and sufficient for clinical failure in every patient": "Overclaim. MIC and lesion physics still exist.",
+        "That H37Rv is the infecting strain": "H37Rv is the reference coordinate system.",
+        "That the caller’s default AF filter is 1%": "Tooling, not catalogue."
+      }
+    },
+    {
+      "id": "wgs-af",
+      "kind": "calculation",
+      "prompt": "Coverage at rpoB codon 450 is 20×. You see 2 reads supporting S450L. Why is this a weak RR-TB call?",
+      "choices": [
+        "Because 2/20 is 10%, which always exceeds every catalogue threshold",
+        "Because allele fraction 0.10 at 20× is compatible with sequencing error and does not establish a stable minority",
+        "Because S450L is not in the RRDR",
+        "Because WGS cannot see codon 450"
+      ],
+      "answer": "Because allele fraction 0.10 at 20× is compatible with sequencing error and does not establish a stable minority",
+      "why": "Binomial sampling plus error rates make 2/20 a low-information observation. Raise depth, use UMI/targeted methods, or wait for culture.",
+      "whyWrong": {
+        "Because 2/20 is 10%, which always exceeds every catalogue threshold": "Catalogues grade alleles, not 2-read calls.",
+        "Because S450L is not in the RRDR": "It is the canonical RRDR allele.",
+        "Because WGS cannot see codon 450": "It can, with enough unique reads."
+      }
+    },
+    {
+      "id": "wgs-figure",
+      "kind": "figure",
+      "prompt": "On the gDST pipeline plate, what is the “pDST / MIC residual” node doing?",
+      "figureHint": "It sits bottom-right, fed by catalogue discordance and lineage priors.",
+      "choices": [
+        "It marks culture as obsolete",
+        "It is the leftover disagreement after a graded genomic call — the object a statistical model should eat",
+        "It is the FASTQ header",
+        "It is synonymous with lineage assignment"
+      ],
+      "answer": "It is the leftover disagreement after a graded genomic call — the object a statistical model should eat",
+      "why": "Computational DST is a predictor. Phenotype is still data. The residual is where new mechanisms and bad callers show up.",
+      "whyWrong": {
+        "It marks culture as obsolete": "Opposite.",
+        "It is the FASTQ header": "No.",
+        "It is synonymous with lineage assignment": "Lineage is a covariate feeding the residual, not the residual itself."
+      }
+    }
+  ]
+}

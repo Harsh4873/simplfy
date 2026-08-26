@@ -1,0 +1,139 @@
+{
+  "id": "tb-pathogenesis",
+  "title": "Pathogenesis and the granuloma",
+  "dek": "Aerosol to alveolar macrophage to granuloma. Latency is not sterility; it is a negotiated, often necrotic, tissue state.",
+  "domain": "tb",
+  "aliases": [
+    "granuloma",
+    "latency",
+    "LTBI",
+    "caseation",
+    "aerosol",
+    "pathogenesis"
+  ],
+  "tags": ["immunology", "macrophage", "hypoxia", "transmission"],
+  "story": [
+    "Infection starts with droplet nuclei small enough to reach the alveolus. Mtb is taken up by alveolar macrophages. It is adapted to live there: ESX-1 (and ESAT-6) help it damage the phagosomal membrane; lipids and LAM modulate recognition; it can replicate in the cytosol-adjacent niche and in necrotic debris.",
+    "The characteristic lesion is the granuloma — macrophages, foamy cells, epithelioid cells, a lymphocytic cuff, often a caseous necrotic core. This is not a museum piece that either contains or fails. Bacilli persist in multiple physiologic states, including a hypoxic, lipid-rich, slowly replicating core that first-line drugs reach poorly.",
+    "Most infected people never develop disease (classically ~5–10% lifetime risk, higher with HIV, anti-TNF, silicosis, malnutrition). “Latent TB infection” is an IGRA/TST operational category, not a microbiologic proof of living bacilli in a named lesion."
+  ],
+  "deepTitle": "What a granuloma implies for drugs and for models",
+  "deep": [
+    "Caseum is hypoxic, acidic, and full of hydrolyzed lipids. Pyrazinamide’s pH-dependent activity is part of why it helps in early necrotic lesions. Rifampin’s sterilizing activity is partly about slowly replicating populations. Isoniazid is most useful when bacilli are replicating and making mycolate.",
+    "Cavitation into an airway turns a contained lesion into a transmission engine: high smear grade, high aerosol, high mutation supply. Genomic clustering studies are downstream of this anatomy.",
+    "Animal models disagree. Mouse lesions are poorly necrotic unless you pick the right strain; rabbit and nonhuman primate granulomas are closer to human caseation. Do not overfit a mouse CFU curve to a human four-month regimen.",
+    "HIV collapses the CD4-dependent architecture of the granuloma. Disseminated and extrapulmonary disease become common; smear can be negative while burden is high. That is a pathogenesis fact with diagnostic consequences."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From aerosol to a necrotic granuloma that may cavity. Latency, in this picture, is persistence inside a structured lesion — not a separate species of bacterium with a different genome.",
+    "nodes": [
+      { "id": "air", "label": "Droplet nucleus", "x": 8, "y": 50, "tone": "start", "detail": "1–5 µm" },
+      { "id": "alv", "label": "Alveolar Mϕ", "x": 28, "y": 32, "tone": "process", "detail": "phagocytosis" },
+      { "id": "esx", "label": "Phagosome stress / ESX-1", "x": 50, "y": 32, "tone": "process" },
+      { "id": "gran", "label": "Granuloma", "x": 72, "y": 32, "tone": "decision", "detail": "cuff + caseum" },
+      { "id": "lat", "label": "Contained / LTBI label", "x": 88, "y": 18, "tone": "end" },
+      { "id": "cav", "label": "Cavity + aerosol out", "x": 88, "y": 62, "tone": "end" },
+      { "id": "diss", "label": "Dissemination", "x": 50, "y": 78, "tone": "process" }
+    ],
+    "edges": [
+      { "from": "air", "to": "alv" },
+      { "from": "alv", "to": "esx" },
+      { "from": "esx", "to": "gran" },
+      { "from": "gran", "to": "lat", "label": "control" },
+      { "from": "gran", "to": "cav", "label": "necrosis to airway" },
+      { "from": "esx", "to": "diss", "label": "early / HIV" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Tuberculosis pathogenesis chapters — NCBI Bookshelf",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK441916/",
+      "attribution": "Clinical pathogenesis outline aligned with open NCBI/CDC material.",
+      "license": "Public domain / NCBI Bookshelf terms"
+    },
+    {
+      "title": "Granuloma — Wikipedia (TB section context)",
+      "url": "https://en.wikipedia.org/wiki/Granuloma",
+      "attribution": "Structural description adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-organism", "tb-diagnosis", "tb-first-line", "tb-rifampin"],
+  "example": {
+    "title": "Why INH-monotherapy LTBI treatment is a different pharmacologic object",
+    "setup": "A contacts clinic wants to know why six months of isoniazid can be used for LTBI while active cavitary disease needs a rifamycin-based combination.",
+    "steps": [
+      {
+        "title": "Burden and replication",
+        "body": "LTBI regimens aim at a small, often slowly replicating population without a cavity pouring bacilli into sputum. Mutation supply is low. Active cavitary disease has high burden and high mutation supply."
+      },
+      {
+        "title": "What INH does well",
+        "body": "INH is highly cidal against replicating bacilli making mycolate. It is a weak sterilizing drug against persisters. A cavity full of caseum is a persister problem; a contained lesion is closer to an INH problem, though not identical."
+      },
+      {
+        "title": "Why combinations exist",
+        "body": "Rifampin (and now rifapentine) plus PZA cover the sterilizing niche. Using INH alone in smear-positive disease is how you select katG/inhA mutants in public."
+      }
+    ],
+    "takeaway": "Regimen design follows lesion ecology, not a single MIC."
+  },
+  "check": [
+    {
+      "id": "path-start",
+      "kind": "conceptual",
+      "prompt": "Where does human Mtb infection typically begin?",
+      "choices": [
+        "Oropharyngeal epithelial invasion like GAS",
+        "Alveolar deposition of droplet nuclei and macrophage uptake",
+        "Skin inoculation as in M. marinum only",
+        "Obligate bloodstream infection at entry"
+      ],
+      "answer": "Alveolar deposition of droplet nuclei and macrophage uptake",
+      "why": "Infectious quanta are small aerosols. Skin and bloodstream are not the usual portal for pulmonary TB.",
+      "whyWrong": {
+        "Oropharyngeal epithelial invasion like GAS": "Wrong genus, wrong portal.",
+        "Skin inoculation as in M. marinum only": "Possible for some nontuberculous mycobacteria; not typical Mtb.",
+        "Obligate bloodstream infection at entry": "Bacteremia can occur, especially with HIV; it is not the entry step."
+      }
+    },
+    {
+      "id": "path-ltbi",
+      "kind": "calculation",
+      "prompt": "A person has a positive IGRA, a normal chest radiograph, and no symptoms. What has been demonstrated?",
+      "choices": [
+        "Viable, culture-proven bacilli in a named granuloma",
+        "An adaptive T-cell response to Mtb antigens, used operationally as LTBI if disease is excluded",
+        "Sterile eradication of Mtb",
+        "Rifampin-resistant infection"
+      ],
+      "answer": "An adaptive T-cell response to Mtb antigens, used operationally as LTBI if disease is excluded",
+      "why": "IGRA/TST are immune memory assays. They do not prove living organisms and they do not prove absence of organisms.",
+      "whyWrong": {
+        "Viable, culture-proven bacilli in a named granuloma": "That would require tissue microbiology that is not part of LTBI definition.",
+        "Sterile eradication of Mtb": "A positive IGRA is the opposite of a sterility claim, and even a negative one is not sterility.",
+        "Rifampin-resistant infection": "IGRA has no DST information."
+      }
+    },
+    {
+      "id": "path-figure",
+      "kind": "figure",
+      "prompt": "On the pathogenesis map, what does the branch from granuloma to “cavity + aerosol out” represent?",
+      "figureHint": "Two arrows leave the granuloma node: control versus necrosis to airway.",
+      "choices": [
+        "Successful BCG vaccination",
+        "Necrotic lesion eroding into an airway, enabling transmission",
+        "IGRA conversion",
+        "PZA activation by PncA"
+      ],
+      "answer": "Necrotic lesion eroding into an airway, enabling transmission",
+      "why": "Cavitation is the anatomic event that turns a contained focus into a transmitter. BCG and IGRA are not that arrow.",
+      "whyWrong": {
+        "Successful BCG vaccination": "Not on this plate.",
+        "IGRA conversion": "An immune assay, not an anatomic branch.",
+        "PZA activation by PncA": "A drug-activation fact, not pathogenesis geometry."
+      }
+    }
+  ]
+}
