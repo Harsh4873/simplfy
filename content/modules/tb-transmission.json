@@ -1,0 +1,210 @@
+{
+  "id": "tb-transmission",
+  "title": "Aerosol transmission and infectiousness",
+  "dek": "Droplet nuclei 1–5 µm, cavities, smear grade, and time. Genomics clustering is downstream of this physics, not a replacement for it.",
+  "domain": "tb",
+  "aliases": [
+    "droplet nucleus",
+    "airborne TB",
+    "infectiousness",
+    "smear grade transmission",
+    "quanta"
+  ],
+  "tags": [
+    "transmission",
+    "aerosol",
+    "cavity",
+    "infection control",
+    "smear"
+  ],
+  "story": [
+    "Infectious TB is airborne. Talking, coughing, and singing generate droplet nuclei small enough (classically 1–5 µm) to reach alveoli and to hang in poorly ventilated air. Wells–Riley and its descendants treat infection as Poisson quanta; ventilation, time, and source strength dominate.",
+    "Source strength tracks anatomy: smear-positive cavitary pulmonary disease is the classic high-output engine. Smear-negative pulmonary TB still transmits, just less efficiently. Extrapulmonary TB without a draining airway is not an airborne source (unless it is laryngeal or has a pulmonary component you missed).",
+    "Children usually acquire from an adult source case; they are rarely the engine. Genomic clusters without an epidemiologic spine should make you look for missed cavities and missed time-in-room, not for a new species of bacterium."
+  ],
+  "deepTitle": "Infection control is applied physics",
+  "deep": [
+    "Airborne precautions (N95/FFP2, negative pressure or at least ventilation, source control) until the person is on effective therapy and meeting programme criteria. RR-TB does not change droplet size; it changes the cost of a missed quantum.",
+    "Sputum smear conversion is a rough infectiousness biomarker; culture conversion is slower. NAAT can stay positive on dead DNA — do not keep someone isolated forever because Ultra is still trace.",
+    "Household contact yield is highest in the first year. That is why contact investigation is time-sensitive and why TPT belongs next to the index’s sputum cup.",
+    "Outdoor vs indoor, choir vs brief hallway pass: dose is time × quanta × inhalation. A 10-minute triage encounter with a 3+ cavity is not a zero."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From cavity to alveolar deposition. Smear grade and time-in-room scale the Poisson mean; ventilation divides it.",
+    "nodes": [
+      {
+        "id": "cav",
+        "label": "Cavity",
+        "x": 8,
+        "y": 48,
+        "tone": "start",
+        "detail": "high N"
+      },
+      {
+        "id": "cough",
+        "label": "Cough / speech",
+        "x": 28,
+        "y": 48,
+        "tone": "process"
+      },
+      {
+        "id": "nuc",
+        "label": "Droplet nuclei",
+        "x": 50,
+        "y": 30,
+        "tone": "process",
+        "detail": "1–5 µm"
+      },
+      {
+        "id": "vent",
+        "label": "Ventilation",
+        "x": 50,
+        "y": 70,
+        "tone": "decision",
+        "detail": "dilution"
+      },
+      {
+        "id": "alv",
+        "label": "Alveolus",
+        "x": 74,
+        "y": 30,
+        "tone": "end"
+      },
+      {
+        "id": "zero",
+        "label": "No infection",
+        "x": 74,
+        "y": 70,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cav",
+        "to": "cough"
+      },
+      {
+        "from": "cough",
+        "to": "nuc"
+      },
+      {
+        "from": "nuc",
+        "to": "alv",
+        "label": "inhaled"
+      },
+      {
+        "from": "nuc",
+        "to": "vent"
+      },
+      {
+        "from": "vent",
+        "to": "zero",
+        "label": "diluted"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum — transmission and infection control",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Airborne transmission",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Airborne_transmission"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Physics-to-cluster notes for genomic epi.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "tb-smear-culture",
+    "tb-diagnosis",
+    "tb-cxr-cad",
+    "tb-infection-control"
+  ],
+  "example": {
+    "title": "Two SNP cluster, no named contact",
+    "setup": "Two L4 isolates, 2 masked SNPs, diagnosed six months apart, no shared household. One is smear 3+ cavitary; the other is a child.",
+    "steps": [
+      {
+        "title": "Believe a source",
+        "body": "Near-identity plus a child secondary is a missed epidemiologic link until proven otherwise: church, minibus, clinic waiting room."
+      },
+      {
+        "title": "Infectiousness was the 3+ cavity",
+        "body": "The child is not the engine. Find where they shared air."
+      },
+      {
+        "title": "TPT the other kids",
+        "body": "Cluster investigation is a TPT list, not a tree figure for a slide."
+      }
+    ],
+    "takeaway": "Genomic clustering is delayed aerosol accounting."
+  },
+  "check": [
+    {
+      "id": "tx-size",
+      "kind": "conceptual",
+      "prompt": "Alveolar infection is associated with which particle class?",
+      "choices": [
+        "1–5 µm droplet nuclei that can remain airborne",
+        "Fomites only",
+        "Foodborne spores",
+        "Skin-scale flakes exclusively"
+      ],
+      "answer": "1–5 µm droplet nuclei that can remain airborne",
+      "why": "That is the Wells airborne story for TB.",
+      "whyWrong": {
+        "Fomites only": "Not the main route.",
+        "Foodborne spores": "Mtb does not spore.",
+        "Skin-scale flakes exclusively": "Not TB’s route."
+      }
+    },
+    {
+      "id": "tx-smear",
+      "kind": "calculation",
+      "prompt": "A smear 3+ cavitary patient and a smear-negative, NAAT-positive non-cavitary patient share a waiting room for 45 minutes. Relative infectiousness is:",
+      "choices": [
+        "Identical, because both are NAAT-positive",
+        "Higher for the 3+ cavitary source; smear-negative still non-zero",
+        "Zero for both after one Xpert",
+        "Higher for the smear-negative patient by definition"
+      ],
+      "answer": "Higher for the 3+ cavitary source; smear-negative still non-zero",
+      "why": "Smear grade is a coarse source-strength proxy, not a binary off switch.",
+      "whyWrong": {
+        "Identical, because both are NAAT-positive": "NAAT is not quanta.",
+        "Zero for both after one Xpert": "Xpert does not decontaminate air.",
+        "Higher for the smear-negative patient by definition": "Opposite."
+      }
+    },
+    {
+      "id": "tx-figure",
+      "kind": "figure",
+      "prompt": "On the transmission map, what does the ventilation node do?",
+      "choices": [
+        "Activates isoniazid",
+        "Dilutes droplet nuclei, lowering the Poisson mean of quanta inhaled",
+        "Converts smear to culture",
+        "Makes cavities"
+      ],
+      "answer": "Dilutes droplet nuclei, lowering the Poisson mean of quanta inhaled",
+      "why": "Infection control is dilution, filtration, and source treatment.",
+      "whyWrong": {
+        "Activates isoniazid": "KatG.",
+        "Converts smear to culture": "No.",
+        "Makes cavities": "Anatomy, not HVAC."
+      },
+      "figureHint": "Bottom branch from droplet nuclei."
+    }
+  ]
+}

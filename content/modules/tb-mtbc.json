@@ -1,0 +1,183 @@
+{
+  "id": "tb-mtbc",
+  "title": "The M. tuberculosis complex",
+  "dek": "MTBC is a clonal pack of host-adapted ecotypes, not a species label you can treat as DST. RD deletions and SNPs do the speciation; Xpert does not.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium tuberculosis complex",
+    "M. africanum",
+    "M. bovis",
+    "M. canettii",
+    "lineage 2 Beijing",
+    "RD9",
+    "MTBC speciation"
+  ],
+  "tags": [
+    "phylogeny",
+    "lineage",
+    "RD deletion",
+    "BCG",
+    "speciation"
+  ],
+  "story": [
+    "The Mycobacterium tuberculosis complex (MTBC) is a set of ecotypes that share >99.9% nucleotide identity and a clonal, almost plasmid-free, population structure. Human-adapted members are M. tuberculosis sensu stricto (lineages L1–L4, L7, L8) and M. africanum (L5, L6, plus L9 in current schemes). Animal-adapted members include M. bovis, M. caprae, M. microti, M. pinnipedii, M. orygis, M. suricattae, M. mungi. M. canettii sits just outside the clonal MTBC as a smooth, putative ancestral-like taxon.",
+    "Most NAATs, including Xpert, answer “MTBC nucleic acid present.” They do not name the ecotype. That is a speciation problem, not a cartridge failure: a BCG bladder-instillation isolate, a M. bovis from unpasteurised dairy, and an L2 Beijing pulmonary strain all light the same MTBC lamp.",
+    "Region-of-difference (RD) deletions and a small SNP barcode do the actual naming. RD1 is gone in BCG. RD9 is gone in M. africanum and animal-adapted lineages. M. bovis carries a characteristic pncA H57D (or lineage-defining equivalent) that makes PZA intrinsic-R. Lineage is a covariate for mutation rate, PE/PPE content, and sometimes resistance priors — it is not a drug."
+  ],
+  "deepTitle": "What a genomics lab actually calls",
+  "deep": [
+    "Coll’s 62-SNP barcode (and later expansions) assigns L1–L7 stably; L8 and L9 are rare African lineages added as sampling improved. L2/Beijing is over-represented in many MDR datasets. That is epidemiology plus maybe a slightly higher mutation supply, not a licence to call BDQ-R from lineage alone.",
+    "M. canettii is the exception that teaches the rule: it recombines, has a larger accessory genome, and is not a typical pulmonary-TB outbreak organism. Do not force-fit a canettii assembly into an H37Rv-only DST pipeline without looking at the tree.",
+    "M. bovis BCG used as a cancer therapy is a recurring “RR-TB” false alarm when someone sequences a urine isolate, sees MTBC, and then over-reads pncA. RD1 deletion plus BCG-specific SNPs close the case.",
+    "MAC (M. avium complex) and other NTM are not MTBC. A mis-speciated MGIT bottle will happily generate a “pan-susceptible TB” report for an organism that does not live in the catalogue. Kraken/Mykrobe species calls belong in the same report as rpoB."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "MTBC nested under Mycobacterium. Human-adapted lineages are the usual pulmonary-TB object. Animal-adapted leaves share the NAAT target and not the PZA story.",
+    "layers": [
+      {
+        "title": "Genus",
+        "nodes": [
+          "Mycobacterium"
+        ]
+      },
+      {
+        "title": "Complex",
+        "nodes": [
+          "MTBC",
+          "M. canettii",
+          "NTM"
+        ]
+      },
+      {
+        "title": "Human-adapted",
+        "nodes": [
+          "L1",
+          "L2/Beijing",
+          "L3",
+          "L4",
+          "L5–L9"
+        ]
+      },
+      {
+        "title": "Animal / vaccine",
+        "nodes": [
+          "M. bovis",
+          "BCG",
+          "M. orygis",
+          "M. microti"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TB laboratory / genomic surveillance framing",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Mycobacterium tuberculosis complex",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "RD and lineage teaching notes for WGS intake.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-h37rv-genome",
+    "tb-bcg-rd1",
+    "tb-wgs-dst",
+    "tb-pnca",
+    "tb-ntm",
+    "tb-lineage-beijing"
+  ],
+  "example": {
+    "title": "Urine MTBC that is BCG",
+    "setup": "Oncology patient, BCG instillations, urine Xpert MTB/RIF positive, RIF not detected. WGS: M. bovis BCG, RD1 deleted, pncA BCG allele.",
+    "steps": [
+      {
+        "title": "Do not start 2HRZE",
+        "body": "This is not airborne DS-TB until proven otherwise. The NAAT is working; the species question was never asked."
+      },
+      {
+        "title": "PZA is not acquired MDR",
+        "body": "Intrinsic pncA in M. bovis/BCG is not a treatment-emergent mutation. Reporting it as acquired PZA-R contaminates surveillance."
+      },
+      {
+        "title": "Name the ecotype",
+        "body": "RD1 deletion plus BCG SNP barcode is the result. Then call the oncologist, not the MDR ward."
+      }
+    ],
+    "takeaway": "MTBC-positive is a door, not a species or a regimen."
+  },
+  "check": [
+    {
+      "id": "mtbc-xpert",
+      "kind": "conceptual",
+      "prompt": "Xpert MTB/RIF Ultra reports MTB detected. Which statement is true?",
+      "choices": [
+        "The isolate is M. tuberculosis sensu stricto lineage 4",
+        "MTBC nucleic acid is present; ecotype (Mtb vs bovis/BCG vs africanum) is not resolved",
+        "NTM have been excluded at species level",
+        "PZA susceptibility is guaranteed"
+      ],
+      "answer": "MTBC nucleic acid is present; ecotype (Mtb vs bovis/BCG vs africanum) is not resolved",
+      "why": "The cartridge target is MTBC DNA plus an rpoB window. Speciation is a different assay.",
+      "whyWrong": {
+        "The isolate is M. tuberculosis sensu stricto lineage 4": "Lineage is not an Xpert output.",
+        "NTM have been excluded at species level": "Most NTM should not trigger MTB detected, but the positive call is still not a full species ID among MTBC.",
+        "PZA susceptibility is guaranteed": "M. bovis is intrinsically PZA-R."
+      }
+    },
+    {
+      "id": "mtbc-rd9",
+      "kind": "calculation",
+      "prompt": "RD9 is deleted in M. africanum and animal-adapted MTBC, present in M. tuberculosis sensu stricto. An isolate with RD9 present and RD1 present is most consistent with:",
+      "choices": [
+        "BCG",
+        "M. tuberculosis sensu stricto",
+        "M. bovis wild-type",
+        "M. avium"
+      ],
+      "answer": "M. tuberculosis sensu stricto",
+      "why": "BCG lacks RD1. M. bovis lacks RD9. M. avium is not MTBC.",
+      "whyWrong": {
+        "BCG": "RD1 is deleted in BCG.",
+        "M. bovis wild-type": "RD9 is deleted.",
+        "M. avium": "Wrong complex."
+      }
+    },
+    {
+      "id": "mtbc-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy plate, why do M. bovis and BCG sit on a different row from L1–L4?",
+      "choices": [
+        "Because they are NTM",
+        "Because they are animal-adapted / vaccine ecotypes inside MTBC, not the usual human-adapted pulmonary lineages",
+        "Because they lack rpoB",
+        "Because Xpert cannot detect them"
+      ],
+      "answer": "Because they are animal-adapted / vaccine ecotypes inside MTBC, not the usual human-adapted pulmonary lineages",
+      "why": "The plate is an ecotype tree, not a NAAT tree. BCG is still MTBC.",
+      "whyWrong": {
+        "Because they are NTM": "NTM is a separate node.",
+        "Because they lack rpoB": "They have rpoB.",
+        "Because Xpert cannot detect them": "Xpert can."
+      },
+      "figureHint": "Read the third vs fourth layer titles."
+    }
+  ]
+}

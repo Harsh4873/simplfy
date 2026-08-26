@@ -1,0 +1,189 @@
+{
+  "id": "tb-moxifloxacin",
+  "title": "Moxifloxacin",
+  "dek": "A later-generation FQ that is Group A in DR-TB (the M in BPaLM) and a first-line companion in HPMZ. gyrA QRDR decides whether the letter is a drug. QTc is the ECG tax.",
+  "domain": "tb",
+  "aliases": [
+    "MXF",
+    "moxifloxacin",
+    "Avelox",
+    "M in BPaLM",
+    "M in HPMZ"
+  ],
+  "tags": [
+    "moxifloxacin",
+    "FQ",
+    "gyrA",
+    "QTc",
+    "BPaLM"
+  ],
+  "story": [
+    "Moxifloxacin 400 mg daily is the usual adult TB dose. It is more active against Mtb in vitro than older FQs and is the FQ in BPaLM and in HPMZ. Levofloxacin is the FQ in many 9-month and BDLLfxC constructs and in 6Lfx TPT. They share the QRDR; they do not share every trial.",
+    "Resistance: gyrA D94/A90 class. Do not keep MXF in BPaLM against D94G because “moxi MICs are a bit lower.” Do not put HPMZ on a gyrA mutant.",
+    "QTc prolongation stacks with BDQ, CFZ, DLM, ondansetron, methadone. Tendinopathy and CNS irritability are the other host notes. Avoid routine FQ monotherapy of mystery pneumonia in high TB-burden clinics — that is how you paint QRDR mutants before the first Xpert."
+  ],
+  "deepTitle": "Letter collisions",
+  "deep": [
+    "M in BPaLM ≠ M in HPMZ’s neighbours. Same 400 mg, different companions, different resistance priors (RR vs DS).",
+    "Pregnancy: FQs are used in DR-TB when needed; they are not first-line DS in pregnancy (HRZE).",
+    "PubChem CID 152946. ChEMBL32.",
+    "Children: weight-banded FQ use is real in DR-TB; not a casual ENT prescription."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "MXF binds gyrase. QRDR missense blocks the bind. QTc is the host parallel arrow you still have to schedule.",
+    "nodes": [
+      {
+        "id": "mxf",
+        "label": "MXF 400",
+        "group": "drug",
+        "x": 12,
+        "y": 40
+      },
+      {
+        "id": "gyr",
+        "label": "GyrA/B",
+        "group": "target",
+        "x": 42,
+        "y": 40,
+        "sub": "QRDR"
+      },
+      {
+        "id": "dna",
+        "label": "cleavage complex",
+        "group": "target",
+        "x": 72,
+        "y": 40
+      },
+      {
+        "id": "qtc",
+        "label": "host QTc",
+        "group": "enzyme",
+        "x": 42,
+        "y": 75
+      }
+    ],
+    "edges": [
+      {
+        "from": "mxf",
+        "to": "gyr"
+      },
+      {
+        "from": "gyr",
+        "to": "dna"
+      },
+      {
+        "from": "mxf",
+        "to": "qtc"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — moxifloxacin in BPaLM and HPMZ",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Moxifloxacin — PubChem CID 152946",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/152946"
+    },
+    {
+      "title": "Moxifloxacin — CHEMBL32",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL32/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Same 400 mg, two regimens, one QRDR gate.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-gyr-qrdr",
+    "tb-bpalm",
+    "tb-hpzm",
+    "tb-levofloxacin",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "Community MXF for “pneumonia,” then Ultra RR",
+    "setup": "Two weeks of empiric moxifloxacin for cough, then Ultra RIF detected. tNGS: gyrA WT.",
+    "steps": [
+      {
+        "title": "You may have missed the QRDR window",
+        "body": "Two weeks can start a minority. Baseline tNGS WT is not a lifetime warranty — repeat if cultures persist."
+      },
+      {
+        "title": "BPaLM still wants a live M at the start",
+        "body": "WT QRDR: keep M, watch AF later."
+      },
+      {
+        "title": "Fix the clinic pathway",
+        "body": "WRD before FQ in a high-TB setting is infection-control for the genome."
+      }
+    ],
+    "takeaway": "Empiric moxi is a QRDR mutagen when the cough was TB."
+  },
+  "check": [
+    {
+      "id": "mxf-reg",
+      "kind": "conceptual",
+      "prompt": "Moxifloxacin appears as a counting drug in:",
+      "choices": [
+        "3HP",
+        "BPaLM (if FQ-S) and HPMZ (if DS and FQ-S)",
+        "BCG vaccination",
+        "IGRA tubes"
+      ],
+      "answer": "BPaLM (if FQ-S) and HPMZ (if DS and FQ-S)",
+      "why": "Two modern acronyms, one QRDR.",
+      "whyWrong": {
+        "3HP": "RPT+INH.",
+        "BCG vaccination": "No.",
+        "IGRA tubes": "No."
+      }
+    },
+    {
+      "id": "mxf-d94",
+      "kind": "calculation",
+      "prompt": "D94G plus BPaLM: moxifloxacin should be:",
+      "choices": [
+        "Counted as fully active Group A FQ",
+        "Dropped (BPaL)",
+        "Doubled to 800 mg to overcome D94G by policy",
+        "Replaced by INH only"
+      ],
+      "answer": "Dropped (BPaL)",
+      "why": "High-confidence FQ-R.",
+      "whyWrong": {
+        "Counted as fully active Group A FQ": "No.",
+        "Doubled to 800 mg to overcome D94G by policy": "Not WHO BPaLM grammar.",
+        "Replaced by INH only": "INH is often already lost in MDR."
+      }
+    },
+    {
+      "id": "mxf-figure",
+      "kind": "figure",
+      "prompt": "On the MXF map, the host QTc node exists to remind you that:",
+      "choices": [
+        "Gyrase lives in the QT interval",
+        "ECG risk is part of FQ use, especially stacked with BDQ/CFZ/DLM",
+        "QTc grades rpoB",
+        "MXF is PZA"
+      ],
+      "answer": "ECG risk is part of FQ use, especially stacked with BDQ/CFZ/DLM",
+      "why": "Parallel host arrow.",
+      "whyWrong": {
+        "Gyrase lives in the QT interval": "No.",
+        "QTc grades rpoB": "No.",
+        "MXF is PZA": "No."
+      },
+      "figureHint": "Bottom node host QTc."
+    }
+  ]
+}

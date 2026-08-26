@@ -1,0 +1,210 @@
+{
+  "id": "tb-bdllfxc",
+  "title": "BDLLfxC and the 2025 Pa-sparing 6-month",
+  "dek": "Bedaquiline, delamanid, linezolid, levofloxacin, clofazimine — the WHO 2025 6-month off-ramp when pretomanid is off the table (pregnancy, age <14, no Pa access). Then drop Lfx or CFZ once FQ DST lands.",
+  "domain": "tb",
+  "aliases": [
+    "BDLLfxC",
+    "BDLC",
+    "BDLLfx",
+    "endTB",
+    "BEAT-TB",
+    "delamanid 6-month"
+  ],
+  "tags": [
+    "BDLLfxC",
+    "delamanid",
+    "DR-TB",
+    "pregnancy",
+    "2025"
+  ],
+  "story": [
+    "WHO 2025 adds a 6-month regimen of bedaquiline, delamanid, linezolid, levofloxacin, and clofazimine (BDLLfxC) for MDR/RR-TB, aimed at people who cannot take BPaLM — notably pregnancy/breastfeeding, children under 14, or no pretomanid. start all five if FQ DST is unknown; if FQ-S, drop clofazimine (BDLLfx); if FQ-R, drop levofloxacin (BDLC).",
+    "This is not “add delamanid to BPaLM.” Pretomanid is absent. Delamanid is a nitroimidazole like Pa but with a different regulatory and pregnancy story. QTc stacking (BDQ+DLM+CFZ+FQ) is the ECG tax.",
+    "endTB and BEAT-TB evidence also support modified 9-month oral recipes (BLMZ, BLLfxCZ, BDLLfxZ) as alternatives to longer-than-18-month regimens when FQ-S. WHO ranks BLMZ above BLLfxCZ above BDLLfxZ among those. Do not use DCLLfxZ or DCMZ as 9-month constructs — WHO suggests against."
+  ],
+  "deepTitle": "How to not drown in acronyms",
+  "deep": [
+    "Write the drugs, not just the letters, on the first line of the chart.",
+    "Linezolid 600 mg still applies. Delamanid twice-daily dosing is not pretomanid 200 mg daily.",
+    "Children: this is one of the reasons BDLLfxC exists. Pediatric DLM/BDQ dosing is weight-banded — use the operational handbook, not adult tablets snapped by eye.",
+    "If BDQ or LZD is lost, you are in longer individualised Group A/B/C construction, not a five-letter meme."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Pa-ineligible RR-TB: start BDLLfxC, then prune Lfx or CFZ by FQ DST. This is parallel to BPaLM, not a decoration on it.",
+    "nodes": [
+      {
+        "id": "inelig",
+        "label": "Pa off-limits",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "five",
+        "label": "BDLLfxC",
+        "x": 32,
+        "y": 48,
+        "tone": "process"
+      },
+      {
+        "id": "fq",
+        "label": "FQ DST",
+        "x": 55,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "s",
+        "label": "BDLLfx",
+        "x": 78,
+        "y": 22,
+        "tone": "end",
+        "detail": "drop CFZ"
+      },
+      {
+        "id": "r",
+        "label": "BDLC",
+        "x": 78,
+        "y": 48,
+        "tone": "end",
+        "detail": "drop Lfx"
+      },
+      {
+        "id": "unk",
+        "label": "Keep five",
+        "x": 78,
+        "y": 74,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "inelig",
+        "to": "five"
+      },
+      {
+        "from": "five",
+        "to": "fq"
+      },
+      {
+        "from": "fq",
+        "to": "s",
+        "label": "S"
+      },
+      {
+        "from": "fq",
+        "to": "r",
+        "label": "R"
+      },
+      {
+        "from": "fq",
+        "to": "unk",
+        "label": "pending"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 2025: BDLLfxC 6-month regimen",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Pa-sparing 6-month grammar for pregnancy and pediatrics.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC 2025 notes BPaLM/BPaL; WHO carries the DLM 6-month construct",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-bpalm",
+    "tb-delamanid",
+    "tb-pregnancy",
+    "tb-9month-drtb",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "Age 11, RR-TB, FQ pending",
+    "setup": "11-year-old, Ultra RIF detected, no pretomanid paediatric indication in your NTP, FQ unknown.",
+    "steps": [
+      {
+        "title": "Not BPaLM by age",
+        "body": "BPaLM’s evidence and labelling are not this child. BDLLfxC is the 2025 6-month designed for this gap."
+      },
+      {
+        "title": "Start five, then prune",
+        "body": "Do not delay the whole regimen for gyrA. Drop CFZ or Lfx when the FQ result lands."
+      },
+      {
+        "title": "Weight-band BDQ and DLM",
+        "body": "Adult 400/200 BDQ schedules are not a 25 kg child. Open the handbook table."
+      }
+    ],
+    "takeaway": "BDLLfxC is the Pa-free 6-month sibling, not a misspelling of BPaLM."
+  },
+  "check": [
+    {
+      "id": "bdl-pa",
+      "kind": "conceptual",
+      "prompt": "BDLLfxC is intended mainly for MDR/RR-TB when:",
+      "choices": [
+        "The isolate is fully DS",
+        "Pretomanid-containing BPaLM is not suitable (pregnancy, age, access) and a 6-month all-oral is still wanted",
+        "The patient needs 3HP",
+        "Smear is negative therefore no treatment"
+      ],
+      "answer": "Pretomanid-containing BPaLM is not suitable (pregnancy, age, access) and a 6-month all-oral is still wanted",
+      "why": "Pa-sparing, not DS-TB.",
+      "whyWrong": {
+        "The isolate is fully DS": "Wrong class.",
+        "The patient needs 3HP": "TPT.",
+        "Smear is negative therefore no treatment": "No."
+      }
+    },
+    {
+      "id": "bdl-prune",
+      "kind": "calculation",
+      "prompt": "On BDLLfxC, FQ DST returns resistant. The WHO prune is:",
+      "choices": [
+        "Drop levofloxacin, continue BDLC",
+        "Drop bedaquiline",
+        "Add pretomanid automatically",
+        "Switch to 2HRZE"
+      ],
+      "answer": "Drop levofloxacin, continue BDLC",
+      "why": "FQ-R → drop Lfx; FQ-S → drop CFZ.",
+      "whyWrong": {
+        "Drop bedaquiline": "Group A, do not prune first.",
+        "Add pretomanid automatically": "You left Pa on purpose.",
+        "Switch to 2HRZE": "RIF is lost."
+      }
+    },
+    {
+      "id": "bdl-figure",
+      "kind": "figure",
+      "prompt": "On the BDLLfxC map, FQ-S leads to which labelled end?",
+      "choices": [
+        "BDLC (drop Lfx)",
+        "BDLLfx (drop CFZ)",
+        "Keep five forever with no DST",
+        "HRZE"
+      ],
+      "answer": "BDLLfx (drop CFZ)",
+      "why": "The plate’s S arrow goes to BDLLfx.",
+      "whyWrong": {
+        "BDLC (drop Lfx)": "That is the R arrow.",
+        "Keep five forever with no DST": "Pending node, not S.",
+        "HRZE": "No."
+      },
+      "figureHint": "Top-right end node."
+    }
+  ]
+}

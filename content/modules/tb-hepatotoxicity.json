@@ -1,0 +1,206 @@
+{
+  "id": "tb-hepatotoxicity",
+  "title": "DILI on HRZE and friends",
+  "dek": "INH, RIF, and PZA share the liver. Stop the right drug, not the alphabet by panic. Reintroduction order is a protocol, not folklore.",
+  "domain": "tb",
+  "aliases": [
+    "TB DILI",
+    "INH hepatitis",
+    "PZA hepatotoxicity",
+    "drug-induced liver injury TB"
+  ],
+  "tags": [
+    "DILI",
+    "hepatotoxicity",
+    "INH",
+    "PZA",
+    "RIF"
+  ],
+  "story": [
+    "First-line TB therapy is a hepatotoxicity machine: isoniazid (especially slow NAT2 acetylators, alcohol, pregnancy, HIV), pyrazinamide (dose and duration), and rifampin (cholestatic and mixed pictures). Ethambutol is the usual liver-spare companion. Combined DILI is why programmes check ALT/AST/bilirubin at baseline and when the patient turns yellow, nauseated, or just “off.”",
+    "Thresholds vary; a common teaching cut is ALT >3× ULN with symptoms or >5× without, or bilirubin rise — use the local SOP. Stop H, R, and Z together when the liver is in trouble. Do not keep PZA “because it’s only month two.” Bridge with liver-spare drugs (EMB, an FQ, sometimes AMK/LZD in ugly cases) so you never monotherapy a cavity.",
+    "Reintroduction is staged (often R then H then Z last or never) once enzymes fall. PZA is the usual permanent casualty. Pretomanid and BDQ also have hepatic labels; BPaLM is not DILI-proof."
+  ],
+  "deepTitle": "Hy’s law and the other yellow",
+  "deep": [
+    "Gilbert’s and rifampin unconjugated bilirubin can scare people. Fractionate.",
+    "Viral hepatitis unmasking on HRZE is a differential, not a rarity in some regions.",
+    "3HP and HPMZ still contain INH and a rifamycin; 1HP is not a liver holiday.",
+    "Do not rechallenge PZA after severe DILI to “complete intensive phase.”"
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "DILI: recognise, stop H/R/Z, bridge without monotherapy, reintroduce with Z last or never.",
+    "nodes": [
+      {
+        "id": "hrz",
+        "label": "HRZ ± E",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "dili",
+        "label": "DILI?",
+        "x": 28,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "stop",
+        "label": "Stop H,R,Z",
+        "x": 50,
+        "y": 28,
+        "tone": "process"
+      },
+      {
+        "id": "bridge",
+        "label": "Liver-spare bridge",
+        "x": 72,
+        "y": 28,
+        "tone": "process"
+      },
+      {
+        "id": "re",
+        "label": "Reintroduce",
+        "x": 90,
+        "y": 28,
+        "tone": "end"
+      },
+      {
+        "id": "ok",
+        "label": "Continue",
+        "x": 50,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "hrz",
+        "to": "dili"
+      },
+      {
+        "from": "dili",
+        "to": "stop",
+        "label": "yes"
+      },
+      {
+        "from": "stop",
+        "to": "bridge"
+      },
+      {
+        "from": "bridge",
+        "to": "re"
+      },
+      {
+        "from": "dili",
+        "to": "ok",
+        "label": "no"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — treatment support and ADR",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — adverse effects",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Stop the liver drugs together; never INH monotherapy of a cavity.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-isoniazid",
+    "tb-pyrazinamide",
+    "tb-hrze",
+    "tb-hpzm",
+    "tb-pretomanid",
+    "tb-pregnancy"
+  ],
+  "example": {
+    "title": "ALT 420, still on HRZE month 1",
+    "setup": "Symptoms plus ALT 8× ULN, bilirubin 2.4, smear still 2+.",
+    "steps": [
+      {
+        "title": "Stop H, R, Z today",
+        "body": "Keep EMB if optic screen allows; add an FQ so two agents cover the cavity."
+      },
+      {
+        "title": "Do not leave EMB alone",
+        "body": "Monotherapy manufactures EMB-R."
+      },
+      {
+        "title": "Reintroduce later with a protocol",
+        "body": "R then H; leave Z out after this severity."
+      }
+    ],
+    "takeaway": "DILI management is stop-together, bridge-plural, reintroduce-staged."
+  },
+  "check": [
+    {
+      "id": "dili-stop",
+      "kind": "conceptual",
+      "prompt": "When HRZE DILI is diagnosed, the usual stop set is:",
+      "choices": [
+        "Ethambutol only",
+        "Isoniazid, rifampin, and pyrazinamide together",
+        "Pyridoxine only",
+        "Moxifloxacin only"
+      ],
+      "answer": "Isoniazid, rifampin, and pyrazinamide together",
+      "why": "EMB is usually kept as a companion in the bridge, not the primary liver offender.",
+      "whyWrong": {
+        "Ethambutol only": "Wrong offender.",
+        "Pyridoxine only": "Neuropathy patch.",
+        "Moxifloxacin only": "May be the bridge, not the stop."
+      }
+    },
+    {
+      "id": "dili-mono",
+      "kind": "calculation",
+      "prompt": "Bridging with EMB alone during DILI in cavitary TB is wrong because:",
+      "choices": [
+        "EMB has no anti-TB activity",
+        "Monotherapy selects EmbB mutants while bacilli still replicate",
+        "EMB always causes hepatitis",
+        "EMB is a rifamycin"
+      ],
+      "answer": "Monotherapy selects EmbB mutants while bacilli still replicate",
+      "why": "Always ≥2 likely-active drugs in the bridge.",
+      "whyWrong": {
+        "EMB has no anti-TB activity": "It does.",
+        "EMB always causes hepatitis": "Optic, not usual DILI.",
+        "EMB is a rifamycin": "No."
+      }
+    },
+    {
+      "id": "dili-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, reintroduction hangs off:",
+      "choices": [
+        "The Continue node",
+        "The liver-spare bridge after stopping H/R/Z",
+        "IGRA",
+        "CAD"
+      ],
+      "answer": "The liver-spare bridge after stopping H/R/Z",
+      "why": "You do not reintroduce from a still-hot liver.",
+      "whyWrong": {
+        "The Continue node": "That’s the no-DILI path.",
+        "IGRA": "No.",
+        "CAD": "No."
+      },
+      "figureHint": "Upper right chain."
+    }
+  ]
+}

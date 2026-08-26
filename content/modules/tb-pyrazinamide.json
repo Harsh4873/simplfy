@@ -1,0 +1,165 @@
+{
+  "id": "tb-pyrazinamide",
+  "title": "Pyrazinamide",
+  "dek": "A nicotinamide analogue prodrug, PncA-activated, pH-dependent, sterilizing in acidic necrotic lesions. Whole-gene pncA, fussy MGIT, intrinsic R in M. bovis.",
+  "domain": "tb",
+  "aliases": [
+    "PZA",
+    "pyrazinamide",
+    "Z drug",
+    "POA",
+    "pyrazinoic acid"
+  ],
+  "tags": [
+    "PZA",
+    "PncA",
+    "pH",
+    "sterilizing",
+    "hepatotoxicity"
+  ],
+  "story": [
+    "Pyrazinamide shortens DS-TB from 9–18 months toward 6 by hitting bacilli in acidic, inflammatory, necrotic niches where INH looks ordinary. PncA makes pyrazinoic acid; activity collapses as pH rises toward 7. That is why broth DST is a pH protocol and why caseum is the pharmacological home.",
+    "WHO intensive-phase dose ~25 mg/kg (child bands higher). Hepatotoxicity overlaps INH/RIF. Hyperuricemia and arthralgia are the other host notes (POA interferes with urate). Pregnancy: WHO keeps PZA; some older CDC overlays did not.",
+    "No RRDR. Sequence pncA. M. bovis/BCG intrinsic-R. See tb-pnca."
+  ],
+  "deepTitle": "Sterilizing does not mean always necessary",
+  "deep": [
+    "Continuation-phase DS-TB drops Z. HPMZ keeps Z only 2 months. Some 9-month DR recipes keep Z throughout if pncA is clean.",
+    "TBM: PZA is a CSF-friendly sterilizing companion — keep it unless the allele forbids.",
+    "PubChem CID 1046. ChEMBL2562.",
+    "panD/clpC1 are uncommon extras. Do not lead with them."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic PZA activity versus pH. The clinical lesion sits left (acid); poorly acidified MGIT sits right (false S or chaos). PncA is assumed intact on this curve.",
+    "xLabel": "pH (schematic)",
+    "curves": [
+      {
+        "id": "act",
+        "label": "PZA activity (intact PncA)",
+        "mean": 5.6,
+        "sd": 0.45
+      },
+      {
+        "id": "broth",
+        "label": "failed pH control",
+        "mean": 6.8,
+        "sd": 0.25
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — PZA in DS and DR constructs",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Pyrazinamide — PubChem CID 1046",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1046"
+    },
+    {
+      "title": "Pyrazinamide — CHEMBL2562",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL2562/"
+    },
+    {
+      "title": "PncA — UniProt P9WHF5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WHF5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "pH-activity curve as the DST warning.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pnca",
+    "tb-first-line",
+    "tb-granuloma",
+    "tb-hrze",
+    "tb-meningitis"
+  ],
+  "example": {
+    "title": "ALT 4× ULN on week 3 of HRZE",
+    "setup": "Hepatitis, no alcohol, no viral hepatitis. Which first-line to blame first is a clinical art; PZA is a frequent culprit.",
+    "steps": [
+      {
+        "title": "Stop the likely hepatotoxins (INH/PZA/RIF) per NTP hepatitis SOP",
+        "body": "Do not keep PZA as a mascot while ALT climbs."
+      },
+      {
+        "title": "Re-challenge in a planned order",
+        "body": "RIF is the sterilizing drug you most want back. PZA is the one many SOPs reintroduce last or not at all if severe."
+      },
+      {
+        "title": "If PZA is retired, extend or rebuild",
+        "body": "Losing Z can mean a longer DS regimen. That is allowed. Silent 4-month HPMZ without Z is not."
+      }
+    ],
+    "takeaway": "PZA buys shorter therapy in acid lesions and spends liver."
+  },
+  "check": [
+    {
+      "id": "pza-ph",
+      "kind": "conceptual",
+      "prompt": "PZA’s sterilizing reputation is tied to:",
+      "choices": [
+        "Neutral pH log-phase broth exclusively",
+        "Acidic necrotic/inflammatory niches after PncA activation",
+        "Binding rpoB",
+        "Blocking gyrase"
+      ],
+      "answer": "Acidic necrotic/inflammatory niches after PncA activation",
+      "why": "Lesion pH, not pH 6.8 laziness.",
+      "whyWrong": {
+        "Neutral pH log-phase broth exclusively": "Where it looks weak.",
+        "Binding rpoB": "RIF.",
+        "Blocking gyrase": "FQ."
+      }
+    },
+    {
+      "id": "pza-bovis",
+      "kind": "calculation",
+      "prompt": "A BCG isolate’s expected PZA DST is:",
+      "choices": [
+        "S, because vaccines are susceptible",
+        "R, intrinsic pncA allele",
+        "Depends on gyrA",
+        "Uncallable because BCG lacks a cell wall"
+      ],
+      "answer": "R, intrinsic pncA allele",
+      "why": "Do not file as acquired MDR PZA-R.",
+      "whyWrong": {
+        "S, because vaccines are susceptible": "False.",
+        "Depends on gyrA": "Wrong gene.",
+        "Uncallable because BCG lacks a cell wall": "It has an envelope."
+      }
+    },
+    {
+      "id": "pza-figure",
+      "kind": "figure",
+      "prompt": "On the PZA pH plate, failed pH control sits to the right. That means:",
+      "choices": [
+        "More acid, more activity",
+        "Near-neutral media where PZA activity collapses, wrecking pDST",
+        "That PZA binds CAD software",
+        "That Ultra sequences pncA"
+      ],
+      "answer": "Near-neutral media where PZA activity collapses, wrecking pDST",
+      "why": "Rightward pH is the lab failure mode.",
+      "whyWrong": {
+        "More acid, more activity": "That is the left curve’s home.",
+        "That PZA binds CAD software": "No.",
+        "That Ultra sequences pncA": "No."
+      },
+      "figureHint": "Two curves along a pH axis."
+    }
+  ]
+}

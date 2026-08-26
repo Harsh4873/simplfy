@@ -1,0 +1,176 @@
+{
+  "id": "tb-pas",
+  "title": "Para-aminosalicylic acid",
+  "dek": "1940s folate-pathway salvage. GI intolerance, hypothyroidism with ETH, thyA/folC/dfrA genetics. Not Group A. See also the folate plate.",
+  "domain": "tb",
+  "aliases": [
+    "PAS",
+    "para-aminosalicylic acid",
+    "aminosalicylate",
+    "PAS-sodium"
+  ],
+  "tags": [
+    "PAS",
+    "folate",
+    "salvage",
+    "hypothyroidism",
+    "GI"
+  ],
+  "story": [
+    "PAS was among the first TB chemotherapies. It remains a Group C option when shorter all-oral regimens fail or are ineligible. Adult doses are large (grams of PAS-sodium), GI toxicity is legendary, and hypothyroidism is common when paired with ethionamide.",
+    "Mechanism: folate/thymidylate poisoning (see tb-folate-salvage). Resistance: thyA, folC, dfrA, ribD — scattered, catalogue-incomplete. Do not regex a synonymous folC lineage SNP into PAS-R.",
+    "Never a BPaLM component. Never TPT. If you need PAS, you should also be talking about surgery, trials, and whether any Group A residual remains."
+  ],
+  "deepTitle": "Formulation and monitoring",
+  "deep": [
+    "Granules vs tablets vs sodium salt change GI and PK. Use the product your NTP stocks.",
+    "TSH if combined with ETH. Electrolytes with some PAS-sodium loads.",
+    "PubChem CID 4641. ChEMBL125.",
+    "Cotrimoxazole is not a PAS substitute for TB, even in HIV."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "PAS as last-shelf folate salvage. Genetics exist; so does a GI wall that stops the drug before the allele does.",
+    "layers": [
+      {
+        "title": "When",
+        "nodes": [
+          "Group C",
+          "longer Rx",
+          "A/B gone"
+        ]
+      },
+      {
+        "title": "Genes",
+        "nodes": [
+          "thyA",
+          "folC",
+          "dfrA"
+        ]
+      },
+      {
+        "title": "Host cost",
+        "nodes": [
+          "GI",
+          "TSH w/ ETH"
+        ]
+      },
+      {
+        "title": "Not",
+        "nodes": [
+          "BPaLM",
+          "TPT",
+          "HPMZ"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — PAS in longer regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Aminosalicylic acid — PubChem CID 4641",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/4641"
+    },
+    {
+      "title": "Aminosalicylic acid — CHEMBL125",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL125/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Historical folate drug, still a labelled Group C.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-second-line",
+    "tb-cycloserine",
+    "tb-folate-salvage",
+    "tb-resistance",
+    "tb-isoniazid"
+  ],
+  "example": {
+    "title": "PAS granules “as tolerated” = 20% of dose",
+    "setup": "Salvage regimen on paper includes full-dose PAS. Pill count shows a fifth of granules taken.",
+    "steps": [
+      {
+        "title": "Adherence is the DST",
+        "body": "A counted drug not swallowed is not a counted drug. GI is the resistance mechanism here."
+      },
+      {
+        "title": "Fix formulation or drop and replace",
+        "body": "Do not keep a fictional fourth drug."
+      },
+      {
+        "title": "Check thyA anyway",
+        "body": "If they start swallowing and thyA is LOF, you still miscounted."
+      }
+    ],
+    "takeaway": "PAS fails in the gut as often as in folC."
+  },
+  "check": [
+    {
+      "id": "pas-group",
+      "kind": "conceptual",
+      "prompt": "PAS is:",
+      "choices": [
+        "The P in BPaLM",
+        "A Group C folate-pathway salvage drug",
+        "Rifapentine",
+        "A WRD cartridge"
+      ],
+      "answer": "A Group C folate-pathway salvage drug",
+      "why": "BPaLM’s P is pretomanid.",
+      "whyWrong": {
+        "The P in BPaLM": "Pretomanid.",
+        "Rifapentine": "HPMZ/3HP.",
+        "A WRD cartridge": "No."
+      }
+    },
+    {
+      "id": "pas-eth",
+      "kind": "calculation",
+      "prompt": "PAS plus ethionamide increases risk of:",
+      "choices": [
+        "Permanent orange skin only",
+        "Hypothyroidism (monitor TSH)",
+        "rpoB S450L",
+        "CAD false positives"
+      ],
+      "answer": "Hypothyroidism (monitor TSH)",
+      "why": "Classic combination toxicity.",
+      "whyWrong": {
+        "Permanent orange skin only": "CFZ/rifamycins.",
+        "rpoB S450L": "No.",
+        "CAD false positives": "No."
+      }
+    },
+    {
+      "id": "pas-figure",
+      "kind": "figure",
+      "prompt": "On the PAS hierarchy, BPaLM sits in “Not” because:",
+      "choices": [
+        "PAS is pretomanid",
+        "PAS is not part of the 6-month BPaLM construct",
+        "BPaLM requires PAS 8 g daily",
+        "PAS is 3HP"
+      ],
+      "answer": "PAS is not part of the 6-month BPaLM construct",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "PAS is pretomanid": "Letter collision again.",
+        "BPaLM requires PAS 8 g daily": "False.",
+        "PAS is 3HP": "False."
+      },
+      "figureHint": "Bottom layer Not: BPaLM | TPT | HPMZ."
+    }
+  ]
+}

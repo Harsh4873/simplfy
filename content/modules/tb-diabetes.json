@@ -1,0 +1,207 @@
+{
+  "id": "tb-diabetes",
+  "title": "Diabetes and TB",
+  "dek": "Hyperglycaemia blunts macrophage killing and raises poor-outcome risk. Screen both ways. PK and neuropathy monitoring get noisier; the regimen letters usually do not change by glucose alone.",
+  "domain": "tb",
+  "aliases": [
+    "TB diabetes",
+    "DM TB bidirectional screening",
+    "hyperglycaemia TB outcome"
+  ],
+  "tags": [
+    "diabetes",
+    "comorbidity",
+    "PK",
+    "neuropathy",
+    "screening"
+  ],
+  "story": [
+    "Diabetes mellitus and TB associate bidirectionally: TB unmasks hyperglycaemia; diabetes increases risk of TB disease and of delayed culture conversion, relapse, and death. WHO recommends screening people with TB for diabetes and screening people with diabetes for TB in high-burden settings. This is not a different MTBC species.",
+    "Regimens remain WHO DS or DR algorithms. What changes is monitoring: INH/LZD neuropathy stacks with diabetic neuropathy; renal dosing for EMB/injectables if diabetic kidney disease; hepatotoxicity risk; and drug–drug noise with some oral hypoglycaemics and rifampin induction (sulfonylureas, others). Glycaemic control during therapy is part of the TB outcome, not an endocrine courtesy consult.",
+    "Cavities and atypical radiographs happen. Do not skip mWRD because the film “looks bacterial.” Prednisone for IRIS in a person with diabetes is a glucose bomb — plan it."
+  ],
+  "deepTitle": "Metformin, rifampin, and the A1c",
+  "deep": [
+    "A1c at TB diagnosis can be falsely shifted by illness; repeat after the intensive phase.",
+    "Rifampin induces metabolism of several diabetes drugs. Recheck glucose after week 1.",
+    "Obesity is not a reason to cap INH at half-dose without a PK reason; use weight bands honestly.",
+    "Diabetes is not an indication for adding a FQ to DS-TB “for severity.”"
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Hyperglycaemia as a host-defence covariate wrapping standard TB regimens. Screening is bidirectional; letters stay WHO.",
+    "nodes": [
+      {
+        "id": "dm",
+        "label": "Hyperglycaemia",
+        "group": "host",
+        "x": 12,
+        "y": 48
+      },
+      {
+        "id": "mac",
+        "label": "Macrophage killing",
+        "group": "host",
+        "x": 38,
+        "y": 28,
+        "sub": "blunted"
+      },
+      {
+        "id": "tb",
+        "label": "TB disease",
+        "group": "pathogen",
+        "x": 38,
+        "y": 68
+      },
+      {
+        "id": "out",
+        "label": "Worse outcomes",
+        "group": "risk",
+        "x": 65,
+        "y": 48
+      },
+      {
+        "id": "rx",
+        "label": "Same WHO letters",
+        "group": "drug",
+        "x": 88,
+        "y": 28
+      },
+      {
+        "id": "mon",
+        "label": "More monitoring",
+        "group": "drug",
+        "x": 88,
+        "y": 68
+      }
+    ],
+    "edges": [
+      {
+        "from": "dm",
+        "to": "mac"
+      },
+      {
+        "from": "dm",
+        "to": "tb"
+      },
+      {
+        "from": "mac",
+        "to": "out"
+      },
+      {
+        "from": "tb",
+        "to": "out"
+      },
+      {
+        "from": "out",
+        "to": "rx"
+      },
+      {
+        "from": "out",
+        "to": "mon"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO collaborative framework for TB and diabetes (paraphrase)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC TB and diabetes overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Bidirectional screening; do not invent a DM-TB regimen.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pathogenesis",
+    "tb-hrze",
+    "tb-linezolid",
+    "tb-isoniazid",
+    "tb-hiv-synergy"
+  ],
+  "example": {
+    "title": "New TB, A1c 11%, tingling feet",
+    "setup": "Starting HRZE. Already numb toes. BMI 34.",
+    "steps": [
+      {
+        "title": "Pyridoxine is not optional",
+        "body": "INH neuropathy plus diabetes is stacked risk."
+      },
+      {
+        "title": "Do not skip EMB monitoring later if kidney disease appears",
+        "body": "Optic plus renal dosing."
+      },
+      {
+        "title": "Treat glucose as part of conversion",
+        "body": "Endocrine referral is TB therapy."
+      }
+    ],
+    "takeaway": "Diabetes changes monitoring and prognosis more than the acronym."
+  },
+  "check": [
+    {
+      "id": "dm-rx",
+      "kind": "conceptual",
+      "prompt": "Uncontrolled diabetes in DS-TB should usually:",
+      "choices": [
+        "Replace HRZE with BPaLM automatically",
+        "Keep WHO DS letters and intensify glucose plus neuropathy/renal monitoring",
+        "Stop rifampin forever",
+        "Add kanamycin empirically"
+      ],
+      "answer": "Keep WHO DS letters and intensify glucose plus neuropathy/renal monitoring",
+      "why": "No separate DM-TB regimen in WHO modules.",
+      "whyWrong": {
+        "Replace HRZE with BPaLM automatically": "BPaLM is RR therapy.",
+        "Stop rifampin forever": "Induction is managed, not abandoned by default.",
+        "Add kanamycin empirically": "Historical, harmful."
+      }
+    },
+    {
+      "id": "dm-screen",
+      "kind": "calculation",
+      "prompt": "Bidirectional screening means:",
+      "choices": [
+        "Only screen TB patients for HIV",
+        "Screen TB patients for diabetes and, in high-burden settings, diabetes patients for TB",
+        "Screen only if IGRA+",
+        "Screen only children"
+      ],
+      "answer": "Screen TB patients for diabetes and, in high-burden settings, diabetes patients for TB",
+      "why": "Two clinics, one association.",
+      "whyWrong": {
+        "Only screen TB patients for HIV": "Necessary but different.",
+        "Screen only if IGRA+": "Disease screening is CXR/symptoms/WRD.",
+        "Screen only children": "Adults carry the DM burden."
+      }
+    },
+    {
+      "id": "dm-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, “same WHO letters” is drawn as a consequence of:",
+      "choices": [
+        "Macrophage killing alone",
+        "Worse outcomes still treated with standard algorithms plus monitoring",
+        "A new Group A drug named glucose",
+        "IS6110"
+      ],
+      "answer": "Worse outcomes still treated with standard algorithms plus monitoring",
+      "why": "Letters stay; monitoring grows.",
+      "whyWrong": {
+        "Macrophage killing alone": "Upstream biology.",
+        "A new Group A drug named glucose": "No.",
+        "IS6110": "LOD."
+      },
+      "figureHint": "Right-side drug nodes."
+    }
+  ]
+}

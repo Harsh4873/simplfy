@@ -1,0 +1,217 @@
+{
+  "id": "tb-carbapenems",
+  "title": "Carbapenems plus clavulanate",
+  "dek": "Meropenem or imipenem with clavulanate (to block BlaC) is Group C salvage. It is IV, expensive, and not BPaLM. BlaC explains why a carbapenem alone looked silly in 2009 broths.",
+  "domain": "tb",
+  "aliases": [
+    "meropenem clavulanate TB",
+    "imipenem cilastatin TB",
+    "BlaC carbapenem",
+    "Group C carbapenem"
+  ],
+  "tags": [
+    "carbapenem",
+    "clavulanate",
+    "BlaC",
+    "Group C",
+    "salvage"
+  ],
+  "story": [
+    "M. tuberculosis expresses BlaC, an Ambler class A β-lactamase that eats many β-lactams. Clavulanate inhibits BlaC enough that meropenem (or imipenem) can inhibit peptidoglycan synthesis in some isolates. WHO lists carbapenem+clavulanate in Group C for longer individualised DR-TB when A/B drugs are insufficient.",
+    "This is not oral, not cheap, and not a substitute for BDQ/LZD. Dosing is multiple-times-daily IV. Amoxicillin–clavulanate supplies the clavulanate in many protocols; the amoxicillin is not the active anti-TB idea.",
+    "No tidy RRDR-like carbapenem resistance hotspot in routine catalogues. Do not invent a blaC SNP as a WHO-grade call without a catalogue row. Prior β-lactam exposure in NTM clinics is a different species."
+  ],
+  "deepTitle": "Why broth MICs lied",
+  "deep": [
+    "Without clavulanate, carbapenem MICs look terrible; with it, some isolates look interesting. Always read the companion.",
+    "Ertapenem is not the TB carbapenem of record.",
+    "Pregnancy salvage sometimes lands here when injectables are forbidden and Pa is off — still a specialist construct.",
+    "Do not combine with other unexplained experimental β-lactams from Twitter."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "BlaC eats carbapenems until clavulanate blocks it. Then meropenem can reach peptidoglycan transpeptidases. Group C, not Group A.",
+    "nodes": [
+      {
+        "id": "mero",
+        "label": "MER/IMI",
+        "group": "drug",
+        "x": 12,
+        "y": 48
+      },
+      {
+        "id": "bla",
+        "label": "BlaC",
+        "group": "enzyme",
+        "x": 38,
+        "y": 28
+      },
+      {
+        "id": "clav",
+        "label": "Clavulanate",
+        "group": "drug",
+        "x": 38,
+        "y": 68
+      },
+      {
+        "id": "pbp",
+        "label": "PG transpeptidase",
+        "group": "target",
+        "x": 68,
+        "y": 48
+      },
+      {
+        "id": "dead",
+        "label": "Hydrolysed",
+        "group": "host",
+        "x": 68,
+        "y": 18
+      },
+      {
+        "id": "wall",
+        "label": "Wall intact",
+        "group": "target",
+        "x": 88,
+        "y": 68
+      }
+    ],
+    "edges": [
+      {
+        "from": "mero",
+        "to": "bla"
+      },
+      {
+        "from": "bla",
+        "to": "dead",
+        "label": "no clav"
+      },
+      {
+        "from": "clav",
+        "to": "bla",
+        "label": "blocks"
+      },
+      {
+        "from": "mero",
+        "to": "pbp"
+      },
+      {
+        "from": "pbp",
+        "to": "wall"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — Group C carbapenems",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Meropenem — PubChem CID 441130",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/441130"
+    },
+    {
+      "title": "BlaC — UniProt P9WKD3",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WKD3/entry"
+    },
+    {
+      "title": "Carbapenem",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Carbapenem"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Clavulanate is the BlaC key, not a second carbapenem.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-who-groups",
+    "tb-second-line",
+    "tb-cell-envelope",
+    "tb-9month-drtb",
+    "tb-cycloserine"
+  ],
+  "example": {
+    "title": "Meropenem ordered without clavulanate",
+    "setup": "ICU salvage, meropenem q8h, no clavulanate, still on failing oral skeleton.",
+    "steps": [
+      {
+        "title": "Add clavulanate or stop pretending",
+        "body": "BlaC will eat the carbapenem."
+      },
+      {
+        "title": "This is Group C",
+        "body": "If Group A drugs are still available, use them first."
+      },
+      {
+        "title": "IV logistics",
+        "body": "Discharge planning fails if the only active companion is a q8h carbapenem."
+      }
+    ],
+    "takeaway": "Carbapenems in TB are a BlaC-plus-clavulanate salvage trick."
+  },
+  "check": [
+    {
+      "id": "carb-clav",
+      "kind": "conceptual",
+      "prompt": "Clavulanate is added to meropenem for TB because:",
+      "choices": [
+        "It is a rifamycin booster",
+        "It inhibits BlaC, Mtb’s β-lactamase",
+        "It binds rpoB",
+        "It is Group A"
+      ],
+      "answer": "It inhibits BlaC, Mtb’s β-lactamase",
+      "why": "Without it, the carbapenem is lunch.",
+      "whyWrong": {
+        "It is a rifamycin booster": "No.",
+        "It binds rpoB": "No.",
+        "It is Group A": "Group C construct."
+      }
+    },
+    {
+      "id": "carb-group",
+      "kind": "calculation",
+      "prompt": "WHO places carbapenem+clavulanate in:",
+      "choices": [
+        "Group A",
+        "Group C salvage, after A/B drugs",
+        "TPT preferred",
+        "SHINE intensive phase"
+      ],
+      "answer": "Group C salvage, after A/B drugs",
+      "why": "Not BPaLM.",
+      "whyWrong": {
+        "Group A": "FQ/BDQ/LZD.",
+        "TPT preferred": "No.",
+        "SHINE intensive phase": "Pediatric DS."
+      }
+    },
+    {
+      "id": "carb-figure",
+      "kind": "figure",
+      "prompt": "On the map, the “hydrolysed” node is the path when:",
+      "choices": [
+        "Clavulanate blocks BlaC",
+        "BlaC meets the carbapenem without clavulanate",
+        "INH is activated",
+        "QTc rises"
+      ],
+      "answer": "BlaC meets the carbapenem without clavulanate",
+      "why": "Upper hydrolysis path.",
+      "whyWrong": {
+        "Clavulanate blocks BlaC": "That’s the useful path to PBP.",
+        "INH is activated": "KatG.",
+        "QTc rises": "Other plate."
+      },
+      "figureHint": "Upper right."
+    }
+  ]
+}

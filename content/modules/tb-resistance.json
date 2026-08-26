@@ -23,7 +23,8 @@
     "Mutation supply scales with burden. Cavities are evolution experiments. Detecting a 5% rpoB S450L subpopulation is a different clinical object from a fixed allele, and variant callers with default 10% filters will lie to you.",
     "Fitness is not optional flavor. S450L is common partly because it is tolerated, sometimes with rpoC compensatory mutations. Some pncA loss-of-function alleles are cheap; some gyrA D94G backgrounds pay more. Compensatory evolution is why you read the rest of RNAP, not only RRDR.",
     "Critical concentrations are cut-points on an MIC distribution. Borderline rpoB alleles and moxifloxacin “breakpoint philosophy” are where a binary S/R column in a spreadsheet becomes propaganda. Report the allele, the grade, and the MIC if you have it.",
-    "Epistasis and lineage priors exist (eis promoter in L2, some phylogenetic markers mistaken for resistance). Always subtract the phylogenetic SNPs your catalogue already marked as not-associated."
+    "Epistasis and lineage priors exist (eis promoter in L2, some phylogenetic markers mistaken for resistance). Always subtract the phylogenetic SNPs your catalogue already marked as not-associated.",
+    "WHO 2021 definitions (still current in 2025 modules): pre-XDR is MDR/RR + FQ-R; XDR adds BDQ or LZD resistance. An injectable allele without Group A loss is not 2021-XDR."
   ],
   "visual": {
     "kind": "mutation-grid",
@@ -54,7 +55,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-rifampin", "tb-first-line", "tb-second-line", "tb-wgs-dst", "tb-diagnosis"],
+  "related": ["tb-rifampin", "tb-dr-definitions", "tb-who-catalogue", "tb-wgs-dst", "tb-heteroresistance", "tb-tbprofiler"],
   "example": {
     "title": "A 8% S450L minority",
     "setup": "Direct sputum targeted NGS: rpoB S450L at 8% frequency. Xpert: RIF resistance not detected. MGIT culture later grows a RIF-susceptible majority with a resistant subcolony on 7H11.",

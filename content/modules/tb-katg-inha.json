@@ -1,0 +1,184 @@
+{
+  "id": "tb-katg-inha",
+  "title": "katG and inhA",
+  "dek": "Two INH stories. katG S315T is activation loss, high-level, ETH often spared. inhA promoter-up is more target, low-level, ETH cross-resistant. Coding inhA is rarer.",
+  "domain": "tb",
+  "aliases": [
+    "katG S315T",
+    "inhA promoter",
+    "c-15t",
+    "isoniazid resistance genes",
+    "KatG"
+  ],
+  "tags": [
+    "katG",
+    "inhA",
+    "INH",
+    "ethionamide",
+    "prodrug"
+  ],
+  "story": [
+    "Isoniazid is a prodrug. KatG catalase-peroxidase activates it; the INH–NAD adduct inhibits InhA (FAS-II enoyl-ACP reductase). Loss of activation and overexpression/alteration of the target are genetically different resistances with different MICs and different ETH implications.",
+    "katG S315T is the global high-level allele: enough residual catalase to keep fitness, not enough INH activation. Ethionamide uses EthA, then InhA, so S315T often remains ETH-S. inhA promoter mutations (c-15t, t-8c, …) increase InhA abundance: low-level INH-R, ETH cross-R. Coding inhA (S94A, I21T) is less common but sits on the same target.",
+    "Other INH-associated genes (ahpC promoter compensatory, ndh, kasA) are catalogue footnotes, not Xpert substitutes. Report the allele class, not “INH-R” as a Boolean."
+  ],
+  "deepTitle": "Coordinates and LPAs",
+  "deep": [
+    "MTBDRplus probes katG 315 and inhA promoter. It will miss uncommon katG loss-of-function elsewhere — those tend to be unfit and rarer in transmission, but they exist.",
+    "ahpC promoter-up is often compensatory for katG loss, not a primary INH mechanism to treat as the cause.",
+    "High-dose INH in some MDR recipes is a bet on inhA-only low-level R. S315T does not pay that bet.",
+    "Numbering: inhA promoter positions are relative to the start; do not confuse c-15t with codon 15 of InhA."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "Two loci, two mechanisms. katG codon 315 is the high-level hotspot. inhA promoter sits upstream of the coding target that ETH shares.",
+    "gene": "katG (left conceptually) / inhA promoter+CDS",
+    "start": -40,
+    "end": 360,
+    "unit": "mixed schematic coordinates",
+    "regions": [
+      {
+        "start": -25,
+        "end": -5,
+        "label": "inhA promoter"
+      },
+      {
+        "start": 1,
+        "end": 80,
+        "label": "inhA CDS (zoom)"
+      },
+      {
+        "start": 300,
+        "end": 330,
+        "label": "katG 315"
+      }
+    ],
+    "marks": [
+      {
+        "pos": -15,
+        "label": "c-15t",
+        "note": "low-level INH + ETH"
+      },
+      {
+        "pos": 94,
+        "label": "S94A",
+        "note": "coding inhA"
+      },
+      {
+        "pos": 315,
+        "label": "S315T",
+        "note": "katG high-level INH"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — INH loci",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "KatG — UniProt P9WIE5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WIE5/entry"
+    },
+    {
+      "title": "InhA — UniProt P9WGR1",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WGR1/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "S315T vs c-15t as different vectors.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-isoniazid",
+    "tb-ethionamide",
+    "tb-resistance",
+    "tb-who-catalogue",
+    "tb-first-line",
+    "tb-ahpc",
+    "tb-etha"
+  ],
+  "example": {
+    "title": "Both alleles in one BAM",
+    "setup": "katG S315T AF 0.95 and inhA c-15t AF 0.20.",
+    "steps": [
+      {
+        "title": "High-level INH is already decided",
+        "body": "S315T at fixation is high-level INH-R. The promoter minority does not make it “low-level.”"
+      },
+      {
+        "title": "ETH is now also in trouble",
+        "body": "The inhA promoter minority may be enough to spoil ETH even though S315T alone would not."
+      },
+      {
+        "title": "Report both with AF",
+        "body": "This is evolution in one patient, not a parser bug."
+      }
+    ],
+    "takeaway": "When both INH mechanisms coexist, believe the more severe INH phenotype and the ETH cross-R."
+  },
+  "check": [
+    {
+      "id": "ki-s315t",
+      "kind": "conceptual",
+      "prompt": "katG S315T typically means:",
+      "choices": [
+        "Low-level INH-R with obligatory ETH cross-R",
+        "High-level INH-R via failed activation, ETH often still an option genetically",
+        "RIF-R",
+        "PZA-R"
+      ],
+      "answer": "High-level INH-R via failed activation, ETH often still an option genetically",
+      "why": "Activation versus target overexpression.",
+      "whyWrong": {
+        "Low-level INH-R with obligatory ETH cross-R": "inhA promoter pattern.",
+        "RIF-R": "rpoB.",
+        "PZA-R": "pncA."
+      }
+    },
+    {
+      "id": "ki-eth",
+      "kind": "calculation",
+      "prompt": "inhA c-15t, katG WT. ETH in a 9-month regimen should be counted as:",
+      "choices": [
+        "Fully reliable",
+        "Compromised by shared InhA endpoint / overexpression",
+        "A rifamycin",
+        "Equivalent to BDQ"
+      ],
+      "answer": "Compromised by shared InhA endpoint / overexpression",
+      "why": "ETH and INH meet at InhA.",
+      "whyWrong": {
+        "Fully reliable": "Cross-R is the point.",
+        "A rifamycin": "No.",
+        "Equivalent to BDQ": "No."
+      }
+    },
+    {
+      "id": "ki-figure",
+      "kind": "figure",
+      "prompt": "On the gene track, c-15t is drawn in which region?",
+      "choices": [
+        "katG codon 315",
+        "inhA promoter",
+        "rpoB RRDR",
+        "gyrA QRDR"
+      ],
+      "answer": "inhA promoter",
+      "why": "The left shaded promoter box.",
+      "whyWrong": {
+        "katG codon 315": "S315T mark is far right.",
+        "rpoB RRDR": "Different plate.",
+        "gyrA QRDR": "Different plate."
+      },
+      "figureHint": "Left region labelled inhA promoter."
+    }
+  ]
+}

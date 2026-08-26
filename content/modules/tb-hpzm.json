@@ -1,0 +1,174 @@
+{
+  "id": "tb-hpzm",
+  "title": "Four-month HPMZ (Study 31)",
+  "dek": "2HPMZ/2HPM: isoniazid, rifapentine, moxifloxacin, pyrazinamide. WHO (and CDC 2025) allow it for eligible people ≥12 with DS pulmonary TB. It is not BPaLM.",
+  "domain": "tb",
+  "aliases": [
+    "HPMZ",
+    "HPZM",
+    "Study 31",
+    "A5349",
+    "4-month rifapentine moxifloxacin",
+    "2HPMZ/2HPM"
+  ],
+  "tags": [
+    "HPMZ",
+    "rifapentine",
+    "moxifloxacin",
+    "4-month",
+    "DS-TB"
+  ],
+  "story": [
+    "Study 31/A5349 showed a 4-month daily regimen of isoniazid, rifapentine (1200 mg), moxifloxacin, and pyrazinamide (2HPMZ/2HPM — PZA in the first two months) was non-inferior to 2HRZE/4HR for eligible pulmonary DS-TB. WHO made this a conditional recommendation for people aged ≥12. CDC/ATS/IDSA 2025 endorses the same skeleton as a preferred 4-month US option.",
+    "Eligibility is not a vibe: known or presumed drug-susceptible pulmonary disease, age gate, ability to take a fluoroquinolone and high-dose rifapentine, attention to drug–drug induction (rifapentine is still a CYP3A4 inducer). Extra-pulmonary disease, pregnancy, and many children under 12 are not this trial population.",
+    "Moxifloxacin here is a first-line companion. The same molecule is a Group A DR-TB drug in other sentences. Do not recycle a gyrA mutant into HPMZ because the acronym looks modern."
+  ],
+  "deepTitle": "What the letters hide",
+  "deep": [
+    "Rifapentine 1200 mg daily is not 3HP’s 900 mg weekly. Different PK, different food effects, different interaction table.",
+    "PZA still occupies intensive-phase months. Hepatotoxicity monitoring does not retire.",
+    "HIV: the trial included people with HIV on compatible ART; dolutegravir dosing may need the rifamycin patch. Check the current overlay.",
+    "If FQ resistance is later found, this regimen is misbuilt. Baseline FQ testing is not optional intellectually even if programmes stagger it."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "HPMZ as a 4-month DS-TB object. Letters are drugs, not a licence to ignore gyrA or pregnancy exclusions.",
+    "layers": [
+      {
+        "title": "Intensive (2 mo)",
+        "nodes": [
+          "H",
+          "P (RPT)",
+          "M (MXF)",
+          "Z"
+        ]
+      },
+      {
+        "title": "Continuation (2 mo)",
+        "nodes": [
+          "H",
+          "P",
+          "M"
+        ]
+      },
+      {
+        "title": "Requires",
+        "nodes": [
+          "age ≥12",
+          "DS pulmonary",
+          "FQ-S"
+        ]
+      },
+      {
+        "title": "Not this",
+        "nodes": [
+          "BPaLM",
+          "TBM",
+          "pregnancy*"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: 2HPMZ/2HPM 4-month DS-TB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC/IDSA 2025 — 2HPZM/2HPM",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/php/dear-colleague-letters/2025-treatment-guidelines.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Keep HPMZ distinct from BPaLM and from 3HP.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-hrze",
+    "tb-rifapentine",
+    "tb-moxifloxacin",
+    "tb-first-line",
+    "tb-shine"
+  ],
+  "example": {
+    "title": "gyrA A90V after week 3 of HPMZ",
+    "setup": "Started HPMZ on an Xpert RIF-not-detected pulmonary case. tNGS later: gyrA A90V, rpoB WT, katG WT.",
+    "steps": [
+      {
+        "title": "The M is inactive",
+        "body": "A90V is FQ-R. HPMZ’s moxifloxacin cannot be counted."
+      },
+      {
+        "title": "Rebuild as DS-TB without FQ",
+        "body": "This is not RR-TB. Standard 2HRZE/4HR (or local SOP) is the usual rescue, not BPaLM."
+      },
+      {
+        "title": "Ask how the FQ-R got there",
+        "body": "Prior FQ for pneumonia? Mixed infection? Either way, stop improvising moxi into DS-TB."
+      }
+    ],
+    "takeaway": "HPMZ is a DS-TB 4-month recipe that assumes a live FQ."
+  },
+  "check": [
+    {
+      "id": "hpmz-letters",
+      "kind": "conceptual",
+      "prompt": "In WHO 2HPMZ/2HPM, the P and M are:",
+      "choices": [
+        "Pretomanid and meropenem",
+        "Rifapentine and moxifloxacin",
+        "PAS and amikacin",
+        "Bedaquiline and linezolid"
+      ],
+      "answer": "Rifapentine and moxifloxacin",
+      "why": "Do not confuse with BPaLM’s Pa = pretomanid.",
+      "whyWrong": {
+        "Pretomanid and meropenem": "Wrong regimen class.",
+        "PAS and amikacin": "Salvage history.",
+        "Bedaquiline and linezolid": "BPaL."
+      }
+    },
+    {
+      "id": "hpmz-rpt",
+      "kind": "calculation",
+      "prompt": "Study 31 rifapentine intensive-phase daily dose is 1200 mg. 3HP weekly rifapentine is 900 mg. These are:",
+      "choices": [
+        "Interchangeable because both say rifapentine",
+        "Different regimens (daily high-dose RPT vs weekly TPT) and must not be swapped",
+        "Both BPaLM",
+        "Both SHINE"
+      ],
+      "answer": "Different regimens (daily high-dose RPT vs weekly TPT) and must not be swapped",
+      "why": "Same drug, different PK objects.",
+      "whyWrong": {
+        "Interchangeable because both say rifapentine": "Dangerous.",
+        "Both BPaLM": "No.",
+        "Both SHINE": "SHINE is pediatric HRZ(E)."
+      }
+    },
+    {
+      "id": "hpmz-figure",
+      "kind": "figure",
+      "prompt": "On the HPMZ hierarchy, why is BPaLM in the “Not this” row?",
+      "choices": [
+        "Because they share pretomanid",
+        "Because HPMZ is a DS-TB rifapentine–moxifloxacin 4-month regimen; BPaLM is a 6-month RR-TB regimen with a different P (pretomanid)",
+        "Because WHO forbids moxifloxacin in all TB",
+        "Because Study 31 enrolled only RR-TB"
+      ],
+      "answer": "Because HPMZ is a DS-TB rifapentine–moxifloxacin 4-month regimen; BPaLM is a 6-month RR-TB regimen with a different P (pretomanid)",
+      "why": "Letter collision is the teaching hazard.",
+      "whyWrong": {
+        "Because they share pretomanid": "They do not.",
+        "Because WHO forbids moxifloxacin in all TB": "False.",
+        "Because Study 31 enrolled only RR-TB": "Opposite."
+      },
+      "figureHint": "Bottom row: Not this."
+    }
+  ]
+}

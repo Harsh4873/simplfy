@@ -1,0 +1,216 @@
+{
+  "id": "tb-iron-mycobactin",
+  "title": "Iron, mycobactin, and ESX-3",
+  "dek": "Mtb steals iron with mycobactin/carboxymycobactin and an ESX-3-dependent uptake path. The host sequesters iron; the bacterium budgets around that fight.",
+  "domain": "tb",
+  "aliases": [
+    "mycobactin",
+    "mbt locus",
+    "ESX-3",
+    "carboxymycobactin",
+    "ideR",
+    "iron Mtb"
+  ],
+  "tags": [
+    "iron",
+    "mycobactin",
+    "ESX-3",
+    "metabolism",
+    "virulence"
+  ],
+  "story": [
+    "Iron is essential and sequestered. Mtb synthesises mycobactin (cell-associated) and carboxymycobactin (more soluble) via the mbt gene cluster, then imports iron through membrane transporters with ESX-3 playing an essential role in this metal economy. IdeR represses iron-acquisition genes when iron is plentiful.",
+    "The host answers with NRAMP1 (SLC11A1), lactoferrin, and lipocalin-2 (which can bind some siderophores). Granuloma macrophages are an iron-restricted, heme-and-lipid-rich niche. Mtb can also use heme pathways (mmpL3 is not this; heme uptake is a parallel branch).",
+    "This is not a first-line drug target in WHO regimens today. It is why ESX-3 is essential, why some experimental siderophore-mimic compounds exist, and why “iron studies” on a TB ward are host nutrition, not DST."
+  ],
+  "deepTitle": "Genomic notes",
+  "deep": [
+    "mbtB and friends are biosynthetic. Loss-of-function should be lethal in iron-restricted media if genuine; in a clinical BAM, suspect mapping or a lineage-specific indel before announcing a new auxotroph.",
+    "ESX-3 substrates (EsxG/EsxH) are also T-cell antigens (TB10.4 related). Immunology papers and iron papers collide here.",
+    "Do not confuse mycobactin with mycolic acid because both start with myco-.",
+    "Gallium and other iron-mimic experimental therapies are research. Not BPaLM."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Host sequestration versus mycobactin/ESX-3 uptake. IdeR is the bacterial repressor when iron is already in hand.",
+    "nodes": [
+      {
+        "id": "host",
+        "label": "Host sequestration",
+        "group": "drug",
+        "x": 12,
+        "y": 30,
+        "sub": "NRAMP/Lcn2"
+      },
+      {
+        "id": "fe",
+        "label": "Fe scarcity",
+        "group": "target",
+        "x": 38,
+        "y": 30
+      },
+      {
+        "id": "mbt",
+        "label": "mbt cluster",
+        "group": "enzyme",
+        "x": 62,
+        "y": 22,
+        "sub": "mycobactin"
+      },
+      {
+        "id": "e3",
+        "label": "ESX-3",
+        "group": "enzyme",
+        "x": 62,
+        "y": 55
+      },
+      {
+        "id": "in",
+        "label": "Fe in Mtb",
+        "group": "target",
+        "x": 88,
+        "y": 40
+      },
+      {
+        "id": "ider",
+        "label": "IdeR",
+        "group": "enzyme",
+        "x": 38,
+        "y": 78,
+        "sub": "repressor"
+      }
+    ],
+    "edges": [
+      {
+        "from": "host",
+        "to": "fe"
+      },
+      {
+        "from": "fe",
+        "to": "mbt"
+      },
+      {
+        "from": "fe",
+        "to": "e3"
+      },
+      {
+        "from": "mbt",
+        "to": "in"
+      },
+      {
+        "from": "e3",
+        "to": "in"
+      },
+      {
+        "from": "in",
+        "to": "ider"
+      },
+      {
+        "from": "ider",
+        "to": "mbt",
+        "label": "repress"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "IdeR iron-dependent repressor — UniProt P9WMH1",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WMH1/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Iron-acquisition sketch so ESX-3 is not filed under RD1.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Siderophore",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Siderophore"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-h37rv-genome",
+    "tb-pathogenesis",
+    "tb-cell-envelope"
+  ],
+  "example": {
+    "title": "Calling ESX-3 a BCG-like attenuation",
+    "setup": "A draft genome is missing coverage over eccD3. Someone writes “RD1-like attenuation.”",
+    "steps": [
+      {
+        "title": "Wrong locus",
+        "body": "RD1 is ESX-1. ESX-3 is iron and essential. A real eccD3 deletion in viable Mtb is surprising."
+      },
+      {
+        "title": "Check the BAM",
+        "body": "GC-rich dropouts happen. Rescue with long reads or a different mapper before claiming auxotrophy."
+      },
+      {
+        "title": "Clinical meaning",
+        "body": "Even if real, this is not a DST call and not BCG."
+      }
+    ],
+    "takeaway": "ESX numbers are not interchangeable."
+  },
+  "check": [
+    {
+      "id": "fe-esx3",
+      "kind": "conceptual",
+      "prompt": "ESX-3 in Mtb is primarily associated with:",
+      "choices": [
+        "RD1 / ESAT-6 secretion",
+        "Iron/mycobactin economy and essentiality",
+        "Rifampin binding",
+        "Arabinogalactan polymerisation"
+      ],
+      "answer": "Iron/mycobactin economy and essentiality",
+      "why": "ESX-1 is RD1; ESX-3 is metal.",
+      "whyWrong": {
+        "RD1 / ESAT-6 secretion": "ESX-1.",
+        "Rifampin binding": "RpoB.",
+        "Arabinogalactan polymerisation": "EmbCAB."
+      }
+    },
+    {
+      "id": "fe-name",
+      "kind": "calculation",
+      "prompt": "Mycobactin and mycolic acid are:",
+      "choices": [
+        "The same molecule",
+        "Different chemistries: siderophore versus envelope fatty acid",
+        "Both ESX-1 substrates",
+        "Both rpoB cofactors"
+      ],
+      "answer": "Different chemistries: siderophore versus envelope fatty acid",
+      "why": "The shared prefix is linguistic, not biosynthetic.",
+      "whyWrong": {
+        "The same molecule": "False.",
+        "Both ESX-1 substrates": "No.",
+        "Both rpoB cofactors": "No."
+      }
+    },
+    {
+      "id": "fe-figure",
+      "kind": "figure",
+      "prompt": "On the iron map, what does IdeR do when “Fe in Mtb” is high?",
+      "choices": [
+        "Activate mbt biosynthesis",
+        "Repress mbt (negative feedback)",
+        "Cleave rpoB",
+        "Secret ESAT-6"
+      ],
+      "answer": "Repress mbt (negative feedback)",
+      "why": "The edge is labelled repress.",
+      "whyWrong": {
+        "Activate mbt biosynthesis": "Opposite.",
+        "Cleave rpoB": "No.",
+        "Secret ESAT-6": "ESX-1."
+      },
+      "figureHint": "Bottom node IdeR with a repress edge to mbt."
+    }
+  ]
+}

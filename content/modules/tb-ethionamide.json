@@ -1,0 +1,213 @@
+{
+  "id": "tb-ethionamide",
+  "title": "Ethionamide (and prothionamide)",
+  "dek": "A thioamide prodrug, EthA-activated, InhA-targeted — INH’s cousin. GI misery, hypothyroidism, teratogenicity. Still in the 2022 9-month unless swapped for 2 months of LZD.",
+  "domain": "tb",
+  "aliases": [
+    "ETH",
+    "Eto",
+    "ethionamide",
+    "prothionamide",
+    "Pto",
+    "thioamide"
+  ],
+  "tags": [
+    "ethionamide",
+    "EthA",
+    "InhA",
+    "hypothyroidism",
+    "pregnancy"
+  ],
+  "story": [
+    "Ethionamide is a structural cousin of INH: EthA (monooxygenase) activates it; the adduct hits InhA. inhA promoter mutants are cross-R. katG S315T often spares ETH. Prothionamide is the same idea with slightly different GI lore.",
+    "WHO 2022 9-month oral still lists Eto in the intensive phase, replaceable by 2 months of linezolid 600 mg — and that replacement is the pregnancy path. ETH is not in BPaLM. It is not TPT.",
+    "Host: nausea that sinks adherence, metallic taste, hepatitis, and hypothyroidism (especially with PAS). Give pyridoxine. Do not combine with INH high-dose as two InhA drugs and call them two mechanisms."
+  ],
+  "deepTitle": "ethA genetics",
+  "deep": [
+    "ethA frameshifts prevent activation — ETH-R with intact InhA and often intact INH (if katG WT).",
+    "ethR overexpression can reduce ethA. Catalogue-grade.",
+    "PubChem CID 2761171. ChEMBL1441.",
+    "Pediatric TBM recipes sometimes use ETH for CSF instead of EMB. That is a different, site-specific job."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "ETH parallels INH at InhA after a different activator. Promoter inhA is the shared-resistance join. Pregnancy prefers the LZD swap.",
+    "nodes": [
+      {
+        "id": "eth",
+        "label": "ETH",
+        "group": "drug",
+        "x": 10,
+        "y": 30,
+        "sub": "prodrug"
+      },
+      {
+        "id": "etha",
+        "label": "EthA",
+        "group": "enzyme",
+        "x": 35,
+        "y": 30
+      },
+      {
+        "id": "inha",
+        "label": "InhA",
+        "group": "target",
+        "x": 60,
+        "y": 30
+      },
+      {
+        "id": "inh",
+        "label": "INH",
+        "group": "drug",
+        "x": 10,
+        "y": 70
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 35,
+        "y": 70
+      },
+      {
+        "id": "preg",
+        "label": "preg: use LZD",
+        "group": "target",
+        "x": 85,
+        "y": 50
+      }
+    ],
+    "edges": [
+      {
+        "from": "eth",
+        "to": "etha"
+      },
+      {
+        "from": "etha",
+        "to": "inha"
+      },
+      {
+        "from": "inh",
+        "to": "katg"
+      },
+      {
+        "from": "katg",
+        "to": "inha"
+      },
+      {
+        "from": "eth",
+        "to": "preg"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — ethionamide in 9-month; LZD replacement in pregnancy",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Ethionamide — PubChem CID 2761171",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/2761171"
+    },
+    {
+      "title": "InhA — UniProt P9WGR1",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WGR1/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Thioamide as INH cousin with a pregnancy off-ramp.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-katg-inha",
+    "tb-isoniazid",
+    "tb-9month-drtb",
+    "tb-mycolates",
+    "tb-second-line",
+    "tb-etha"
+  ],
+  "example": {
+    "title": "inhA c-15t and Eto in the 9-month",
+    "setup": "FQ-S RR-TB, Pa unavailable, 2022 9-month includes Eto. WGS inhA c-15t, katG WT.",
+    "steps": [
+      {
+        "title": "Eto is compromised",
+        "body": "Shared InhA overexpression. Swap to the LZD 2-month variant even if not pregnant."
+      },
+      {
+        "title": "High-dose INH is the remaining INH-class question",
+        "body": "Low-level INH-R: some recipes still count Hh. Do not also count Eto."
+      },
+      {
+        "title": "Thyroid and nausea",
+        "body": "If Eto stays for some reason, TSH and antiemetics are part of DST-adjacent care."
+      }
+    ],
+    "takeaway": "ETH is InhA after EthA — inhA promoter kills it."
+  },
+  "check": [
+    {
+      "id": "eth-act",
+      "kind": "conceptual",
+      "prompt": "Ethionamide is activated by:",
+      "choices": [
+        "KatG",
+        "EthA (then InhA)",
+        "PncA",
+        "Ddn"
+      ],
+      "answer": "EthA (then InhA)",
+      "why": "Different activator, shared endpoint with INH.",
+      "whyWrong": {
+        "KatG": "INH.",
+        "PncA": "PZA.",
+        "Ddn": "Pa/DLM."
+      }
+    },
+    {
+      "id": "eth-preg",
+      "kind": "calculation",
+      "prompt": "In pregnancy, WHO’s 9-month path for ethionamide is:",
+      "choices": [
+        "Increase Eto",
+        "Replace Eto with 2 months of linezolid 600 mg",
+        "Add streptomycin",
+        "Switch to pretomanid"
+      ],
+      "answer": "Replace Eto with 2 months of linezolid 600 mg",
+      "why": "Teratogenicity off-ramp.",
+      "whyWrong": {
+        "Increase Eto": "Opposite.",
+        "Add streptomycin": "Also pregnancy-hostile.",
+        "Switch to pretomanid": "Pa off in pregnancy."
+      }
+    },
+    {
+      "id": "eth-figure",
+      "kind": "figure",
+      "prompt": "On the ETH map, both INH and ETH arrows meet at InhA to show:",
+      "choices": [
+        "That ETH is a rifamycin",
+        "Shared target and the basis of promoter inhA cross-resistance",
+        "That KatG activates ETH",
+        "That PZA is InhA"
+      ],
+      "answer": "Shared target and the basis of promoter inhA cross-resistance",
+      "why": "Join node.",
+      "whyWrong": {
+        "That ETH is a rifamycin": "No.",
+        "That KatG activates ETH": "EthA does.",
+        "That PZA is InhA": "No."
+      },
+      "figureHint": "Centre target InhA with two incoming paths."
+    }
+  ]
+}

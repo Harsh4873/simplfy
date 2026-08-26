@@ -1,0 +1,170 @@
+{
+  "id": "tb-whib7",
+  "title": "whiB7, eis, and injectable RNA",
+  "dek": "WhiB7 is a transcriptional feeder for eis and other resistance-ish genes. eis promoter-up is kanamycin’s common low-level trick. Do not equate it with rrs 1401 amikacin resistance.",
+  "domain": "tb",
+  "aliases": [
+    "whiB7",
+    "eis promoter",
+    "kanamycin eis",
+    "Rv3197A"
+  ],
+  "tags": [
+    "whiB7",
+    "eis",
+    "kanamycin",
+    "amikacin",
+    "injectable"
+  ],
+  "story": [
+    "eis encodes an acetyltransferase that inactivates kanamycin more readily than amikacin. Promoter-up mutations (and some whiB7 mutations that increase eis expression) yield low-level KAN-R with variable AMK effect — often still AMK-S. rrs a1401g is the high-level cross-R injectable allele.",
+    "WhiB7 is a redox-sensitive transcription factor that feeds eis, tap, and other genes. Rare whiB7 mutants can look like an eis-promoter phenocopy. Catalogue rows here have moved between editions; version-stamp them.",
+    "Clinically, kanamycin is retired from preferred regimens. This plate exists so a BAM does not scare a programme off amikacin salvage — or, conversely, so rrs 1401 is not ignored because eis is WT."
+  ],
+  "deepTitle": "Capreomycin is another island",
+  "deep": [
+    "tlyA loss: capreomycin (and some viomycin) resistance. Not eis.",
+    "rrs 1401: AMK, KM, and often CAP. That is the bad rrs.",
+    "Do not stack KM+AMK. History already lost that fight.",
+    "whiB7 also touches intrinsic macrolide-ish stories that are not TB therapy."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "eis promoter (negative coordinates) versus a schematic rrs 1401 mark. Different loci, different injectable stories.",
+    "gene": "eis promoter + rrs schematic",
+    "start": -80,
+    "end": 1500,
+    "unit": "mixed schematic (eis promoter bp / rrs rRNA pos)",
+    "regions": [
+      {
+        "start": -50,
+        "end": -5,
+        "label": "eis promoter"
+      },
+      {
+        "start": 1350,
+        "end": 1450,
+        "label": "rrs 1400 neighbourhood"
+      }
+    ],
+    "marks": [
+      {
+        "pos": -14,
+        "label": "eis -14",
+        "note": "KAN low-level classic"
+      },
+      {
+        "pos": -10,
+        "label": "eis -10",
+        "note": "promoter-up"
+      },
+      {
+        "pos": 1401,
+        "label": "rrs 1401",
+        "note": "AMK high-level"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — eis/rrs",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Eis — UniProt P9WFK7",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WFK7/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "KAN versus AMK is promoter versus rrs.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-eis-rrs",
+    "tb-amikacin",
+    "tb-kanamycin",
+    "tb-gidb",
+    "tb-who-catalogue"
+  ],
+  "example": {
+    "title": "eis -14 t>c, AMK withheld",
+    "setup": "Salvage recipe needs AMK. Report says “aminoglycoside R (eis).” rrs WT.",
+    "steps": [
+      {
+        "title": "Name the drug",
+        "body": "eis-up is KAN-tilted. AMK may still be active."
+      },
+      {
+        "title": "Confirm with MIC if you can",
+        "body": "Catalogues are priors."
+      },
+      {
+        "title": "Do not add KM",
+        "body": "Retired, ototoxic, and the eis allele is aimed at it."
+      }
+    ],
+    "takeaway": "whiB7/eis is kanamycin’s dimmer switch, not rrs 1401."
+  },
+  "check": [
+    {
+      "id": "whi-kan",
+      "kind": "conceptual",
+      "prompt": "eis promoter-up most consistently affects:",
+      "choices": [
+        "Bedaquiline",
+        "Kanamycin (low-level), with variable AMK effect",
+        "Linezolid",
+        "Pyrazinamide"
+      ],
+      "answer": "Kanamycin (low-level), with variable AMK effect",
+      "why": "rrs 1401 is the AMK high-level story.",
+      "whyWrong": {
+        "Bedaquiline": "rv0678/atpE.",
+        "Linezolid": "rplC/rrl.",
+        "Pyrazinamide": "pncA."
+      }
+    },
+    {
+      "id": "whi-1401",
+      "kind": "calculation",
+      "prompt": "rrs a1401g without eis promoter mutation is:",
+      "choices": [
+        "Irrelevant to AMK",
+        "High-level AMK (and often KM/CAP) resistance",
+        "INH-R",
+        "Only SM-R via gidB"
+      ],
+      "answer": "High-level AMK (and often KM/CAP) resistance",
+      "why": "Different locus from eis.",
+      "whyWrong": {
+        "Irrelevant to AMK": "Opposite.",
+        "INH-R": "katG.",
+        "Only SM-R via gidB": "Wrong gene."
+      }
+    },
+    {
+      "id": "whi-figure",
+      "kind": "figure",
+      "prompt": "On the gene-track, the rrs 1401 mark sits:",
+      "choices": [
+        "Inside the eis promoter region at −14",
+        "Near position 1401 on the right-hand rrs neighbourhood",
+        "At −80 only",
+        "Off the track by design"
+      ],
+      "answer": "Near position 1401 on the right-hand rrs neighbourhood",
+      "why": "The split scale is the teaching visual.",
+      "whyWrong": {
+        "Inside the eis promoter region at −14": "That’s eis.",
+        "At −80 only": "Track start.",
+        "Off the track by design": "It is in range."
+      },
+      "figureHint": "Right-hand mark."
+    }
+  ]
+}

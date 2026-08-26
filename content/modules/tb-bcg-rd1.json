@@ -1,0 +1,178 @@
+{
+  "id": "tb-bcg-rd1",
+  "title": "BCG, RD1, and what vaccination is",
+  "dek": "BCG is a live M. bovis derivative that lost ESX-1 (RD1) and a pile of other RDs depending on the strain. It prevents childhood meningitis and miliary disease better than adult pulmonary cavities.",
+  "domain": "tb",
+  "aliases": [
+    "BCG vaccine",
+    "Bacillus Calmette-Guérin",
+    "RD1 deletion",
+    "BCG-osis",
+    "BCG strains"
+  ],
+  "tags": [
+    "BCG",
+    "RD1",
+    "vaccine",
+    "M. bovis",
+    "prevention"
+  ],
+  "story": [
+    "Bacillus Calmette–Guérin is M. bovis passaged until it lost RD1 (ESX-1) and, depending on daughter strains (Pasteur, Danish, Tokyo, Russia, Moreau…), additional RDs. It is still MTBC: NAATs light up, pncA is intrinsically PZA-R, and WGS will call bovis/BCG if you let it.",
+    "Efficacy is age- and disease-form-specific. BCG consistently reduces childhood TB meningitis and miliary disease. Protection against adult cavitary pulmonary TB is variable by latitude, prior NTM sensitisation, and strain. It is not a sterilizing vaccine and it is not TPT.",
+    "BCG is contraindicated in true MSMD and in untreated advanced HIV in many programmes (policy details vary with ART and CD4). Disseminated BCG-osis is an immunodeficiency until proven otherwise. Bladder BCG for urothelial carcinoma is a separate iatrogenic MTBC exposure."
+  ],
+  "deepTitle": "Strain genetics a lab will actually see",
+  "deep": [
+    "RD1 deletion is shared; RD2 is deleted in some strains (Danish) and not others (Tokyo). Do not use a single RD PCR as a full strain ID.",
+    "BCG is IGRA-silent for ESAT-6/CFP-10 (RD1) but TST-positive. That is the point of IGRAs in BCG-vaccinated people.",
+    "New TB vaccines (M72/AS01E and others) are a different object — subunit, not live RD1-deleted bovis. Do not file them under BCG.",
+    "A “TB” genome from a bladder-cancer ward is BCG until the tree says otherwise."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "BCG sits inside MTBC as an RD1-deleted M. bovis derivative. Daughter strains differ by extra RD losses. Clinical Mtb keeps ESX-1.",
+    "layers": [
+      {
+        "title": "MTBC",
+        "nodes": [
+          "M. tuberculosis",
+          "M. africanum",
+          "M. bovis"
+        ]
+      },
+      {
+        "title": "Live vaccine",
+        "nodes": [
+          "BCG ancestor",
+          "RD1 loss"
+        ]
+      },
+      {
+        "title": "Daughter strains",
+        "nodes": [
+          "Pasteur",
+          "Danish",
+          "Tokyo",
+          "Russia"
+        ]
+      },
+      {
+        "title": "What it prevents well",
+        "nodes": [
+          "child TBM",
+          "miliary",
+          "not cavities"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum — BCG",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "WHO BCG position and childhood TB prevention context",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "BCG vaccine",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/BCG_vaccine"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "RD1 teaching for vaccine vs clinical isolate.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-esx-secretion",
+    "tb-mtbc",
+    "tb-igra-tst",
+    "tb-organism",
+    "tb-host-ifng"
+  ],
+  "example": {
+    "title": "Infant with BCG-osis",
+    "setup": "HIV-negative infant, ulcerated BCG site, axillary adenitis, AFB from node, Xpert MTB detected RIF not detected. WGS pending.",
+    "steps": [
+      {
+        "title": "This may still be BCG",
+        "body": "Xpert cannot distinguish. Site and age are the clue. WGS/RD1 PCR next."
+      },
+      {
+        "title": "Think host",
+        "body": "Disseminated BCG is MSMD (IFNGR, IL12RB1, NEMO…) until immunology says no."
+      },
+      {
+        "title": "Do not start BPaLM empirically",
+        "body": "This is not RR-TB. Management is BCG-osis plus immunology referral; PZA is not active anyway."
+      }
+    ],
+    "takeaway": "BCG is MTBC with a deletion history and a host-susceptibility context."
+  },
+  "check": [
+    {
+      "id": "bcg-rd1",
+      "kind": "conceptual",
+      "prompt": "The defining attenuation lesion shared by BCG strains is:",
+      "choices": [
+        "rpoB S450L",
+        "RD1 deletion removing ESX-1 (ESAT-6/CFP-10)",
+        "gyrA D94G",
+        "Acquisition of a resistance plasmid"
+      ],
+      "answer": "RD1 deletion removing ESX-1 (ESAT-6/CFP-10)",
+      "why": "That is also why IGRAs can ignore BCG.",
+      "whyWrong": {
+        "rpoB S450L": "Rifampin resistance.",
+        "gyrA D94G": "FQ resistance.",
+        "Acquisition of a resistance plasmid": "Not the Mtb story."
+      }
+    },
+    {
+      "id": "bcg-pza",
+      "kind": "calculation",
+      "prompt": "BCG is M. bovis-derived. Expected PZA interpretation is:",
+      "choices": [
+        "Always PZA-S because BCG is a vaccine",
+        "Intrinsic PZA-R via the bovis pncA allele — not acquired MDR",
+        "PZA-R only if rpoB is mutant",
+        "PZA cannot be sequenced because BCG lacks pncA"
+      ],
+      "answer": "Intrinsic PZA-R via the bovis pncA allele — not acquired MDR",
+      "why": "Do not file BCG pncA under treatment-emergent resistance.",
+      "whyWrong": {
+        "Always PZA-S because BCG is a vaccine": "Vaccine ≠ PZA-S.",
+        "PZA-R only if rpoB is mutant": "Wrong gene.",
+        "PZA cannot be sequenced because BCG lacks pncA": "It has pncA; the allele is inactive."
+      }
+    },
+    {
+      "id": "bcg-figure",
+      "kind": "figure",
+      "prompt": "On the BCG hierarchy, why is “not cavities” in the bottom row?",
+      "choices": [
+        "Because BCG sterilizes adult cavities with 100% efficacy",
+        "Because BCG’s reliable benefit is against childhood disseminated/meningeal TB, not reliably against adult cavitary pulmonary disease",
+        "Because cavities are RD1",
+        "Because Xpert cannot detect pulmonary TB after BCG"
+      ],
+      "answer": "Because BCG’s reliable benefit is against childhood disseminated/meningeal TB, not reliably against adult cavitary pulmonary disease",
+      "why": "The plate is an efficacy statement, not a smear statement.",
+      "whyWrong": {
+        "Because BCG sterilizes adult cavities with 100% efficacy": "Opposite.",
+        "Because cavities are RD1": "No.",
+        "Because Xpert cannot detect pulmonary TB after BCG": "False."
+      },
+      "figureHint": "Bottom layer title: What it prevents well."
+    }
+  ]
+}

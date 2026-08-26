@@ -1,0 +1,202 @@
+{
+  "id": "tb-atpe",
+  "title": "atpE and bedaquiline binding",
+  "dek": "AtpE is the c-ring of ATP synthase, the binding site. High-level BDQ resistance, rare in surveys. Most clinical BDQ MIC shifts are Rv0678, not atpE. Reporting “no atpE mutation ⇒ BDQ-S” is incomplete.",
+  "domain": "tb",
+  "aliases": [
+    "atpE",
+    "ATP synthase c-subunit",
+    "bedaquiline binding site",
+    "AtpE D28N"
+  ],
+  "tags": [
+    "atpE",
+    "BDQ",
+    "ATP synthase",
+    "target",
+    "rare"
+  ],
+  "story": [
+    "Bedaquiline binds the c-subunit of mycobacterial F-ATP synthase, encoded by atpE, and uncouples/blocks ATP synthesis. Target-site substitutions (D28N, A63P, I66M and kin) produce high-level BDQ resistance. They are uncommon in programmatic surveys compared with Rv0678 loss-of-function.",
+    "Because they are rare, a naive lab that only looks at atpE will systematically call BDQ-S in isolates that pump the drug out. Put atpE and Rv0678 (and pepQ) on the same line of the SOP.",
+    "ATP synthase is essential, which is probably why atpE missense is rare and often costly. That does not make the alleles unimportant when present — they veto BDQ hard."
+  ],
+  "deepTitle": "What to put in the report",
+  "deep": [
+    "An atpE graded R allele is a stop-BPaLM event even if Rv0678 is clean.",
+    "WT atpE is the beginning of a BDQ sentence, not the end.",
+    "Do not confuse atpE with atpC or with the host mitochondrial synthase. Mtb numbering, Mtb gene.",
+    "MIC remains useful: target-site mutants sit far to the right; efflux mutants sit modestly right-shifted and can overlap CC."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "BDQ has a binding-site gene (atpE) and a common clinical resistance gene (Rv0678 → MmpL5). Both must be read.",
+    "nodes": [
+      {
+        "id": "bdq",
+        "label": "BDQ",
+        "group": "drug",
+        "x": 12,
+        "y": 40
+      },
+      {
+        "id": "atpe",
+        "label": "AtpE",
+        "group": "target",
+        "x": 40,
+        "y": 22,
+        "sub": "c-ring"
+      },
+      {
+        "id": "atp",
+        "label": "ATP synthase",
+        "group": "target",
+        "x": 70,
+        "y": 22
+      },
+      {
+        "id": "rv",
+        "label": "Rv0678",
+        "group": "enzyme",
+        "x": 40,
+        "y": 70,
+        "sub": "mmpR5"
+      },
+      {
+        "id": "pump",
+        "label": "MmpL5",
+        "group": "target",
+        "x": 70,
+        "y": 70,
+        "sub": "efflux"
+      }
+    ],
+    "edges": [
+      {
+        "from": "bdq",
+        "to": "atpe",
+        "label": "binds"
+      },
+      {
+        "from": "atpe",
+        "to": "atp"
+      },
+      {
+        "from": "bdq",
+        "to": "rv",
+        "label": "if regulator lost"
+      },
+      {
+        "from": "rv",
+        "to": "pump"
+      },
+      {
+        "from": "pump",
+        "to": "bdq",
+        "label": "exports"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — BDQ / atpE",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "AtpE ATP synthase c chain — UniProt P9WPS3",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WPS3/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Rare target-site vs common efflux.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-bedaquiline",
+    "tb-rv0678",
+    "tb-who-catalogue",
+    "tb-second-line",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "atpE WT, Rv0678 frameshift",
+    "setup": "Report draft: “No atpE mutation, BDQ susceptible.” Rv0678 has a frameshift AF 0.99.",
+    "steps": [
+      {
+        "title": "Rewrite the sentence",
+        "body": "atpE WT only excludes the rare high-level target path."
+      },
+      {
+        "title": "Grade the frameshift",
+        "body": "LOF in Rv0678 is the common BDQ/CFZ MIC-up route. Catalogue + MIC if you can."
+      },
+      {
+        "title": "Regimen",
+        "body": "Do not count BDQ as a solid Group A drug without humility. This may be a leave-BPaLM moment depending on grade and MIC."
+      }
+    ],
+    "takeaway": "atpE is necessary to look at and insufficient to clear BDQ."
+  },
+  "check": [
+    {
+      "id": "atpe-role",
+      "kind": "conceptual",
+      "prompt": "atpE encodes:",
+      "choices": [
+        "The gyrase A subunit",
+        "The ATP synthase c-subunit that bedaquiline binds",
+        "PncA",
+        "ESAT-6"
+      ],
+      "answer": "The ATP synthase c-subunit that bedaquiline binds",
+      "why": "Target-site gene, rare mutants, high MICs.",
+      "whyWrong": {
+        "The gyrase A subunit": "gyrA.",
+        "PncA": "PZA.",
+        "ESAT-6": "esxA."
+      }
+    },
+    {
+      "id": "atpe-clear",
+      "kind": "calculation",
+      "prompt": "WT atpE plus Rv0678 LOF should be summarised as:",
+      "choices": [
+        "BDQ fully cleared because the binding site is intact",
+        "Target site intact, but efflux-regulator loss — BDQ not automatically S",
+        "Linezolid resistance",
+        "Proof of DS-TB"
+      ],
+      "answer": "Target site intact, but efflux-regulator loss — BDQ not automatically S",
+      "why": "Two mechanisms.",
+      "whyWrong": {
+        "BDQ fully cleared because the binding site is intact": "The incomplete sentence.",
+        "Linezolid resistance": "rrl/rplC.",
+        "Proof of DS-TB": "No."
+      }
+    },
+    {
+      "id": "atpe-figure",
+      "kind": "figure",
+      "prompt": "On the BDQ map, why are there edges to both AtpE and Rv0678?",
+      "choices": [
+        "Because BDQ is a prodrug activated by both",
+        "Because binding and efflux-regulation are different BDQ stories",
+        "Because Rv0678 is gyrB",
+        "Because AtpE is inhA"
+      ],
+      "answer": "Because binding and efflux-regulation are different BDQ stories",
+      "why": "Same pedagogy as the second-line overview plate.",
+      "whyWrong": {
+        "Because BDQ is a prodrug activated by both": "BDQ is direct-acting.",
+        "Because Rv0678 is gyrB": "No.",
+        "Because AtpE is inhA": "No."
+      },
+      "figureHint": "Two rightward paths from BDQ."
+    }
+  ]
+}

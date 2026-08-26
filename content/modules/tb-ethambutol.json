@@ -1,0 +1,171 @@
+{
+  "id": "tb-ethambutol",
+  "title": "Ethambutol",
+  "dek": "An arabinosyltransferase inhibitor (EmbCAB) used as a companion while DST is pending and in some intensive phases. Optic neuropathy is the monitoring tax. DST is noisy; embB 306 is the genomic handle.",
+  "domain": "tb",
+  "aliases": [
+    "EMB",
+    "ethambutol",
+    "Myambutol",
+    "E drug",
+    "optic neuritis TB"
+  ],
+  "tags": [
+    "EMB",
+    "EmbB",
+    "optic nerve",
+    "companion",
+    "AG"
+  ],
+  "story": [
+    "Ethambutol is bacteriostatic against replicating Mtb by blocking arabinogalactan assembly. It is the “guardrail” in 2HRZE: if undetected INH or RIF resistance is present, EMB reduces the chance of losing the remaining first-line drugs. Once DS is confirmed, WHO is comfortable dropping it in continuation.",
+    "Adult dose ~15 mg/kg; children ~20 mg/kg. The feared toxicity is retrobulbar optic neuropathy — colour vision, visual acuity. Counselling beats a late complaint of “can’t see red.” Renal impairment needs dose adjustment because EMB is cleared by the kidney.",
+    "embB M306 variants are the resistance hotspot; phenotypic EMB DST is historically fussy. Do not let either alone overrule a thoughtful report. See tb-embcab."
+  ],
+  "deepTitle": "When EMB still counts",
+  "deep": [
+    "9-month DR recipes may still list E as a companion. Count it only if embB/grade says so.",
+    "TBM: poor CSF penetration. Pediatric TBM recipes often swap in ethionamide rather than relying on EMB.",
+    "Not a sterilizing drug. Not a TPT drug.",
+    "PubChem CID 14052. ChEMBL488."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "EMB points at arabinogalactan in the envelope. Host toxicity points at the optic nerve — a different organ, same month of therapy.",
+    "layers": [
+      {
+        "id": "ag",
+        "label": "Arabinogalactan (target)",
+        "detail": "EmbCAB; bacteriostatic",
+        "tone": "wall"
+      },
+      {
+        "id": "my",
+        "label": "Mycolates (not primary target)",
+        "detail": "INH’s layer",
+        "tone": "lipid"
+      },
+      {
+        "id": "host",
+        "label": "Host optic nerve (toxicity)",
+        "detail": "dose + renal clearance",
+        "tone": "core"
+      }
+    ],
+    "annotation": "Companion, not sterilizing star. Drop when DS is known, per regimen."
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — ethambutol as companion",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Ethambutol — PubChem CID 14052",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/14052"
+    },
+    {
+      "title": "Ethambutol — CHEMBL488",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL488/"
+    },
+    {
+      "title": "EmbB — UniProt P9WNL5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WNL5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Guardrail drug plus optic-nerve tax.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-embcab",
+    "tb-first-line",
+    "tb-cell-envelope",
+    "tb-hrze",
+    "tb-dst-phenotypic"
+  ],
+  "example": {
+    "title": "CrCl 25, EMB 1200 mg unchanged",
+    "setup": "70 kg adult, intensive HRZE, creatinine clearance 25 mL/min, dose still 15 mg/kg daily.",
+    "steps": [
+      {
+        "title": "Renal dose",
+        "body": "EMB accumulates when GFR falls. This is how you buy optic neuropathy."
+      },
+      {
+        "title": "Adjust per handbook",
+        "body": "Extend interval or reduce dose — NTP table, not a guess. Check colour vision."
+      },
+      {
+        "title": "If DS is already proven, dropping EMB may be the cleaner move",
+        "body": "Guardrail already did its job."
+      }
+    ],
+    "takeaway": "EMB: AG companion, kidney-cleared, eyes watched."
+  },
+  "check": [
+    {
+      "id": "emb-target",
+      "kind": "conceptual",
+      "prompt": "Ethambutol’s mycobacterial target is:",
+      "choices": [
+        "RpoB",
+        "Arabinosyltransferases EmbCAB",
+        "AtpE",
+        "Ddn"
+      ],
+      "answer": "Arabinosyltransferases EmbCAB",
+      "why": "AG synthesis.",
+      "whyWrong": {
+        "RpoB": "RIF.",
+        "AtpE": "BDQ.",
+        "Ddn": "Pa/DLM."
+      }
+    },
+    {
+      "id": "emb-tox",
+      "kind": "calculation",
+      "prompt": "The characteristic EMB toxicity to counsel and monitor is:",
+      "choices": [
+        "Orange tears only",
+        "Optic neuropathy (colour vision / acuity), worse if renal clearance is reduced",
+        "QTc 600 ms by default",
+        "Hypothyroidism always"
+      ],
+      "answer": "Optic neuropathy (colour vision / acuity), worse if renal clearance is reduced",
+      "why": "Not rifampin’s orange fluids.",
+      "whyWrong": {
+        "Orange tears only": "Rifamycins.",
+        "QTc 600 ms by default": "BDQ/FQ/CFZ neighbourhood.",
+        "Hypothyroidism always": "ETH/PAS neighbourhood."
+      }
+    },
+    {
+      "id": "emb-figure",
+      "kind": "figure",
+      "prompt": "On the EMB layered plate, why is there a host optic-nerve layer?",
+      "choices": [
+        "Because EmbB is a human gene",
+        "Because the clinically important toxicity is ocular, not an envelope lipid",
+        "Because EMB stains acid-fast",
+        "Because EMB is PZA"
+      ],
+      "answer": "Because the clinically important toxicity is ocular, not an envelope lipid",
+      "why": "Same month of therapy, different organ.",
+      "whyWrong": {
+        "Because EmbB is a human gene": "Bacterial transferase.",
+        "Because EMB stains acid-fast": "No.",
+        "Because EMB is PZA": "No."
+      },
+      "figureHint": "Bottom layer label."
+    }
+  ]
+}

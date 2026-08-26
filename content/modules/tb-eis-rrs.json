@@ -1,0 +1,174 @@
+{
+  "id": "tb-eis-rrs",
+  "title": "rrs, eis, and the injectables",
+  "dek": "Amikacin/kanamycin: rrs 1401 a>g is the canonical 16S hit; eis promoter-up acetylates kanamycin (and can nudge AMK). Capreomycin additionally cares about tlyA. Historical drugs, still in genomes.",
+  "domain": "tb",
+  "aliases": [
+    "rrs 1401",
+    "eis promoter",
+    "tlyA",
+    "amikacin resistance",
+    "kanamycin",
+    "capreomycin"
+  ],
+  "tags": [
+    "rrs",
+    "eis",
+    "AMK",
+    "injectable",
+    "16S"
+  ],
+  "story": [
+    "Second-line injectables are no longer preferred WHO therapy, but they remain salvage and they remain in BAMs. 16S rRNA rrs a1401g (E. coli 1408-adjacent numbering fights happen — state Mtb rrs coordinates) confers high-level kanamycin/amikacin resistance and often capreomycin. g1484t is a sibling allele.",
+    "eis promoter mutations (c-14t, g-10a, …) overexpress Eis aminoglycoside acetyltransferase. That is primarily a kanamycin story; amikacin may shift less. L2/Beijing has a higher prior on some eis promoters — lineage as covariate, still grade the allele.",
+    "tlyA loss-of-function blocks 16S/23S methylation needed for capreomycin (and viomycin) binding. Cross-resistance Venn: rrs 1401 hits the broad injectable set; eis is KAN-leaning; tlyA is CAP-leaning. Draw it before recycling an old injectable."
+  ],
+  "deepTitle": "Streptomycin is a different rpsL/rrs/gid story",
+  "deep": [
+    "Streptomycin: rpsL K43R/K88R, rrs 514/517 region, gid loss-of-function. Not interchangeable with AMK genetics.",
+    "Because injectables left Group A, rrs 1401 no longer defines XDR. It still defines “do not give AMK.”",
+    "Ototoxicity is the host reason they left, not a bacterial gene.",
+    "Numbering wars between E. coli 16S and Mtb rrs are how 1401 becomes 1408 in a report. Pick one and label it."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "Injectable genetics are a Venn diagram. rrs 1401 is the broad 16S hit; eis is KAN-weighted; tlyA is CAP-weighted; streptomycin lives on rpsL/gid.",
+    "rows": [
+      {
+        "gene": "rrs 1401 a>g",
+        "drug": "AMK/KAN/±CAP",
+        "canonical": "R",
+        "note": "16S; state numbering"
+      },
+      {
+        "gene": "eis promoter-up",
+        "drug": "KAN (±AMK)",
+        "canonical": "KAN-R",
+        "note": "acetyltransferase"
+      },
+      {
+        "gene": "tlyA LOF",
+        "drug": "CAP",
+        "canonical": "R",
+        "note": "methylation lost"
+      },
+      {
+        "gene": "rpsL K43R",
+        "drug": "STR",
+        "canonical": "R",
+        "note": "not AMK by default"
+      },
+      {
+        "gene": "gid LOF",
+        "drug": "STR",
+        "canonical": "R",
+        "note": "16S methylase-ish"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — AMK/KAN/CAP/STR",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Historical injectables still decode genomes.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Amikacin",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Amikacin"
+    }
+  ],
+  "related": [
+    "tb-amikacin",
+    "tb-streptomycin",
+    "tb-second-line",
+    "tb-who-catalogue",
+    "tb-resistance",
+    "tb-whib7",
+    "tb-gidb",
+    "tb-kanamycin"
+  ],
+  "example": {
+    "title": "eis c-14t, need an injectable salvage",
+    "setup": "Pre-XDR, BPaL failed, someone wants amikacin. WGS: eis c-14t, rrs WT, tlyA WT.",
+    "steps": [
+      {
+        "title": "KAN is a bad idea",
+        "body": "eis promoter-up acetylates kanamycin."
+      },
+      {
+        "title": "AMK is not automatically dead",
+        "body": "Shift may be smaller. MIC the AMK; do not assume rrs-level resistance."
+      },
+      {
+        "title": "CAP is a different Venn slice",
+        "body": "tlyA WT, rrs WT: CAP might still be on the table genetically — toxicity and WHO rank are separate objections."
+      }
+    ],
+    "takeaway": "eis ≠ rrs. Name the injectable."
+  },
+  "check": [
+    {
+      "id": "eis-kan",
+      "kind": "conceptual",
+      "prompt": "eis promoter-up primarily threatens:",
+      "choices": [
+        "Moxifloxacin",
+        "Kanamycin (aminoglycoside acetylation)",
+        "Isoniazid activation",
+        "PZA pH"
+      ],
+      "answer": "Kanamycin (aminoglycoside acetylation)",
+      "why": "Eis is an acetyltransferase overexpressed from the promoter.",
+      "whyWrong": {
+        "Moxifloxacin": "gyrA.",
+        "Isoniazid activation": "katG.",
+        "PZA pH": "pncA/pH."
+      }
+    },
+    {
+      "id": "rrs-num",
+      "kind": "calculation",
+      "prompt": "You see “rrs A1408G (E. coli)” in a paper and “rrs a1401g (Mtb)” in a catalogue. These are likely:",
+      "choices": [
+        "Unrelated bases on different planets",
+        "The same canonical 16S injectable allele under two numbering systems — label which",
+        "A pncA codon",
+        "Proof of BCG"
+      ],
+      "answer": "The same canonical 16S injectable allele under two numbering systems — label which",
+      "why": "Numbering hygiene, same as rpoB 450/531.",
+      "whyWrong": {
+        "Unrelated bases on different planets": "Usually the same hit.",
+        "A pncA codon": "No.",
+        "Proof of BCG": "No."
+      }
+    },
+    {
+      "id": "eis-figure",
+      "kind": "figure",
+      "prompt": "In the injectable grid, which row is the streptomycin-not-AMK teaching line?",
+      "choices": [
+        "rrs 1401 a>g",
+        "rpsL K43R",
+        "eis promoter-up",
+        "tlyA LOF as INH"
+      ],
+      "answer": "rpsL K43R",
+      "why": "Note says not AMK by default.",
+      "whyWrong": {
+        "rrs 1401 a>g": "Broad AMK/KAN.",
+        "eis promoter-up": "KAN.",
+        "tlyA LOF as INH": "tlyA is CAP, not INH."
+      },
+      "figureHint": "Fourth row: rpsL K43R / STR."
+    }
+  ]
+}

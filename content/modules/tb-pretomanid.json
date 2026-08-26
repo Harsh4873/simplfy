@@ -1,0 +1,175 @@
+{
+  "id": "tb-pretomanid",
+  "title": "Pretomanid",
+  "dek": "The Pa in BPaLM/BPaL: 200 mg daily, Ddn-activated nitroimidazole, not licensed as a solo DS drug, not for pregnancy. ZeNix/PRACTECAL made it a 6-month letter.",
+  "domain": "tb",
+  "aliases": [
+    "Pa-824",
+    "pretomanid",
+    "Pa in BPaLM",
+    "nitroimidazole pretomanid",
+    "Dovprela"
+  ],
+  "tags": [
+    "pretomanid",
+    "BPaLM",
+    "F420",
+    "nitroimidazole",
+    "pregnancy"
+  ],
+  "story": [
+    "Pretomanid is a nitroimidazooxazine developed for TB, given 200 mg once daily in BPaLM/BPaL. Like delamanid, it needs Ddn and F420. Unlike DLM, it is the WHO-preferred 6-month nitroimidazole when the person is eligible — and unlike DLM, WHO explicitly does not apply the BPaLM recommendation to pregnant or breastfeeding people.",
+    "It is not a first-line DS-TB drug. It is not HPMZ’s P (that P is rifapentine). Letter collision has already harmed charting; write “pretomanid” on the medication list.",
+    "Hepatotoxicity, lactic acidosis (rare), and animal testicular toxicity drive some of the caution. Resistance network: ddn, fbiA–D, fgd1. Catalogue still thinner than for RIF. Prior nitroimidazole exposure is a reason to sequence the network before counting Pa."
+  ],
+  "deepTitle": "Trials versus operational SOP",
+  "deep": [
+    "Nix-TB used LZD 1200 mg; ZeNix and PRACTECAL informed 600 mg LZD + Pa ± MXF. Operational BPaLM follows the later dose.",
+    "Pa is not approved as monotherapy; never “just add Pa” to HRZE.",
+    "PubChem CID 135411869. ChEMBL531447.",
+    "If Pa is unavailable, that is an indication for BDLLfxC, not for skipping a nitroimidazole and hoping BDQ+LZD+MXF is the same trial."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Pretomanid’s allowed neighbourhood is small on purpose. Outside it, use DLM-based 6-month or other constructs — do not stretch Pa into pregnancy or DS-TB.",
+    "layers": [
+      {
+        "title": "Home regimens",
+        "nodes": [
+          "BPaLM",
+          "BPaL"
+        ]
+      },
+      {
+        "title": "Needs",
+        "nodes": [
+          "Ddn/F420",
+          "age gate",
+          "not pregnant"
+        ]
+      },
+      {
+        "title": "Not this P",
+        "nodes": [
+          "HPMZ RPT",
+          "PZA"
+        ]
+      },
+      {
+        "title": "If Pa off",
+        "nodes": [
+          "BDLLfxC",
+          "9-mo orals"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — pretomanid in BPaLM/BPaL; pregnancy exclusion",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Pretomanid — PubChem CID 135411869",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/135411869"
+    },
+    {
+      "title": "Pretomanid — CHEMBL531447",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL531447/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Pa is a letter with gates, not a universal nitroimidazole vitamin.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-ddn-f420",
+    "tb-bpalm",
+    "tb-delamanid",
+    "tb-pregnancy",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "HPMZ labelled “Pa” in the EHR",
+    "setup": "DS-TB on HPMZ. Medication list says pretomanid 1200 mg because someone mapped P → Pa.",
+    "steps": [
+      {
+        "title": "This is rifapentine 1200 mg",
+        "body": "HPMZ’s P is RPT. Pretomanid 1200 mg would be a toxicology event and the wrong disease class."
+      },
+      {
+        "title": "Fix the name in the record",
+        "body": "Write rifapentine. Ban lone “P” in mixed DS/DR wards."
+      },
+      {
+        "title": "Confirm the actual tablets",
+        "body": "Pharmacy, not the alias table, is the ground truth."
+      }
+    ],
+    "takeaway": "Pretomanid is BPaLM’s Pa, 200 mg, gated — never HPMZ’s P."
+  },
+  "check": [
+    {
+      "id": "pa-home",
+      "kind": "conceptual",
+      "prompt": "Pretomanid’s WHO home is:",
+      "choices": [
+        "2HRZE/4HR",
+        "BPaLM/BPaL for eligible RR/MDR (and pre-XDR as BPaL)",
+        "3HP",
+        "SHINE"
+      ],
+      "answer": "BPaLM/BPaL for eligible RR/MDR (and pre-XDR as BPaL)",
+      "why": "Not DS first-line.",
+      "whyWrong": {
+        "2HRZE/4HR": "No Pa.",
+        "3HP": "RPT+INH.",
+        "SHINE": "Pediatric HRZ(E)."
+      }
+    },
+    {
+      "id": "pa-preg",
+      "kind": "calculation",
+      "prompt": "A breastfeeding person with RR-TB, FQ-S:",
+      "choices": [
+        "Should receive BPaLM because Pa is first choice in all RR-TB",
+        "Should not be put on BPaLM per WHO Pa safety limits; use a Pa-sparing 6- or 9-month construct",
+        "Should receive pretomanid monotherapy",
+        "Should receive streptomycin"
+      ],
+      "answer": "Should not be put on BPaLM per WHO Pa safety limits; use a Pa-sparing 6- or 9-month construct",
+      "why": "BDLLfxC/BLMZ neighbourhood.",
+      "whyWrong": {
+        "Should receive BPaLM because Pa is first choice in all RR-TB": "Eligibility fails.",
+        "Should receive pretomanid monotherapy": "Forbidden.",
+        "Should receive streptomycin": "No."
+      }
+    },
+    {
+      "id": "pa-figure",
+      "kind": "figure",
+      "prompt": "On the pretomanid hierarchy, HPMZ RPT sits in “Not this P” because:",
+      "choices": [
+        "Rifapentine is pretomanid",
+        "The letter P is overloaded; HPMZ’s P is rifapentine 1200 mg, not pretomanid 200 mg",
+        "HPMZ contains BDQ",
+        "PZA is pretomanid"
+      ],
+      "answer": "The letter P is overloaded; HPMZ’s P is rifapentine 1200 mg, not pretomanid 200 mg",
+      "why": "Charting hazard.",
+      "whyWrong": {
+        "Rifapentine is pretomanid": "False.",
+        "HPMZ contains BDQ": "False.",
+        "PZA is pretomanid": "False."
+      },
+      "figureHint": "Third layer: Not this P."
+    }
+  ]
+}

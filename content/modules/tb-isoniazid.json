@@ -1,0 +1,220 @@
+{
+  "id": "tb-isoniazid",
+  "title": "Isoniazid",
+  "dek": "A hydrazide prodrug, KatG-activated, InhA-blocked, rapidly cidal against replicating bacilli. NAT2 slow acetylators, pyridoxine, and hepatotoxicity are the host half of the plate.",
+  "domain": "tb",
+  "aliases": [
+    "INH",
+    "isoniazid",
+    "isonicotinic acid hydrazide",
+    "H drug",
+    "pyridoxine INH"
+  ],
+  "tags": [
+    "INH",
+    "prodrug",
+    "KatG",
+    "NAT2",
+    "cidal"
+  ],
+  "story": [
+    "Isoniazid (isonicotinic acid hydrazide) is small, cheap, and still the early-cidal pillar of DS-TB and of most TPT. KatG activates it; INH–NAD inhibits InhA; mycolate synthesis collapses in replicating cells. It is a weak sterilizing drug in caseum. That is why six months of INH can be TPT and why INH monotherapy of cavitary disease is how katG mutants are born in public.",
+    "Host NAT2 acetylates INH. Slow acetylators have higher AUC and more hepatitis/neuropathy risk; fast acetylators may have lower levels. Pyridoxine (vitamin B6) prevents INH neuropathy, especially in pregnancy, HIV, malnutrition, and diabetes. Hepatotoxicity is shared with PZA and RIF — stop the right drug, not the whole alphabet by panic.",
+    "WHO adult dose 5 mg/kg (cap 300 mg); children ~10 mg/kg bands. High-dose INH (10–15 mg/kg) appears in some Hr/MDR recipes only for low-level inhA alleles. S315T does not care."
+  ],
+  "deepTitle": "Molecule, metabolism, mutations",
+  "deep": [
+    "PubChem CID 3767; ChEMBL64. Not a rifamycin, not a hydrazine street drug — a hydrazide antibiotic.",
+    "ahpC promoter-up often compensates katG loss. Do not treat ahpC as the primary INH call.",
+    "Cross-R with ETH is an inhA story. Cross-R with PAS is not.",
+    "CDC overlay matches WHO on INH as TPT and DS backbone; NAT2 genotyping is research-ish in most programmes."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "INH from tablet to InhA, with the host NAT2 off-ramp and the pyridoxine patch for neuropathy.",
+    "nodes": [
+      {
+        "id": "inh",
+        "label": "INH",
+        "group": "drug",
+        "x": 10,
+        "y": 40
+      },
+      {
+        "id": "nat",
+        "label": "NAT2",
+        "group": "enzyme",
+        "x": 32,
+        "y": 18,
+        "sub": "host"
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 32,
+        "y": 62,
+        "sub": "Mtb"
+      },
+      {
+        "id": "add",
+        "label": "INH–NAD",
+        "group": "target",
+        "x": 55,
+        "y": 62
+      },
+      {
+        "id": "inha",
+        "label": "InhA",
+        "group": "target",
+        "x": 78,
+        "y": 62
+      },
+      {
+        "id": "b6",
+        "label": "pyridoxine",
+        "group": "drug",
+        "x": 78,
+        "y": 18
+      }
+    ],
+    "edges": [
+      {
+        "from": "inh",
+        "to": "nat",
+        "label": "acetylate"
+      },
+      {
+        "from": "inh",
+        "to": "katg"
+      },
+      {
+        "from": "katg",
+        "to": "add"
+      },
+      {
+        "from": "add",
+        "to": "inha"
+      },
+      {
+        "from": "b6",
+        "to": "inh",
+        "label": "neuropathy patch"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 / TPT — isoniazid dosing",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Isoniazid — PubChem CID 3767",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/3767"
+    },
+    {
+      "title": "Isoniazid — CHEMBL64",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL64/"
+    },
+    {
+      "title": "KatG — UniProt P9WIE5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WIE5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Cidal-vs-sterilizing plus NAT2/B6 host half.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-katg-inha",
+    "tb-first-line",
+    "tb-ethionamide",
+    "tb-hrze",
+    "tb-tpt"
+  ],
+  "example": {
+    "title": "60 kg adult, neuropathy, no B6",
+    "setup": "Week 8 of HRZE, burning feet, ALT normal, HIV-negative, no pyridoxine prescribed.",
+    "steps": [
+      {
+        "title": "This is INH neuropathy until proven otherwise",
+        "body": "Start B6, examine for other neuropathies (diabetes, LZD if they were on it — they were not)."
+      },
+      {
+        "title": "Dose was 300 mg",
+        "body": "5 mg/kg × 60, capped. Still enough for neuropathy without B6."
+      },
+      {
+        "title": "Do not stop RIF for neuropathy",
+        "body": "Wrong toxicity. Stopping the sterilizing drug for an INH nerve is a classic error."
+      }
+    ],
+    "takeaway": "INH: cidal, prodrug, B6, not the sterilizing star."
+  },
+  "check": [
+    {
+      "id": "inh-act",
+      "kind": "conceptual",
+      "prompt": "Isoniazid becomes active against InhA after:",
+      "choices": [
+        "PncA conversion to POA",
+        "KatG activation to an INH–NAD adduct",
+        "RpoB binding",
+        "Ddn/F420 reduction"
+      ],
+      "answer": "KatG activation to an INH–NAD adduct",
+      "why": "Prodrug logic.",
+      "whyWrong": {
+        "PncA conversion to POA": "PZA.",
+        "RpoB binding": "RIF.",
+        "Ddn/F420 reduction": "Pa/DLM."
+      }
+    },
+    {
+      "id": "inh-dose",
+      "kind": "calculation",
+      "prompt": "Adult 80 kg, WHO INH daily with 300 mg cap:",
+      "choices": [
+        "400 mg",
+        "300 mg",
+        "80 mg",
+        "1200 mg"
+      ],
+      "answer": "300 mg",
+      "why": "5×80=400 then cap 300 mg.",
+      "whyWrong": {
+        "400 mg": "Uncapped.",
+        "80 mg": "1 mg/kg.",
+        "1200 mg": "RPT Study 31 confusion."
+      }
+    },
+    {
+      "id": "inh-figure",
+      "kind": "figure",
+      "prompt": "On the INH map, NAT2 is labelled host because:",
+      "choices": [
+        "NAT2 is an Mtb catalase",
+        "Acetylation is a human metabolic off-ramp that changes AUC and toxicity risk",
+        "NAT2 is rpoB",
+        "NAT2 secretes ESAT-6"
+      ],
+      "answer": "Acetylation is a human metabolic off-ramp that changes AUC and toxicity risk",
+      "why": "Slow vs fast acetylators.",
+      "whyWrong": {
+        "NAT2 is an Mtb catalase": "That is KatG.",
+        "NAT2 is rpoB": "No.",
+        "NAT2 secretes ESAT-6": "No."
+      },
+      "figureHint": "Upper enzyme node NAT2."
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "id": "tb-who-groups",
+  "title": "WHO Group A, B, and C drugs",
+  "dek": "2022 grouping: A is Lfx/Mfx, BDQ, LZD. B is CFZ and CS/terizidone. C is the rest, ordered. Group letters moved; read the year.",
+  "domain": "tb",
+  "aliases": [
+    "WHO Group A TB",
+    "Group B clofazimine",
+    "Group C DR-TB",
+    "longer regimen construction"
+  ],
+  "tags": [
+    "Group A",
+    "Group B",
+    "Group C",
+    "DR-TB",
+    "individualised"
+  ],
+  "story": [
+    "When BPaLM/BPaL or a 6/9-month standardised oral regimen is not possible, WHO still builds longer individualised regimens from grouped drugs. Group A (later-generation FQ, bedaquiline, linezolid) should be used unless a drug is compromised. Group B (clofazimine, cycloserine/terizidone) fills next. Group C is ranked: EMB, DLM, PZA, AMK, (ETH/PTO), (MER/IMI+clavulanate), (PAS), with injectables and PAS as last-ish.",
+    "This is not the 2016 grouping (where injectables sat higher). Citing “Group 5” from a 2011 paper is archaeology. Pretomanid lives in BPaLM/BPaL, not as a free Group C Lego in every longer recipe.",
+    "Resistance to a Group A drug is how 2021-XDR is defined (FQ plus BDQ or LZD on an MDR/RR backbone). The grouping is therefore both a construction kit and a surveillance language."
+  ],
+  "deepTitle": "How to build without a meme",
+  "deep": [
+    "Aim for at least four likely-effective drugs in the intensive construction; WHO’s current handbook is the count authority, not this sentence.",
+    "Do not add two FQs. Do not add AMK if rrs 1401 is there “for luck.”",
+    "Delamanid in Group C versus in BDLLfxC is a regimen-context switch, not a new molecule.",
+    "Pediatric and pregnancy rankings differ (Pa off; AMK off; Eto off). The group table is adult-ish until the handbook says otherwise."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "2022 WHO groups for longer DR-TB construction. A before B before C. Injectables are C, not a definition of XDR.",
+    "layers": [
+      {
+        "title": "Group A",
+        "nodes": [
+          "Lfx/Mfx",
+          "BDQ",
+          "LZD"
+        ]
+      },
+      {
+        "title": "Group B",
+        "nodes": [
+          "CFZ",
+          "CS / Trd"
+        ]
+      },
+      {
+        "title": "Group C (high)",
+        "nodes": [
+          "EMB",
+          "DLM",
+          "PZA"
+        ]
+      },
+      {
+        "title": "Group C (lower)",
+        "nodes": [
+          "AMK",
+          "ETH",
+          "carbapenem",
+          "PAS"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — grouping of medicines for DR-TB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC/IDSA 2025 DR-TB overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Year-stamp the group letters.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-bpalm",
+    "tb-9month-drtb",
+    "tb-dr-definitions",
+    "tb-second-line",
+    "tb-linezolid",
+    "tb-bedaquiline",
+    "tb-carbapenems"
+  ],
+  "example": {
+    "title": "FQ-R, LZD-intolerant, Pa off",
+    "setup": "Pregnant, gyrA D94G, LZD neuropathy at week 3, BDQ still good.",
+    "steps": [
+      {
+        "title": "BPaLM is already illegal here",
+        "body": "Pa off; M is lost to FQ-R."
+      },
+      {
+        "title": "BDLLfxC then drop Lfx",
+        "body": "BDLC (BDQ, DLM, LZD, CFZ) — but LZD is failing clinically."
+      },
+      {
+        "title": "Individualise from groups",
+        "body": "Keep BDQ (A), add CFZ (B), DLM (C), maybe CS if psychiatric screen allows; do not resurrect KM because the word XDR feels old."
+      }
+    ],
+    "takeaway": "Groups are a construction order after the 6-month acronyms fail."
+  },
+  "check": [
+    {
+      "id": "grp-a",
+      "kind": "conceptual",
+      "prompt": "WHO 2022 Group A drugs are:",
+      "choices": [
+        "KM, CM, AMK",
+        "Later-generation FQ, bedaquiline, linezolid",
+        "PAS and thioacetazone",
+        "INH and EMB only"
+      ],
+      "answer": "Later-generation FQ, bedaquiline, linezolid",
+      "why": "Those three are the backbone of both acronyms and 2021-XDR.",
+      "whyWrong": {
+        "KM, CM, AMK": "Old second-line injectables, now Group C/historical.",
+        "PAS and thioacetazone": "C / abandoned.",
+        "INH and EMB only": "First-line DS."
+      }
+    },
+    {
+      "id": "grp-xdr",
+      "kind": "calculation",
+      "prompt": "2021 XDR requires resistance to MDR/RR + FQ plus:",
+      "choices": [
+        "Any Group C drug",
+        "At least one of BDQ or LZD (Group A companions)",
+        "PZA",
+        "EMB"
+      ],
+      "answer": "At least one of BDQ or LZD (Group A companions)",
+      "why": "FQ is already the pre-XDR step; XDR adds the other Group A drug class used as BDQ or LZD.",
+      "whyWrong": {
+        "Any Group C drug": "2016-ish thinking.",
+        "PZA": "Not the definition.",
+        "EMB": "Not the definition."
+      }
+    },
+    {
+      "id": "grp-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, clofazimine sits in:",
+      "choices": [
+        "Group A",
+        "Group B",
+        "Group C lower only",
+        "TPT"
+      ],
+      "answer": "Group B",
+      "why": "CFZ is the usual B companion, not a Group A drug.",
+      "whyWrong": {
+        "Group A": "FQ/BDQ/LZD.",
+        "Group C lower only": "AMK/PAS neighbourhood.",
+        "TPT": "No."
+      },
+      "figureHint": "Second layer."
+    }
+  ]
+}

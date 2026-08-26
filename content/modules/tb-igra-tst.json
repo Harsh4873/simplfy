@@ -1,0 +1,181 @@
+{
+  "id": "tb-igra-tst",
+  "title": "TST versus IGRA versus TBST",
+  "dek": "Three ways to ask whether T cells remember Mtb antigens. None diagnoses disease. BCG, boosting, and anergy are the failure modes.",
+  "domain": "tb",
+  "aliases": [
+    "QuantiFERON",
+    "T-SPOT",
+    "Mantoux",
+    "tuberculin skin test",
+    "TBST",
+    "PPD"
+  ],
+  "tags": [
+    "IGRA",
+    "TST",
+    "LTBI",
+    "BCG",
+    "TBST"
+  ],
+  "story": [
+    "The tuberculin skin test (Mantoux) injects PPD intradermally and reads millimetres of induration at 48–72 h. Cut-points shift with HIV, contacts, and BCG policy. PPD contains antigens shared with BCG and many NTM, so false positives follow vaccination and environmental mycobacteria.",
+    "IGRAs (QFT-Plus, T-SPOT.TB) stimulate blood with ESAT-6 and CFP-10 (RD1 peptides BCG lacks). They are in-tube ELISA or ELISPOT IFN-γ readouts. They avoid most BCG false positives. They still fail in anergy, very young infants, and some extrapulmonary/overwhelming disease.",
+    "Mycobacterium tuberculosis antigen-based skin tests (TBST) are the new WHO-permitted skin-test class using Mtb-specific antigens. Same job as IGRA: infer infection after disease is excluded. Serial testing, conversion, and boosting still require a protocol, not vibes."
+  ],
+  "deepTitle": "How programmes actually use them",
+  "deep": [
+    "WHO 2024 TPT module: test for infection when it changes the TPT decision. In high-transmission HIV clinics, TPT may proceed without a test if disease is ruled out — do not weaponise IGRA stockouts against prevention.",
+    "QFT-Plus split CD4/CD8 tubes are not a CD4 count and not a disease test.",
+    "Two-step TST for baseline in serial-testing adults (HCWs) reduces boosting misread as conversion. IGRAs have their own reproducibility noise around the cut-point; grey-zone policies exist for a reason.",
+    "A positive infection test plus a cavity is still a disease work-up, not “LTBI with a funny X-ray.”"
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic specificity against BCG and sensitivity in advanced HIV — teaching bars, not a pooled meta-analysis. Disease diagnosis is a different test class.",
+    "panels": [
+      {
+        "title": "BCG-vaccinated specificity",
+        "bars": [
+          {
+            "label": "TST",
+            "value": 5
+          },
+          {
+            "label": "IGRA",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "Advanced HIV sensitivity",
+        "bars": [
+          {
+            "label": "TST",
+            "value": 3
+          },
+          {
+            "label": "IGRA",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "title": "Diagnose disease?",
+        "bars": [
+          {
+            "label": "TST",
+            "value": 1
+          },
+          {
+            "label": "IGRA",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TPT guidelines 2024 — TST, IGRA, TBST",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Interferon gamma release assay",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Interferon_gamma_release_assay"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-tpt",
+    "tb-host-ifng",
+    "tb-bcg-rd1",
+    "tb-predictive-values"
+  ],
+  "example": {
+    "title": "Conversion after two-step miss",
+    "setup": "New HCW, no two-step baseline, TST 0 mm at hire, 14 mm at year 1 after BCG in childhood. QFT negative.",
+    "steps": [
+      {
+        "title": "Boosting vs conversion",
+        "body": "A single baseline TST can miss remote memory that boosts on the second test. That is why two-step exists."
+      },
+      {
+        "title": "IGRA as arbiter in BCG-vaccinated adults",
+        "body": "Negative QFT plus BCG history makes remote boosting more likely than incident infection, depending on exposure."
+      },
+      {
+        "title": "Still exclude disease",
+        "body": "Symptom/CXR screen before you argue about millimetres."
+      }
+    ],
+    "takeaway": "Skin tests remember BCG; IGRAs remember RD1 — neither remembers a cavity."
+  },
+  "check": [
+    {
+      "id": "it-disease",
+      "kind": "conceptual",
+      "prompt": "A positive IGRA in a person with cough and a cavity:",
+      "choices": [
+        "Confirms culture-positive TB and RIF-S",
+        "Shows T-cell sensitisation; it does not diagnose disease or replace NAAT/culture",
+        "Rules out TB because IGRAs are disease tests",
+        "Is impossible during disease"
+      ],
+      "answer": "Shows T-cell sensitisation; it does not diagnose disease or replace NAAT/culture",
+      "why": "Stop using infection tests as disease tests.",
+      "whyWrong": {
+        "Confirms culture-positive TB and RIF-S": "No DST, no culture.",
+        "Rules out TB because IGRAs are disease tests": "They are not.",
+        "Is impossible during disease": "Often positive, sometimes anergic."
+      }
+    },
+    {
+      "id": "it-bcg",
+      "kind": "calculation",
+      "prompt": "An adult received neonatal BCG. TST 11 mm, QFT-Plus negative, no exposure, normal CXR. The pattern is most consistent with:",
+      "choices": [
+        "XDR-TB",
+        "BCG-related TST reactivity with a negative RD1 IGRA, not microbiologic disease",
+        "Mandatory 2HRZE",
+        "Failed Xpert because IGRAs replace WRDs"
+      ],
+      "answer": "BCG-related TST reactivity with a negative RD1 IGRA, not microbiologic disease",
+      "why": "RD1 antigens are deleted in BCG.",
+      "whyWrong": {
+        "XDR-TB": "No.",
+        "Mandatory 2HRZE": "No disease diagnosed.",
+        "Failed Xpert because IGRAs replace WRDs": "Wrong test class."
+      }
+    },
+    {
+      "id": "it-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, what are the “diagnose disease?” bars teaching?",
+      "choices": [
+        "That IGRAs are twice as good as NAAT at diagnosing cavities",
+        "That neither TST nor IGRA is a disease diagnostic — both bars sit at the floor",
+        "That TST is a WRD",
+        "That BCG raises IGRA specificity above TST"
+      ],
+      "answer": "That neither TST nor IGRA is a disease diagnostic — both bars sit at the floor",
+      "why": "Look at panel three.",
+      "whyWrong": {
+        "That IGRAs are twice as good as NAAT at diagnosing cavities": "Opposite class of test.",
+        "That TST is a WRD": "No.",
+        "That BCG raises IGRA specificity above TST": "That is panel one, not panel three."
+      },
+      "figureHint": "Third panel title."
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "id": "tb-pe-ppe",
+  "title": "PE and PPE families",
+  "dek": "GC-rich, repeat-rich, secretion-associated gene families that wreck alignments and carry antigenic variation. Mask them for phylogeny; do not pretend they are junk.",
+  "domain": "tb",
+  "aliases": [
+    "PE_PGRS",
+    "PPE family",
+    "PE family",
+    "antigenic variation Mtb",
+    "ESX substrates"
+  ],
+  "tags": [
+    "PE/PPE",
+    "genome",
+    "masking",
+    "antigen",
+    "ESX"
+  ],
+  "story": [
+    "PE and PPE proteins are named for N-terminal Pro-Glu and Pro-Pro-Glu motifs. They occupy a startling fraction of the Mtb coding genome. Subfamilies (PE_PGRS, PPE-MPTR) are GC-rich and full of repeats — exactly the sequence that short-read mappers duplicate, drop, or misalign.",
+    "Several PE/PPE proteins are ESX substrates (ESX-1, ESX-5 especially). They contribute to cell-wall remodelling, macrophage signalling, and antigenic variation. That is biology. It is also why a 20-SNP “cluster” that lives entirely inside PE_PGRS genes is usually a mapping artefact.",
+    "gDST catalogues mostly ignore PE/PPE for resistance grading. Phylogeny pipelines mask them. Immunology papers live in them. A lab that uses one BAM for all three tasks without saying so will lie at least once."
+  ],
+  "deepTitle": "Practical handling",
+  "deep": [
+    "Mask lists (e.g. the van Embden / Comas / extra PE-PPE beds) should be versioned in the methods. Changing the mask changes SNP distance.",
+    "Long reads recover some PE_PGRS structure that Illumina cannot. Do not over-interpret structural variants in these genes from 150-bp PE data.",
+    "ESX-5 is associated with PPE secretion and is essential in Mtb; ESX-1 is associated with ESAT-6/CFP-10 and virulence. Family membership is not a DST result.",
+    "Do not bulk-copy Mycobrowser PE_PGRS annotations into a clinical report. Name the mask, name the catalogue, stop."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Two nested uses of the same genome. The reduced model is a masked core alignment for relatedness. The full model still contains PE/PPE; they are not in the distance likelihood.",
+    "reduced": {
+      "label": "Masked core",
+      "params": [
+        "core SNPs",
+        "lineage barcode"
+      ]
+    },
+    "full": {
+      "label": "Unmasked genome",
+      "params": [
+        "core SNPs",
+        "PE/PPE",
+        "repeats",
+        "DR genes"
+      ]
+    },
+    "statistic": "Δ distance = unmasked − masked",
+    "reference": "artefact if Δ lives in PE_PGRS"
+  },
+  "sources": [
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Alignment-masking notes for MTBC relatedness.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "WHO genomic surveillance: interpret PE/PPE with caution",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "PE/PPE family (mycobacteria)",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/PE/PPE_family"
+    }
+  ],
+  "related": [
+    "tb-h37rv-genome",
+    "tb-organism",
+    "tb-wgs-dst",
+    "tb-host-ifng"
+  ],
+  "example": {
+    "title": "A cluster that vanished on mask",
+    "setup": "Three isolates, 8–11 SNPs pairwise unmasked. After PE/PPE mask, 0–1 SNPs. No shared rare DR mutations.",
+    "steps": [
+      {
+        "title": "Inspect where the SNPs sat",
+        "body": "If they pile in PE_PGRS with low mapping quality, they were never phylogeny."
+      },
+      {
+        "title": "Report the masked distance",
+        "body": "These are the same strain by the programme SOP, plus mapping noise."
+      },
+      {
+        "title": "Do not invent a super-spreader from unmasked SNPs",
+        "body": "Epidemiology follows the masked core, not the repeat dust."
+      }
+    ],
+    "takeaway": "PE/PPE SNPs are guilty until the BAM says otherwise."
+  },
+  "check": [
+    {
+      "id": "pe-mask",
+      "kind": "conceptual",
+      "prompt": "Why do MTBC transmission pipelines commonly mask PE/PPE genes?",
+      "choices": [
+        "Because they encode rpoB",
+        "Because GC-rich repeats generate false SNPs that inflate distances",
+        "Because WHO catalogues grade them as high-confidence BDQ-R",
+        "Because they are absent from H37Rv"
+      ],
+      "answer": "Because GC-rich repeats generate false SNPs that inflate distances",
+      "why": "Mapping artefact, not a moral judgement on the genes’ biology.",
+      "whyWrong": {
+        "Because they encode rpoB": "rpoB is not a PE gene.",
+        "Because WHO catalogues grade them as high-confidence BDQ-R": "They mostly do not.",
+        "Because they are absent from H37Rv": "H37Rv is full of them."
+      }
+    },
+    {
+      "id": "pe-delta",
+      "kind": "calculation",
+      "prompt": "Unmasked distance 15 SNPs, masked 4 SNPs. If 11 of the 11 extra variants sit in PE_PGRS with MQ < 20, the relatedness call should rest on:",
+      "choices": [
+        "15",
+        "4",
+        "11",
+        "0 because PE/PPE prove unrelatedness"
+      ],
+      "answer": "4",
+      "why": "The masked core is the phylogeny object here.",
+      "whyWrong": {
+        "15": "Includes likely artefacts.",
+        "11": "That is the dust.",
+        "0 because PE/PPE prove unrelatedness": "Opposite interpretation."
+      }
+    },
+    {
+      "id": "pe-figure",
+      "kind": "figure",
+      "prompt": "On the nested-models plate, what does the inner “masked core” box represent?",
+      "choices": [
+        "The WHO mutation catalogue",
+        "The restricted SNP set used for relatedness after dropping PE/PPE and repeats",
+        "Xpert RRDR probes",
+        "A plasmid"
+      ],
+      "answer": "The restricted SNP set used for relatedness after dropping PE/PPE and repeats",
+      "why": "Nested models here are nested genome uses, not nested DST.",
+      "whyWrong": {
+        "The WHO mutation catalogue": "Different plate.",
+        "Xpert RRDR probes": "Different assay.",
+        "A plasmid": "No."
+      },
+      "figureHint": "Inner box label: Masked core."
+    }
+  ]
+}

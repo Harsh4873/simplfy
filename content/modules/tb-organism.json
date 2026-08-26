@@ -22,7 +22,8 @@
     "Mycolic acids in Mtb are C60–C90 α-alkyl, β-hydroxy fatty acids. The FAS-I system makes meromycolate precursors; FAS-II elongates them. InhA (enoyl-ACP reductase of FAS-II) is the INH/ETH target. EmbCAB arabinosyltransferases build AG and are the ethambutol target. The covalent AG–mycolate link is why disrupting either layer is cidal or at least bacteriostatic in replicating cells.",
     "Acid-fastness is a physical chemistry test, not a phylogeny. Nocardia can be partially acid-fast. Dead Mtb can still stain. Smear grade (IUATLD/WHO 0 to 3+) is a density statement, not a viability statement.",
     "MTBC lineages (L1–L9 in current human-adapted schemes, with L2/Beijing and L4 abundant in many genomic datasets) differ in mutation rate, PDIM regulation, and sometimes in the prior on resistance. Lineage is a covariate, not a DST result.",
-    "M. bovis BCG is intrinsically pyrazinamide-resistant (pncA polymorphism). That single fact has misled more than one person looking at a “TB” genome from a bladder-cancer BCG patient."
+    "M. bovis BCG is intrinsically pyrazinamide-resistant (pncA polymorphism). That single fact has misled more than one person looking at a “TB” genome from a bladder-cancer BCG patient.",
+    "Speciation (RD barcodes, SNP lineages) belongs in the same report as DST. MTBC-positive NAATs do not name M. tuberculosis sensu stricto; PE/PPE masking belongs in the same methods sentence as SNP distance."
   ],
   "visual": {
     "kind": "layered-section",
@@ -51,7 +52,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-pathogenesis", "tb-first-line", "tb-rifampin", "tb-wgs-dst"],
+  "related": ["tb-mtbc", "tb-cell-envelope", "tb-h37rv-genome", "tb-pathogenesis", "tb-first-line", "tb-rifampin", "tb-ntm"],
   "example": {
     "title": "Why BCG is a PZA-resistant “TB” genome",
     "setup": "A urine isolate from an oncology patient is NAAT-positive for MTBC. The genome is M. bovis BCG. pncA carries the characteristic BCG polymorphism. The lab is asked whether this is pyrazinamide-resistant TB.",

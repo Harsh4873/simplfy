@@ -1,0 +1,159 @@
+{
+  "id": "tb-lf-lam",
+  "title": "Urine LF-LAM",
+  "dek": "A lateral-flow antigen test for lipoarabinomannan in urine. It earns its keep in advanced HIV and the seriously ill — not as a community screen of CD4-high outpatients.",
+  "domain": "tb",
+  "aliases": [
+    "Determine TB-LAM",
+    "urine LAM",
+    "lipoarabinomannan antigen",
+    "LF-LAM",
+    "FujiLAM"
+  ],
+  "tags": [
+    "LAM",
+    "HIV",
+    "urine",
+    "point-of-care",
+    "antigen"
+  ],
+  "story": [
+    "Lipoarabinomannan is an envelope glycolipid. In disseminated/high-burden disease, especially with renal involvement or glomerular leak of mycobacterial products, LAM appears in urine. The Alere Determine TB LAM Ag strip is the WHO-endorsed LF-LAM assay with a specific use case: people with HIV who are seriously ill, or who have advanced HIV disease, with or without TB symptoms depending on the exact recommendation stratum.",
+    "Sensitivity is a function of CD4 and burden. It is modest in CD4 > 200 outpatients and much more useful as CD4 falls or as inpatients get sicker. Specificity is generally high but not perfect (NTM, contamination, reader error on a faint band).",
+    "LF-LAM does not replace mWRDs, does not grade rifampin, and does not diagnose LTBI. Next-generation LAM (e.g. FujiLAM) aims at better Se; until WHO says otherwise, programme SOP follows the endorsed strip and strata."
+  ],
+  "deepTitle": "Likelihood ratios with CD4 in the denominator",
+  "deep": [
+    "A positive LAM in an inpatient with CD4 20 is a treat-now result while you still chase sputum/stool/CSF WRDs and DST.",
+    "A negative LAM does not rule out TB at any CD4.",
+    "Do not run LF-LAM on HIV-negative community volunteers because you bought a box of strips.",
+    "Pediatric use tracks HIV/advanced disease guidance, not a universal child screen."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic urinary LAM concentration versus CD4. The strip’s visual cut-point catches the right tail — advanced HIV, high burden — and misses the left.",
+    "xLabel": "urine LAM (schematic)",
+    "curves": [
+      {
+        "id": "hi",
+        "label": "CD4 > 200 TB",
+        "mean": 1.2,
+        "sd": 0.6
+      },
+      {
+        "id": "lo",
+        "label": "CD4 < 100 TB",
+        "mean": 3.2,
+        "sd": 0.7
+      },
+      {
+        "id": "no",
+        "label": "no TB",
+        "mean": 0.4,
+        "sd": 0.25
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO LF-LAM use in HIV-associated TB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "LAM as a CD4-stratified antigen likelihood ratio.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-hiv-synergy",
+    "tb-predictive-values",
+    "tb-pediatric-dx",
+    "tb-xpert-ultra"
+  ],
+  "example": {
+    "title": "Faint band, CD4 18, Xpert not detected on one sputum",
+    "setup": "Inpatient, WHO danger signs, urine LAM faint-positive by two readers, single sputum Ultra not detected.",
+    "steps": [
+      {
+        "title": "One sputum is not a rule-out",
+        "body": "Advanced HIV, seriously ill: extra-pulmonary and paucibacillary sputum are expected."
+      },
+      {
+        "title": "Treat",
+        "body": "WHO: LAM+ in this stratum supports starting TB therapy while you keep sampling."
+      },
+      {
+        "title": "Still hunt DST",
+        "body": "Blood culture, additional sputa, stool, tNGS if available. LAM is not rpoB."
+      }
+    ],
+    "takeaway": "LF-LAM is a stratum-specific antigen test, not a cartridge."
+  },
+  "check": [
+    {
+      "id": "lam-use",
+      "kind": "conceptual",
+      "prompt": "WHO LF-LAM is primarily indicated in:",
+      "choices": [
+        "HIV-negative mass community screening",
+        "People with HIV who have advanced disease and/or are seriously ill, as an adjunct diagnostic",
+        "LTBI confirmation after BCG",
+        "Routine annual testing of laboratory staff"
+      ],
+      "answer": "People with HIV who have advanced disease and/or are seriously ill, as an adjunct diagnostic",
+      "why": "CD4 and illness define the likelihood ratio.",
+      "whyWrong": {
+        "HIV-negative mass community screening": "Wrong population.",
+        "LTBI confirmation after BCG": "Not an infection test of that kind.",
+        "Routine annual testing of laboratory staff": "No."
+      }
+    },
+    {
+      "id": "lam-se",
+      "kind": "calculation",
+      "prompt": "If Se is 0.25 at CD4 350 and 0.60 at CD4 40 in inpatients with TB, the number of true-positives per 100 TB patients is:",
+      "choices": [
+        "25 vs 60",
+        "60 vs 25",
+        "100 vs 100",
+        "0 vs 0"
+      ],
+      "answer": "25 vs 60",
+      "why": "Se × 100 cases = expected true positives.",
+      "whyWrong": {
+        "60 vs 25": "Reversed strata.",
+        "100 vs 100": "That would be Se = 1.",
+        "0 vs 0": "No."
+      }
+    },
+    {
+      "id": "lam-figure",
+      "kind": "figure",
+      "prompt": "On the LAM density plate, which curve sits furthest right?",
+      "choices": [
+        "no TB",
+        "CD4 > 200 TB",
+        "CD4 < 100 TB",
+        "They share a mean of 0.4"
+      ],
+      "answer": "CD4 < 100 TB",
+      "why": "Mean 3.2 versus 1.2 and 0.4.",
+      "whyWrong": {
+        "no TB": "Leftmost.",
+        "CD4 > 200 TB": "Middle.",
+        "They share a mean of 0.4": "Only the no-TB curve."
+      },
+      "figureHint": "Three labelled curves."
+    }
+  ]
+}

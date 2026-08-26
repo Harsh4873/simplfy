@@ -1,0 +1,157 @@
+{
+  "id": "tb-tbprofiler",
+  "title": "TBProfiler, Mykrobe, and catalogue versions",
+  "dek": "Tools are not the WHO catalogue. They implement a snapshot of it (or a different database) plus species calling. Version, database date, and PE/PPE masking belong in the methods line.",
+  "domain": "tb",
+  "aliases": [
+    "TBProfiler",
+    "Mykrobe predict",
+    "gDST software",
+    "WHO catalogue implementation"
+  ],
+  "tags": [
+    "TBProfiler",
+    "Mykrobe",
+    "gDST",
+    "catalogue version",
+    "bioinformatics"
+  ],
+  "story": [
+    "TBProfiler, Mykrobe, SAM-TB, MTBseq, and cousins turn a BAM/FASTQ into species, lineage, and resistance calls. They are software. The WHO mutation catalogue is a graded table with a year. A 2019 TBProfiler BDQ call and a 2023 catalogue-aware call are different objects. Write the tool version and the catalogue edition on every clinical report.",
+    "Defaults differ: minimum allele frequency for heteroresistance, whether to report LoF in pncA, whether phylogenetic SNPs are suppressed, which PE/PPE regions are masked for clustering. Two labs on the same FASTQ can disagree without either being “bad at TB.”",
+    "These tools also speciate. A confident M. abscessus should never receive an MTBC INH call. If species and DST disagree, believe speciation first."
+  ],
+  "deepTitle": "What to freeze for an outbreak paper",
+  "deep": [
+    "Freeze the container/hash, not just “TBProfiler latest.”",
+    "Re-running last year’s MDR cohort with catalogue 2nd ed will move BDQ/LZD/DLM rows. That is not a new epidemic.",
+    "tNGS panels may use a different variant interpreter than WGS. Name both.",
+    "Do not paste Mycobrowser as a substitute catalogue."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Reduced model: tool default calls. Full model: catalogue edition + AF threshold + speciation + masking. The LRT is whether the extra parameters change a clinical grade.",
+    "reduced": {
+      "label": "Tool default gDST",
+      "params": [
+        "binary R/S",
+        "hidden DB version"
+      ]
+    },
+    "full": {
+      "label": "Report-grade gDST",
+      "params": [
+        "catalogue edition",
+        "AF / hetero",
+        "species",
+        "lineage SNPs",
+        "PE/PPE mask"
+      ]
+    },
+    "statistic": "Did any treatment-changing grade move?",
+    "reference": "WHO catalogue edition named in methods"
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue 2nd ed — the table tools try to implement",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Software version is part of the DST.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Bioinformatics",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Bioinformatics"
+    }
+  ],
+  "related": [
+    "tb-who-catalogue",
+    "tb-wgs-dst",
+    "tb-tngs",
+    "tb-heteroresistance",
+    "tb-ntm",
+    "tb-lineage-beijing"
+  ],
+  "example": {
+    "title": "Two tools, one rv0678 frameshift",
+    "setup": "Mykrobe: BDQ-S. TBProfiler: BDQ-R (rv0678 LoF). Phenotype pending.",
+    "steps": [
+      {
+        "title": "Read the database dates",
+        "body": "LoF rules landed unevenly across tools."
+      },
+      {
+        "title": "Look at the BAM",
+        "body": "Confirm the frameshift and AF. Catalogue 2nd ed cares."
+      },
+      {
+        "title": "Do not average the tools",
+        "body": "Write uncertainty and use a BDQ-sparing fork if the frame is real."
+      }
+    ],
+    "takeaway": "gDST software is an implementation. The catalogue is the standard."
+  },
+  "check": [
+    {
+      "id": "tp-cat",
+      "kind": "conceptual",
+      "prompt": "TBProfiler output is:",
+      "choices": [
+        "The WHO catalogue itself",
+        "A software implementation of some mutation database/catalogue snapshot",
+        "Phenotypic DST",
+        "An IGRA"
+      ],
+      "answer": "A software implementation of some mutation database/catalogue snapshot",
+      "why": "Version-stamp it.",
+      "whyWrong": {
+        "The WHO catalogue itself": "Category error.",
+        "Phenotypic DST": "MGIT/MIC.",
+        "An IGRA": "Host."
+      }
+    },
+    {
+      "id": "tp-year",
+      "kind": "calculation",
+      "prompt": "Reprocessing a 2018 MDR cohort with a 2023 BDQ-aware catalogue will most likely:",
+      "choices": [
+        "Leave every BDQ call identical by law",
+        "Move some BDQ/LZD/DLM grades without meaning a new outbreak",
+        "Convert all isolates to NTM",
+        "Delete rpoB"
+      ],
+      "answer": "Move some BDQ/LZD/DLM grades without meaning a new outbreak",
+      "why": "Catalogue accrual, not epidemiology.",
+      "whyWrong": {
+        "Leave every BDQ call identical by law": "BDQ rows expanded.",
+        "Convert all isolates to NTM": "No.",
+        "Delete rpoB": "No."
+      }
+    },
+    {
+      "id": "tp-figure",
+      "kind": "figure",
+      "prompt": "On the nested-models plate, catalogue edition lives in:",
+      "choices": [
+        "The reduced model only",
+        "The full report-grade parameter list",
+        "The smear grade",
+        "QTc"
+      ],
+      "answer": "The full report-grade parameter list",
+      "why": "That is the point of nesting.",
+      "whyWrong": {
+        "The reduced model only": "Reduced hides the DB version.",
+        "The smear grade": "No.",
+        "QTc": "No."
+      },
+      "figureHint": "Full model params."
+    }
+  ]
+}

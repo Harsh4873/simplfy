@@ -1,0 +1,191 @@
+{
+  "id": "tb-h37rv-genome",
+  "title": "H37Rv as a coordinate system",
+  "dek": "4.4 Mb, ~4,000 genes, GC-rich, reference — not a clinical median. Essentials, PE/PPE, and the repeats you mask are why distances and DST calls move.",
+  "domain": "tb",
+  "aliases": [
+    "H37Rv",
+    "Mtb genome",
+    "Rv numbering",
+    "core genome",
+    "essential genes Mtb",
+    "GC-rich"
+  ],
+  "tags": [
+    "genomics",
+    "reference",
+    "essentiality",
+    "PE/PPE",
+    "coordinates"
+  ],
+  "story": [
+    "H37Rv (Cole 1998 and later assemblies) is the coordinate system: ~4.41 Mb, ~65% GC, ~4,000 annotated coding sequences, Rv numbering. Clinical isolates are not H37Rv with a few SNPs; they are a clonal species with lineage-defining distances of hundreds of SNPs and accessory PE/PPE flux.",
+    "Essentiality is condition-dependent. Saturated transposon screens (TraSH, Himar1 Tn-seq) mark a few hundred genes as required on rich plates; macrophage, hypoxia, and mouse spleens move that set. KatG is dispensable on plates and essential for INH activation — essentiality is not the same as clinical importance.",
+    "PE/PPE genes, IS6110 copies, and GC-rich repeats are the masking problem. Unmasked SNP distances inflate relatedness metrics. Under-called pncA or Rv0678 in low-complexity sequence is a DST problem. The reference is a map; it is not the patient."
+  ],
+  "deepTitle": "What to keep in a gDST BAM header",
+  "deep": [
+    "Always state the reference build (H37Rv NC_000962.3 is still the common DST coordinate). M. bovis BCG Pasteur is the wrong reference for a pulmonary Mtb.",
+    "IS6110 copy number varies by lineage (often higher in L2). Ultra’s IS6110/IS1081 extra sensitivity is a copy-number gift, not a new species.",
+    "Core genome alignments for transmission typically mask PE/PPE, repeats, and drug-resistance genes if you do not want treatment to look like phylogeny. Say what you masked.",
+    "Essential-gene lists are priors for interpreting loss-of-function. A frameshift in a Tn-seq-essential gene in a viable isolate is contamination, mixed mapping, or a wrong essentiality prior — worth a look at the BAM."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Objects that actually move a WGS report. H37Rv is the origin of coordinates, not the biology of the isolate in the MGIT.",
+    "terms": [
+      {
+        "label": "H37Rv 4.4 Mb",
+        "weight": 5
+      },
+      {
+        "label": "Rv coordinates",
+        "weight": 4
+      },
+      {
+        "label": "PE/PPE mask",
+        "weight": 5
+      },
+      {
+        "label": "IS6110 copies",
+        "weight": 3
+      },
+      {
+        "label": "Tn-seq essentials",
+        "weight": 4
+      },
+      {
+        "label": "GC-rich calls",
+        "weight": 3
+      },
+      {
+        "label": "lineage SNPs",
+        "weight": 4
+      },
+      {
+        "label": "pncA whole gene",
+        "weight": 3
+      },
+      {
+        "label": "RRDR window",
+        "weight": 3
+      },
+      {
+        "label": "mixed infection",
+        "weight": 4
+      },
+      {
+        "label": "NC_000962.3",
+        "weight": 2
+      },
+      {
+        "label": "not the patient",
+        "weight": 5
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Cole et al. 1998 genome announcement — cited, not reproduced",
+      "attribution": "Historical coordinate origin; teaching summary only.",
+      "license": "Citation only"
+    },
+    {
+      "title": "WHO mutation catalogue coordinate conventions",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Reference-genome hygiene notes for gDST reports.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-pe-ppe",
+    "tb-esx-secretion",
+    "tb-wgs-dst",
+    "tb-mtbc",
+    "tb-iron-mycobactin",
+    "tb-is6110",
+    "tb-lineage-beijing"
+  ],
+  "example": {
+    "title": "SNP distance 12 after unmasking PE/PPE",
+    "setup": "Two household isolates: 12 SNPs unmasked, 3 SNPs after standard PE/PPE/repeat mask. Health department wants a transmission cluster call.",
+    "steps": [
+      {
+        "title": "Ask what was masked",
+        "body": "PE/PPE mapping error is not evolution. Unmasked distances are not a physical constant."
+      },
+      {
+        "title": "Use the lab’s SOP threshold on the masked alignment",
+        "body": "If your programme clusters at ≤5–12 masked SNPs, these two belong together. Do not mix thresholds across pipelines."
+      },
+      {
+        "title": "Keep DST genes out of phylogeny if they are under selection",
+        "body": "Independent acquisition of S450L can collapse two unrelated strains in an unmasked tree."
+      }
+    ],
+    "takeaway": "Distance is a method, not a fact of nature."
+  },
+  "check": [
+    {
+      "id": "h37-ref",
+      "kind": "conceptual",
+      "prompt": "H37Rv in a DST pipeline is best treated as:",
+      "choices": [
+        "The infecting strain in most patients",
+        "A coordinate system and annotation set, not a clinical median isolate",
+        "A plasmid DST reference",
+        "Proof that PE/PPE genes do not exist"
+      ],
+      "answer": "A coordinate system and annotation set, not a clinical median isolate",
+      "why": "Patients have lineages. H37Rv is the map.",
+      "whyWrong": {
+        "The infecting strain in most patients": "L4 lab strain, not a global median.",
+        "A plasmid DST reference": "Mtb DST is chromosomal.",
+        "Proof that PE/PPE genes do not exist": "Opposite."
+      }
+    },
+    {
+      "id": "h37-size",
+      "kind": "calculation",
+      "prompt": "H37Rv is ~4.41 Mb. At uniform 50× unique coverage, roughly how many haploid-genome bases are sampled?",
+      "choices": [
+        "~2.2 × 10^8 bases",
+        "Exactly 4,000 reads",
+        "~4.4 × 10^3 bases",
+        "50 bases"
+      ],
+      "answer": "~2.2 × 10^8 bases",
+      "why": "4.41e6 × 50 ≈ 2.2e8. Depth is not read count without length.",
+      "whyWrong": {
+        "Exactly 4,000 reads": "Gene count confusion.",
+        "~4.4 × 10^3 bases": "Off by the megabase and the depth.",
+        "50 bases": "That is the depth, not the yield."
+      }
+    },
+    {
+      "id": "h37-figure",
+      "kind": "figure",
+      "prompt": "On the constellation plate, what is the pedagogical point of the term “not the patient”?",
+      "choices": [
+        "That WGS should not be used",
+        "That the reference genome is a coordinate origin, not the clinical isolate",
+        "That H37Rv lacks rpoB",
+        "That PE/PPE genes should be copy-pasted from Mycobrowser into reports"
+      ],
+      "answer": "That the reference genome is a coordinate origin, not the clinical isolate",
+      "why": "The caption states it. Masking and lineage exist because the patient is not H37Rv.",
+      "whyWrong": {
+        "That WGS should not be used": "Opposite of the plate.",
+        "That H37Rv lacks rpoB": "It has rpoB.",
+        "That PE/PPE genes should be copy-pasted from Mycobrowser into reports": "The user rule is the opposite."
+      },
+      "figureHint": "Largest-weight terms include H37Rv 4.4 Mb and not the patient."
+    }
+  ]
+}

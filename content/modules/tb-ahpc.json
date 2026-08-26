@@ -1,0 +1,205 @@
+{
+  "id": "tb-ahpc",
+  "title": "ahpC promoter compensation",
+  "dek": "ahpC promoter-up is usually how Mtb lives with a broken katG, not a primary INH mechanism to treat as the cause. Report it as compensation.",
+  "domain": "tb",
+  "aliases": [
+    "ahpC promoter",
+    "oxyR-ahpC",
+    "katG compensation",
+    "alkyl hydroperoxide reductase Mtb"
+  ],
+  "tags": [
+    "ahpC",
+    "katG",
+    "INH",
+    "compensation",
+    "catalogue"
+  ],
+  "story": [
+    "KatG is both INH activator and catalase-peroxidase. Loss-of-function katG alleles (beyond tidy S315T) create oxidative stress. Promoter mutations that up-regulate ahpC (alkyl hydroperoxide reductase) compensate that stress. They are epidemiologically associated with INH-R isolates that already have katG lesions.",
+    "Calling INH-R from ahpC promoter alone, with katG WT and inhA WT, is a catalogue fight you should lose most days. Some pipelines still emit it as a resistance call. Grade katG/inhA first; mention ahpC as compensation or as a hint to re-inspect katG coverage.",
+    "This is the same intellectual object as rpoC compensation for rpoB: fitness recovery, not the drug-binding lesion. Different gene, same reporting hygiene."
+  ],
+  "deepTitle": "The intergenic oxyR–ahpC neighbourhood",
+  "deep": [
+    "oxyR is inactivated in MTBC; the ahpC promoter sits in a small intergenic region that LPAs do not always cover.",
+    "S315T often does not need ahpC because residual catalase remains. Full katG deletions do.",
+    "Do not add high-dose INH because ahpC is WT. High-dose INH is an inhA-low-level bet.",
+    "ahpC coding mutations are a different, rarer conversation."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "INH activation via KatG. When KatG is lost, ahpC promoter-up is the oxidative-stress patch, not a second INH target of equal dignity.",
+    "nodes": [
+      {
+        "id": "inh",
+        "label": "INH",
+        "group": "drug",
+        "x": 10,
+        "y": 48
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 32,
+        "y": 48
+      },
+      {
+        "id": "add",
+        "label": "INH–NAD",
+        "group": "target",
+        "x": 55,
+        "y": 30
+      },
+      {
+        "id": "ros",
+        "label": "ROS stress",
+        "group": "host",
+        "x": 55,
+        "y": 68
+      },
+      {
+        "id": "ahp",
+        "label": "ahpC up",
+        "group": "enzyme",
+        "x": 78,
+        "y": 68,
+        "sub": "compensation"
+      },
+      {
+        "id": "inha",
+        "label": "InhA",
+        "group": "target",
+        "x": 78,
+        "y": 30
+      }
+    ],
+    "edges": [
+      {
+        "from": "inh",
+        "to": "katg"
+      },
+      {
+        "from": "katg",
+        "to": "add"
+      },
+      {
+        "from": "add",
+        "to": "inha"
+      },
+      {
+        "from": "katg",
+        "to": "ros",
+        "label": "if LoF"
+      },
+      {
+        "from": "ros",
+        "to": "ahp"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — ahpC context",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "AhpC — UniProt P9WQB7",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WQB7/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Compensation versus primary INH call.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-katg-inha",
+    "tb-isoniazid",
+    "tb-rpoc-compensatory",
+    "tb-who-catalogue",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "ahpC promoter flagged, katG coverage hole",
+    "setup": "tNGS report: ahpC promoter mutant, katG “WT,” INH-R in MGIT.",
+    "steps": [
+      {
+        "title": "Re-inspect katG",
+        "body": "A deletion or dropped amplicon looks WT if the pipeline only calls SNPs."
+      },
+      {
+        "title": "Do not treat ahpC as the mechanism of record",
+        "body": "It is the scar of katG loss."
+      },
+      {
+        "title": "ETH likely still an option if inhA WT",
+        "body": "Unlike promoter-up inhA."
+      }
+    ],
+    "takeaway": "ahpC promoter-up is a katG-loss smoke alarm."
+  },
+  "check": [
+    {
+      "id": "ahp-role",
+      "kind": "conceptual",
+      "prompt": "ahpC promoter-up in INH-R Mtb is best described as:",
+      "choices": [
+        "The primary INH-binding site",
+        "Usually compensatory for katG loss, not the primary INH mechanism",
+        "A rifamycin mechanism",
+        "A FQ QRDR"
+      ],
+      "answer": "Usually compensatory for katG loss, not the primary INH mechanism",
+      "why": "Same reporting idea as rpoC for rpoB.",
+      "whyWrong": {
+        "The primary INH-binding site": "InhA adduct.",
+        "A rifamycin mechanism": "rpoB.",
+        "A FQ QRDR": "gyrA/B."
+      }
+    },
+    {
+      "id": "ahp-hd",
+      "kind": "calculation",
+      "prompt": "High-dose INH is a bet on:",
+      "choices": [
+        "ahpC WT",
+        "Low-level inhA promoter alleles, not katG S315T (and not ahpC)",
+        "gidB frameshifts",
+        "QTc"
+      ],
+      "answer": "Low-level inhA promoter alleles, not katG S315T (and not ahpC)",
+      "why": "ahpC does not restore INH activation.",
+      "whyWrong": {
+        "ahpC WT": "Irrelevant to the bet.",
+        "gidB frameshifts": "SM.",
+        "QTc": "Other plate."
+      }
+    },
+    {
+      "id": "ahp-figure",
+      "kind": "figure",
+      "prompt": "On the map, ahpC up sits downstream of:",
+      "choices": [
+        "InhA",
+        "ROS stress after KatG LoF",
+        "RIF",
+        "EMB"
+      ],
+      "answer": "ROS stress after KatG LoF",
+      "why": "Compensation branch, lower right.",
+      "whyWrong": {
+        "InhA": "That’s the drug target branch.",
+        "RIF": "No.",
+        "EMB": "No."
+      },
+      "figureHint": "Lower path."
+    }
+  ]
+}

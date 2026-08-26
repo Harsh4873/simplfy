@@ -1,0 +1,170 @@
+{
+  "id": "tb-xpert-xdr",
+  "title": "Xpert MTB/XDR as follow-on WRD",
+  "dek": "After RR is found, Xpert XDR interrogates INH, FQ, AMK, KAN, CAP, and ETH loci — not BDQ, LZD, or Pa. It is a bridge to tNGS/WGS, not a 2021-XDR definition machine.",
+  "domain": "tb",
+  "aliases": [
+    "Xpert MTB/XDR",
+    "Xpert XDR cartridge",
+    "follow-on WRD",
+    "INH FQ AMK cartridge"
+  ],
+  "tags": [
+    "Xpert XDR",
+    "WRD",
+    "FQ",
+    "INH",
+    "follow-on"
+  ],
+  "story": [
+    "WHO’s diagnostic algorithm after an RR result is not “wait six weeks for MGIT.” A follow-on molecular WRD should look at isoniazid and fluoroquinolones at minimum. Xpert MTB/XDR (and similar LPAs) interrogates katG/inhA, gyrA/B QRDR, rrs/eis for injectables, and inhA/ethA-adjacent ETH markers — in a cartridge, from sputum or from a positive Xpert leftover in some workflows.",
+    "It does not interrogate atpE, rv0678, rplC, rrl, ddn, or fbi genes. A “negative Xpert XDR” is not XDR-TB ruled out in the 2021 sense. It is INH/FQ/injectable/ETH information.",
+    "Use it to decide BPaLM versus BPaL (FQ) and to know whether INH is already lost. Then sequence for Group A extras. Targeted NGS panels overlap this cartridge and go further."
+  ],
+  "deepTitle": "What the probes cannot see",
+  "deep": [
+    "Uncommon katG loss-of-function outside codon 315 will look INH-S on the cartridge and INH-R in MGIT.",
+    "Disputed gyrA alleles and heteroresistance below probe mixture thresholds are the usual fights.",
+    "Kanamycin/capreomycin probes are historical Group C chemistry. They do not define 2021-XDR.",
+    "Trace Ultra specimens may not have enough DNA for XDR follow-on. Culture or tNGS from a better specimen is the adult move."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "Xpert XDR’s locus coverage versus 2021 XDR. FQ is on the cartridge and on the definition. BDQ and LZD are on the definition and not on the cartridge.",
+    "rows": [
+      {
+        "gene": "katG / inhA",
+        "drug": "INH",
+        "canonical": "S315T / promoter-up",
+        "note": "on cartridge"
+      },
+      {
+        "gene": "gyrA/B QRDR",
+        "drug": "FQ",
+        "canonical": "D94G etc.",
+        "note": "pre-XDR step; on cartridge"
+      },
+      {
+        "gene": "rrs / eis",
+        "drug": "AMK/KAN",
+        "canonical": "1401 a>g; eis promoter",
+        "note": "injectable era"
+      },
+      {
+        "gene": "atpE / rv0678",
+        "drug": "BDQ",
+        "canonical": "not on Xpert XDR",
+        "note": "need tNGS/WGS"
+      },
+      {
+        "gene": "rplC / rrl",
+        "drug": "LZD",
+        "canonical": "not on Xpert XDR",
+        "note": "need tNGS/WGS"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 3 — follow-on WRDs after RR",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC molecular DST overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Cartridge coverage versus 2021 XDR definition.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-xpert-ultra",
+    "tb-tngs",
+    "tb-gyr-qrdr",
+    "tb-dr-definitions",
+    "tb-who-catalogue",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "Xpert XDR FQ-S, later WGS D94G mixed",
+    "setup": "RR on Ultra, Xpert XDR FQ-S, BPaLM started. Week-3 WGS shows gyrA D94G at 15% AF.",
+    "steps": [
+      {
+        "title": "Heteroresistance beat the probes",
+        "body": "Cartridge mixture thresholds are not 1%."
+      },
+      {
+        "title": "Drop M",
+        "body": "You now have pre-XDR chemistry. BPaL, not BPaLM."
+      },
+      {
+        "title": "Do not call 2021-XDR yet",
+        "body": "Need BDQ or LZD resistance for that word."
+      }
+    ],
+    "takeaway": "Xpert XDR is a fast FQ/INH window, not a Group A census."
+  },
+  "check": [
+    {
+      "id": "xdr-cov",
+      "kind": "conceptual",
+      "prompt": "Xpert MTB/XDR interrogates BDQ and LZD loci:",
+      "choices": [
+        "Yes, that is why it is named XDR",
+        "No — name is historical; BDQ/LZD need tNGS/WGS/pDST",
+        "Only atpE",
+        "Only rplC"
+      ],
+      "answer": "No — name is historical; BDQ/LZD need tNGS/WGS/pDST",
+      "why": "The cartridge predates treating BDQ/LZD as the XDR step.",
+      "whyWrong": {
+        "Yes, that is why it is named XDR": "Naming lag.",
+        "Only atpE": "Not on cartridge.",
+        "Only rplC": "Not on cartridge."
+      }
+    },
+    {
+      "id": "xdr-fq",
+      "kind": "calculation",
+      "prompt": "The main regimen fork Xpert XDR is built to flip after RR is:",
+      "choices": [
+        "HRZE versus 3HP",
+        "Keep moxifloxacin (BPaLM) versus drop it (BPaL) based on FQ loci",
+        "Start pretomanid in pregnancy",
+        "Stop all drugs"
+      ],
+      "answer": "Keep moxifloxacin (BPaLM) versus drop it (BPaL) based on FQ loci",
+      "why": "FQ is the pre-XDR step and the M in BPaLM.",
+      "whyWrong": {
+        "HRZE versus 3HP": "DS/TPT world.",
+        "Start pretomanid in pregnancy": "Pa is off in pregnancy.",
+        "Stop all drugs": "No."
+      }
+    },
+    {
+      "id": "xdr-figure",
+      "kind": "figure",
+      "prompt": "On the mutation grid, which pair is marked “not on Xpert XDR”?",
+      "choices": [
+        "katG/inhA and INH",
+        "gyrA/B and FQ",
+        "atpE/rv0678 and BDQ plus rplC/rrl and LZD",
+        "rrs and AMK"
+      ],
+      "answer": "atpE/rv0678 and BDQ plus rplC/rrl and LZD",
+      "why": "Those rows are the teaching gap.",
+      "whyWrong": {
+        "katG/inhA and INH": "On cartridge.",
+        "gyrA/B and FQ": "On cartridge.",
+        "rrs and AMK": "On cartridge."
+      },
+      "figureHint": "Bottom two rows."
+    }
+  ]
+}

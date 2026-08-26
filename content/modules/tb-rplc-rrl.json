@@ -1,0 +1,164 @@
+{
+  "id": "tb-rplc-rrl",
+  "title": "rplC, rrl, and linezolid",
+  "dek": "Linezolid occupies the 50S peptidyl-transferase centre. Resistance is still uncommon: rplC (L3, often C154R) and rrl 23S mutations. Myelosuppression, not rplC, is what usually stops the drug.",
+  "domain": "tb",
+  "aliases": [
+    "rplC C154R",
+    "rrl 23S",
+    "linezolid resistance Mtb",
+    "50S PTC",
+    "oxazolidinone TB"
+  ],
+  "tags": [
+    "rplC",
+    "rrl",
+    "LZD",
+    "23S",
+    "BPaLM"
+  ],
+  "story": [
+    "Linezolid is an oxazolidinone that binds the 50S A-site pocket and blocks initiation/elongation. In Mtb, the practical resistance genes are rplC (ribosomal protein L3; C154R is the celebrity missense) and rrl (23S rRNA, notably G2814T/A, G2270T/C and kin in Mtb numbering — always state the scheme).",
+    "Because Mtb has a single rRNA operon, rrl alleles can fix without the multi-copy dilution you see in E. coli. They remain uncommon in many surveys — LZD pressure is newer than RIF pressure. That prior will move as BPaLM scales.",
+    "cfr-like methyltransferases are the Gram-positive plasmid story; they are not the Mtb clinic. Do not import a Staph board question into a BAM."
+  ],
+  "deepTitle": "Toxicology is part of resistance ecology",
+  "deep": [
+    "600 mg daily is the WHO BPaLM dose because 1200 mg cured in Nix-TB and also lesioned bone marrow and nerves. TDM trough <2 µg/mL is a practical target in some US overlays.",
+    "Stopping LZD early because of neuropathy without a replacement Group A drug is how BPaL becomes two drugs.",
+    "Catalogue 2nd ed still has few LZD-associated variants (single-digit in the first jump). Uncertain alleles should stay uncertain.",
+    " tedizolid is a related oxazolidinone, not a WHO backbone."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "LZD resistance is sparse and ribosomal. Treat rplC/rrl hits as regimen-changing; treat WT as a prior that toxicity may still interrupt.",
+    "rows": [
+      {
+        "gene": "rplC C154R",
+        "drug": "LZD",
+        "canonical": "R associated",
+        "note": "L3 PTC neighbour"
+      },
+      {
+        "gene": "rrl 23S SNPs",
+        "drug": "LZD",
+        "canonical": "R associated",
+        "note": "single rRNA operon"
+      },
+      {
+        "gene": "cfr (Staph)",
+        "drug": "LZD",
+        "canonical": "not Mtb clinic",
+        "note": "do not import"
+      },
+      {
+        "gene": "WT rplC/rrl",
+        "drug": "LZD",
+        "canonical": "S prior",
+        "note": "toxicity still limits"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — LZD / rplC rrl",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "RplC 50S L3 — UniProt P9WH67",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WH67/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Sparse ribosomal alleles plus a toxicity ecology.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-linezolid",
+    "tb-who-catalogue",
+    "tb-bpalm",
+    "tb-resistance",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "C154R at month 4 of BPaL",
+    "setup": "Pre-XDR on BPaL. Month 4 tNGS: rplC C154R AF 0.70. Still smear-positive.",
+    "steps": [
+      {
+        "title": "LZD is lost",
+        "body": "C154R is the canonical L3 allele. Do not continue counting LZD."
+      },
+      {
+        "title": "This is now a two-drug skeleton if Pa and BDQ are all that’s left",
+        "body": "Rebuild immediately. Two drugs in a still-positive RR case is how you lose BDQ next."
+      },
+      {
+        "title": "Check the other Group A",
+        "body": "Sequence Rv0678/atpE and ddn/fbi again. Failures cluster."
+      }
+    ],
+    "takeaway": "A late rplC hit is a regimen emergency, not a lab curiosity."
+  },
+  "check": [
+    {
+      "id": "lzd-gene",
+      "kind": "conceptual",
+      "prompt": "The usual Mtb genomic homes of linezolid resistance are:",
+      "choices": [
+        "katG and pncA",
+        "rplC and rrl",
+        "embB 306 only",
+        "IS6110"
+      ],
+      "answer": "rplC and rrl",
+      "why": "L3 protein and 23S rRNA.",
+      "whyWrong": {
+        "katG and pncA": "INH/PZA.",
+        "embB 306 only": "EMB.",
+        "IS6110": "Detection."
+      }
+    },
+    {
+      "id": "lzd-cfr",
+      "kind": "calculation",
+      "prompt": "A trainee flags “possible cfr” on an Mtb WGS. The correct response is:",
+      "choices": [
+        "Automatically LZD-R because Staph textbooks said so",
+        "cfr is not the Mtb programmatic mechanism; look at rplC/rrl and the catalogue",
+        "Start kanamycin",
+        "Delete rpoB"
+      ],
+      "answer": "cfr is not the Mtb programmatic mechanism; look at rplC/rrl and the catalogue",
+      "why": "Wrong organism’s folklore.",
+      "whyWrong": {
+        "Automatically LZD-R because Staph textbooks said so": "Import error.",
+        "Start kanamycin": "No.",
+        "Delete rpoB": "No."
+      }
+    },
+    {
+      "id": "lzd-figure",
+      "kind": "figure",
+      "prompt": "In the LZD grid, what does the WT row’s note “toxicity still limits” mean?",
+      "choices": [
+        "That WT rplC causes neuropathy",
+        "That clinical LZD use is often duration-limited by myelosuppression/neuropathy even when the ribosome is wild type",
+        "That LZD is inactive if WT",
+        "That Ultra detects neuropathy"
+      ],
+      "answer": "That clinical LZD use is often duration-limited by myelosuppression/neuropathy even when the ribosome is wild type",
+      "why": "Ecology of exposure, not a gene.",
+      "whyWrong": {
+        "That WT rplC causes neuropathy": "Host toxicity, not the allele.",
+        "That LZD is inactive if WT": "Opposite.",
+        "That Ultra detects neuropathy": "No."
+      },
+      "figureHint": "Last grid row."
+    }
+  ]
+}

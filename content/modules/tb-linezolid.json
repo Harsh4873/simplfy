@@ -1,0 +1,185 @@
+{
+  "id": "tb-linezolid",
+  "title": "Linezolid",
+  "dek": "Oxazolidinone, 50S PTC, Group A. WHO BPaLM dose 600 mg daily. Myelosuppression and neuropathy limit duration. rplC/rrl resistance is still uncommon — toxicity is not.",
+  "domain": "tb",
+  "aliases": [
+    "LZD",
+    "linezolid",
+    "Zyvox",
+    "oxazolidinone TB",
+    "L in BPaLM"
+  ],
+  "tags": [
+    "linezolid",
+    "50S",
+    "myelosuppression",
+    "neuropathy",
+    "Group A"
+  ],
+  "story": [
+    "Linezolid is a protein-synthesis inhibitor that became Group A because it is bactericidal against Mtb and because Nix/ZeNix/PRACTECAL needed a third (or fourth) solid drug. WHO dose inside BPaLM/BPaL is 600 mg once daily, not the 1200 mg Nix-TB start as routine. Some 9-month recipes use 600 mg then step down.",
+    "Mitochondrial toxicity in the host looks like the bacterial mechanism: marrow suppression (watch FBC), peripheral and optic neuropathy, lactic acidosis rarely. TDM (trough <2 µg/mL in some US expert practice) is how you keep the drug for 26 weeks.",
+    "Resistance genes rplC/rrl are sparse in surveys — for now. A WT ribosome does not mean you get to ignore the platelet count. SSRIs and LZD risk serotonin syndrome — a med-rec issue, not a BAM issue."
+  ],
+  "deepTitle": "Duration vs dose",
+  "deep": [
+    "Dropping LZD at week 8 because of anaemia without a replacement is how BPaL becomes BDQ+Pa. Plan the off-ramp before the haemoglobin does.",
+    "Tedizolid is not a WHO substitute by default.",
+    "PubChem CID 441401. ChEMBL1262.",
+    "Pregnancy: used in Pa-sparing constructs; PK may shift by trimester."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic tension between antimycobacterial dose and host mitochondrial toxicity. 600 mg is the WHO compromise; 1200 mg cured in Nix and injured more hosts.",
+    "panels": [
+      {
+        "title": "Nix-TB era",
+        "bars": [
+          {
+            "label": "1200 mg",
+            "value": 9
+          },
+          {
+            "label": "AEs",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "WHO BPaLM",
+        "bars": [
+          {
+            "label": "600 mg",
+            "value": 6
+          },
+          {
+            "label": "AEs",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "title": "Resistance",
+        "bars": [
+          {
+            "label": "rplC/rrl",
+            "value": 2
+          },
+          {
+            "label": "still rare",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — linezolid 600 mg in BPaLM/BPaL",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Linezolid — PubChem CID 441401",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/441401"
+    },
+    {
+      "title": "Linezolid — CHEMBL1262",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL1262/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "600 mg as a toxicity compromise; ribosomal R still rare.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-rplc-rrl",
+    "tb-bpalm",
+    "tb-second-line",
+    "tb-9month-drtb",
+    "tb-who-catalogue"
+  ],
+  "example": {
+    "title": "Platelets 40 at week 6 of BPaLM",
+    "setup": "LZD 600 mg daily, other causes of thrombocytopenia excluded.",
+    "steps": [
+      {
+        "title": "This is LZD until proven otherwise",
+        "body": "Hold or TDM-guided reduce; do not wait for 10."
+      },
+      {
+        "title": "Keep the other three counting if they still count",
+        "body": "A planned interruption with close cultures ≠ silently remaining on two drugs for a month."
+      },
+      {
+        "title": "Neuropathy may not reverse as fast as platelets",
+        "body": "Ask now, not at week 24."
+      }
+    ],
+    "takeaway": "LZD’s limiting reagent is often the host mitochondrion, not rplC."
+  },
+  "check": [
+    {
+      "id": "lzd-dose",
+      "kind": "conceptual",
+      "prompt": "WHO BPaLM linezolid dose is:",
+      "choices": [
+        "1200 mg daily as the default for 6 months",
+        "600 mg once daily",
+        "50 mg weekly",
+        "15 mg/kg EMB"
+      ],
+      "answer": "600 mg once daily",
+      "why": "ZeNix/operational compromise.",
+      "whyWrong": {
+        "1200 mg daily as the default for 6 months": "Nix-TB, not current WHO routine.",
+        "50 mg weekly": "No.",
+        "15 mg/kg EMB": "EMB."
+      }
+    },
+    {
+      "id": "lzd-tox",
+      "kind": "calculation",
+      "prompt": "The two host toxicities that most often limit LZD duration are:",
+      "choices": [
+        "Orange urine and gout",
+        "Myelosuppression and neuropathy",
+        "Ethambutol-pattern colour blindness only",
+        "Ototoxicity like AMK always"
+      ],
+      "answer": "Myelosuppression and neuropathy",
+      "why": "Mitochondrial.",
+      "whyWrong": {
+        "Orange urine and gout": "RIF/PZA neighbourhood.",
+        "Ethambutol-pattern colour blindness only": "EMB; LZD can also hurt optic nerve but marrow/peripheral nerve dominate.",
+        "Ototoxicity like AMK always": "Injectables."
+      }
+    },
+    {
+      "id": "lzd-figure",
+      "kind": "figure",
+      "prompt": "On the LZD small-multiples, the resistance panel is short because:",
+      "choices": [
+        "rplC/rrl alleles are still uncommon relative to toxicity events in many programmes",
+        "LZD has no ribosomal target",
+        "CAD measures LZD MIC",
+        "600 mg is subtherapeutic always"
+      ],
+      "answer": "rplC/rrl alleles are still uncommon relative to toxicity events in many programmes",
+      "why": "Third panel teaching bar.",
+      "whyWrong": {
+        "LZD has no ribosomal target": "It does.",
+        "CAD measures LZD MIC": "No.",
+        "600 mg is subtherapeutic always": "WHO disagrees."
+      },
+      "figureHint": "Third panel: Resistance."
+    }
+  ]
+}

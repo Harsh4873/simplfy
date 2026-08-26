@@ -1,0 +1,221 @@
+{
+  "id": "tb-tnf-cd4",
+  "title": "TNF, CD4 help, and iatrogenic TB",
+  "dek": "TNF holds granulomas together; CD4 T cells run the IFN-γ franchise. Anti-TNF and HIV are the two common ways adults recreate childhood dissemination.",
+  "domain": "tb",
+  "aliases": [
+    "anti-TNF",
+    "infliximab TB",
+    "CD4 tuberculosis",
+    "granuloma maintenance",
+    "TNF inhibitors"
+  ],
+  "tags": [
+    "TNF",
+    "CD4",
+    "anti-TNF",
+    "HIV",
+    "reactivation"
+  ],
+  "story": [
+    "TNF (mostly macrophage- and T-cell-derived) maintains granuloma integrity and macrophage activation. Neutralising it — infliximab more than etanercept in the classic hierarchy — collapses containment. Incident TB on anti-TNF is often disseminated or extrapulmonary, and it can appear within months of the first infusion.",
+    "CD4 T cells are the antigen-specific IFN-γ (and IL-2/TNF) source that IGRAs try to measure. As CD4 counts fall, both control and the assay fail. That is why advanced HIV is miliary, lymphatic, and smear-negative-with-high-burden at once.",
+    "Screening for TB infection before anti-TNF (and other biologics: anti-IL-6, JAK inhibitors, anti-IL-17 with a weaker signal) plus TPT when indicated is host-directed prevention. It is the same axis as MSMD, acquired."
+  ],
+  "deepTitle": "Risk that is not a CFU",
+  "deep": [
+    "Infliximab (monoclonal, membrane TNF, complement) > adalimumab > etanercept (soluble-receptor decoy) in TB risk in observational series. Rank is not a licence to skip screening on etanercept.",
+    "Steroids, dialysis, transplantation, and silicosis are parallel iatrogenic/occupational holes. The common language is failed granuloma maintenance.",
+    "IRIS after ART or after stopping anti-TNF is the reconstitution mirror: lesions inflame as TNF/CD4 return.",
+    "Do not use IGRA conversion to diagnose anti-TNF-associated TB disease. Image, NAAT, culture."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Containment depends on CD4-derived IFN-γ and TNF on the granuloma. HIV and anti-TNF are two cuts on that loop; dissemination is the downstream state.",
+    "nodes": [
+      {
+        "id": "cd4",
+        "label": "CD4 help",
+        "x": 10,
+        "y": 30,
+        "tone": "start"
+      },
+      {
+        "id": "ifn",
+        "label": "IFN-γ / TNF",
+        "x": 32,
+        "y": 30,
+        "tone": "process"
+      },
+      {
+        "id": "gran",
+        "label": "Granuloma holds",
+        "x": 55,
+        "y": 30,
+        "tone": "decision"
+      },
+      {
+        "id": "hiv",
+        "label": "HIV: CD4 loss",
+        "x": 32,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "atnf",
+        "label": "anti-TNF",
+        "x": 55,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "ok",
+        "label": "Containment",
+        "x": 80,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "diss",
+        "label": "Dissemination",
+        "x": 80,
+        "y": 55,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cd4",
+        "to": "ifn"
+      },
+      {
+        "from": "ifn",
+        "to": "gran"
+      },
+      {
+        "from": "gran",
+        "to": "ok",
+        "label": "intact"
+      },
+      {
+        "from": "hiv",
+        "to": "cd4",
+        "label": "cuts"
+      },
+      {
+        "from": "atnf",
+        "to": "gran",
+        "label": "cuts TNF"
+      },
+      {
+        "from": "hiv",
+        "to": "diss"
+      },
+      {
+        "from": "atnf",
+        "to": "diss"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum — TB in immunocompromised hosts",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "WHO TPT: risk groups including anti-TNF and HIV",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Iatrogenic granuloma-failure notes.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-host-ifng",
+    "tb-hiv-synergy",
+    "tb-granuloma",
+    "tb-tpt"
+  ],
+  "example": {
+    "title": "Infliximab start with untreated IGRA+",
+    "setup": "Rheumatoid arthritis, IGRA+, normal CXR, no TPT, infliximab infusion planned next week.",
+    "steps": [
+      {
+        "title": "This is a TPT indication",
+        "body": "WHO/CDC: treat infection before (or at most with) TNF blockade after ruling out disease."
+      },
+      {
+        "title": "Pick a short rifamycin regimen if drug interactions allow",
+        "body": "3HP or 4R are shorter than 6H. Check CYP induction against the rheumatology list."
+      },
+      {
+        "title": "Do not wait for symptomatic TB",
+        "body": "Anti-TNF TB can be extra-pulmonary and late-presenting. Prevention is the point."
+      }
+    ],
+    "takeaway": "TNF blockade without TPT is a planned granuloma insult."
+  },
+  "check": [
+    {
+      "id": "tnf-role",
+      "kind": "conceptual",
+      "prompt": "TNF’s most TB-relevant host role is:",
+      "choices": [
+        "Binding RpoB",
+        "Maintaining granuloma structure and macrophage activation",
+        "Activating pyrazinamide",
+        "Serving as the Xpert Ultra target"
+      ],
+      "answer": "Maintaining granuloma structure and macrophage activation",
+      "why": "That is why anti-TNF produces reactivation/dissemination.",
+      "whyWrong": {
+        "Binding RpoB": "Rifampin.",
+        "Activating pyrazinamide": "PncA.",
+        "Serving as the Xpert Ultra target": "Bacterial DNA."
+      }
+    },
+    {
+      "id": "tnf-rank",
+      "kind": "calculation",
+      "prompt": "Observational TB risk on biologics is generally highest with infliximab among the classical agents. A patient starting etanercept still needs:",
+      "choices": [
+        "No screening, because etanercept risk is exactly zero",
+        "Disease screen ± IGRA/TST and TPT if indicated — rank is not a skip",
+        "Empirical BPaLM",
+        "Stopping all methotrexate forever as TB therapy"
+      ],
+      "answer": "Disease screen ± IGRA/TST and TPT if indicated — rank is not a skip",
+      "why": "Lower relative risk ≠ no risk.",
+      "whyWrong": {
+        "No screening, because etanercept risk is exactly zero": "False.",
+        "Empirical BPaLM": "That is RR-TB treatment.",
+        "Stopping all methotrexate forever as TB therapy": "Not a TB regimen."
+      }
+    },
+    {
+      "id": "tnf-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, anti-TNF has an arrow into the granuloma node labelled “cuts TNF.” What is the intended downstream state if that cut wins?",
+      "choices": [
+        "Containment",
+        "Dissemination",
+        "RIF-S by Xpert",
+        "DosR overexpression as DST"
+      ],
+      "answer": "Dissemination",
+      "why": "Both HIV and anti-TNF feed the dissemination end node.",
+      "whyWrong": {
+        "Containment": "That is the intact path.",
+        "RIF-S by Xpert": "Unrelated.",
+        "DosR overexpression as DST": "Unrelated."
+      },
+      "figureHint": "Right-side end nodes: containment vs dissemination."
+    }
+  ]
+}

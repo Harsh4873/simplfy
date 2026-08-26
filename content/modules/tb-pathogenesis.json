@@ -22,7 +22,8 @@
     "Caseum is hypoxic, acidic, and full of hydrolyzed lipids. Pyrazinamide’s pH-dependent activity is part of why it helps in early necrotic lesions. Rifampin’s sterilizing activity is partly about slowly replicating populations. Isoniazid is most useful when bacilli are replicating and making mycolate.",
     "Cavitation into an airway turns a contained lesion into a transmission engine: high smear grade, high aerosol, high mutation supply. Genomic clustering studies are downstream of this anatomy.",
     "Animal models disagree. Mouse lesions are poorly necrotic unless you pick the right strain; rabbit and nonhuman primate granulomas are closer to human caseation. Do not overfit a mouse CFU curve to a human four-month regimen.",
-    "HIV collapses the CD4-dependent architecture of the granuloma. Disseminated and extrapulmonary disease become common; smear can be negative while burden is high. That is a pathogenesis fact with diagnostic consequences."
+    "HIV collapses the CD4-dependent architecture of the granuloma. Disseminated and extrapulmonary disease become common; smear can be negative while burden is high. That is a pathogenesis fact with diagnostic consequences.",
+    "LTBI remains an IGRA/TST operational label. DosR physiology, caseum persisters, and a positive infection test are overlapping but not identical objects — treat them on separate plates."
   ],
   "visual": {
     "kind": "flow-map",
@@ -59,7 +60,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-organism", "tb-diagnosis", "tb-first-line", "tb-rifampin"],
+  "related": ["tb-organism", "tb-granuloma", "tb-latency-dosr", "tb-diagnosis", "tb-hiv-synergy", "tb-first-line", "tb-caseum"],
   "example": {
     "title": "Why INH-monotherapy LTBI treatment is a different pharmacologic object",
     "setup": "A contacts clinic wants to know why six months of isoniazid can be used for LTBI while active cavitary disease needs a rifamycin-based combination.",

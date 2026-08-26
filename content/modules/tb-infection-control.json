@@ -1,0 +1,170 @@
+{
+  "id": "tb-infection-control",
+  "title": "Airborne infection control",
+  "dek": "Smear grade and cough aerosol, not IGRA, decide who is a source. UV, ventilation, respirators, and treatment are engineering plus drugs — genomics does not replace negative pressure.",
+  "domain": "tb",
+  "aliases": [
+    "TB isolation",
+    "airborne precautions TB",
+    "cough aerosol",
+    "N95 TB",
+    "UVGI"
+  ],
+  "tags": [
+    "infection control",
+    "airborne",
+    "smear",
+    "aerosol",
+    "isolation"
+  ],
+  "story": [
+    "M. tuberculosis is airborne. Infection control is source control (treat, mask the patient), environmental control (air changes, UVGI, outdoor waiting), and personal respiratory protection (fit-tested respirators for staff). A genomics lab that sequences RR-TB but sits unmasked over an open MGIT is performing theatre.",
+    "Infectiousness tracks cough and bacillary burden. Smear 3+ cavitary pulmonary disease is the classic source. Smear-negative pulmonary TB can still transmit. Extrapulmonary TB without a draining aerosol is usually not an airborne source — except laryngeal and the pulmonary co-infection you forgot to image.",
+    "WHO and CDC isolation-exit rules differ in paperwork; both want clinical improvement plus a microbiologic trend (smear down, on effective therapy). RR-TB isolation is longer in many US protocols. An Xpert RIF-R result is an infection-control trigger the same afternoon, not after the ID conference."
+  ],
+  "deepTitle": "Labs, clinics, and households",
+  "deep": [
+    "MGIT and LJ are cultured in BSC II; spills are reported. Heat-killed extracts are not live TB but deserve respect until verified.",
+    "Household TPT is infection control with a pill. 6Lfx for MDR contacts is that idea with a FQ.",
+    "Surgical masks on coughing patients reduce source aerosol; they are not N95s for staff.",
+    "CAD/CXR screening in high-risk congregate settings is a find-and-treat IC tool, not a diagnosis of infection."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Three layers of TB IC. Drugs are source control. Air is engineering. Respirators are the last layer, not the first.",
+    "layers": [
+      {
+        "title": "Source",
+        "nodes": [
+          "treat early",
+          "patient mask",
+          "cough etiquette"
+        ]
+      },
+      {
+        "title": "Environment",
+        "nodes": [
+          "ACH / outdoor",
+          "UVGI",
+          "separate waiting"
+        ]
+      },
+      {
+        "title": "Personal",
+        "nodes": [
+          "fit-tested respirator",
+          "BSC in lab"
+        ]
+      },
+      {
+        "title": "Program",
+        "nodes": [
+          "TPT contacts",
+          "isolation exit rules"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TB infection prevention and control",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240001503"
+    },
+    {
+      "title": "CDC TB infection control",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "IC as smear plus therapy, not IGRA.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-transmission",
+    "tb-smear-culture",
+    "tb-tpt",
+    "tb-diagnosis",
+    "tb-xpert-ultra"
+  ],
+  "example": {
+    "title": "RR Ultra in ED, isolation delayed for “ID consult”",
+    "setup": "Coughing adult, Ultra MTB+/RIF-R at 14:00, still in an open bay at 18:00.",
+    "steps": [
+      {
+        "title": "RR is an IC result",
+        "body": "Airborne isolation now; do not wait for a second-line committee."
+      },
+      {
+        "title": "Start effective therapy",
+        "body": "Source control is BPaLM-class treatment, not a surgical mask alone."
+      },
+      {
+        "title": "List exposed staff/patients",
+        "body": "TPT decisions later; the delay is the exposure."
+      }
+    ],
+    "takeaway": "Molecular RR is an infection-control stat, not a seminar topic."
+  },
+  "check": [
+    {
+      "id": "ic-igra",
+      "kind": "conceptual",
+      "prompt": "A positive IGRA in a nurse decides airborne isolation of that nurse:",
+      "choices": [
+        "Yes, IGRA means infectious TB",
+        "No — isolation is about infectious TB disease, not infection memory",
+        "Yes if BCG-vaccinated",
+        "Only if CAD is negative"
+      ],
+      "answer": "No — isolation is about infectious TB disease, not infection memory",
+      "why": "IGRA/TST are infection tests. Sources cough bacilli.",
+      "whyWrong": {
+        "Yes, IGRA means infectious TB": "Classic error.",
+        "Yes if BCG-vaccinated": "BCG confounds TST more than IGRA.",
+        "Only if CAD is negative": "CAD is screening."
+      }
+    },
+    {
+      "id": "ic-smear",
+      "kind": "calculation",
+      "prompt": "All else equal, the higher-priority airborne source is:",
+      "choices": [
+        "Treated smear-negative EPTB osteomyelitis",
+        "Untreated smear 3+ cavitary pulmonary TB",
+        "LTBI on 6H",
+        "A negative Ultra on induced sputum in a well child"
+      ],
+      "answer": "Untreated smear 3+ cavitary pulmonary TB",
+      "why": "Burden plus cough aerosol.",
+      "whyWrong": {
+        "Treated smear-negative EPTB osteomyelitis": "Usually not airborne.",
+        "LTBI on 6H": "Not disease.",
+        "A negative Ultra on induced sputum in a well child": "Low."
+      }
+    },
+    {
+      "id": "ic-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, fit-tested respirators sit in:",
+      "choices": [
+        "Source control only",
+        "Personal layer, after source and environment",
+        "Group A drugs",
+        "DosR"
+      ],
+      "answer": "Personal layer, after source and environment",
+      "why": "PPE is last, not a substitute for treatment and air.",
+      "whyWrong": {
+        "Source control only": "That’s treat/mask.",
+        "Group A drugs": "Regimen plate.",
+        "DosR": "Latency."
+      },
+      "figureHint": "Third layer."
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "id": "tb-9month-drtb",
+  "title": "Nine-month all-oral DR-TB",
+  "dek": "The 2022 9-month BDQ-FQ-CFZ-Z-E-Hh-Eto/Lzd construct, plus 2025 modified 9-month BLMZ / BLLfxCZ / BDLLfxZ. FQ-S is the usual gate. Longer regimens remain the salvage net.",
+  "domain": "tb",
+  "aliases": [
+    "9-month MDR regimen",
+    "short all-oral MDR",
+    "BLMZ",
+    "high-dose isoniazid MDR",
+    "STREAM"
+  ],
+  "tags": [
+    "9-month",
+    "DR-TB",
+    "BLMZ",
+    "clofazimine",
+    "FQ-S"
+  ],
+  "story": [
+    "WHO still suggests a 9-month all-oral regimen rather than >18-month treatment for FQ-susceptible MDR/RR-TB: BDQ for 6 months plus Lfx/Mfx, CFZ, Z, E, high-dose INH, and ethionamide (or 2 months of LZD 600 mg instead of Eto), then a 5-month continuation without BDQ/Eto/LZD as specified. Pregnancy: prefer the LZD-not-Eto variant; ethionamide is a teratogenicity problem.",
+    "2025 adds modified 9-month regimens from endTB/BEAT-TB: BLMZ (BDQ+LZD+MXF+PZA) preferred among them, then BLLfxCZ, then BDLLfxZ, all for FQ-S disease versus longer regimens. WHO suggests against 9-month DCLLfxZ or DCMZ.",
+    "These are not preferred over BPaLM when BPaLM is eligible. They are the second row: FQ-S, Pa ineligible or BPaLM unavailable, still wanting <18 months. If FQ-R, do not force a FQ-S 9-month recipe."
+  ],
+  "deepTitle": "High-dose INH and other ghosts",
+  "deep": [
+    "High-dose INH in the 2022 9-month hopes the strain is inhA-promoter low-level, not katG S315T. If katG S315T is present, Hh is theatre. Read the gene.",
+    "PZA only counts if pncA says so. A 9-month that leans on Z with a wrecked pncA is miscounted.",
+    "QTc: BDQ+CFZ+FQ+ (sometimes DLM) is an ECG schedule, not a surprise.",
+    "Longer individualised regimens (18–20 months, Group A/B/C) remain correct when short regimens are ineligible: extensive resistance, CNS disease needing a different construct, or failures."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "WHO 2025 DR-TB duration ladder for FQ-S disease. Prefer 6-month BPaLM when eligible; 9-month orals next; >18-month last.",
+    "layers": [
+      {
+        "title": "Prefer if eligible",
+        "nodes": [
+          "BPaLM",
+          "BPaL if FQ-R"
+        ]
+      },
+      {
+        "title": "Pa-sparing 6-mo",
+        "nodes": [
+          "BDLLfxC"
+        ]
+      },
+      {
+        "title": "9-month orals",
+        "nodes": [
+          "BLMZ",
+          "2022 9-mo",
+          "BLLfxCZ"
+        ]
+      },
+      {
+        "title": "Longer",
+        "nodes": [
+          "individualised",
+          "Group A/B/C"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 2025: 9-month DR-TB regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Ladder: 6-month first, 9-month FQ-S second, long salvage last.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC 2025 emphasises 6-month BPaLM/BPaL; 9-month remains WHO row-two",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-bpalm",
+    "tb-bdllfxc",
+    "tb-second-line",
+    "tb-clofazimine",
+    "tb-dr-definitions"
+  ],
+  "example": {
+    "title": "katG S315T on a 9-month with Hh",
+    "setup": "FQ-S RR-TB, Pa unavailable, started 2022 9-month including high-dose INH. WGS: katG S315T, inhA WT, pncA WT, gyrA WT.",
+    "steps": [
+      {
+        "title": "Hh is inactive",
+        "body": "S315T is high-level INH-R. Counting Hh as an “effective drug” is a paper victory."
+      },
+      {
+        "title": "Other companions may still be intact",
+        "body": "FQ-S, pncA WT: Mfx/Lfx and Z can still count. Rebuild the effective-drug tally."
+      },
+      {
+        "title": "Consider BLMZ or BDLLfxC if eligible",
+        "body": "A 9-month that was leaning on Hh should be redesigned, not pep-talked."
+      }
+    ],
+    "takeaway": "High-dose INH is allele-specific, not a 9-month mascot."
+  },
+  "check": [
+    {
+      "id": "nine-fq",
+      "kind": "conceptual",
+      "prompt": "The standard 9-month all-oral MDR recipes WHO discusses are generally gated on:",
+      "choices": [
+        "Confirmed FQ resistance",
+        "Exclusion of FQ resistance (FQ-S)",
+        "DS-TB only",
+        "Positive IGRA only"
+      ],
+      "answer": "Exclusion of FQ resistance (FQ-S)",
+      "why": "FQ-R belongs in BPaL/BDLC territory, not FQ-counting 9-month constructs.",
+      "whyWrong": {
+        "Confirmed FQ resistance": "Opposite gate.",
+        "DS-TB only": "Wrong class.",
+        "Positive IGRA only": "Not disease treatment."
+      }
+    },
+    {
+      "id": "nine-eto",
+      "kind": "calculation",
+      "prompt": "In pregnancy, the 2022 9-month regimen should replace ethionamide with:",
+      "choices": [
+        "Streptomycin",
+        "2 months of linezolid 600 mg (Eto off)",
+        "Pretomanid 200 mg as first choice",
+        "Kanamycin daily"
+      ],
+      "answer": "2 months of linezolid 600 mg (Eto off)",
+      "why": "Eto is the pregnancy problem; LZD substitution is the designed patch.",
+      "whyWrong": {
+        "Streptomycin": "Ototoxic, pregnancy-hostile.",
+        "Pretomanid 200 mg as first choice": "Pa not for pregnancy.",
+        "Kanamycin daily": "Injectable salvage."
+      }
+    },
+    {
+      "id": "nine-figure",
+      "kind": "figure",
+      "prompt": "On the duration ladder, where does BLMZ sit?",
+      "choices": [
+        "Above BPaLM as first for all DS-TB",
+        "In the 9-month oral row, below preferred 6-month regimens",
+        "As TPT",
+        "As a smear stain"
+      ],
+      "answer": "In the 9-month oral row, below preferred 6-month regimens",
+      "why": "Third layer of the hierarchy.",
+      "whyWrong": {
+        "Above BPaLM as first for all DS-TB": "Wrong class and rank.",
+        "As TPT": "No.",
+        "As a smear stain": "No."
+      },
+      "figureHint": "Third layer title: 9-month orals."
+    }
+  ]
+}

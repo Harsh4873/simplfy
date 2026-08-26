@@ -1,0 +1,166 @@
+{
+  "id": "tb-latency-dosr",
+  "title": "Latency, persisters, and DosR",
+  "dek": "LTBI is an immune-operational category. Persistence is a physiologic spectrum (DosR, lipid bodies, non-replicating states). Do not fuse the words.",
+  "domain": "tb",
+  "aliases": [
+    "DosR",
+    "devR",
+    "dormancy regulon",
+    "LTBI",
+    "persister Mtb",
+    "Wayne model"
+  ],
+  "tags": [
+    "latency",
+    "DosR",
+    "hypoxia",
+    "TPT",
+    "persister"
+  ],
+  "story": [
+    "Latent TB infection (LTBI) in clinic means a positive TST/IGRA after active disease has been excluded. It does not map one-to-one onto a named granuloma full of culture-positive bacilli, and a negative IGRA does not prove sterility. Most infected people never develop disease; risk is concentrated in recent infection, HIV, anti-TNF, dialysis, silicosis, and young children.",
+    "Separately, Mtb has measurable non-replicating persistent states. The DosRS (DevRS) two-component system plus DosT senses hypoxia, NO, and CO and drives a ~50-gene dormancy regulon (including hspX). The Wayne hypoxic-shift-down model and lipid-body “foamy” bacilli are laboratory handles on that physiology.",
+    "TPT (3HP, 1HP, 3HR, 6H, 4R, 6Lfx for MDR contacts) is a public-health bet that a small persisting population can be extinguished with one or two drugs because mutation supply is low. It is not the same bet as treating a cavity."
+  ],
+  "deepTitle": "Genes, models, and the clinical word",
+  "deep": [
+    "dosR mutants are attenuated in some persistence models and not in all. Do not write “DosR = LTBI gene” on a report.",
+    "hspX (α-crystallin) is a DosR-offspring antigen sometimes used in research serology; it is not a WHO disease test.",
+    "RelA/SpoT-mediated stringent response and trans-translation (hisT, etc.) are additional persistence axes. The genome has more than one way to sit still.",
+    "Resuscitation-promoting factors (Rpfs) matter when you try to culture “dormant” bacilli. Negative culture is not proof of absence in tissue."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic replication-rate distributions. Broth log-phase is a tight, fast peak. Caseum/persisters shift mass toward slow replication. LTBI is a clinical label overlaying an unknown mix of those states — often near zero detectable replication.",
+    "xLabel": "replication rate (schematic)",
+    "curves": [
+      {
+        "id": "log",
+        "label": "log-phase broth",
+        "mean": 8,
+        "sd": 1.1
+      },
+      {
+        "id": "lesion",
+        "label": "cavitary sputum mix",
+        "mean": 5.5,
+        "sd": 1.8
+      },
+      {
+        "id": "pers",
+        "label": "caseum / DosR-high",
+        "mean": 2.2,
+        "sd": 1.0
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TPT guidelines 2024 — LTBI as operational category",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Transcriptional regulatory protein DosR/DevR — UniProt P9WMF9",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WMF9/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Do not equate IGRA+ with a DosR transcriptome.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-granuloma",
+    "tb-pathogenesis",
+    "tb-tpt",
+    "tb-pyrazinamide",
+    "tb-host-ifng"
+  ],
+  "example": {
+    "title": "Why 3HP is not 2HRZE",
+    "setup": "Household contact, IGRA+, normal CXR, smear-negative, asymptomatic. Clinician asks why weekly rifapentine–INH is enough.",
+    "steps": [
+      {
+        "title": "Burden",
+        "body": "Mutation supply scales with N. A contained, paucibacillary state is not a 3+ cavity."
+      },
+      {
+        "title": "Rule out disease",
+        "body": "TPT is illegal-in-spirit (and guideline-illegal) if you are actually treating disease with two weekly drugs. Symptom/CXR/mWRD screen first."
+      },
+      {
+        "title": "Regimen grammar",
+        "body": "3HP is WHO-preferred TPT, not a shortened HRZE. Different object, different endpoint (incident TB, not cavity closure)."
+      }
+    ],
+    "takeaway": "LTBI treatment is a low-N persistence bet after disease exclusion."
+  },
+  "check": [
+    {
+      "id": "lat-ltbi",
+      "kind": "conceptual",
+      "prompt": "A positive IGRA with disease excluded demonstrates:",
+      "choices": [
+        "Culture-proven persisters in a named granuloma",
+        "T-cell memory to Mtb antigens, used operationally as LTBI",
+        "DosR overexpression in sputum RNA-seq by definition",
+        "Rifampin resistance"
+      ],
+      "answer": "T-cell memory to Mtb antigens, used operationally as LTBI",
+      "why": "Do not fuse immunoassay and Wayne-model physiology.",
+      "whyWrong": {
+        "Culture-proven persisters in a named granuloma": "Not part of the LTBI definition.",
+        "DosR overexpression in sputum RNA-seq by definition": "No sputum required.",
+        "Rifampin resistance": "No DST in IGRA."
+      }
+    },
+    {
+      "id": "lat-dosr",
+      "kind": "calculation",
+      "prompt": "DosR (DevR) with DosS/DosT senses hypoxia/NO/CO and induces ~50 genes including hspX. This regulon is best used as:",
+      "choices": [
+        "A WHO-graded rifampin-resistance marker",
+        "A physiologic persistence programme, not a DST catalogue gene",
+        "Proof that LTBI equals sterility",
+        "The Xpert Ultra IS6110 target"
+      ],
+      "answer": "A physiologic persistence programme, not a DST catalogue gene",
+      "why": "Catalogue genes are rpoB, katG, etc. DosR is physiology.",
+      "whyWrong": {
+        "A WHO-graded rifampin-resistance marker": "rpoB.",
+        "Proof that LTBI equals sterility": "Opposite lesson.",
+        "The Xpert Ultra IS6110 target": "Insertion sequence, not DosR."
+      }
+    },
+    {
+      "id": "lat-figure",
+      "kind": "figure",
+      "prompt": "On the density-shift plate, which curve sits furthest left (slowest replication)?",
+      "choices": [
+        "log-phase broth",
+        "cavitary sputum mix",
+        "caseum / DosR-high",
+        "They share one mean"
+      ],
+      "answer": "caseum / DosR-high",
+      "why": "Mean 2.2 vs 8 for broth.",
+      "whyWrong": {
+        "log-phase broth": "Rightmost, fastest.",
+        "cavitary sputum mix": "Middle.",
+        "They share one mean": "Three different means."
+      },
+      "figureHint": "Legend: three labelled curves."
+    }
+  ]
+}

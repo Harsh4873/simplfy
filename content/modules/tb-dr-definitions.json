@@ -1,0 +1,166 @@
+{
+  "id": "tb-dr-definitions",
+  "title": "RR, Hr, MDR, pre-XDR, XDR",
+  "dek": "Definitions moved in 2021. MDR is still INH+RIF. Pre-XDR adds a FQ. XDR adds BDQ or LZD on top of MDR/RR+FQ. A 2015 “XDR” paper is a different object.",
+  "domain": "tb",
+  "aliases": [
+    "pre-XDR",
+    "XDR-TB definition",
+    "MDR definition",
+    "RR-TB",
+    "WHO 2021 definitions"
+  ],
+  "tags": [
+    "MDR",
+    "XDR",
+    "pre-XDR",
+    "RR-TB",
+    "definitions"
+  ],
+  "story": [
+    "Rifampin-resistant TB (RR-TB) is operationally the Xpert-era door to second-line algorithms. Many RR isolates are also INH-R (MDR-TB: resistance to at least isoniazid and rifampin). Some are INH-S — still not HRZE. Hr-TB is INH-R, RIF-S — a different recipe (6REZ-Lfx).",
+    "WHO 2021: pre-XDR-TB = MDR/RR plus fluoroquinolone resistance. XDR-TB = MDR/RR plus FQ plus at least one Group A drug (bedaquiline or linezolid). The old XDR (MDR + FQ + a second-line injectable) was retired because injectables left the preferred regimens.",
+    "Surveillance, papers, and lab reports still mix eras. If a 2018 dataset says XDR, ask which definition. If a genome is FQ-R but BDQ/LZD naive, it is pre-XDR, not 2021-XDR, even if it would have been “XDR” in 2015 via amikacin."
+  ],
+  "deepTitle": "Why the injectable retirement matters in a BAM",
+  "deep": [
+    "rrs 1401 a>g still exists in genomes and still matters if someone reaches for AMK. It does not make 2021-XDR by itself.",
+    "RR on Xpert without INH genotyping is RR, not proven MDR. Treat as RR; do not write MDR in the case notification until INH is known — or follow NTP rules that treat RR as MDR operationally and say so.",
+    "Group A is currently BDQ, LZD, FQ. Group letters also moved. Read the year of the guideline you are citing.",
+    "Heteroresistance can make a person “MDR” in the cavity and “DS” in the MGIT. Definitions assume a sample."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "2021 WHO nested definitions. Injectables are off the XDR ladder. FQ is the pre-XDR step; BDQ or LZD is the XDR step.",
+    "layers": [
+      {
+        "title": "RIF-S world",
+        "nodes": [
+          "DS-TB",
+          "Hr-TB"
+        ]
+      },
+      {
+        "title": "RIF-R door",
+        "nodes": [
+          "RR-TB",
+          "MDR if INH-R"
+        ]
+      },
+      {
+        "title": "Add FQ-R",
+        "nodes": [
+          "pre-XDR"
+        ]
+      },
+      {
+        "title": "Add BDQ-R or LZD-R",
+        "nodes": [
+          "XDR-TB"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO 2021 DR-TB definitions, carried in 2024–2025 modules",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Extensively drug-resistant tuberculosis",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Extensively_drug-resistant_tuberculosis"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Era-stamp the word XDR before you compare papers.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-resistance",
+    "tb-bpalm",
+    "tb-hr-tb",
+    "tb-xpert-ultra",
+    "tb-who-catalogue"
+  ],
+  "example": {
+    "title": "2016 XDR label, 2024 genome",
+    "setup": "Archive isolate labelled XDR in 2016: INH+RIF+MFX+AMK. WGS now: gyrA D94G, rrs 1401, atpE/Rv0678/rrl WT.",
+    "steps": [
+      {
+        "title": "Old definition matched",
+        "body": "MDR+FQ+injectable was 2016-XDR."
+      },
+      {
+        "title": "2021 definition is pre-XDR",
+        "body": "FQ-R yes; BDQ and LZD loci clean. Do not import the archive word into a BPaL eligibility discussion without translating."
+      },
+      {
+        "title": "AMK still dead",
+        "body": "rrs 1401 remains relevant if someone tries an injectable salvage. It just is not the XDR criterion anymore."
+      }
+    ],
+    "takeaway": "Translate definitions before you translate regimens."
+  },
+  "check": [
+    {
+      "id": "def-mdr",
+      "kind": "conceptual",
+      "prompt": "MDR-TB requires resistance to:",
+      "choices": [
+        "Any two injectables",
+        "At least isoniazid and rifampin",
+        "PZA only",
+        "BDQ plus LZD regardless of RIF"
+      ],
+      "answer": "At least isoniazid and rifampin",
+      "why": "RR is the operational door; MDR names both first-line sterilizing/cidal pair.",
+      "whyWrong": {
+        "Any two injectables": "Historical confusion.",
+        "PZA only": "Mono-resistance.",
+        "BDQ plus LZD regardless of RIF": "Group A, not MDR."
+      }
+    },
+    {
+      "id": "def-xdr",
+      "kind": "calculation",
+      "prompt": "MDR + gyrA D94G + rrs 1401, BDQ/LZD wild type. Under WHO 2021 this is:",
+      "choices": [
+        "DS-TB",
+        "pre-XDR-TB",
+        "2021 XDR-TB",
+        "LTBI"
+      ],
+      "answer": "pre-XDR-TB",
+      "why": "FQ makes pre-XDR. Injectable resistance does not complete 2021-XDR.",
+      "whyWrong": {
+        "DS-TB": "No.",
+        "2021 XDR-TB": "Needs BDQ or LZD resistance too.",
+        "LTBI": "No."
+      }
+    },
+    {
+      "id": "def-figure",
+      "kind": "figure",
+      "prompt": "On the definition hierarchy, what sits on the top row with DS-TB?",
+      "choices": [
+        "XDR-TB",
+        "Hr-TB",
+        "BPaLM",
+        "CAD"
+      ],
+      "answer": "Hr-TB",
+      "why": "RIF-S world: DS vs Hr.",
+      "whyWrong": {
+        "XDR-TB": "Bottom row.",
+        "BPaLM": "A regimen, not a definition row.",
+        "CAD": "Radiology."
+      },
+      "figureHint": "Top layer: DS-TB | Hr-TB."
+    }
+  ]
+}

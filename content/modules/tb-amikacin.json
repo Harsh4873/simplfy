@@ -1,0 +1,216 @@
+{
+  "id": "tb-amikacin",
+  "title": "Amikacin (historical/salvage)",
+  "dek": "A 16S-binding aminoglycoside that left preferred regimens because ears and kidneys lost to all-oral Group A. rrs 1401 still predicts it. Pregnancy: do not.",
+  "domain": "tb",
+  "aliases": [
+    "AMK",
+    "amikacin",
+    "aminoglycoside TB",
+    "injectable MDR",
+    "kanamycin cousin"
+  ],
+  "tags": [
+    "amikacin",
+    "injectable",
+    "ototoxicity",
+    "rrs",
+    "salvage"
+  ],
+  "story": [
+    "Amikacin was a Group C injectable backbone of 20th-century MDR therapy. WHO retired injectables from preferred short regimens once BDQ/LZD/Pa/FQ all-oral constructs won. It remains salvage when Group A is exhausted and the genome/MIC say the 16S site is intact.",
+    "rrs 1401 a>g (numbering wars with E. coli 1408) is high-level AMK/KAN resistance. eis promoter-up is KAN-weighted; confirm AMK with MIC. Daily IM/IV, therapeutic drug monitoring if you have it, audiometry if you are ethical.",
+    "Pregnancy: fetal ototoxicity. Children: last-resort only. Do not add AMK to BPaLM “for strength.”"
+  ],
+  "deepTitle": "Kanamycin and capreomycin",
+  "deep": [
+    "KAN is essentially a worse AMK with more eis problems. CAP needs tlyA methylation. See tb-eis-rrs.",
+    "PubChem CID 37768. ChEMBL177.",
+    "Ototoxicity can be delayed and permanent. That sentence retired a drug class.",
+    "If you use it, it is a designed salvage regimen, not a nostalgia tour."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Injectables sit behind a closed preferred-regimen gate. Open it only when Group A is gone and rrs/MIC allow. Pregnancy keeps the gate shut.",
+    "nodes": [
+      {
+        "id": "pref",
+        "label": "Preferred all-oral",
+        "x": 10,
+        "y": 30,
+        "tone": "start"
+      },
+      {
+        "id": "fail",
+        "label": "Group A lost",
+        "x": 35,
+        "y": 30,
+        "tone": "decision"
+      },
+      {
+        "id": "rrs",
+        "label": "rrs/MIC OK?",
+        "x": 58,
+        "y": 30,
+        "tone": "decision"
+      },
+      {
+        "id": "amk",
+        "label": "AMK salvage",
+        "x": 82,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "no",
+        "label": "Do not inject",
+        "x": 82,
+        "y": 48,
+        "tone": "end"
+      },
+      {
+        "id": "preg",
+        "label": "Pregnancy",
+        "x": 35,
+        "y": 70,
+        "tone": "process"
+      }
+    ],
+    "edges": [
+      {
+        "from": "pref",
+        "to": "fail"
+      },
+      {
+        "from": "fail",
+        "to": "rrs",
+        "label": "maybe"
+      },
+      {
+        "from": "rrs",
+        "to": "amk",
+        "label": "yes"
+      },
+      {
+        "from": "rrs",
+        "to": "no",
+        "label": "1401"
+      },
+      {
+        "from": "preg",
+        "to": "no"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — injectables no longer preferred",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Amikacin — PubChem CID 37768",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/37768"
+    },
+    {
+      "title": "Amikacin — CHEMBL177",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL177/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Salvage 16S drug behind a closed gate.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-eis-rrs",
+    "tb-second-line",
+    "tb-streptomycin",
+    "tb-pregnancy",
+    "tb-resistance",
+    "tb-kanamycin",
+    "tb-capreomycin",
+    "tb-whib7"
+  ],
+  "example": {
+    "title": "rrs 1401, “just a bit of AMK”",
+    "setup": "XDR 2021, someone wants amikacin three times a week because the patient is tired of pills. WGS rrs 1401 a>g.",
+    "steps": [
+      {
+        "title": "Genetically dead",
+        "body": "1401 is the canonical high-level allele. This is ototoxicity without benefit."
+      },
+      {
+        "title": "Find another salvage axis",
+        "body": "Carbapenem+clavulanate, surgery, trials — not a 16S that is already mutant."
+      },
+      {
+        "title": "Document the no",
+        "body": "So the next rotation does not retry KAN."
+      }
+    ],
+    "takeaway": "AMK is historical/salvage, gated by rrs and by ears."
+  },
+  "check": [
+    {
+      "id": "amk-pref",
+      "kind": "conceptual",
+      "prompt": "In WHO 2022–2025 preferred RR-TB therapy, amikacin is:",
+      "choices": [
+        "Group A equal to BDQ",
+        "Not preferred; salvage when orals fail and 16S is intact",
+        "A TPT drug",
+        "Required in BPaLM"
+      ],
+      "answer": "Not preferred; salvage when orals fail and 16S is intact",
+      "why": "All-oral won.",
+      "whyWrong": {
+        "Group A equal to BDQ": "No.",
+        "A TPT drug": "No.",
+        "Required in BPaLM": "BPaLM is oral."
+      }
+    },
+    {
+      "id": "amk-preg",
+      "kind": "calculation",
+      "prompt": "AMK in pregnancy is:",
+      "choices": [
+        "Safe first-line",
+        "Avoided for fetal ototoxicity",
+        "Identical to pyridoxine",
+        "Required for SHINE"
+      ],
+      "answer": "Avoided for fetal ototoxicity",
+      "why": "Streptomycin class lesson.",
+      "whyWrong": {
+        "Safe first-line": "False.",
+        "Identical to pyridoxine": "No.",
+        "Required for SHINE": "SHINE is oral HRZ(E)."
+      }
+    },
+    {
+      "id": "amk-figure",
+      "kind": "figure",
+      "prompt": "On the AMK gate map, pregnancy arrows to “Do not inject” because:",
+      "choices": [
+        "Pregnancy induces rrs 1401",
+        "Aminoglycoside fetal ototoxicity keeps the salvage gate shut even if Group A is complicated",
+        "BPaLM requires AMK in pregnancy",
+        "IGRA forbids injectables"
+      ],
+      "answer": "Aminoglycoside fetal ototoxicity keeps the salvage gate shut even if Group A is complicated",
+      "why": "Bottom process node.",
+      "whyWrong": {
+        "Pregnancy induces rrs 1401": "No.",
+        "BPaLM requires AMK in pregnancy": "Opposite (and Pa is also off).",
+        "IGRA forbids injectables": "No."
+      },
+      "figureHint": "Pregnancy node to Do not inject."
+    }
+  ]
+}

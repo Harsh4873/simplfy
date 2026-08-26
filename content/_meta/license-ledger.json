@@ -1,0 +1,41 @@
+{
+  "title": "TB plate license ledger",
+  "note": "Original teaching notes written for Simplfy. Clinical regimen and dose grammar follow WHO 2024–2025 consolidated TB modules as the primary source, with CDC Core Curriculum / 2025 DS-DR treatment overlay as the U.S. public-domain contrast. Wikipedia is used only as a glossary for names, not as a dosing authority. UniProt, ChEMBL, and PubChem identify molecules and proteins. No WHO or CDC logos. No textbook paste (Murray, Mandell, Bloom, Schlossberg, StatPearls, AJRCCM). No OpenStax ingestion. No bulk Mycobrowser copy.",
+  "stamps": [
+    {
+      "class": "WHO TB Knowledge Sharing Platform / IRIS modules (diagnosis, treatment, TPT, screening, mutation catalogue)",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "use": "Paraphrased clinical truth and mutation-grading philosophy; not a dump of guideline tables or logos."
+    },
+    {
+      "class": "CDC Core Curriculum on Tuberculosis and CDC 2025 treatment overlay letters",
+      "license": "U.S. Government work, public domain",
+      "use": "U.S. practice overlay where it diverges (historically PZA in pregnancy; 2025 4-month HPZM and BPaLM endorsements)."
+    },
+    {
+      "class": "UniProt protein entries (KatG, InhA, RpoB/C, PncA, EmbB, GyrA, AtpE, Ddn, RplC, IdeR, EsxA, ThyA)",
+      "license": "CC BY 4.0",
+      "use": "Accession-level identity and function labels."
+    },
+    {
+      "class": "PubChem compound records (first- and second-line TB drugs)",
+      "license": "Public domain (NIH)",
+      "use": "CID identity only."
+    },
+    {
+      "class": "ChEMBL ligand cards",
+      "license": "CC BY-SA 3.0",
+      "use": "Ligand identity only; not monographs."
+    },
+    {
+      "class": "Wikipedia glossary pages (MTBC, mycolic acid, granuloma, IGRA, BCG, named drugs)",
+      "license": "CC BY-SA 4.0",
+      "use": "Naming and structural glossary. Clinical dose/regimen never taken from Wikipedia when WHO or CDC speak."
+    },
+    {
+      "class": "Simplfy original teaching notes",
+      "license": "Original teaching notes",
+      "use": "All story, deep, example, check, and visual-spec prose unless a source stamp says otherwise."
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "id": "tb-pregnancy",
+  "title": "TB in pregnancy",
+  "dek": "Treat disease in pregnancy — delay kills. WHO HRZE includes PZA. Pretomanid is off; ethionamide and streptomycin are off. BDLLfxC or LZD-substituted 9-month constructs are the 2025 RR off-ramps.",
+  "domain": "tb",
+  "aliases": [
+    "TB pregnancy",
+    "PZA pregnancy",
+    "pretomanid pregnancy",
+    "congenital TB",
+    "breastfeeding TB"
+  ],
+  "tags": [
+    "pregnancy",
+    "PZA",
+    "pretomanid",
+    "teratogenicity",
+    "DR-TB"
+  ],
+  "story": [
+    "Untreated TB disease in pregnancy is worse for mother and fetus than first-line drugs. WHO treats DS-TB with HRZE including pyrazinamide. CDC historically omitted PZA in pregnancy and used 9 months of HR ± EMB; the 2020s overlay has moved toward WHO. Stamp which rule you are under.",
+    "Aminoglycosides/streptomycin: fetal ototoxicity — do not. Ethionamide: teratogenicity signal — replace (LZD in the 9-month). Pretomanid: insufficient pregnancy/breastfeeding data — BPaLM/BPaL not recommended. Bedaquiline, linezolid, fluoroquinolones, delamanid, clofazimine have been used; 2025 WHO points pregnant RR-TB toward BDLLfxC or BLMZ-class 9-month recipes.",
+    "TPT in pregnancy: 3HR or 6H are the comfortable WHO pair; rifapentine TPT evidence is thinner. Breastfeeding on first-line drugs is generally continued; pyridoxine for the infant if the mother is on INH is the classic add-on."
+  ],
+  "deepTitle": "Obstetric logistics",
+  "deep": [
+    "Congenital TB is rare and ugly; treat the mother, examine the neonate, consider window TPT for the newborn if the mother is still smear-positive.",
+    "Nausea of pregnancy plus INH/PZA hepatotoxicity: check ALT, do not reflex-stop RIF.",
+    "QTc drugs postpartum can look different as volume of distribution collapses — LZD toxicity can rise.",
+    "Do not withhold CXR with shielding if disease is in question. A missed cavity is not a radiation-sparing victory."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Pregnancy as a regimen filter. Treat DS-TB. Drop Pa, Eto, SM. Keep a complete RR regimen via DLM- or LZD-based 2025 constructs.",
+    "terms": [
+      {
+        "label": "treat disease",
+        "weight": 5
+      },
+      {
+        "label": "HRZE incl PZA (WHO)",
+        "weight": 5
+      },
+      {
+        "label": "no pretomanid",
+        "weight": 5
+      },
+      {
+        "label": "no ethionamide",
+        "weight": 4
+      },
+      {
+        "label": "no streptomycin",
+        "weight": 4
+      },
+      {
+        "label": "BDLLfxC",
+        "weight": 4
+      },
+      {
+        "label": "BLMZ 9-mo",
+        "weight": 3
+      },
+      {
+        "label": "TPT: 3HR/6H",
+        "weight": 3
+      },
+      {
+        "label": "breastfeed on HRZE",
+        "weight": 3
+      },
+      {
+        "label": "pyridoxine",
+        "weight": 2
+      },
+      {
+        "label": "CDC PZA overlay",
+        "weight": 3
+      },
+      {
+        "label": "shielded CXR OK",
+        "weight": 2
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 2025 — pregnancy, BPaLM exclusion, BDLLfxC/BLMZ",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — TB and pregnancy (PZA overlay)",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Filter plate: Pa/Eto/SM off; do not delay DS-TB therapy.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-hrze",
+    "tb-bpalm",
+    "tb-bdllfxc",
+    "tb-tpt",
+    "tb-streptomycin"
+  ],
+  "example": {
+    "title": "Newly pregnant on week 4 of BPaLM",
+    "setup": "RR-TB, FQ-S, BPaLM started; pregnancy test now positive at ~6 weeks gestation.",
+    "steps": [
+      {
+        "title": "Stop pretomanid",
+        "body": "The BPaLM eligibility gate failed. Remaining on Pa is not “almost done so it’s fine.”"
+      },
+      {
+        "title": "Rebuild a complete regimen today",
+        "body": "BDLLfxC or BLMZ-class 9-month, FQ-S so keep a FQ, drop Pa. Do not leave BDQ+LZD alone for a month."
+      },
+      {
+        "title": "Obstetric co-management",
+        "body": "QTc, LFTs, fetal monitoring — not a reason to undertreat RR-TB."
+      }
+    ],
+    "takeaway": "Pregnancy changes the letters; it does not pause RR-TB."
+  },
+  "check": [
+    {
+      "id": "preg-pza",
+      "kind": "conceptual",
+      "prompt": "WHO’s DS-TB treatment in pregnancy:",
+      "choices": [
+        "Withholds all TB drugs until postpartum",
+        "Uses HRZE including pyrazinamide",
+        "Uses streptomycin as first-line",
+        "Uses pretomanid monotherapy"
+      ],
+      "answer": "Uses HRZE including pyrazinamide",
+      "why": "CDC may historically differ on PZA — label the overlay.",
+      "whyWrong": {
+        "Withholds all TB drugs until postpartum": "Dangerous.",
+        "Uses streptomycin as first-line": "Contraindicated.",
+        "Uses pretomanid monotherapy": "No."
+      }
+    },
+    {
+      "id": "preg-pa",
+      "kind": "calculation",
+      "prompt": "BPaLM in a breastfeeding person with RR-TB is:",
+      "choices": [
+        "WHO first choice because Pa is proven safe in milk",
+        "Not the WHO BPaLM recommendation (Pa safety insufficient); use a Pa-sparing construct such as BDLLfxC",
+        "Identical to 3HP",
+        "Required because pregnancy induces rpoB S450L"
+      ],
+      "answer": "Not the WHO BPaLM recommendation (Pa safety insufficient); use a Pa-sparing construct such as BDLLfxC",
+      "why": "The 2025 off-ramp exists so you do not improvise two drugs.",
+      "whyWrong": {
+        "WHO first choice because Pa is proven safe in milk": "Opposite.",
+        "Identical to 3HP": "No.",
+        "Required because pregnancy induces rpoB S450L": "No."
+      }
+    },
+    {
+      "id": "preg-figure",
+      "kind": "figure",
+      "prompt": "On the pregnancy constellation, which cluster is the RR-TB off-ramp?",
+      "choices": [
+        "no pretomanid together with BDLLfxC / BLMZ 9-mo",
+        "streptomycin only",
+        "3HP as RR-TB therapy",
+        "IGRA"
+      ],
+      "answer": "no pretomanid together with BDLLfxC / BLMZ 9-mo",
+      "why": "Those terms are the designed replacements.",
+      "whyWrong": {
+        "streptomycin only": "Listed as no streptomycin.",
+        "3HP as RR-TB therapy": "TPT, and DS.",
+        "IGRA": "Not treatment."
+      },
+      "figureHint": "High-weight terms: no pretomanid, BDLLfxC, BLMZ."
+    }
+  ]
+}

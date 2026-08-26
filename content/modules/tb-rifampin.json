@@ -23,7 +23,8 @@
     "Two numbering systems are in simultaneous use. M. tuberculosis codon numbering (H37Rv) places the RRDR at codons 426–452; E. coli numbering places the homologous stretch at 507–533. S450L (Mtb) = S531L (E. coli). Papers, WHO catalogues, and older DST literature mix these. A genomics lab that reports “531” without saying which system is doing the reader a disservice.",
     "Xpert probes A–E tile the RRDR. Probe dropout, not a called base, is the assay’s resistance signal. Mixed (heteroresistant) populations can produce delayed Ct or missing probes depending on the minority fraction. Ultra added melt analysis to recover some disputed positions.",
     "Not every RRDR missense equals a high MIC. WHO’s mutation catalogue grades variants as associated with resistance, not associated, or uncertain. I491F (Mtb numbering; outside the classical RRDR) is a known Xpert-miss that can still raise rifampin MIC. Borderline mutations (e.g. some 445 and 452 alleles) may fail phenotypic DST at critical concentration while remaining clinically relevant on rifampin, which is why some programmes use rifabutin or MIC methods.",
-    "Rifampin induces CYP3A4 and has brutal interaction tables (bedaquiline, protease inhibitors, warfarin). That is pharmacology, not rpoB, but it belongs on the same plate if the question is “can this patient take RIF?”"
+    "Rifampin induces CYP3A4 and has brutal interaction tables (bedaquiline, protease inhibitors, warfarin). That is pharmacology, not rpoB, but it belongs on the same plate if the question is “can this patient take RIF?”",
+    "Compensatory rpoC/rpoA alleles restore RNAP fitness after S450L; they are not a second RRDR and they are not an Xpert target. Rifapentine hits the same β subunit — a resistant rpoB is class resistance, not a rifapentine loophole."
   ],
   "formulas": [
     {
@@ -70,7 +71,7 @@
       "license": "CC BY-NC-SA 3.0 IGO"
     }
   ],
-  "related": ["tb-first-line", "tb-resistance", "tb-wgs-dst", "tb-diagnosis", "tb-second-line"],
+  "related": ["tb-first-line", "tb-resistance", "tb-wgs-dst", "tb-diagnosis", "tb-rpoc-compensatory", "tb-rifapentine", "tb-rifabutin"],
   "example": {
     "title": "Calling an Xpert-discordant isolate",
     "setup": "An isolate is Xpert MTB/RIF “RIF susceptible” (all probes present) but phenotypic MGIT rifampin DST is resistant. WGS shows rpoB I491F (Mtb numbering) at ~90% allele frequency, no RRDR missense.",

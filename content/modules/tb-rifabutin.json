@@ -1,0 +1,203 @@
+{
+  "id": "tb-rifabutin",
+  "title": "Rifabutin as a US overlay rifamycin",
+  "dek": "Rifabutin is not WHO’s default DS-TB rifamycin. CDC-land uses it when rifampin’s CYP induction wrecks a PI-based or other brittle ART/immunosuppression regimen. Cross-R with rpoB is expected, not guaranteed identical.",
+  "domain": "tb",
+  "aliases": [
+    "rifabutin",
+    "RFB",
+    "Mycobutin",
+    "rifamycin ART"
+  ],
+  "tags": [
+    "rifabutin",
+    "rifamycin",
+    "ART",
+    "CYP3A4",
+    "US overlay"
+  ],
+  "story": [
+    "Rifampin induces CYP3A4/UGT hard. Protease inhibitors, some immunosuppressants, and a long tail of other drugs collapse. Rifabutin induces less and is a CDC-familiar substitute in DS-TB when the companion regimen cannot be rebuilt around twice-daily dolutegravir or a rifampin-safe backbone.",
+    "WHO programmes rarely stock rifabutin as first-line TB therapy. Do not write RFB into a 2HRZE/4HR NTP recipe because a US fellow mentioned it. The molecule is still a rifamycin: rpoB RRDR resistance usually takes it down with rifampin, but some disputed alleles and MIC splits exist — treat RFB DST as its own row when it matters.",
+    "Rifapentine is the other rifamycin on WHO paper (TPT, HPMZ). It is not a gentler-inducer substitute in the rifabutin sense. Three names, three jobs."
+  ],
+  "deepTitle": "Uveitis and the dose",
+  "deep": [
+    "Rifabutin uveitis is real, especially with clarithromycin or high AUC. The NTM clinic knows this; the TB clinic should too.",
+    "Dose adjustments with boosted PIs are a CDC table, not a memory item from Wikipedia.",
+    "Xpert RIF-R means do not use rifabutin as the “mild RR” rifamycin.",
+    "Orange fluids still happen. Counsel."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Three rifamycins, three jobs. Induction strength is schematic, not a PK paper. RRDR resistance is the shared cliff.",
+    "yLabel": "schematic induction / role weight",
+    "panels": [
+      {
+        "title": "Rifampin",
+        "bars": [
+          {
+            "label": "DS backbone",
+            "value": 9
+          },
+          {
+            "label": "CYP induction",
+            "value": 9
+          },
+          {
+            "label": "TPT 4R",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "Rifapentine",
+        "bars": [
+          {
+            "label": "3HP/HPMZ",
+            "value": 9
+          },
+          {
+            "label": "CYP induction",
+            "value": 8
+          },
+          {
+            "label": "DS HRZE",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "title": "Rifabutin",
+        "bars": [
+          {
+            "label": "ART overlay",
+            "value": 8
+          },
+          {
+            "label": "CYP induction",
+            "value": 4
+          },
+          {
+            "label": "WHO default",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum / ART–rifamycin overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Rifabutin — PubChem CID 6323490",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6323490"
+    },
+    {
+      "title": "Rifabutin — CHEMBL444",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL444/"
+    },
+    {
+      "title": "Rifabutin",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Rifabutin"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "US overlay rifamycin, not a WHO default.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-rifampin",
+    "tb-rifapentine",
+    "tb-hiv-art",
+    "tb-first-line",
+    "tb-rpoc-compensatory"
+  ],
+  "example": {
+    "title": "PI-based ART and new DS-TB",
+    "setup": "US clinic, boosted PI, new pan-S pulmonary TB. Team wants to keep the PI.",
+    "steps": [
+      {
+        "title": "First choice is still rebuild ART",
+        "body": "DTG BID with rifampin is the WHO-shaped move when possible."
+      },
+      {
+        "title": "If the PI is immovable, RFB is the overlay",
+        "body": "CDC tables, not NTP HRZE with a mystery swap."
+      },
+      {
+        "title": "If rpoB is mutant, stop",
+        "body": "Rifabutin is not salvage RR therapy."
+      }
+    ],
+    "takeaway": "Rifabutin is a CYP-polite rifamycin for a US interaction problem, not a fourth first-line letter."
+  },
+  "check": [
+    {
+      "id": "rfb-who",
+      "kind": "conceptual",
+      "prompt": "In WHO DS-TB programmes, rifabutin is:",
+      "choices": [
+        "The default R in 2HRZE/4HR",
+        "Not the default rifamycin; a CDC-style substitute when induction is intolerable",
+        "A nitroimidazole",
+        "Group A DR-TB"
+      ],
+      "answer": "Not the default rifamycin; a CDC-style substitute when induction is intolerable",
+      "why": "WHO’s R is rifampin. RFB is overlay chemistry.",
+      "whyWrong": {
+        "The default R in 2HRZE/4HR": "That’s rifampin.",
+        "A nitroimidazole": "Pa/DLM.",
+        "Group A DR-TB": "FQ/BDQ/LZD."
+      }
+    },
+    {
+      "id": "rfb-rpob",
+      "kind": "calculation",
+      "prompt": "An rpoB S450L isolate should be treated as:",
+      "choices": [
+        "Rifabutin-susceptible because induction is weaker",
+        "Rifamycin-resistant including rifabutin until proven otherwise",
+        "PZA-resistant by definition",
+        "LZD-resistant"
+      ],
+      "answer": "Rifamycin-resistant including rifabutin until proven otherwise",
+      "why": "Shared target. Do not use RFB as “mild RR.”",
+      "whyWrong": {
+        "Rifabutin-susceptible because induction is weaker": "Induction ≠ target binding.",
+        "PZA-resistant by definition": "pncA.",
+        "LZD-resistant": "rplC/rrl."
+      }
+    },
+    {
+      "id": "rfb-figure",
+      "kind": "figure",
+      "prompt": "On the small multiples, rifabutin’s WHO-default bar is drawn:",
+      "choices": [
+        "Highest of the three",
+        "Low relative to rifampin’s DS-backbone bar",
+        "Equal to HPMZ",
+        "Zero because it is not a rifamycin"
+      ],
+      "answer": "Low relative to rifampin’s DS-backbone bar",
+      "why": "That is the overlay teaching.",
+      "whyWrong": {
+        "Highest of the three": "Rifampin DS backbone.",
+        "Equal to HPMZ": "Rifapentine’s job.",
+        "Zero because it is not a rifamycin": "It is."
+      },
+      "figureHint": "Right panel, WHO default bar."
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "id": "tb-gyr-qrdr",
+  "title": "gyrA/gyrB QRDR",
+  "dek": "Fluoroquinolone resistance is gyrase QRDR chemistry. gyrA D94G/N/Y and A90V are the high-confidence clinical set. The M in BPaLM lives or dies here.",
+  "domain": "tb",
+  "aliases": [
+    "QRDR",
+    "gyrA D94G",
+    "gyrA A90V",
+    "fluoroquinolone resistance Mtb",
+    "gyrB"
+  ],
+  "tags": [
+    "gyrA",
+    "gyrB",
+    "FQ",
+    "QRDR",
+    "BPaLM"
+  ],
+  "story": [
+    "Mtb has DNA gyrase (GyrA/GyrB) and no topoisomerase IV analogue that matters clinically. Fluoroquinolones (moxifloxacin, levofloxacin) bind the gyrase–DNA complex. Resistance is usually missense in the quinolone-resistance-determining regions: gyrA (especially 88–94 in Mtb numbering) and, less often, gyrB.",
+    "D94G is the poster high-level allele. A90V, D94N/Y/A, S91P are the rest of the set you should recognise without a browser. Catalogue grades exist for rarer alleles; phylogenetic gyrA SNPs (e.g. some lineage markers) must not be called FQ-R.",
+    "BPaLM keeps moxifloxacin only if this window is clean. 6Lfx TPT for MDR contacts assumes the source’s QRDR is clean. HPMZ assumes the patient’s QRDR is clean. One locus, three regimens."
+  ],
+  "deepTitle": "Numbering, MIC, and hetero",
+  "deep": [
+    "E. coli GyrA 83/87 talk does not map 1:1 onto Mtb 90/94. State Mtb numbering.",
+    "Moxifloxacin MICs can remain lower than older FQs for some alleles — “moxi still has activity” is a MIC statement, not a licence to keep the M in BPaLM against D94G.",
+    "Minority QRDR alleles in sputum predict FQ failure under BPaLM better than a MGIT that grew the susceptible majority.",
+    "gyrB alleles are easy to under-call if the panel only tiles gyrA."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "gyrA QRDR in Mtb numbering. A90 and D94 are the residues that decide whether the M in BPaLM is a drug or a letter.",
+    "gene": "gyrA",
+    "start": 70,
+    "end": 110,
+    "unit": "codon (Mtb)",
+    "regions": [
+      {
+        "start": 88,
+        "end": 94,
+        "label": "QRDR core"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 90,
+        "label": "A90V",
+        "note": "FQ-R; drop M"
+      },
+      {
+        "pos": 91,
+        "label": "S91P",
+        "note": "FQ-R"
+      },
+      {
+        "pos": 94,
+        "label": "D94G/N/Y",
+        "note": "high-level FQ-R"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — FQ / gyrA gyrB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "GyrA — UniProt P9WG47",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WG47/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "QRDR as the BPaLM M-gate.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-moxifloxacin",
+    "tb-levofloxacin",
+    "tb-bpalm",
+    "tb-who-catalogue",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "A90V at 12% on tNGS, MGIT LFX-S",
+    "setup": "RR-TB, started BPaLM. tNGS gyrA A90V AF 0.12. MGIT levofloxacin S.",
+    "steps": [
+      {
+        "title": "Believe the minority",
+        "body": "MGIT can report the susceptible majority. 12% at amplicon depth is a FQ problem."
+      },
+      {
+        "title": "Drop M",
+        "body": "Continue BPaL. Do not wait for the cavity to finish the experiment."
+      },
+      {
+        "title": "Do not call the MGIT a veto of the catalogue",
+        "body": "This is heteroresistance, not a gyrA controversy."
+      }
+    ],
+    "takeaway": "QRDR minorities are regimen-changing, not footnotes."
+  },
+  "check": [
+    {
+      "id": "gyr-m",
+      "kind": "conceptual",
+      "prompt": "gyrA D94G in an RR-TB isolate means:",
+      "choices": [
+        "Keep moxifloxacin as fully active in BPaLM",
+        "FQ-R: do not count the M; BPaL (or another FQ-sparing construct) is the grammar",
+        "PZA-R",
+        "The isolate is DS-TB"
+      ],
+      "answer": "FQ-R: do not count the M; BPaL (or another FQ-sparing construct) is the grammar",
+      "why": "D94G is the teaching high-confidence FQ-R allele.",
+      "whyWrong": {
+        "Keep moxifloxacin as fully active in BPaLM": "Opposite.",
+        "PZA-R": "pncA.",
+        "The isolate is DS-TB": "RR-TB setup."
+      }
+    },
+    {
+      "id": "gyr-num",
+      "kind": "calculation",
+      "prompt": "Mtb gyrA D94 corresponds most nearly to the famous E. coli gyrA 87 cluster, not codon 94 in E. coli. The reporting rule is:",
+      "choices": [
+        "Always use E. coli numbering without saying so",
+        "State Mtb numbering explicitly so D94G is not hunted as an E. coli 94 residue",
+        "Numbering systems are identical",
+        "QRDR is in rpoB"
+      ],
+      "answer": "State Mtb numbering explicitly so D94G is not hunted as an E. coli 94 residue",
+      "why": "Same lesson as rpoB 450 vs 531.",
+      "whyWrong": {
+        "Always use E. coli numbering without saying so": "How mix-ups happen.",
+        "Numbering systems are identical": "They are not.",
+        "QRDR is in rpoB": "RRDR is rpoB."
+      }
+    },
+    {
+      "id": "gyr-figure",
+      "kind": "figure",
+      "prompt": "On the gyrA track, which marked residue is labelled high-level FQ-R?",
+      "choices": [
+        "A90V only as WT",
+        "D94G/N/Y",
+        "codon 450",
+        "H57D"
+      ],
+      "answer": "D94G/N/Y",
+      "why": "The right-hand mark in the QRDR box.",
+      "whyWrong": {
+        "A90V only as WT": "A90V is FQ-R, not WT.",
+        "codon 450": "rpoB.",
+        "H57D": "pncA bovis."
+      },
+      "figureHint": "Mark at 94."
+    }
+  ]
+}

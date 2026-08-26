@@ -1,0 +1,182 @@
+{
+  "id": "tb-hiv-synergy",
+  "title": "HIV–TB synergy",
+  "dek": "HIV is the acquired CD4 knockout that turns contained TB into disseminated, smear-variable, LAM-useful, IRIS-prone disease. The two epidemics amplify each other at every step.",
+  "domain": "tb",
+  "aliases": [
+    "HIV tuberculosis",
+    "TB HIV coinfection",
+    "advanced HIV TB",
+    "IRIS TB",
+    "CD4 TB risk"
+  ],
+  "tags": [
+    "HIV",
+    "CD4",
+    "IRIS",
+    "LAM",
+    "disseminated"
+  ],
+  "story": [
+    "HIV depletes CD4 T cells, wrecks granuloma architecture, and multiplies lifetime TB risk from the classical ~5–10% toward an annual risk that can exceed that lifetime figure at low CD4. Incident TB also accelerates HIV progression. This is synergy, not two independent columns on a form.",
+    "Disease looks different: more extrapulmonary, more miliary, more smear-negative pulmonary disease with high tissue burden. That is why WHO-recommended rapid molecular tests, urine LF-LAM in advanced HIV, and empiric treatment algorithms exist. IGRA/TST miss more people as anergy sets in.",
+    "IRIS — paradoxical worsening after ART as the immune system returns — is the reconstitution tax, especially with TB meningitis and high burden. ART timing is a separate plate; the biology is that CD4 return into an antigen-loaded CNS can be dangerous."
+  ],
+  "deepTitle": "Diagnostics and prevention follow the immunology",
+  "deep": [
+    "LF-LAM (Determine TB LAM Ag) is a lipoarabinomannan antigen test on urine, useful when CD4 is low or the person is seriously ill — exactly when sputum assays fail and burden is high. It is not a community screening test in HIV-negative outpatients.",
+    "TPT for people with HIV (3HP, 1HP, 3HR, 6H, with 6Lfx if the exposure is MDR/RR) is among the highest-leverage prevention moves in medicine. Screen for disease first; do not let CXR absence become a barrier in high-burden HIV clinics.",
+    "Rifamycin–ART induction (rifampin ≫ rifabutin in some tables; rifapentine still induces) is the pharmacology overlay. Dolutegravir twice daily with rifampin is the common modern patch; protease inhibitors and rifampin are a bad marriage.",
+    "CD4 < 100 is a different diagnostic prior than CD4 450. Write the CD4 on the lab slip."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic relative risk and assay behaviour as CD4 falls — not a meta-analysis. Disease risk and LAM yield rise; smear and IGRA yield fall. NAAT stays the front door.",
+    "yLabel": "relative (schematic)",
+    "panels": [
+      {
+        "title": "Disease risk",
+        "bars": [
+          {
+            "label": "CD4>350",
+            "value": 2
+          },
+          {
+            "label": "CD4<100",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "Smear yield",
+        "bars": [
+          {
+            "label": "CD4>350",
+            "value": 7
+          },
+          {
+            "label": "CD4<100",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "LF-LAM yield",
+        "bars": [
+          {
+            "label": "CD4>350",
+            "value": 2
+          },
+          {
+            "label": "CD4<100",
+            "value": 8
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO HIV-associated TB and advanced HIV disease guidance 2024–2025",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "CDC Core Curriculum — TB and HIV",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Synergy notes linking CD4, LAM, and IRIS.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-tnf-cd4",
+    "tb-host-ifng",
+    "tb-hiv-art",
+    "tb-lf-lam",
+    "tb-pathogenesis",
+    "tb-meningitis",
+    "tb-diabetes"
+  ],
+  "example": {
+    "title": "Smear-negative, LAM-positive, CD4 32",
+    "setup": "Inpatient with HIV, CD4 32, cough, hypoxia. Smear negative, Ultra trace, urine LF-LAM positive.",
+    "steps": [
+      {
+        "title": "Believe the prior",
+        "body": "Advanced HIV plus LAM+ is TB until a better explanation. Trace Ultra is concordant paucibacillary sputum, not a veto."
+      },
+      {
+        "title": "Start TB therapy and ART on the HIV/TB clock",
+        "body": "Pulmonary/disseminated: ART within two weeks. If meningitis is in play, delay ART (see tb-hiv-art)."
+      },
+      {
+        "title": "Still culture",
+        "body": "Need DST. LAM does not grade rpoB."
+      }
+    ],
+    "takeaway": "HIV changes pretest probability and which assays work — not the need for DST."
+  },
+  "check": [
+    {
+      "id": "hiv-smear",
+      "kind": "conceptual",
+      "prompt": "In advanced HIV, pulmonary TB is often smear-negative because:",
+      "choices": [
+        "There are never bacilli in the lung",
+        "Poorly formed cavities and more disseminated/paucibacillary sputum despite high tissue burden",
+        "HIV metabolises carbol fuchsin",
+        "Xpert cannot be used in HIV"
+      ],
+      "answer": "Poorly formed cavities and more disseminated/paucibacillary sputum despite high tissue burden",
+      "why": "Smear is a density-in-sputum test, not a body-burden test.",
+      "whyWrong": {
+        "There are never bacilli in the lung": "Burden can be high.",
+        "HIV metabolises carbol fuchsin": "No.",
+        "Xpert cannot be used in HIV": "Xpert is indicated."
+      }
+    },
+    {
+      "id": "hiv-lam",
+      "kind": "calculation",
+      "prompt": "LF-LAM sensitivity rises as CD4 falls. For an inpatient with CD4 32 and TB symptoms, WHO’s use case is closest to:",
+      "choices": [
+        "Community screening of HIV-negative adults",
+        "Adjunctive diagnostic in advanced HIV / seriously ill PLHIV, not a standalone DST",
+        "Replacement for rpoB sequencing",
+        "Confirmation of BCG vaccination"
+      ],
+      "answer": "Adjunctive diagnostic in advanced HIV / seriously ill PLHIV, not a standalone DST",
+      "why": "LAM is an antigen lateral flow with a CD4-dependent likelihood ratio.",
+      "whyWrong": {
+        "Community screening of HIV-negative adults": "Wrong population.",
+        "Replacement for rpoB sequencing": "No resistance information.",
+        "Confirmation of BCG vaccination": "No."
+      }
+    },
+    {
+      "id": "hiv-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, which assay’s schematic yield rises as CD4 falls?",
+      "choices": [
+        "Smear yield",
+        "LF-LAM yield",
+        "Neither",
+        "Both equally"
+      ],
+      "answer": "LF-LAM yield",
+      "why": "Smear bars fall; LAM bars rise. That is the teaching contrast.",
+      "whyWrong": {
+        "Smear yield": "The smear panel falls.",
+        "Neither": "LAM rises.",
+        "Both equally": "They move in opposite directions."
+      },
+      "figureHint": "Compare the second and third panels."
+    }
+  ]
+}

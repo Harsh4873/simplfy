@@ -1,0 +1,170 @@
+{
+  "id": "tb-hr-tb",
+  "title": "Isoniazid-resistant, rifampin-susceptible TB",
+  "dek": "Hr-TB is not MDR. WHO: 6 months of rifampin, ethambutol, pyrazinamide, and levofloxacin. Do not add INH as theatre, and do not escalate to BPaLM without RR.",
+  "domain": "tb",
+  "aliases": [
+    "Hr-TB",
+    "INH-monoresistant",
+    "isoniazid resistant rifampin susceptible",
+    "6REZ-Lfx",
+    "H-resistant TB"
+  ],
+  "tags": [
+    "Hr-TB",
+    "isoniazid",
+    "levofloxacin",
+    "DS-backbone",
+    "WHO"
+  ],
+  "story": [
+    "Hr-TB means isoniazid resistance with preserved rifampin. It is commoner than programmes admit because INH DST is not on the Xpert cartridge. katG S315T versus inhA promoter changes whether high-dose INH or ETH could ever have counted; for the WHO 6-month Hr regimen they mostly do not have to.",
+    "WHO recommends 6 months of RIF, EMB, PZA, plus levofloxacin (6REZ-Lfx) for Hr-TB. INH is omitted. Duration is not 2HRZE/4HR with a shrug. If FQ cannot be used, longer REZ-type constructs exist in the handbook — inferior, not imaginary.",
+    "If the “Hr” call was really a missed RR (Xpert false S, I491F), you have been treating MDR with a FQ-augmented DS backbone. Discordant RIF NAAT/phenotype is a reason to sequence rpoB fully before celebrating a simple Hr regimen."
+  ],
+  "deepTitle": "Finding Hr-TB in a RIF-first world",
+  "deep": [
+    "LPAs (MTBDRplus), tNGS, and WGS find katG/inhA while Xpert only watched rpoB. Programmes that skip INH genotyping will misfile Hr as DS.",
+    "High-dose INH does not rescue S315T. inhA-only strains are the historical high-dose INH story; WHO’s 6REZ-Lfx simply sidesteps INH.",
+    "Do not use moxifloxacin-containing HPMZ for known Hr without thinking: you may still want a FQ, but the H in HPMZ is dead.",
+    "Contacts of Hr-TB: TPT is not 6Lfx (that is for RR/MDR contacts). INH-based TPT is misbuilt; rifamycin TPT (4R/3HR) is the logical DS-minus-INH idea — NTP-specific."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "Hr-TB is an INH problem with a live rifamycin. Genotype tells you whether leftover INH/ETH fantasies are even coherent; the WHO regimen just adds a FQ and drops H.",
+    "rows": [
+      {
+        "gene": "katG S315T",
+        "drug": "INH",
+        "canonical": "high-level R",
+        "note": "drop INH; ETH often spared"
+      },
+      {
+        "gene": "inhA c-15t",
+        "drug": "INH/ETH",
+        "canonical": "low-level INH-R",
+        "note": "ETH cross-R"
+      },
+      {
+        "gene": "rpoB WT",
+        "drug": "RIF",
+        "canonical": "S (confirm)",
+        "note": "if missed I491F, this is MDR"
+      },
+      {
+        "gene": "gyrA WT",
+        "drug": "LFX",
+        "canonical": "S needed",
+        "note": "6REZ-Lfx counts Lfx"
+      },
+      {
+        "gene": "pncA WT",
+        "drug": "PZA",
+        "canonical": "S hoped",
+        "note": "6 months of Z"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: treatment of Hr-TB (6REZ-Lfx)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Hr is not MDR and not DS. Sequence INH loci.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-dr-definitions",
+    "tb-isoniazid",
+    "tb-levofloxacin",
+    "tb-first-line",
+    "tb-katg-inha"
+  ],
+  "example": {
+    "title": "Xpert RIF-S, LPA INH-R katG S315T",
+    "setup": "New pulmonary TB, Ultra RIF not detected, MTBDRplus katG S315T, inhA WT. Team continues 2HRZE.",
+    "steps": [
+      {
+        "title": "This is Hr-TB",
+        "body": "Stop counting INH. Six months of REZ plus levofloxacin is the WHO recipe."
+      },
+      {
+        "title": "Confirm RIF once if the story is odd",
+        "body": "If the patient fails, think missed non-RRDR rpoB, not “add more INH.”"
+      },
+      {
+        "title": "Do not start BPaLM",
+        "body": "Rifampin is still the sterilizing backbone. Escalating to Pa/BDQ without RR is the wrong ladder."
+      }
+    ],
+    "takeaway": "Hr-TB: keep RIF, drop INH, add Lfx for 6 months."
+  },
+  "check": [
+    {
+      "id": "hr-def",
+      "kind": "conceptual",
+      "prompt": "Hr-TB means:",
+      "choices": [
+        "Resistance to INH and RIF",
+        "Resistance to isoniazid with rifampin still considered active",
+        "Resistance to BDQ and LZD",
+        "Any rpoB mutation"
+      ],
+      "answer": "Resistance to isoniazid with rifampin still considered active",
+      "why": "MDR requires both. Hr is the INH-only (or INH-plus-others-but-not-RIF) object in this usage.",
+      "whyWrong": {
+        "Resistance to INH and RIF": "MDR.",
+        "Resistance to BDQ and LZD": "XDR-ish Group A.",
+        "Any rpoB mutation": "RR."
+      }
+    },
+    {
+      "id": "hr-rx",
+      "kind": "calculation",
+      "prompt": "WHO-preferred Hr-TB regimen is closest to:",
+      "choices": [
+        "2HRZE/4HR unchanged",
+        "6 months REZ plus levofloxacin, omitting INH",
+        "BPaL",
+        "3HP"
+      ],
+      "answer": "6 months REZ plus levofloxacin, omitting INH",
+      "why": "6REZ-Lfx.",
+      "whyWrong": {
+        "2HRZE/4HR unchanged": "Still contains a dead H and is too short on Z/FQ logic.",
+        "BPaL": "RR-TB tool.",
+        "3HP": "TPT, and contains INH."
+      }
+    },
+    {
+      "id": "hr-figure",
+      "kind": "figure",
+      "prompt": "In the Hr-TB grid, why is there a row warning about rpoB WT / I491F?",
+      "choices": [
+        "Because all Hr-TB is actually BCG",
+        "Because a missed non-RRDR rifampin mutation would mean you treated MDR with an Hr recipe",
+        "Because I491F activates INH",
+        "Because levofloxacin binds rpoB"
+      ],
+      "answer": "Because a missed non-RRDR rifampin mutation would mean you treated MDR with an Hr recipe",
+      "why": "Xpert-blind RR is the Hr trap.",
+      "whyWrong": {
+        "Because all Hr-TB is actually BCG": "No.",
+        "Because I491F activates INH": "No.",
+        "Because levofloxacin binds rpoB": "Gyrase."
+      },
+      "figureHint": "Third row: rpoB WT (confirm)."
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "id": "tb-bedaquiline",
+  "title": "Bedaquiline",
+  "dek": "Diarylquinoline, AtpE binder, Group A. Dosed 400 mg daily × 2 weeks then 200 mg three times weekly (or daily 200 mg in some SOPs). Watch QTc, liver, and Rv0678.",
+  "domain": "tb",
+  "aliases": [
+    "BDQ",
+    "Sirturo",
+    "TMC207",
+    "diarylquinoline",
+    "B in BPaLM"
+  ],
+  "tags": [
+    "bedaquiline",
+    "ATP synthase",
+    "QTc",
+    "Group A",
+    "Rv0678"
+  ],
+  "story": [
+    "Bedaquiline resurrected DR-TB therapy by targeting ATP synthase. It is the B in BPaLM/BPaL, BDLLfxC, BLMZ, and the 2022 9-month. Standard adult loading: 400 mg daily for 14 days, then 200 mg Monday/Wednesday/Friday through week 24 (or operational daily 200 mg — follow the handbook you are actually using).",
+    "Resistance: rare high-level atpE, common-ish Rv0678 LOF, pepQ. Cross-R with clofazimine via the pump. MIC plus catalogue; CC alone is blunt.",
+    "Host: QTc (additive with FQ/CFZ/DLM), hepatitis, a black-box mortality debate from the original trial that programmes still mention while using the drug because the alternative was 20-month injectables. CYP3A4 substrate — no rifampin coadministration."
+  ],
+  "deepTitle": "PK and special populations",
+  "deep": [
+    "Long terminal half-life: the drug is still around after you stop it. That is a feature for adherence and a bug for lingering selection.",
+    "Pediatric weight bands exist. Pregnancy: BDQ is used in 2025 Pa-sparing constructs.",
+    "PubChem CID 5388906. ChEMBL376370.",
+    "Do not start BDQ “to be modern” in DS-TB. HPMZ and HRZE do not contain it."
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "BDQ exposure as a loaded then sparse maintenance schedule (schematic). Resistance loci sit outside the PK plate on purpose: atpE vs Rv0678 are not dosing errors.",
+    "plates": [
+      {
+        "id": "load",
+        "label": "days 1–14",
+        "x": 8,
+        "y": 20,
+        "w": 40,
+        "h": 55
+      },
+      {
+        "id": "maint",
+        "label": "weeks 3–24",
+        "x": 52,
+        "y": 20,
+        "w": 40,
+        "h": 55
+      }
+    ],
+    "nodes": [
+      {
+        "id": "d400",
+        "label": "400",
+        "x": 22,
+        "y": 40,
+        "shape": "obs"
+      },
+      {
+        "id": "d200",
+        "label": "200",
+        "x": 72,
+        "y": 40,
+        "shape": "obs"
+      },
+      {
+        "id": "qtc",
+        "label": "QTc",
+        "x": 72,
+        "y": 70,
+        "shape": "det"
+      },
+      {
+        "id": "cyp",
+        "label": "CYP3A4",
+        "x": 22,
+        "y": 70,
+        "shape": "param"
+      }
+    ],
+    "edges": [
+      {
+        "from": "d400",
+        "to": "d200"
+      },
+      {
+        "from": "cyp",
+        "to": "d400"
+      },
+      {
+        "from": "d200",
+        "to": "qtc"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — bedaquiline in 6- and 9-month regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Bedaquiline — PubChem CID 5388906",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5388906"
+    },
+    {
+      "title": "Bedaquiline — CHEMBL376370",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL376370/"
+    },
+    {
+      "title": "AtpE — UniProt P9WPS3",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WPS3/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Loading schedule plus the two resistance paths.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-atpe",
+    "tb-rv0678",
+    "tb-bpalm",
+    "tb-clofazimine",
+    "tb-second-line",
+    "tb-qtc-monitoring"
+  ],
+  "example": {
+    "title": "Rifampin leftover plus new BDQ",
+    "setup": "Patient still completing a rifampin-based DS regimen when RR is recognised; BDQ started the next morning without a wash.",
+    "steps": [
+      {
+        "title": "CYP3A4 induction will eat BDQ",
+        "body": "Rifampin and BDQ are not companions. Stop RIF; know that induction lingers days to weeks."
+      },
+      {
+        "title": "You are now in an RR algorithm",
+        "body": "BPaLM/BDLLfxC, not HRZE+BDQ."
+      },
+      {
+        "title": "ECG baseline",
+        "body": "Before stacking QTc drugs."
+      }
+    ],
+    "takeaway": "BDQ is Group A ATP-synthase chemistry with a long tail and a pump problem."
+  },
+  "check": [
+    {
+      "id": "bdq-bind",
+      "kind": "conceptual",
+      "prompt": "Bedaquiline’s binding target is:",
+      "choices": [
+        "EmbB",
+        "ATP synthase c-subunit (AtpE)",
+        "InhA",
+        "23S PTC as primary"
+      ],
+      "answer": "ATP synthase c-subunit (AtpE)",
+      "why": "Efflux is the common resistance, not the binding site.",
+      "whyWrong": {
+        "EmbB": "EMB.",
+        "InhA": "INH.",
+        "23S PTC as primary": "LZD."
+      }
+    },
+    {
+      "id": "bdq-load",
+      "kind": "calculation",
+      "prompt": "Classic adult BDQ load is:",
+      "choices": [
+        "400 mg daily for 14 days then 200 mg thrice weekly",
+        "300 mg INH daily",
+        "900 mg weekly forever",
+        "50 mg once"
+      ],
+      "answer": "400 mg daily for 14 days then 200 mg thrice weekly",
+      "why": "Some SOPs use 200 mg daily maintenance — still a load-then-maintain idea.",
+      "whyWrong": {
+        "300 mg INH daily": "INH.",
+        "900 mg weekly forever": "3HP RPT-ish.",
+        "50 mg once": "No."
+      }
+    },
+    {
+      "id": "bdq-figure",
+      "kind": "figure",
+      "prompt": "On the BDQ model plate, CYP3A4 is a parameter because:",
+      "choices": [
+        "It is an Mtb enzyme that activates BDQ",
+        "Host CYP3A4 (induced by rifamycins, inhibited by some antiretrovirals) changes BDQ exposure",
+        "CYP3A4 is atpE",
+        "CYP3A4 is a smear grade"
+      ],
+      "answer": "Host CYP3A4 (induced by rifamycins, inhibited by some antiretrovirals) changes BDQ exposure",
+      "why": "That is why RIF and BDQ do not cohabit.",
+      "whyWrong": {
+        "It is an Mtb enzyme that activates BDQ": "BDQ is direct-acting.",
+        "CYP3A4 is atpE": "No.",
+        "CYP3A4 is a smear grade": "No."
+      },
+      "figureHint": "Left plate, lower param node."
+    }
+  ]
+}

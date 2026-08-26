@@ -23,7 +23,8 @@
     "False susceptible: minority alleles below threshold, new mechanisms, incomplete promoter coverage, mixed samples called as the majority, and disputed mutations graded cautiously. False resistant: phylogenetic SNPs mislabelled, sequencing error in homopolymers, contamination from a resistant lab strain, and synonymous calls that a naive regex treats as missense.",
     "A decent report is a vector of (drug, grade, alleles, AF, coverage), not a traffic light. Downstream, a hierarchical model with drug-specific sensitivities and lineage random effects is closer to the truth than a single “WGS accuracy = 95%” slide.",
     "Relatedness (SNP distance, transmission clustering) is a different likelihood. Masking PE/PPE and repeats is a bioinformatics choice that changes distances. Do not use unmasked core-genome distances as if they were a physical constant.",
-    "Direct-from-sputum sequencing is a depth problem: host DNA dominates. Targeted enrichment and adaptive sampling exist because Poisson coverage on a 4.4 Mb genome at 0.5× is not DST."
+    "Direct-from-sputum sequencing is a depth problem: host DNA dominates. Targeted enrichment and adaptive sampling exist because Poisson coverage on a 4.4 Mb genome at 0.5× is not DST.",
+    "Catalogue 2nd edition (2023) is the grading freeze to name in methods for BDQ/LZD/DLM. A 2021-tool BDQ-S call can be a version artefact, not a clean target site."
   ],
   "visual": {
     "kind": "flow-map",
@@ -60,7 +61,7 @@
       "license": "Original notes"
     }
   ],
-  "related": ["tb-resistance", "tb-rifampin", "tb-diagnosis", "stats-hierarchical", "stats-lrt"],
+  "related": ["tb-resistance", "tb-rifampin", "tb-diagnosis", "tb-who-catalogue", "tb-tngs", "stats-hierarchical", "stats-lrt", "tb-tbprofiler"],
   "example": {
     "title": "A phylogenetic SNP that is not EMB-R",
     "setup": "TBProfiler flags an embB synonymous or lineage-associated SNP. A junior report lists ethambutol resistance. EmbB M306 is wild type. Phenotypic EMB is susceptible.",

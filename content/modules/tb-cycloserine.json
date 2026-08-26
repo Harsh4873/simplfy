@@ -1,0 +1,166 @@
+{
+  "id": "tb-cycloserine",
+  "title": "Cycloserine (and terizidone)",
+  "dek": "A D-alanine analogue that nicks peptidoglycan assembly. CNS toxicity is the dose-limiting host story. Salvage Group C; catalogue still hungry for paired MIC data.",
+  "domain": "tb",
+  "aliases": [
+    "CYS",
+    "Cs",
+    "cycloserine",
+    "terizidone",
+    "D-cycloserine",
+    "D-Ala analogue"
+  ],
+  "tags": [
+    "cycloserine",
+    "peptidoglycan",
+    "CNS",
+    "salvage",
+    "alr"
+  ],
+  "story": [
+    "D-cycloserine mimics D-alanine and inhibits alanine racemase (Alr) and D-ala-D-ala ligase (Ddl), weakening PG cross-link precursors. Terizidone is a pro-drug dimer used in some programmes as a stand-in. Neither is Group A. They appear in longer individualised regimens when the 6- and 9-month orals do not apply.",
+    "Psychiatric and neurologic toxicity (psychosis, depression, seizures) is dose- and level-related. TDM exists in expert centres. Pyridoxine is often co-prescribed. Start low, rummage the psych history before you start, and do not combine casually with other pro-convulsants.",
+    "Resistance genetics (alr, ddl, ald) are incomplete in the catalogue; WHO has called for more paired data. Do not over-call a random alr SNP."
+  ],
+  "deepTitle": "When it still appears",
+  "deep": [
+    "True salvage, CNS TB sometimes (CSF penetration is a reason people still reach for it).",
+    "PubChem CID 6234. ChEMBL170.",
+    "Not 3HP. Not BPaLM.",
+    "Renal clearance: adjust in renal failure or you buy CNS events."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Cycloserine sits at peptidoglycan precursor assembly. The host cost sits in the CNS. Salvage, not a 6-month letter.",
+    "layers": [
+      {
+        "id": "pg",
+        "label": "PG precursors (Alr/Ddl)",
+        "detail": "D-Ala mimic",
+        "tone": "wall"
+      },
+      {
+        "id": "env",
+        "label": "Envelope integrity",
+        "detail": "not mycolates, not RNAP",
+        "tone": "membrane"
+      },
+      {
+        "id": "cns",
+        "label": "Host CNS toxicity",
+        "detail": "psychosis, seizures; TDM",
+        "tone": "core"
+      }
+    ],
+    "annotation": "Group C. Catalogue grades still maturing."
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — cycloserine as longer-regimen Group C",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Cycloserine — PubChem CID 6234",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6234"
+    },
+    {
+      "title": "Cycloserine — CHEMBL170",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL170/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "PG analogue with a CNS invoice.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-second-line",
+    "tb-pas",
+    "tb-resistance",
+    "tb-cell-envelope",
+    "tb-9month-drtb"
+  ],
+  "example": {
+    "title": "New psychosis week 3 of Cs",
+    "setup": "Longer individualised XDR regimen including cycloserine 750 mg daily. Family reports new paranoia. Levels not sent.",
+    "steps": [
+      {
+        "title": "Hold Cs",
+        "body": "This is the textbook AE. Do not add a third antipsychotic first."
+      },
+      {
+        "title": "If you must restart, TDM and a lower dose",
+        "body": "Or rebuild without Cs if other drugs allow."
+      },
+      {
+        "title": "Keep TB therapy complete",
+        "body": "Dropping Cs without replacement in a thin regimen is how you lose BDQ next. Count remaining active drugs."
+      }
+    ],
+    "takeaway": "Cycloserine: PG salvage chemistry, CNS-limited."
+  },
+  "check": [
+    {
+      "id": "cs-mech",
+      "kind": "conceptual",
+      "prompt": "Cycloserine’s antibacterial idea is:",
+      "choices": [
+        "RpoB binding",
+        "D-alanine mimicry disrupting peptidoglycan assembly",
+        "Gyrase QRDR",
+        "F420 reduction"
+      ],
+      "answer": "D-alanine mimicry disrupting peptidoglycan assembly",
+      "why": "Alr/Ddl neighbourhood.",
+      "whyWrong": {
+        "RpoB binding": "RIF.",
+        "Gyrase QRDR": "FQ.",
+        "F420 reduction": "Pa/DLM."
+      }
+    },
+    {
+      "id": "cs-cns",
+      "kind": "calculation",
+      "prompt": "The dose-limiting host toxicity class for cycloserine is:",
+      "choices": [
+        "Orange sweat only",
+        "Neuropsychiatric (psychosis, depression, seizures)",
+        "Optic neuritis like EMB always",
+        "Ototoxicity like AMK always"
+      ],
+      "answer": "Neuropsychiatric (psychosis, depression, seizures)",
+      "why": "TDM exists because of this.",
+      "whyWrong": {
+        "Orange sweat only": "Rifamycins.",
+        "Optic neuritis like EMB always": "EMB (LZD also optic, but Cs is psych).",
+        "Ototoxicity like AMK always": "AGs."
+      }
+    },
+    {
+      "id": "cs-figure",
+      "kind": "figure",
+      "prompt": "On the cycloserine section, the bottom layer is host CNS because:",
+      "choices": [
+        "Alr is a human brain enzyme as the drug target",
+        "The clinically limiting harm is neurologic/psychiatric, not orange fluids",
+        "Cs is an IGRA",
+        "Cs is BPaLM’s M"
+      ],
+      "answer": "The clinically limiting harm is neurologic/psychiatric, not orange fluids",
+      "why": "Same teaching move as EMB’s optic layer.",
+      "whyWrong": {
+        "Alr is a human brain enzyme as the drug target": "Bacterial racemase.",
+        "Cs is an IGRA": "No.",
+        "Cs is BPaLM’s M": "No."
+      },
+      "figureHint": "Bottom layer Host CNS toxicity."
+    }
+  ]
+}

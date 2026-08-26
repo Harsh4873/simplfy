@@ -1,0 +1,171 @@
+{
+  "id": "tb-pdim",
+  "title": "PDIM, PGL, and the virulence envelope",
+  "dek": "Phthiocerol dimycocerosates and phenolic glycolipids are not mycolates. Labs lose PDIM in H37Rv stocks; genomes lose pps/mas/fadD26 and look attenuated for the wrong reason.",
+  "domain": "tb",
+  "aliases": [
+    "PDIM",
+    "PGL",
+    "phthiocerol dimycocerosate",
+    "ppsA",
+    "mas",
+    "DIM"
+  ],
+  "tags": [
+    "PDIM",
+    "PGL",
+    "virulence",
+    "envelope",
+    "H37Rv"
+  ],
+  "story": [
+    "PDIM (phthiocerol dimycocerosate) and related phenolic glycolipids sit in the outer leaflet of the mycobacterial envelope. They are not mycolic acids. They modulate macrophage signalling, mask PAMPs, and are required for full virulence in most animal models. The biosynthetic locus (ppsA–E, mas, fadD26, mmpL7 and neighbours) is a mutational sink in laboratory passage.",
+    "H37Rv stocks silently lose PDIM. A macrophage-killing or mouse-survival paper that does not TLC or sequence the PDIM locus is comparing two envelopes, not two genotypes of interest. Clinical isolates keep PDIM because transmission selects for it.",
+    "PGL variants (PGL-tb in some L2 strains) are lineage-structured. Do not call a Beijing isolate “hypervirulent” from PGL presence alone; do not call an L4 isolate “attenuated” because it lacks that PGL. Envelope lipids are covariates, not a DST."
+  ],
+  "deepTitle": "What to sequence when the mouse looks weird",
+  "deep": [
+    "pps and mas frameshifts are the usual lab-stock signature. They will also appear in a WGS BAM if you look.",
+    "mmpL7 exporters PDIM; it is not mmpL5 (the BDQ/CFZ efflux partner of rv0678).",
+    "PDIM-negative mutants can look more inflammatory in vitro and less persistent in vivo. Phenotype direction depends on the assay.",
+    "Do not bulk-copy Mycobrowser gene comments into a report. Name the locus and the frameshift."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "PDIM/PGL sit outside the mycolate–arabinogalactan core. Losing them is a stock artefact more often than a treatment target.",
+    "layers": [
+      {
+        "id": "pdim",
+        "label": "PDIM / PGL",
+        "detail": "pps/mas/fadD26; lost in passaged H37Rv",
+        "tone": "lipid"
+      },
+      {
+        "id": "mycol",
+        "label": "Mycolate outer leaflet",
+        "detail": "INH/ETH target path; not PDIM",
+        "tone": "wall"
+      },
+      {
+        "id": "ag",
+        "label": "Arabinogalactan",
+        "detail": "EMB (EmbCAB)",
+        "tone": "wall"
+      },
+      {
+        "id": "pg",
+        "label": "Peptidoglycan / membrane",
+        "detail": "DCS, PZA-adjacent physiology",
+        "tone": "membrane"
+      },
+      {
+        "id": "cyto",
+        "label": "Cytosol",
+        "detail": "F420, ATP synthase, RNAP",
+        "tone": "core"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Envelope lipids as a lab-stock confounder, not a textbook plate.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Mycolic acid",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mycolic_acid"
+    },
+    {
+      "title": "PpsA — UniProt P9WQE7",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WQE7/entry"
+    }
+  ],
+  "related": [
+    "tb-cell-envelope",
+    "tb-mycolates",
+    "tb-h37rv-genome",
+    "tb-organism",
+    "tb-phagosome-arrest"
+  ],
+  "example": {
+    "title": "Attenuated H37Rv that is still katG WT",
+    "setup": "A knockout looks hyper-killed in macrophages versus “H37Rv.” TLC shows no PDIM in the parent.",
+    "steps": [
+      {
+        "title": "Blame the parent first",
+        "body": "Re-sequence pps/mas or replace the stock before writing a virulence paper."
+      },
+      {
+        "title": "Not an INH story",
+        "body": "katG WT is irrelevant to PDIM loss."
+      },
+      {
+        "title": "Clinical isolates",
+        "body": "Fresh MTBC from sputum almost always keeps PDIM. The artefact is the freezer."
+      }
+    ],
+    "takeaway": "PDIM is virulence chemistry and a stock-hygiene check, not a first-line drug target."
+  },
+  "check": [
+    {
+      "id": "pdim-not-mycol",
+      "kind": "conceptual",
+      "prompt": "PDIM is chemically:",
+      "choices": [
+        "A mycolic acid species inhibited by INH",
+        "A phthiocerol dimycocerosate distinct from mycolates",
+        "A rifamycin",
+        "F420"
+      ],
+      "answer": "A phthiocerol dimycocerosate distinct from mycolates",
+      "why": "Mycolates are FAS-II products. PDIM is a different biosynthetic island.",
+      "whyWrong": {
+        "A mycolic acid species inhibited by INH": "INH hits InhA/mycolates.",
+        "A rifamycin": "No.",
+        "F420": "Cofactor for nitroimidazoles."
+      }
+    },
+    {
+      "id": "pdim-stock",
+      "kind": "calculation",
+      "prompt": "A lab H37Rv passaged 80 times on plates is most likely to have lost:",
+      "choices": [
+        "rpoB RRDR function",
+        "PDIM biosynthesis (pps/mas)",
+        "the entire ESX-1 RD1 as in BCG",
+        "pncA like M. bovis"
+      ],
+      "answer": "PDIM biosynthesis (pps/mas)",
+      "why": "PDIM loss is the classic H37Rv freezer artefact. RD1 loss is BCG’s construction, not random passage.",
+      "whyWrong": {
+        "rpoB RRDR function": "Not a passage default.",
+        "the entire ESX-1 RD1 as in BCG": "Directed deletion in BCG.",
+        "pncA like M. bovis": "Speciation, not passage."
+      }
+    },
+    {
+      "id": "pdim-figure",
+      "kind": "figure",
+      "prompt": "On the layered envelope, PDIM is drawn:",
+      "choices": [
+        "In the cytosol next to ATP synthase",
+        "As an outermost lipid leaflet above mycolates",
+        "As the arabinogalactan band only",
+        "As a smear grade"
+      ],
+      "answer": "As an outermost lipid leaflet above mycolates",
+      "why": "That placement is the teaching point: outside the INH/EMB core.",
+      "whyWrong": {
+        "In the cytosol next to ATP synthase": "BDQ lives there.",
+        "As the arabinogalactan band only": "EMB.",
+        "As a smear grade": "No."
+      },
+      "figureHint": "Top lipid layer."
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "id": "tb-miliary",
+  "title": "Miliary and disseminated TB",
+  "dek": "Hematogenous millet-seed disease is a burden and sanctuary problem: easy to miss on a poor film, easy to under-sample, high TBM overlap. Genomics still needs a specimen.",
+  "domain": "tb",
+  "aliases": [
+    "miliary TB",
+    "disseminated tuberculosis",
+    "millet seed CXR",
+    "cryptic disseminated TB"
+  ],
+  "tags": [
+    "miliary",
+    "disseminated",
+    "HIV",
+    "TBM",
+    "paucibacillary"
+  ],
+  "story": [
+    "Miliary TB is hematogenous seeding with millet-seed nodules. It is not a separate species. HIV, infants, anti-TNF, and pregnancy are classic hosts. Chest radiograph can be obvious or nearly normal (cryptic miliary). High-resolution CT and a diagnostic chase (sputum, induced, BAL, urine LAM, blood/bone marrow in advanced HIV, CSF if neurologic) beat a single smear.",
+    "Disseminated disease overlaps TB meningitis, adrenal TB, and occult pulmonary foci. Treat as disease, not LTBI, even when IGRA is negative (anergy). Steroids follow TBM/pericarditis rules, not a miliary reflex.",
+    "WRDs may be trace or negative because each sample is paucibacillary while the body burden is high. That paradox is sampling, not a reason to withhold therapy in a dying patient. Culture still tries; WGS may wait for the bottle."
+  ],
+  "deepTitle": "IRIS and the millet field",
+  "deep": [
+    "Unmasking IRIS after ART can present as sudden miliary films. That is still TB, not drug failure by default.",
+    "Hepatotoxicity plus miliary is a miserable reintroduction problem — bridge carefully.",
+    "Congenital TB is a neonatal disseminated object; treat the mother and the neonate as a pair.",
+    "Do not use 3HP as therapy for miliary disease. TPT is for infection without disease."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Miliary TB as a clinical constellation: millet film, multi-site sampling, TBM overlap, anergic IGRA, treat-as-disease.",
+    "terms": [
+      {
+        "label": "millet CXR/CT",
+        "weight": 5
+      },
+      {
+        "label": "HIV / infant / aTNF",
+        "weight": 4
+      },
+      {
+        "label": "paucibacillary samples",
+        "weight": 4
+      },
+      {
+        "label": "TBM overlap",
+        "weight": 3
+      },
+      {
+        "label": "urine LAM",
+        "weight": 3
+      },
+      {
+        "label": "anergic IGRA",
+        "weight": 2
+      },
+      {
+        "label": "not TPT",
+        "weight": 3
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO extra-pulmonary and disseminated TB (Module 3/4 paraphrase)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum — miliary TB",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Miliary tuberculosis",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Miliary_tuberculosis"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Sampling paradox: high burden, low per-sample CFU.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-granuloma",
+    "tb-hiv-synergy",
+    "tb-meningitis",
+    "tb-lf-lam",
+    "tb-extrapulmonary-dx",
+    "tb-cxr-cad"
+  ],
+  "example": {
+    "title": "Fever, HIV, normal smear, millet CT",
+    "setup": "CD4 32, CT millet, sputum Ultra negative ×2, LAM positive.",
+    "steps": [
+      {
+        "title": "LAM is a disease test here",
+        "body": "Start TB therapy; do not wait for a third sputum."
+      },
+      {
+        "title": "Look at the CSF",
+        "body": "Disseminated plus headache or just low CD4 — TBM changes ART timing."
+      },
+      {
+        "title": "Keep culturing",
+        "body": "WGS will need a isolate or a better tNGS specimen."
+      }
+    ],
+    "takeaway": "Miliary is disseminated disease: treat, sample widely, watch the meninges."
+  },
+  "check": [
+    {
+      "id": "mil-tpt",
+      "kind": "conceptual",
+      "prompt": "Miliary TB should be treated as:",
+      "choices": [
+        "LTBI with 3HP",
+        "TB disease with a full regimen, not TPT",
+        "Watchful waiting",
+        "INH monotherapy"
+      ],
+      "answer": "TB disease with a full regimen, not TPT",
+      "why": "Disseminated disease is not infection-without-disease.",
+      "whyWrong": {
+        "LTBI with 3HP": "Category error.",
+        "Watchful waiting": "Mortality.",
+        "INH monotherapy": "Resistance factory."
+      }
+    },
+    {
+      "id": "mil-wrd",
+      "kind": "calculation",
+      "prompt": "Ultra-negative sputum in radiographic miliary disease most likely reflects:",
+      "choices": [
+        "Proof it is NTM",
+        "Paucibacillary sampling of a hematogenous process",
+        "Proof of RIF resistance",
+        "Lab contamination with BCG"
+      ],
+      "answer": "Paucibacillary sampling of a hematogenous process",
+      "why": "Keep sampling other sites; LAM/CSF/CT still count.",
+      "whyWrong": {
+        "Proof it is NTM": "Not by itself.",
+        "Proof of RIF resistance": "No RIF data.",
+        "Lab contamination with BCG": "Unrelated."
+      }
+    },
+    {
+      "id": "mil-figure",
+      "kind": "figure",
+      "prompt": "On the constellation, “not TPT” is weighted because:",
+      "choices": [
+        "Miliary is infection without disease",
+        "Miliary is disease and TPT regimens are under-powered for it",
+        "TPT is contraindicated in all HIV",
+        "IS6110 is absent"
+      ],
+      "answer": "Miliary is disease and TPT regimens are under-powered for it",
+      "why": "That is the category teaching.",
+      "whyWrong": {
+        "Miliary is infection without disease": "Opposite.",
+        "TPT is contraindicated in all HIV": "False; TPT is indicated after disease exclusion.",
+        "IS6110 is absent": "No."
+      },
+      "figureHint": "Lower terms."
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "id": "tb-rv0678",
+  "title": "Rv0678, MmpL5, and efflux",
+  "dek": "mmpR5 (Rv0678) represses the MmpS5-MmpL5 efflux pump. Loss-of-function raises BDQ and often CFZ MICs. This is the common clinical BDQ path, and many alleles remain catalogue-uncertain.",
+  "domain": "tb",
+  "aliases": [
+    "mmpR5",
+    "MmpL5",
+    "Rv0678",
+    "bedaquiline efflux",
+    "clofazimine cross-resistance"
+  ],
+  "tags": [
+    "Rv0678",
+    "efflux",
+    "BDQ",
+    "CFZ",
+    "mmpL5"
+  ],
+  "story": [
+    "Rv0678 encodes a MarR-family repressor (MmpR5) of the mmpS5-mmpL5 operon. Frameshifts, premature stops, and some missense alleles derepress MmpL5, pumping out bedaquiline and, overlapping, clofazimine. MIC shifts are often modest — enough to matter under drug pressure, easy to miss with a blunt CC.",
+    "pepQ (a putative peptidase) is a third BDQ-associated locus with smaller, context-dependent shifts. atpE remains the rare high-level target path. A BDQ report that only lists atpE is a 2013 report.",
+    "WHO catalogue 2nd ed listed dozens of BDQ-associated variants, most in this regulator/pump axis, and a long uncertain tail. Do not over-call every Rv0678 missense as high-level R. Do not under-call a clear LOF frameshift."
+  ],
+  "deepTitle": "Cross-resistance and sequencing",
+  "deep": [
+    "BDQ/CFZ cross-R is the default worry with Rv0678 LOF. It is not 100% coupled in magnitude. If a 9-month recipe was counting both, recount.",
+    "Full-gene Rv0678: variants scatter, like a tiny pncA. Hotspot panels will miss frameshifts outside the amplicon.",
+    "Mixed AF in Rv0678 during BDQ therapy is emerging resistance. Treat it as a clinical event.",
+    "Some lineage-associated Rv0678 SNPs are not LOF. Grade."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Intact Rv0678 represses MmpL5. LOF lifts repression, effluxes BDQ/CFZ, modestly shifts MIC. atpE is a separate, rarer high-level fork.",
+    "nodes": [
+      {
+        "id": "wt",
+        "label": "Rv0678 WT",
+        "x": 10,
+        "y": 30,
+        "tone": "start"
+      },
+      {
+        "id": "rep",
+        "label": "Pump off",
+        "x": 32,
+        "y": 30,
+        "tone": "process"
+      },
+      {
+        "id": "lof",
+        "label": "Rv0678 LOF",
+        "x": 10,
+        "y": 70,
+        "tone": "start"
+      },
+      {
+        "id": "on",
+        "label": "MmpL5 up",
+        "x": 32,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "mic",
+        "label": "BDQ/CFZ MIC↑",
+        "x": 58,
+        "y": 70,
+        "tone": "end"
+      },
+      {
+        "id": "atpe",
+        "label": "atpE mutant",
+        "x": 58,
+        "y": 30,
+        "tone": "end",
+        "detail": "high-level"
+      }
+    ],
+    "edges": [
+      {
+        "from": "wt",
+        "to": "rep"
+      },
+      {
+        "from": "lof",
+        "to": "on"
+      },
+      {
+        "from": "on",
+        "to": "mic"
+      },
+      {
+        "from": "atpe",
+        "to": "mic",
+        "label": "different path"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — BDQ/CFZ / Rv0678",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Efflux regulator as the common BDQ clinical gene.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Bedaquiline",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Bedaquiline"
+    }
+  ],
+  "related": [
+    "tb-bedaquiline",
+    "tb-clofazimine",
+    "tb-atpe",
+    "tb-who-catalogue",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Uncertain missense, MIC 0.25",
+    "setup": "Rv0678 missense graded uncertain. BDQ MIC at the upper WT edge. CFZ MIC unchanged. Team wants to stop BDQ.",
+    "steps": [
+      {
+        "title": "Uncertain means uncertain",
+        "body": "Do not treat every missense as a frameshift."
+      },
+      {
+        "title": "Use the MIC",
+        "body": "Borderline MIC plus uncertain allele is a humility zone, not an automatic BPaLM abort — and not a free pass. Document, consider TDM/expert, watch cultures."
+      },
+      {
+        "title": "Do not also drop CFZ “for solidarity” without data",
+        "body": "Cross-R is a prior, not a law, especially when CFZ MIC did not move."
+      }
+    ],
+    "takeaway": "Rv0678 LOF ≠ every Rv0678 SNP. Grade + MIC."
+  },
+  "check": [
+    {
+      "id": "rv-func",
+      "kind": "conceptual",
+      "prompt": "Rv0678 (mmpR5) is:",
+      "choices": [
+        "The ATP synthase c-subunit",
+        "A repressor of MmpL5 efflux; LOF raises BDQ (±CFZ) MIC",
+        "A gyrase subunit",
+        "KatG"
+      ],
+      "answer": "A repressor of MmpL5 efflux; LOF raises BDQ (±CFZ) MIC",
+      "why": "Regulator, not the pump itself.",
+      "whyWrong": {
+        "The ATP synthase c-subunit": "atpE.",
+        "A gyrase subunit": "gyrA/B.",
+        "KatG": "INH."
+      }
+    },
+    {
+      "id": "rv-af",
+      "kind": "calculation",
+      "prompt": "Rv0678 frameshift AF 0.15 on BDQ month 2, baseline WT, is best handled as:",
+      "choices": [
+        "Noise to filter at 20% and ignore",
+        "Emerging efflux-mediated BDQ resistance until proven otherwise; report AF and intensify DST/MIC",
+        "Proof of INH-S",
+        "A PE/PPE artefact by definition"
+      ],
+      "answer": "Emerging efflux-mediated BDQ resistance until proven otherwise; report AF and intensify DST/MIC",
+      "why": "Do not let a 10% filter hide this class.",
+      "whyWrong": {
+        "Noise to filter at 20% and ignore": "How BDQ is lost quietly.",
+        "Proof of INH-S": "Wrong gene.",
+        "A PE/PPE artefact by definition": "Rv0678 is not PE_PGRS."
+      }
+    },
+    {
+      "id": "rv-figure",
+      "kind": "figure",
+      "prompt": "On the Rv0678 flow map, atpE mutant is drawn as:",
+      "choices": [
+        "The same node as Rv0678 LOF",
+        "A separate high-level path that also raises BDQ MIC",
+        "A TPT regimen",
+        "IS6110"
+      ],
+      "answer": "A separate high-level path that also raises BDQ MIC",
+      "why": "Different mechanism, same drug.",
+      "whyWrong": {
+        "The same node as Rv0678 LOF": "They are separate starts.",
+        "A TPT regimen": "No.",
+        "IS6110": "No."
+      },
+      "figureHint": "Right-upper end node labelled atpE mutant."
+    }
+  ]
+}

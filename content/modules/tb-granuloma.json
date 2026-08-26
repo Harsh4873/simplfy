@@ -1,0 +1,173 @@
+{
+  "id": "tb-granuloma",
+  "title": "Granuloma architecture",
+  "dek": "Macrophage core, lymphocytic cuff, often caseum. A structured lesion with gradients of oxygen, lipid, and drug — not a solid ball of latency.",
+  "domain": "tb",
+  "aliases": [
+    "caseum",
+    "caseous necrosis",
+    "epithelioid macrophage",
+    "foamy macrophage",
+    "cavity TB"
+  ],
+  "tags": [
+    "granuloma",
+    "caseum",
+    "hypoxia",
+    "lesion",
+    "pathology"
+  ],
+  "story": [
+    "The tuberculous granuloma is a spatially organised lesion: infected and uninfected macrophages (including epithelioid and foamy cells), a cuff of CD4/CD8 T cells and B-cell follicles in some human lesions, fibroblasts, and often a necrotic caseous core. It is a living tissue programme, not a prison that either succeeds or fails in binary.",
+    "Caseum is hypoxic, acidic, and full of host lipids. Bacilli there are slowly replicating or non-replicating, with altered drug susceptibility. Pyrazinamide’s clinical sterilizing role and rifamycin persistence both have lesion-pharmacology explanations. Isoniazid looks brilliant on log-phase broth and ordinary in caseum.",
+    "Cavitation is a granuloma that has emptied into an airway. High smear, high mutation supply, high transmission. HIV and anti-TNF dissolve the architecture toward poorly formed, multibacillary, disseminated disease — a pathogenesis fact with a diagnostic smear-negative pattern."
+  ],
+  "deepTitle": "Models, drugs, and spatial DST",
+  "deep": [
+    "C3HeB/FeJ “Kramnik” mice, rabbits, and macaques caseate; many C57BL/6 models do not. Fitting a four-month human regimen to a non-necrotic mouse CFU curve is a category error.",
+    "Lesion-centric PK (rifampin penetration into caseum is limited relative to vascularized cuff) is why sterilizing drugs are not interchangeable with cidal drugs.",
+    "Within-host diversity: different lesions in one lung can host different resistance minorities. A single sputum WGS is a sample of what drained today.",
+    "Calcified Ghon complexes are the radiology of old negotiation, not proof of sterility."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Idealised section of a necrotic granuloma. Oxygen and drug fall toward caseum; lymphocytes live in the cuff. Cavitation is this core opening to a bronchus.",
+    "layers": [
+      {
+        "id": "air",
+        "label": "Airway (if cavitary)",
+        "detail": "aerosol out; high smear",
+        "tone": "space"
+      },
+      {
+        "id": "cuff",
+        "label": "Lymphocytic cuff",
+        "detail": "CD4/CD8, IFN-γ, TNF",
+        "tone": "membrane"
+      },
+      {
+        "id": "mac",
+        "label": "Macrophage / epithelioid rim",
+        "detail": "foamy cells, intracellular Mtb",
+        "tone": "wall"
+      },
+      {
+        "id": "case",
+        "label": "Caseous core",
+        "detail": "hypoxia, acid, lipid; persisters",
+        "tone": "lipid"
+      },
+      {
+        "id": "fib",
+        "label": "Fibrosis / calcium (late)",
+        "detail": "containment radiology",
+        "tone": "core"
+      }
+    ],
+    "annotation": "PZA and rifamycins earn their keep toward the core; INH earns it in replicating rims."
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Granuloma",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Granuloma"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Lesion-ecology notes for regimen design.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pathogenesis",
+    "tb-latency-dosr",
+    "tb-pyrazinamide",
+    "tb-transmission",
+    "tb-hiv-synergy",
+    "tb-caseum",
+    "tb-miliary"
+  ],
+  "example": {
+    "title": "Smear 3+ from a cavity, IGRA positive in the spouse",
+    "setup": "Index: cavitary smear 3+. Spouse: IGRA+, normal CXR, asymptomatic.",
+    "steps": [
+      {
+        "title": "Anatomy explains both",
+        "body": "The cavity is a transmission engine. The spouse has an immune memory assay after exposure, not proven disease."
+      },
+      {
+        "title": "Different pharmacologic objects",
+        "body": "Index needs a sterilizing combination. Spouse, after disease exclusion, is a TPT candidate."
+      },
+      {
+        "title": "Mutation supply",
+        "body": "The 3+ cavity is where monotherapy would fail in public. Do not “start INH while awaiting Xpert” in the index."
+      }
+    ],
+    "takeaway": "Cuff versus caseum versus cavity are different drug problems."
+  },
+  "check": [
+    {
+      "id": "gran-caseum",
+      "kind": "conceptual",
+      "prompt": "Caseum is best described as:",
+      "choices": [
+        "A sterile calcium deposit with no bacilli ever",
+        "A hypoxic, acidic, lipid-rich necrotic core that can harbour slowly replicating Mtb",
+        "The IGRA antigen cocktail",
+        "The RRDR"
+      ],
+      "answer": "A hypoxic, acidic, lipid-rich necrotic core that can harbour slowly replicating Mtb",
+      "why": "Latency is not sterility; caseum is one reason.",
+      "whyWrong": {
+        "A sterile calcium deposit with no bacilli ever": "Calcification can follow; caseum is not proof of sterility.",
+        "The IGRA antigen cocktail": "No.",
+        "The RRDR": "A gene window."
+      }
+    },
+    {
+      "id": "gran-inh",
+      "kind": "calculation",
+      "prompt": "INH is rapidly cidal against replicating bacilli making mycolate. In a closed hypoxic caseum with near-zero replication, INH’s expected contribution relative to a rifamycin is:",
+      "choices": [
+        "Greater sterilizing activity than rifampin",
+        "Weaker sterilizing activity; INH’s strength is the replicating rim",
+        "Identical because MICs are measured in caseum",
+        "Zero because KatG is absent from Mtb"
+      ],
+      "answer": "Weaker sterilizing activity; INH’s strength is the replicating rim",
+      "why": "Classical short-course logic: INH early cidal, rifamycin sterilizing, PZA lesion-pH.",
+      "whyWrong": {
+        "Greater sterilizing activity than rifampin": "Opposite of the sterilizing hierarchy.",
+        "Identical because MICs are measured in caseum": "Broth MICs are not lesion PK.",
+        "Zero because KatG is absent from Mtb": "KatG is present."
+      }
+    },
+    {
+      "id": "gran-figure",
+      "kind": "figure",
+      "prompt": "In the granuloma section, which layer is labelled as the hypoxic persister niche?",
+      "choices": [
+        "Lymphocytic cuff",
+        "Caseous core",
+        "Airway",
+        "Fibrosis / calcium only"
+      ],
+      "answer": "Caseous core",
+      "why": "The annotation points PZA/rifamycins at the core.",
+      "whyWrong": {
+        "Lymphocytic cuff": "Immune organisation.",
+        "Airway": "Transmission if cavitary.",
+        "Fibrosis / calcium only": "Late containment radiology."
+      },
+      "figureHint": "Middle-lower lipid-tone band."
+    }
+  ]
+}

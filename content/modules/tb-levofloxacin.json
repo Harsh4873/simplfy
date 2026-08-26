@@ -1,0 +1,170 @@
+{
+  "id": "tb-levofloxacin",
+  "title": "Levofloxacin",
+  "dek": "The other TB fluoroquinolone: 6Lfx TPT for FQ-S MDR contacts, Hr-TB 6REZ-Lfx, BDLLfxC, many 9-month recipes. Same QRDR as moxi; different trials and often less QTc than moxi.",
+  "domain": "tb",
+  "aliases": [
+    "LFX",
+    "Lfx",
+    "levofloxacin",
+    "6Lfx",
+    "Levaquin TB"
+  ],
+  "tags": [
+    "levofloxacin",
+    "FQ",
+    "TPT",
+    "Hr-TB",
+    "QRDR"
+  ],
+  "story": [
+    "Levofloxacin (usual 750–1000 mg daily in adults, weight-banded in children) is the FQ WHO writes into 6-month levofloxacin TPT for contacts of FQ-susceptible MDR/RR-TB, into Hr-TB (6REZ-Lfx), into BDLLfxC, and into several 9-month orals. Moxifloxacin occupies BPaLM and HPMZ. Pick the FQ the regimen was studied with unless your NTP explicitly swaps.",
+    "QRDR cross-resistance is the default prior. A D94G source makes 6Lfx TPT misbuilt. A D94G patient makes BDLLfxC prune Lfx (continue BDLC).",
+    "Often slightly friendlier on QTc than moxi, still a FQ for tendons, CNS, and empiric-pneumonia abuse. Renal clearance: adjust when GFR falls (unlike moxi’s more hepatic mix)."
+  ],
+  "deepTitle": "TPT vs treatment doses",
+  "deep": [
+    "6Lfx TPT is daily LFX for 6 months after disease exclusion — not a week of cough medicine.",
+    "Children tolerate LFX in DR-TB with attention to musculoskeletal AEs.",
+    "PubChem CID 149096. ChEMBL33 (levofloxacin) / ofloxacin family.",
+    "Do not combine MXF and LFX as two FQs. They are one mechanism."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Levofloxacin’s WHO jobs. All of them assume a live QRDR. None of them is BPaLM’s M (that is moxi).",
+    "layers": [
+      {
+        "title": "TPT",
+        "nodes": [
+          "6Lfx MDR contact"
+        ]
+      },
+      {
+        "title": "Hr-TB",
+        "nodes": [
+          "6REZ-Lfx"
+        ]
+      },
+      {
+        "title": "RR 6-mo",
+        "nodes": [
+          "BDLLfxC"
+        ]
+      },
+      {
+        "title": "RR 9-mo",
+        "nodes": [
+          "Lfx in 2022 9-mo"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TPT 6Lfx and Module 4 Lfx regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "Levofloxacin — PubChem CID 149096",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/149096"
+    },
+    {
+      "title": "Levofloxacin — CHEMBL33",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL33/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Lfx vs MXF is a trial/PK split, not a QRDR split.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-gyr-qrdr",
+    "tb-moxifloxacin",
+    "tb-hr-tb",
+    "tb-tpt",
+    "tb-9month-drtb"
+  ],
+  "example": {
+    "title": "6Lfx for a D94G household",
+    "setup": "NTP starts all MDR contacts on 6Lfx automatically. Index gyrA D94G.",
+    "steps": [
+      {
+        "title": "Stop the autopilot",
+        "body": "TPT FQ matches source FQ-S. This source is FQ-R."
+      },
+      {
+        "title": "Disease exclusion still stands",
+        "body": "Do not invent 3HP as a rescue for MDR infection — 3HP is DS drugs."
+      },
+      {
+        "title": "Expert prevention + close follow-up",
+        "body": "When no clean TPT exists, surveillance is the intervention."
+      }
+    ],
+    "takeaway": "6Lfx is FQ-S MDR-contact TPT, not a universal MDR vitamin."
+  },
+  "check": [
+    {
+      "id": "lfx-tpt",
+      "kind": "conceptual",
+      "prompt": "6Lfx is:",
+      "choices": [
+        "A DS-TB 4-month disease regimen",
+        "6 months of daily levofloxacin TPT for contacts of FQ-S MDR/RR-TB",
+        "BPaLM",
+        "INH 300 mg weekly"
+      ],
+      "answer": "6 months of daily levofloxacin TPT for contacts of FQ-S MDR/RR-TB",
+      "why": "WHO 2024 TPT addition.",
+      "whyWrong": {
+        "A DS-TB 4-month disease regimen": "HPMZ/SHINE.",
+        "BPaLM": "Disease, moxi.",
+        "INH 300 mg weekly": "No."
+      }
+    },
+    {
+      "id": "lfx-renal",
+      "kind": "calculation",
+      "prompt": "Unlike moxifloxacin’s mixed clearance, levofloxacin dose in low GFR generally:",
+      "choices": [
+        "Stays 1000 mg no matter what",
+        "Needs renal adjustment",
+        "Is converted to streptomycin",
+        "Becomes 3HP"
+      ],
+      "answer": "Needs renal adjustment",
+      "why": "Renal FQ vs more hepatic moxi is a practical distinction.",
+      "whyWrong": {
+        "Stays 1000 mg no matter what": "Unsafe.",
+        "Is converted to streptomycin": "No.",
+        "Becomes 3HP": "No."
+      }
+    },
+    {
+      "id": "lfx-figure",
+      "kind": "figure",
+      "prompt": "On the LFX hierarchy, why is BPaLM’s M not listed?",
+      "choices": [
+        "Because levofloxacin is the M in BPaLM",
+        "Because BPaLM’s FQ is moxifloxacin; LFX occupies other WHO jobs",
+        "Because FQs are banned in DR-TB",
+        "Because 6Lfx treats cavities as disease with two drugs"
+      ],
+      "answer": "Because BPaLM’s FQ is moxifloxacin; LFX occupies other WHO jobs",
+      "why": "Letter discipline.",
+      "whyWrong": {
+        "Because levofloxacin is the M in BPaLM": "False.",
+        "Because FQs are banned in DR-TB": "Opposite.",
+        "Because 6Lfx treats cavities as disease with two drugs": "TPT after disease exclusion."
+      },
+      "figureHint": "Four LFX job layers, no BPaLM."
+    }
+  ]
+}
