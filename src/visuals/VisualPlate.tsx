@@ -547,23 +547,35 @@ function MutationGrid({ spec }: { spec: MutationGridVisual }) {
 }
 
 function Constellation({ spec }: { spec: ConstellationVisual }) {
-  const max = Math.max(...spec.terms.map((term) => term.weight), 1);
+  const terms = spec.terms.slice(0, 12);
+  const max = Math.max(...terms.map((term) => term.weight), 1);
+  const row = terms.length ? Math.min(22, 232 / terms.length) : 22;
   return (
-    <div className="constellation" aria-hidden="true">
-      {spec.terms.map((term, i) => {
-        const size = 0.82 + (term.weight / max) * 0.95;
-        const hot = term.weight === max;
+    <PlateFrame>
+      {terms.map((term, i) => {
+        const y = 40 + i * row;
+        const bar = 24 + (term.weight / max) * 280;
+        const top = i === 0;
         return (
-          <span
-            key={`${term.label}-${i}`}
-            className={hot ? "star is-hot" : "star"}
-            style={{ fontSize: `${size}rem` }}
-          >
-            {term.label}
-          </span>
+          <g key={`${term.label}-${i}`}>
+            <Label x="48" y={y} fontSize="10" mono mute>
+              {String(i + 1).padStart(2, "0")}
+            </Label>
+            <Label x="84" y={y} fontSize="12" weight={top ? 500 : 400}>
+              {term.label}
+            </Label>
+            <line
+              x1="280"
+              y1={y - 4}
+              x2={280 + bar}
+              y2={y - 4}
+              stroke={top ? vis.accent : vis.ink}
+              strokeWidth={top ? 2 : 1.25}
+            />
+          </g>
         );
       })}
-    </div>
+    </PlateFrame>
   );
 }
 

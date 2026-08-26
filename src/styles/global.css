@@ -1,8 +1,8 @@
 :root {
   --chassis: #0c0d0f;
   --panel: #131418;
-  --well: #f2f0ea;
-  --plate: #fbfaf7;
+  --well: #efeee9;
+  --plate: #fafaf7;
   --ink: #141414;
   --readout: #ecebe6;
   --accent: #c23a4a;
@@ -412,11 +412,6 @@ kbd {
   color: var(--mute);
 }
 
-.domain.tb,
-.domain.library {
-  color: var(--accent);
-}
-
 .drop {
   border: 1px dashed var(--rule);
   padding: 12px;
@@ -737,31 +732,6 @@ kbd {
 .mono {
   font-family: var(--mono);
   font-size: 0.8rem;
-}
-
-.constellation {
-  min-height: 220px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px 12px;
-  padding: 28px 20px;
-  background: var(--fill);
-  border: 1px solid var(--rule);
-  align-items: end;
-}
-
-.star {
-  font-family: var(--display);
-  font-style: italic;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
-  padding-bottom: 6px;
-}
-
-.star.is-hot {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
 }
 
 .dock-empty p:last-child {
