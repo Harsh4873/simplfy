@@ -1,0 +1,189 @@
+{
+  "id": "stats-delta-method",
+  "title": "Delta method",
+  "dek": "If √n (θ̂ − θ) is asymptotically Normal, then so is g(θ̂), with variance ∇gᵀ Σ ∇g. That is how a SE on the logit becomes a SE on a probability.",
+  "domain": "stats",
+  "aliases": [
+    "delta method",
+    "propagation of error",
+    "gradient variance",
+    "transformation SE"
+  ],
+  "tags": [
+    "estimation",
+    "asymptotics",
+    "GLM",
+    "standard error"
+  ],
+  "story": [
+    "Labs constantly report functions of fitted parameters: odds ratios e^β, predicted probabilities, attributable fractions, doubling times. The delta method is the first-order Taylor story that turns a covariance matrix for θ̂ into a variance for g(θ̂).",
+    "In one dimension, se(g(θ̂)) ≈ |g′(θ̂)| se(θ̂). If g is logit⁻¹, the derivative π(1−π) shrinks SEs near 0 and 1 on the probability scale — which matches Fisher information for Bernoulli, and which is why a tiny SE on π̂ = 0.01 can still sit next to a huge relative error.",
+    "The approximation is local and linear. Near boundaries, or when g is highly curved (ratios of small rates), bootstrap or profile likelihood is the grown-up replacement. Delta method is not illegal there; it is just optimistic."
+  ],
+  "deepTitle": "The expansion you actually use",
+  "deep": [
+    "Multivariate: √n (g(θ̂) − g(θ)) →d N(0, ∇gᵀ I₁⁻¹ ∇g) when the MLE is regular and ∇g ≠ 0. If ∇g(θ) = 0, the first-order term vanishes and you need a second-order (often χ²) expansion — classic for variance components tested at 0, which is not a delta-method problem in disguise.",
+    "GLM prediction: π̂(x) = g⁻¹(xᵀβ̂). Then ∇_β π = (dg⁻¹/dη) x, and Var(π̂) ≈ (dg⁻¹/dη)² xᵀ Cov(β̂) x. For logit, dg⁻¹/dη = π(1−π). For log-linear Poisson, the mean’s SE scales with μ itself.",
+    "Fieller intervals for a ratio a/b when b is near 0 are the classic warning that a linear delta interval can include nonsense or exclude the MLE. Transmission probabilities built as ratios of hazards inherit this.",
+    "Invariance of the MLE plus delta method SEs is not the same as transforming a Wald interval endpoint-wise. Endpoint transform of a symmetric Wald interval on ψ = logit(π) is usually better than a Wald interval on π itself."
+  ],
+  "formulas": [
+    {
+      "id": "delta1",
+      "label": "Univariate delta method",
+      "expression": "se(g(θ̂)) ≈ |g′(θ̂)| se(θ̂)",
+      "note": "First-order, interior, g′ ≠ 0."
+    },
+    {
+      "id": "deltam",
+      "label": "Multivariate",
+      "expression": "Var(g(θ̂)) ≈ ∇gᵀ Cov(θ̂) ∇g",
+      "note": "Plug in ∇g at θ̂. Software calls this the delta method or “using the predict sandwich.”"
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Error propagating through a map: a nearly Normal law on ψ = logit(π) is pushed through a nonlinear inverse-logit. The gradient |dπ/dψ| = π(1−π) rescales the SE; curvature of the map is what the first-order story ignores.",
+    "nodes": [
+      {
+        "id": "psi",
+        "label": "ψ̂ ~ N",
+        "group": "enzyme",
+        "x": 14,
+        "y": 40,
+        "sub": "logit scale"
+      },
+      {
+        "id": "g",
+        "label": "π = logit⁻¹(ψ)",
+        "group": "drug",
+        "x": 50,
+        "y": 40,
+        "sub": "nonlinear map"
+      },
+      {
+        "id": "pi",
+        "label": "π̂, se via ∇g",
+        "group": "target",
+        "x": 86,
+        "y": 40,
+        "sub": "probability scale"
+      }
+    ],
+    "edges": [
+      {
+        "from": "psi",
+        "to": "g",
+        "label": "invariance of MLE"
+      },
+      {
+        "from": "g",
+        "to": "pi",
+        "label": "× |π(1−π)|"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Delta method — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Delta_method",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Wasserman, All of Statistics",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-fisher-information",
+    "stats-mle",
+    "stats-bootstrap",
+    "stats-logit",
+    "stats-confidence-intervals"
+  ],
+  "example": {
+    "title": "SE of an odds ratio",
+    "setup": "Logistic MLE β̂_cav = 1.20 with se = 0.40 for a cavitation coefficient. Scientific report wants OR = e^β and a SE or interval on that scale.",
+    "steps": [
+      {
+        "title": "Map",
+        "body": "g(β) = e^β. g′(β) = e^β. At β̂, g′ = e^{1.20} ≈ 3.32.",
+        "expression": "OR̂ = e^{1.20} ≈ 3.32"
+      },
+      {
+        "title": "Delta SE",
+        "body": "se(OR̂) ≈ 3.32 × 0.40 ≈ 1.33. A symmetric 3.32 ± 1.96×1.33 includes values near 0.7 and 5.9 and is already feeling the skew of a lognormal."
+      },
+      {
+        "title": "Better report",
+        "body": "Transform the Wald interval on β: exp(1.20 ± 1.96×0.40) = exp(0.416, 1.984) ≈ (1.52, 7.27). Same first-order ingredients, less symmetric theatre on the OR scale."
+      }
+    ],
+    "takeaway": "Delta method gives a variance. Transforming an interval on a more Normal scale is often the interval you actually wanted."
+  },
+  "check": [
+    {
+      "id": "del-grad",
+      "kind": "conceptual",
+      "prompt": "If g′(θ) = 0 at the true value, the usual first-order delta method:",
+      "choices": [
+        "Still gives the correct Normal variance",
+        "Fails because the linear term vanishes and a higher-order expansion is required",
+        "Implies g(θ̂) is super-efficient with variance 0",
+        "Is the same as a Bayes delta"
+      ],
+      "answer": "Fails because the linear term vanishes and a higher-order expansion is required",
+      "why": "The first term in the Taylor expansion of g(θ̂) is g′(θ)(θ̂−θ). Zero gradient means the √n Normal story is the wrong rate.",
+      "whyWrong": {
+        "Still gives the correct Normal variance": "It reports ~0, which is wrong.",
+        "Implies g(θ̂) is super-efficient with variance 0": "A software trap, not a theorem you want.",
+        "Is the same as a Bayes delta": "Unrelated."
+      }
+    },
+    {
+      "id": "del-calc",
+      "kind": "calculation",
+      "prompt": "ψ̂ = −2.0, se(ψ̂) = 0.2, π = logit⁻¹(ψ). Delta-method se(π̂) is closest to:",
+      "choices": [
+        "0.2",
+        "0.024",
+        "0.12",
+        "2.0"
+      ],
+      "answer": "0.024",
+      "why": "π = 1/(1+e²) ≈ 0.119. π(1−π) ≈ 0.105. se(π) ≈ 0.105×0.2 ≈ 0.021. Closest listed is 0.024.",
+      "whyWrong": {
+        "0.2": "That is se on the logit scale.",
+        "0.12": "That is π itself.",
+        "2.0": "That is |ψ̂|."
+      }
+    },
+    {
+      "id": "del-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, the factor π(1−π) on the last arrow is:",
+      "figureHint": "logit scale → inverse-logit → probability scale.",
+      "choices": [
+        "A prior weight",
+        "The derivative dπ/dψ that rescales the SE under the delta method",
+        "The LRT statistic",
+        "Fisher information for a Poisson mean"
+      ],
+      "answer": "The derivative dπ/dψ that rescales the SE under the delta method",
+      "why": "d logit⁻¹(ψ)/dψ = π(1−π). That is g′ in se(g) ≈ |g′| se(ψ).",
+      "whyWrong": {
+        "A prior weight": "No prior on this plate.",
+        "The LRT statistic": "Different object.",
+        "Fisher information for a Poisson mean": "Wrong family."
+      }
+    }
+  ]
+}

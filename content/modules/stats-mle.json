@@ -1,0 +1,211 @@
+{
+  "id": "stats-mle",
+  "title": "Maximum likelihood estimation",
+  "dek": "θ̂ = arg max ℓ(θ). In regular interiors it solves the score equation. Invariance, numerical maximisation, and boundary MLEs are the adult footnotes.",
+  "domain": "stats",
+  "aliases": [
+    "MLE",
+    "maximum likelihood estimator",
+    "score equation",
+    "invariance of MLE",
+    "observed information"
+  ],
+  "tags": [
+    "estimation",
+    "likelihood",
+    "score",
+    "information"
+  ],
+  "story": [
+    "Maximum likelihood picks the parameter that makes the observed sample most probable under the model you wrote. Formally θ̂(y) ∈ arg max_θ f(y | θ). For a regular exponential family this is often a moment match: mean of T(y) equals its expectation.",
+    "Invariance is not a slogan. If θ̂ maximises L(θ), then g(θ̂) maximises the induced likelihood for φ = g(θ), even when g is nonlinear. That is why you may maximise on the logit and report π̂ = logit⁻¹(ψ̂) without running a second optimiser.",
+    "When the maximum sits on a boundary — π̂ = 0, τ̂ = 0, a mixture weight at 0 — the score equation need not hold and the usual Normal/χ² theatre is false. Rare mutations and variance components in TB data live here more often than the Gaussian textbook admits."
+  ],
+  "deepTitle": "Score, observed information, and computation",
+  "deep": [
+    "Interior first-order condition: S(θ̂) = 0. Second-order: −∇²ℓ(θ̂) positive definite. Observed information J(θ̂) = −∇²ℓ(θ̂) is the curvature you actually computed; expected information I(θ) is an average of that curvature. Wald SEs from J versus I are first-order equivalent and can disagree in small n.",
+    "Numerical maximisation: Newton uses J; Fisher scoring uses I. Both are cousins of IRLS in GLMs. Multiple modes (mixtures, some phylogenetic clocks) mean the arg max is a global-search problem. A local peak is not “the MLE.”",
+    "Misspecification: the maximiser of the average log-density converges to the KL projection of the true law onto your model, not to a parameter nature named. Report sandwich SEs if you still like the mean structure.",
+    "Comparison: method of moments matches a few expectations and can be inconsistent with the likelihood (especially in overdispersed counts). MLE uses the whole f. In a well-specified exponential family they often coincide."
+  ],
+  "formulas": [
+    {
+      "id": "argmax",
+      "label": "MLE",
+      "expression": "θ̂(y) = arg max_θ ℓ(θ | y)",
+      "note": "A set-valued function of the data. Uniqueness is extra structure."
+    },
+    {
+      "id": "invariance",
+      "label": "Invariance",
+      "expression": "φ̂ = g(θ̂)  is an MLE of φ = g(θ)",
+      "note": "No Jacobian extra term in the maximiser; the Jacobian appears in densities of transformed data, not in this mapping of estimates."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "A working MLE pipeline: write f(y|θ), form ℓ, maximise (analytically or numerically), then only then quote a sampling approximation. Boundary and multimodality are exits, not footnotes you skip.",
+    "nodes": [
+      {
+        "id": "model",
+        "label": "Write f(y | θ)",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "ell",
+        "label": "Form ℓ(θ)",
+        "x": 34,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "max",
+        "label": "Maximise",
+        "x": 58,
+        "y": 40,
+        "tone": "decision",
+        "detail": "interior vs bound"
+      },
+      {
+        "id": "reg",
+        "label": "Regular SE / LRT",
+        "x": 84,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "bdry",
+        "label": "Boundary / mixture",
+        "x": 84,
+        "y": 62,
+        "tone": "end",
+        "detail": "not χ²_k"
+      }
+    ],
+    "edges": [
+      {
+        "from": "model",
+        "to": "ell"
+      },
+      {
+        "from": "ell",
+        "to": "max"
+      },
+      {
+        "from": "max",
+        "to": "reg",
+        "label": "interior, identified"
+      },
+      {
+        "from": "max",
+        "to": "bdry",
+        "label": "edge of Θ"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Maximum likelihood estimation — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Maximum_likelihood_estimation",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-foundations",
+    "stats-likelihood",
+    "stats-fisher-information",
+    "stats-bias-variance",
+    "stats-lrt"
+  ],
+  "example": {
+    "title": "MLE for an exponential waiting time",
+    "setup": "Time-to-positivity (days) modelled as Yᵢ iid Exponential(mean μ), density (1/μ) e^{−y/μ} for y > 0. n = 4, data 2, 3, 5, 2. Find μ̂.",
+    "steps": [
+      {
+        "title": "Log-likelihood",
+        "body": "ℓ(μ) = −n log μ − (∑ yᵢ)/μ. Score −n/μ + (∑ yᵢ)/μ² = 0.",
+        "expression": "μ̂ = ȳ = 12/4 = 3"
+      },
+      {
+        "title": "Check it is a max",
+        "body": "Second derivative −n/μ² + 2(∑ yᵢ)/μ³ at μ = 3 is negative. Observed information n/μ̂² = 4/9."
+      },
+      {
+        "title": "Invariance",
+        "body": "If you parameterise by rate λ = 1/μ, the MLE is λ̂ = 1/μ̂ = 1/3. You do not re-average the data on the rate scale and call that the MLE of λ — unless you maximised ℓ(λ) and got the same number, which you will."
+      }
+    ],
+    "takeaway": "Write ℓ, solve the score, confirm a maximum, then map with invariance if the scientific unit changed."
+  },
+  "check": [
+    {
+      "id": "mle-inv",
+      "kind": "conceptual",
+      "prompt": "If π̂ is the MLE of a Bernoulli mean, the MLE of the odds π/(1−π) is:",
+      "choices": [
+        "Always 1",
+        "π̂ / (1 − π̂), by invariance",
+        "The sample odds only after a Jacobian correction to the maximiser",
+        "Undefined unless a prior is used"
+      ],
+      "answer": "π̂ / (1 − π̂), by invariance",
+      "why": "Invariance maps the maximiser through g. Jacobians appear when transforming densities of data, not when transforming the MLE.",
+      "whyWrong": {
+        "Always 1": "Only if π̂ = 0.5.",
+        "The sample odds only after a Jacobian correction to the maximiser": "No extra correction on the argmax.",
+        "Undefined unless a prior is used": "MLE does not need a prior."
+      }
+    },
+    {
+      "id": "mle-exp",
+      "kind": "calculation",
+      "prompt": "iid Exponential mean μ, n = 5, ∑ yᵢ = 20. MLE μ̂ equals:",
+      "choices": [
+        "4",
+        "20",
+        "5",
+        "0.25"
+      ],
+      "answer": "4",
+      "why": "μ̂ = ȳ = 20/5 = 4. The rate MLE would be 1/4 = 0.25, which is not μ̂.",
+      "whyWrong": {
+        "20": "That is the sum, not the mean.",
+        "5": "That is n.",
+        "0.25": "That is the rate MLE λ̂ = 1/μ̂."
+      }
+    },
+    {
+      "id": "mle-figure",
+      "kind": "figure",
+      "prompt": "On the MLE flow plate, why is there an exit labelled boundary / mixture?",
+      "figureHint": "Decision node splits to regular SE/LRT versus boundary.",
+      "choices": [
+        "Because MLEs cannot be computed on a computer",
+        "Because when θ̂ sits on the edge of Θ, score = 0 and χ² references need not hold",
+        "Because invariance fails for monotone maps",
+        "Because exponential families forbid interior maxima"
+      ],
+      "answer": "Because when θ̂ sits on the edge of Θ, score = 0 and χ² references need not hold",
+      "why": "The pipeline is conditional on regularity. Variance components at 0 and mixture weights at 0 are the usual exits in this lab.",
+      "whyWrong": {
+        "Because MLEs cannot be computed on a computer": "They can; the issue is the sampling law.",
+        "Because invariance fails for monotone maps": "Invariance holds.",
+        "Because exponential families forbid interior maxima": "They usually have them."
+      }
+    }
+  ]
+}

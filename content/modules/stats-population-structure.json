@@ -1,0 +1,182 @@
+{
+  "id": "stats-population-structure",
+  "title": "Population structure caveats",
+  "dek": "Shared ancestry associates genotypes with each other and often with phenotypes. If you ignore it, every lineage-tagging SNP inherits a confounder fork.",
+  "domain": "stats",
+  "aliases": [
+    "population structure",
+    "stratification",
+    "kinship",
+    "principal components ancestry",
+    "clonality"
+  ],
+  "tags": [
+    "genomics",
+    "structure",
+    "confounding",
+    "mixed models"
+  ],
+  "story": [
+    "Two isolates that share a recent ancestor share thousands of SNPs and often share a phenotype (resistance, virulence, geography). That is confounding by ancestry, the fork plate with U = relatedness. A naive GLM of Y on G treats those SNPs as independent experiments.",
+    "Standard repairs: include PCs of the genotype matrix as C, or a random effect u ~ N(0, τ² K) with K a kinship/realised relatedness matrix (LMM). Neither is magic if the causal mechanism is itself collinear with ancestry (a lineage-defining resistance mutation).",
+    "Bacterial populations are often clonal with occasional recombination. Human PCs-as-covariates folklore does not transfer unchanged. A phylogeny, a linear mixed model on a SNP-distance K, or a within-lineage scan are the usual TB moves. Report which, and which isolates were too close to count as two experiments."
+  ],
+  "deepTitle": "What PCs and K actually model",
+  "deep": [
+    "PCs: the leading eigenvectors of a genotype covariance. Putting them in the mean is an additive adjustment for axes of variation. If structure is a tree with long branches, a few PCs can be a crude summary; leftover relatedness still inflates λ_GC.",
+    "LMM: Y = Xβ + u + ε, Var(u) = τ² K. This is the mixed-model plate with a specific G. It partial-pools similar isolates. The score test for a SNP then uses that V. You still should not test a SNP that was used to build K without a leave-one-chromosome-out (or leave-one-locus-out) discipline — circularity.",
+    "Over-correction: adjusting for lineage when the scientific question is “does this lineage have higher MIC?” deletes the signal. Structure control is relative to an estimand. Write the estimand.",
+    "Transmission studies want relatedness as the object, not the nuisance. That is the phylogenetics plates. Using a GWAS LMM there is answering a different question."
+  ],
+  "formulas": [
+    {
+      "id": "lmmk",
+      "label": "Kinship LMM (Gaussian sketch)",
+      "expression": "Y = Xβ + u + ε,   u ~ N(0, τ² K),   ε ~ N(0, σ² I)",
+      "note": "K = realised relatedness. Binary Y uses a GLMM / PQL / score-test cousin."
+    },
+    {
+      "id": "pc",
+      "label": "PC adjustment",
+      "expression": "g(E[Y|G, PC]) = β_G G + ∑_{k=1}^K γ_k PC_k + ⋯",
+      "note": "A low-rank mean adjustment, not a full kinship."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Ancestry as nested relatedness: species / major lineage / outbreak cluster / isolate. SNPs shared at each level are not independent tests of a phenotype that also sits on those levels. PCs approximate the top cuts; a kinship or tree models more of the ladder.",
+    "layers": [
+      {
+        "title": "Major lineage",
+        "nodes": [
+          "L1",
+          "L2",
+          "L4"
+        ]
+      },
+      {
+        "title": "Within-lineage clusters",
+        "nodes": [
+          "c1",
+          "c2",
+          "c3",
+          "c4"
+        ]
+      },
+      {
+        "title": "Isolates (not iid)",
+        "nodes": [
+          "i1",
+          "i2",
+          "i3",
+          "i4",
+          "i5",
+          "i6"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Population stratification — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Population_stratification",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Genetic association — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Genetic_association",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mixed model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mixed_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-gwas",
+    "stats-confounding",
+    "stats-mixed-models",
+    "stats-trees",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "Two outbreak isolates are not two experiments",
+    "setup": "220 genomes, but 40 are a single MDR outbreak differing by <5 SNPs. Phenotype: fluoroquinolone MIC. A SNP present in the outbreak is perfectly correlated with being in the outbreak.",
+    "steps": [
+      {
+        "title": "Naive n",
+        "body": "Software says n = 220. The outbreak SNP’s “n” is closer to 1 cluster plus 180 other isolates."
+      },
+      {
+        "title": "K or collapse",
+        "body": "A kinship LMM down-weights near-duplicates. Or analyse one representative per cluster as a sensitivity check. If the association dies, it was clonality."
+      },
+      {
+        "title": "If the mutation is gyrA S91P in the outbreak",
+        "body": "It may still be causal for MIC and also a tag of the outbreak. Within-outbreak variation (heteroresistance, later acquisition) is the extra evidence. Structure control cannot invent that variation."
+      }
+    ],
+    "takeaway": "Relatedness is a confounder of association and a reducer of effective n. Model it, or stop claiming n = number of fasta files."
+  },
+  "check": [
+    {
+      "id": "pop-fork",
+      "kind": "conceptual",
+      "prompt": "Ignoring population structure in a SNP–phenotype GLM is primarily a:",
+      "choices": [
+        "Missing-data problem in Y",
+        "Confounding problem: ancestry is a common cause of genotype and often of phenotype",
+        "Proof that Bonferroni is enough",
+        "Reason to drop the intercept"
+      ],
+      "answer": "Confounding problem: ancestry is a common cause of genotype and often of phenotype",
+      "why": "The fork U→G and U→Y. Multiplicity is a separate bill.",
+      "whyWrong": {
+        "Missing-data problem in Y": "Not the main issue.",
+        "Proof that Bonferroni is enough": "FWER does not close a backdoor.",
+        "Reason to drop the intercept": "No."
+      }
+    },
+    {
+      "id": "pop-calc",
+      "kind": "calculation",
+      "prompt": "40 near-duplicate outbreak isolates plus 10 diverse isolates. Treating n=50 iid overstates independent samples. A crude “one per cluster” n is closest to:",
+      "choices": [
+        "50",
+        "11",
+        "40",
+        "2"
+      ],
+      "answer": "11",
+      "why": "1 outbreak cluster + 10 others = 11. Kinship LMM is a softer version of this count.",
+      "whyWrong": {
+        "50": "The fasta count, the overstatement.",
+        "40": "The outbreak only.",
+        "2": "Too collapsed."
+      }
+    },
+    {
+      "id": "pop-figure",
+      "kind": "figure",
+      "prompt": "On the relatedness hierarchy, isolates sit at the bottom. Why is that layer labelled “not iid”?",
+      "figureHint": "Lineage → clusters → isolates.",
+      "choices": [
+        "Because fasta files are independent by definition",
+        "Because isolates in a cluster share ancestry, so their (G, Y) pairs are dependent experiments",
+        "Because PCs require iid SNPs only",
+        "Because mixed models forbid clustering"
+      ],
+      "answer": "Because isolates in a cluster share ancestry, so their (G, Y) pairs are dependent experiments",
+      "why": "That is the plate’s warning. K or a tree is how you stop pretending iid.",
+      "whyWrong": {
+        "Because fasta files are independent by definition": "The opposite claim.",
+        "Because PCs require iid SNPs only": "PCs are a tool, not the reason.",
+        "Because mixed models forbid clustering": "They exist to model it."
+      }
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "id": "stats-bias-variance",
+  "title": "Bias, variance, and MSE",
+  "dek": "Bias is E[θ̂] − θ. Variance is the scatter of θ̂. MSE adds their squares. Unbiasedness is not a virtue if the variance explodes.",
+  "domain": "stats",
+  "aliases": [
+    "bias",
+    "variance of estimator",
+    "MSE",
+    "consistency",
+    "unbiased",
+    "shrinkage"
+  ],
+  "tags": [
+    "estimation",
+    "MSE",
+    "bias",
+    "shrinkage"
+  ],
+  "story": [
+    "Fix a procedure T_n(Y). Bias_θ(T_n) = E_θ[T_n] − θ. That expectation is over the sampling model, at a hypothetical true θ. A single printed estimate does not have a bias; the procedure does.",
+    "MSE = Var(T_n) + Bias². The MLE is often asymptotically unbiased and efficient in regular models, and still dominated in MSE by a shrinkage estimator when n is small or p is large. Hierarchical models in this studio are organised shrinkage, not a confession.",
+    "Consistency is a limit: T_n →p θ as n → ∞. Finite-sample unbiasedness does not imply consistency if variance refuses to die, and consistency does not imply unbiasedness at the n you have (π̂(1−π̂) for a Bernoulli variance is biased but consistent)."
+  ],
+  "deepTitle": "When unbiasedness is the wrong god",
+  "deep": [
+    "Cramér–Rao (regular, unbiased): Var(θ̂) ≥ 1 / I(θ). Attaining the bound is “efficiency” in that narrow class. MLEs do it asymptotically. A biased estimator may beat the bound in MSE — James–Stein, empirical Bayes, penalised likelihood.",
+    "Sample variance: s² = (n−1)⁻¹ ∑ (yᵢ − ȳ)² is unbiased for Gaussian σ²; the MLE uses n in the denominator and is biased low. For n = 8 MIC replicates, that distinction is not pedantry. For n = 800 WGS isolates on a well-estimated mean, it is.",
+    "Shrinkage toward a hierarchical mean increases bias for each unit and cuts variance enough that MSE falls for the small units. That is the eight-districts geometry later in this wave. Calling it “biased therefore invalid” is a confusion of loss functions.",
+    "Misspecification bias is not the same as estimator bias under a true model. Omitted variables bias OLS for a causal coefficient even when OLS is unbiased for the population projection coefficient. Name the target functional before you say “unbiased.”"
+  ],
+  "formulas": [
+    {
+      "id": "mse",
+      "label": "MSE decomposition",
+      "expression": "MSE(θ̂) = E[(θ̂ − θ)²] = Var(θ̂) + (E[θ̂] − θ)²",
+      "note": "The two terms trade. Hierarchical estimators move along this curve on purpose."
+    },
+    {
+      "id": "crlb",
+      "label": "Cramér–Rao (unbiased, regular)",
+      "expression": "Var(θ̂) ≥ 1 / I(θ)",
+      "note": "A lower bound inside a class, not a prohibition on shrinkage."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Cartoon MSE for three procedures on a small-n proportion: unbiased no-pooling, complete pooling (biased for units, tiny variance), and partial pooling. The bars are schematic MSE, not a theorem that shrinkage always wins.",
+    "panels": [
+      {
+        "title": "Small district n=4",
+        "bars": [
+          {
+            "label": "no pool",
+            "value": 9
+          },
+          {
+            "label": "partial",
+            "value": 3
+          },
+          {
+            "label": "pool",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "title": "Large district n=80",
+        "bars": [
+          {
+            "label": "no pool",
+            "value": 2
+          },
+          {
+            "label": "partial",
+            "value": 2
+          },
+          {
+            "label": "pool",
+            "value": 5
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bias–variance tradeoff — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-fisher-information",
+    "stats-mle",
+    "stats-partial-pooling",
+    "stats-eight-schools"
+  ],
+  "example": {
+    "title": "Bernoulli variance estimator",
+    "setup": "Yᵢ iid Bernoulli(π), n = 5, π = 0.2. Compare the MLE of the variance v = π(1−π), which is π̂(1−π̂), to the unbiased-for-π plug-in myth.",
+    "steps": [
+      {
+        "title": "Target",
+        "body": "v = π(1−π) = 0.16. Estimator v̂ = π̂(1−π̂) with π̂ = ȳ.",
+        "expression": "v = π(1−π)"
+      },
+      {
+        "title": "Bias exists",
+        "body": "E[π̂] = π so π̂ is unbiased for π, but g(π) = π(1−π) is concave near 0.2, so E[g(π̂)] ≠ g(E[π̂]) by Jensen. v̂ is biased low in small n. Consistency still holds because π̂ →p π."
+      },
+      {
+        "title": "MSE vs a constant",
+        "body": "A ridiculous estimator v̂ ≡ 0.16 is unbiased at this particular π and has zero variance — and is useless everywhere else. Unbiasedness at one parameter value is not a method."
+      }
+    ],
+    "takeaway": "State the target functional. Unbiasedness is a property of a pair (procedure, functional), not a halo."
+  },
+  "check": [
+    {
+      "id": "bv-mse",
+      "kind": "conceptual",
+      "prompt": "A shrinkage estimator that is biased for each unit-level θⱼ can still be preferable because:",
+      "choices": [
+        "Bias is imaginary in Bayesian procedures",
+        "MSE can fall when the variance drop beats Bias², especially for small nⱼ",
+        "Unbiasedness is required by Wilks’ theorem",
+        "Fisher information forbids biased estimators"
+      ],
+      "answer": "MSE can fall when the variance drop beats Bias², especially for small nⱼ",
+      "why": "That is the bias–variance trade. Hierarchical means are built on it.",
+      "whyWrong": {
+        "Bias is imaginary in Bayesian procedures": "Bayes estimators have frequentist bias; they may still have good MSE or calibration.",
+        "Unbiasedness is required by Wilks’ theorem": "Wilks is about nested LRTs, not this.",
+        "Fisher information forbids biased estimators": "Cramér–Rao is a bound for unbiased regular estimators."
+      }
+    },
+    {
+      "id": "bv-calc",
+      "kind": "calculation",
+      "prompt": "If Bias = 2 and Var = 5, MSE equals:",
+      "choices": [
+        "7",
+        "9",
+        "3",
+        "25"
+      ],
+      "answer": "9",
+      "why": "MSE = Var + Bias² = 5 + 4 = 9. Do not add Bias without squaring.",
+      "whyWrong": {
+        "7": "That is Var + Bias, missing the square.",
+        "3": "That is Var − Bias.",
+        "25": "That is (Bias+Var)² or Var², not the decomposition."
+      }
+    },
+    {
+      "id": "bv-figure",
+      "kind": "figure",
+      "prompt": "On the MSE small-multiples, why does complete pooling look worse in the large district?",
+      "figureHint": "n=4 versus n=80 panels.",
+      "choices": [
+        "Because pooling has no bias",
+        "Because a large district’s own data already have small variance, so shrinking toward a shared mean mostly adds bias",
+        "Because MSE is undefined for n>30",
+        "Because no-pooling is always inadmissible"
+      ],
+      "answer": "Because a large district’s own data already have small variance, so shrinking toward a shared mean mostly adds bias",
+      "why": "Partial pooling interpolates: small nⱼ shrink, large nⱼ do not. Complete pooling cannot stop shrinking.",
+      "whyWrong": {
+        "Because pooling has no bias": "Complete pooling is badly biased for heterogeneous units.",
+        "Because MSE is undefined for n>30": "Nonsense.",
+        "Because no-pooling is always inadmissible": "James–Stein is a specific result; the plate is a cartoon of nⱼ."
+      }
+    }
+  ]
+}

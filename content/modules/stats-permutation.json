@@ -1,0 +1,214 @@
+{
+  "id": "stats-permutation",
+  "title": "Permutation and randomisation tests",
+  "dek": "If a null makes some reshuffles of the labels exchangeable, the permutation distribution of a statistic is an exact (or exact-given-the-sample) reference. No χ² required.",
+  "domain": "stats",
+  "aliases": [
+    "permutation test",
+    "randomisation test",
+    "exact test",
+    "exchangeability",
+    "label shuffling"
+  ],
+  "tags": [
+    "inference",
+    "resampling",
+    "design",
+    "genomics"
+  ],
+  "story": [
+    "A permutation test is not a bootstrap. The bootstrap approximates a sampling law of an estimator. A permutation test builds a reference law of a test statistic under a sharp null that says certain labels were exchangeable.",
+    "Randomised experiments are the cleanest home: under H₀ of no treatment effect, the assignment vector can be reshuffled as the design would have allowed. The p-value is the fraction of assignments as extreme as the one you ran. Coverage of that p-value is by design, not by a Normal limit.",
+    "Observational genomics: permuting phenotype against genotype approximates a no-association null only if the permutation respects structure (batches, relatedness, population). A naive shuffle “proves” association with ancestry because ancestry was not exchangeable."
+  ],
+  "deepTitle": "What must be exchangeable",
+  "deep": [
+    "Fisher’s exact test is a permutation test on a 2×2 table, conditioning on margins. It is exact under that conditional null. It is not the only 2×2 test, and it is conservative if you wanted a different unconditional model.",
+    "Multiple testing: Westfall–Young permutes and takes the max statistic, capturing dependence among tests. Bonferroni uses a union bound and ignores that dependence. In GWAS, permutation of a structured sample is expensive and still needs a kinship-aware shuffle or a mixed-model null.",
+    "Permutation of residuals in regression can test a coefficient when the null model’s fitted structure is kept. Permuting Y against a column of X while leaving confounders unpermuted is the usual mistake — it breaks the relationship between Y and the confounders.",
+    "A huge permutation p = 0.00001 is still a p-value under a null. It is not an effect size and not a posterior. Combine with the scientific contrast (risk difference, OR, MIC shift)."
+  ],
+  "formulas": [
+    {
+      "id": "pperm",
+      "label": "Permutation p-value (with +1)",
+      "expression": "p = (1 + #{T* ≥ T_obs}) / (1 + B)",
+      "note": "The +1 avoids claiming p = 0 after finite shuffles."
+    },
+    {
+      "id": "exch",
+      "label": "Exchangeability under H₀",
+      "expression": "law(Y | assignment) = law(Y | π(assignment))  under H₀",
+      "note": "The design’s allowed π are the only legal shuffles."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Permutation as a design-respecting loop: freeze the outcomes, reshuffle only what the null says was random, recompute T, sit T_obs in that cloud. A bootstrap loop would instead resample the world of T as an estimator.",
+    "nodes": [
+      {
+        "id": "obs",
+        "label": "Y, labels",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "null",
+        "label": "H₀ exchangeable?",
+        "x": 34,
+        "y": 40,
+        "tone": "decision"
+      },
+      {
+        "id": "shuff",
+        "label": "Shuffle labels",
+        "x": 58,
+        "y": 18,
+        "tone": "process"
+      },
+      {
+        "id": "stop",
+        "label": "Wrong null",
+        "x": 58,
+        "y": 62,
+        "tone": "end"
+      },
+      {
+        "id": "p",
+        "label": "p from T* cloud",
+        "x": 84,
+        "y": 18,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "obs",
+        "to": "null"
+      },
+      {
+        "from": "null",
+        "to": "shuff",
+        "label": "yes"
+      },
+      {
+        "from": "null",
+        "to": "stop",
+        "label": "structure ignored"
+      },
+      {
+        "from": "shuff",
+        "to": "p"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Permutation test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Permutation_test",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): ESL — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-bootstrap",
+    "stats-randomization",
+    "stats-multiple-testing",
+    "stats-gwas",
+    "stats-lrt"
+  ],
+  "example": {
+    "title": "Shuffle a treatment, not a kinship",
+    "setup": "20 household clusters, binary treatment assigned at household level, outcome: incident TB. Statistic T = difference in household rates.",
+    "steps": [
+      {
+        "title": "Legal shuffle",
+        "body": "Reassign the 20 treatment labels to households as the randomisation would have. Keep members together. Recompute T*."
+      },
+      {
+        "title": "Illegal shuffle",
+        "body": "Shuffle person-level labels, breaking households. The null distribution is too tight (or just wrong) because it pretends a randomisation you did not run."
+      },
+      {
+        "title": "GWAS cousin",
+        "body": "Shuffling case/control labels without regard to principal components of ancestry is the same crime: the labels were not exchangeable under a null that still has structure."
+      }
+    ],
+    "takeaway": "Permute what the null made random. Structure that remains under H₀ must stay in the shuffle."
+  },
+  "check": [
+    {
+      "id": "perm-vs-boot",
+      "kind": "conceptual",
+      "prompt": "A permutation test primarily approximates:",
+      "choices": [
+        "The sampling distribution of an estimator under the true F",
+        "The distribution of a test statistic under an exchangeability null",
+        "A posterior of β",
+        "Fisher information"
+      ],
+      "answer": "The distribution of a test statistic under an exchangeability null",
+      "why": "Bootstrap ≠ permutation. One is plug-in sampling of T as an estimator; the other is a null reference.",
+      "whyWrong": {
+        "The sampling distribution of an estimator under the true F": "Bootstrap’s job.",
+        "A posterior of β": "No.",
+        "Fisher information": "No."
+      }
+    },
+    {
+      "id": "perm-calc",
+      "kind": "calculation",
+      "prompt": "B = 999 shuffles, 24 as or more extreme than T_obs. Using p = (1+#extreme)/(1+B):",
+      "choices": [
+        "0.024",
+        "0.025",
+        "0",
+        "24"
+      ],
+      "answer": "0.025",
+      "why": "(1+24)/(1+999) = 25/1000 = 0.025.",
+      "whyWrong": {
+        "0.024": "Forgot the +1: 24/999 ≈ 0.024.",
+        "0": "Finite B never licences p=0 with the +1 convention.",
+        "24": "A count, not a p-value."
+      }
+    },
+    {
+      "id": "perm-figure",
+      "kind": "figure",
+      "prompt": "On the flow plate, the exit “wrong null” is for:",
+      "figureHint": "Decision: H₀ exchangeable? No → wrong null.",
+      "choices": [
+        "When B is large",
+        "When you shuffle as if labels were exchangeable but population structure, batches, or clusters remain under the scientific null",
+        "When the test statistic is a mean",
+        "When you use a +1 p-value"
+      ],
+      "answer": "When you shuffle as if labels were exchangeable but population structure, batches, or clusters remain under the scientific null",
+      "why": "That is the GWAS/household failure mode the plate is drawn to prevent.",
+      "whyWrong": {
+        "When B is large": "That is Monte Carlo precision.",
+        "When the test statistic is a mean": "Means are allowed.",
+        "When you use a +1 p-value": "That is a small-sample convention, not a wrong null."
+      }
+    }
+  ]
+}

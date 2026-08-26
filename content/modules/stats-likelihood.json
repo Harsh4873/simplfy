@@ -1,0 +1,173 @@
+{
+  "id": "stats-likelihood",
+  "title": "Likelihood as a function of the parameter",
+  "dek": "Freeze the data, unfreeze θ. L(θ | y) = f(y | θ) is not a density in θ. Profile, relative, and score are how you read that curve.",
+  "domain": "stats",
+  "aliases": [
+    "likelihood function",
+    "log-likelihood",
+    "score function",
+    "profile likelihood",
+    "relative likelihood"
+  ],
+  "tags": [
+    "likelihood",
+    "foundations",
+    "score",
+    "profile"
+  ],
+  "story": [
+    "The sampling model f(y | θ) becomes a likelihood when y is treated as fixed. Nothing in that sentence gives you a probability distribution on θ. Integrating L with respect to θ without a prior is a category error; maximising it is not.",
+    "Working on ℓ(θ) = log L is numerical hygiene: products of small densities become sums. The score S(θ) = ∇ℓ is the gradient. Interior MLEs solve S(θ̂) = 0. Observed information −∇²ℓ(θ̂) is the local curvature of the same curve.",
+    "When θ = (ψ, λ) and ψ is the scientific target, the profile likelihood L_p(ψ) = max_λ L(ψ, λ) is the honest 1-D slice. A Wald interval from a transformation you have not profiled can look prettier than the likelihood and be wrong near a boundary — allele frequencies, variance components, mixture weights."
+  ],
+  "deepTitle": "Relative likelihood, score, and profiling",
+  "deep": [
+    "Relative likelihood R(θ) = L(θ)/L(θ̂). Contours R ≥ 0.15 are a classical sketch of “plausible θ” without converting the curve into a posterior. They are not confidence sets until you add a sampling argument (Wilks, Bartlett, simulation).",
+    "Score identity: under regularity, E_θ[S(θ)] = 0 and Var(S) = I(θ) = E[−∇²ℓ]. The MLE is the root of a mean-zero estimating equation. Sandwich covariance appears when that identity fails because f was misspecified.",
+    "Profile likelihood ratio 2(ℓ(θ̂) − ℓ_p(ψ)) is the LRT for H₀: ψ = ψ₀ with nuisance λ fitted under the restriction. This is the same object as Wilks on a nested pair. Do not profile by plugging in a consistent λ̂ from the full model and calling it a profile — that is a Wald-flavoured shortcut.",
+    "In a sequencing lab, the likelihood is often a product over sites or isolates only after you have declared independence. A phylogenetic likelihood replaces that product with a tree-indexed Markov process. The word “likelihood” did not change; the joint f(y | θ) did."
+  ],
+  "formulas": [
+    {
+      "id": "L",
+      "label": "Likelihood and log-likelihood",
+      "expression": "L(θ | y) = f(y | θ),   ℓ(θ) = log L(θ | y)",
+      "note": "L is not a density in θ. ℓ is a numerically stabler coordinate."
+    },
+    {
+      "id": "profile",
+      "label": "Profile likelihood",
+      "expression": "L_p(ψ) = max_λ L(ψ, λ)",
+      "note": "Maximise nuisance parameters at each fixed scientific target ψ."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic readings of one experiment: a peaked likelihood after a large n, a flatter likelihood after a small n, and a skewed profile that is not a Normal sampling law. The x-axis is θ, not y.",
+    "xLabel": "parameter θ (scientific target)",
+    "curves": [
+      {
+        "id": "big",
+        "label": "Peaked L(θ | y), large n",
+        "mean": 0.15,
+        "sd": 0.28
+      },
+      {
+        "id": "small",
+        "label": "Flat L(θ | y), small n",
+        "mean": 0.05,
+        "sd": 0.9
+      },
+      {
+        "id": "skew",
+        "label": "Skewed profile near a bound",
+        "mean": -0.7,
+        "sd": 0.55
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Likelihood function — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Likelihood_function",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-foundations",
+    "stats-mle",
+    "stats-fisher-information",
+    "stats-lrt",
+    "stats-random-variables"
+  ],
+  "example": {
+    "title": "Profile a transmission probability on the logit scale",
+    "setup": "n = 40 independent household contacts, Yᵢ ~ Bernoulli(π), π = logit⁻¹(ψ). You care about π, but the curvature is more regular in ψ. Data: y = 6 positives.",
+    "steps": [
+      {
+        "title": "Write L",
+        "body": "L(π) = π⁶ (1−π)³⁴ on (0,1). Equivalently ℓ(ψ) = 6ψ − 40 log(1+e^ψ) with π = e^ψ/(1+e^ψ).",
+        "expression": "ℓ(ψ) = 6ψ − 40 log(1 + e^ψ)"
+      },
+      {
+        "title": "Maximise",
+        "body": "Score 6 − 40π = 0 ⇒ π̂ = 6/40 = 0.15, ψ̂ = logit(0.15). Relative likelihood R(π) = L(π)/L(0.15) can be plotted on π directly."
+      },
+      {
+        "title": "Why profile language still matters",
+        "body": "If a second parameter (household random intercept) is present, π is no longer a one-dimensional exponential-family mean. You must maximise the nuisance at each π, not freeze the random-effect variance at its full-model MLE and call the slice a profile."
+      }
+    ],
+    "takeaway": "Draw L as a function of the scientific parameter. If nuisances exist, maximise them; do not condition on a plugged-in favourite."
+  },
+  "check": [
+    {
+      "id": "lik-not-prob",
+      "kind": "conceptual",
+      "prompt": "∫ L(θ | y) dθ equals 1:",
+      "choices": [
+        "Always, because likelihoods are densities in θ",
+        "Only after you multiply by a prior and normalise, i.e. once you have a posterior",
+        "Whenever the model is an exponential family",
+        "When n > 30"
+      ],
+      "answer": "Only after you multiply by a prior and normalise, i.e. once you have a posterior",
+      "why": "L(· | y) is a function of θ, not a probability density, unless you add p(θ) and divide by the marginal.",
+      "whyWrong": {
+        "Always, because likelihoods are densities in θ": "That confuses likelihood with posterior.",
+        "Whenever the model is an exponential family": "Exponential families still need a prior to make a posterior.",
+        "When n > 30": "Sample size does not normalise L."
+      }
+    },
+    {
+      "id": "lik-score",
+      "kind": "calculation",
+      "prompt": "Bernoulli n = 10, y = 3. Score S(π) = 3/π − 7/(1−π). At π = 0.3 the score is:",
+      "choices": [
+        "0",
+        "1",
+        "10",
+        "−7"
+      ],
+      "answer": "0",
+      "why": "π̂ = y/n = 0.3 is the MLE, so the interior score is zero there: 3/0.3 − 7/0.7 = 10 − 10 = 0.",
+      "whyWrong": {
+        "1": "The score is a derivative, not a probability.",
+        "10": "That is 3/0.3 before subtracting the second term.",
+        "−7": "That ignores the first term."
+      }
+    },
+    {
+      "id": "lik-figure",
+      "kind": "figure",
+      "prompt": "On the likelihood plate the x-axis is labelled as a parameter. What mistake does that figure refuse?",
+      "figureHint": "Three curves of L(θ | y) on θ.",
+      "choices": [
+        "Treating the likelihood curve as a sampling density of Y",
+        "Using a log scale for ℓ",
+        "Profiling a nuisance parameter",
+        "Reporting an MLE"
+      ],
+      "answer": "Treating the likelihood curve as a sampling density of Y",
+      "why": "The whole point of the plate is that after y is observed the remaining free coordinate is θ. Those curves are not densities of the data.",
+      "whyWrong": {
+        "Using a log scale for ℓ": "That is encouraged.",
+        "Profiling a nuisance parameter": "That is how you read a multi-parameter L.",
+        "Reporting an MLE": "The peak of L is the MLE."
+      }
+    }
+  ]
+}

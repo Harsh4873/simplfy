@@ -1,0 +1,172 @@
+{
+  "id": "stats-priors",
+  "title": "Priors as scientific statements",
+  "dek": "A prior p(θ) is part of the model. “Flat” is not empty. The scale you put the flatness on is the scientific choice.",
+  "domain": "stats",
+  "aliases": [
+    "prior",
+    "weakly informative prior",
+    "flat prior",
+    "elicitation",
+    "prior predictive"
+  ],
+  "tags": [
+    "Bayes",
+    "prior",
+    "elicitation",
+    "predictive"
+  ],
+  "story": [
+    "Write p(θ) the way you write f(y|θ): in public. A Uniform(0,1) on a probability is a statement. A Uniform on logit(π) is a very different statement, concentrating mass near π = 0 and 1. Calling either “noninformative” is advertising, not mathematics.",
+    "Weakly informative priors in a genomics lab encode scale: a log-odds coefficient is probably not 20; a district SD is probably not 50 on the logit. They regularise separation and keep MCMC in the interior. They should still lose to the likelihood when n is large.",
+    "Prior predictive checks: draw θ from p(θ), then y from f(y|θ), and ask whether the implied MIC ranges, case counts, or allele frequencies look like the world you work in. If the prior predictive lives on another planet, the posterior started there too."
+  ],
+  "deepTitle": "Improper, hierarchical, and what “flat” hides",
+  "deep": [
+    "Improper priors (p(θ) ∝ 1 on ℝ) can yield proper posteriors in nice GLMs and fail in mixed models (variance components). A sampler that “sort of ran” is not a proof of propriety. Prefer a proper weakly informative prior on scales.",
+    "Hierarchical priors are how you stop pretending 40 mutation-specific error rates are unrelated: θⱼ ~ N(μ, τ²), with priors on μ, τ. That is a scientific claim of exchangeability, not a computational trick. If one gene is a known outlier mechanism, it should not share that θⱼ distribution blindly.",
+    "Jacobian warning: a prior that is flat on σ is not flat on log σ. Always name the parameterisation. The same goes for π versus logit π versus the two Beta parameters.",
+    "Sensitivity: for rare events, show two or three priors you could defend in lab meeting. If conclusions flip, the data were not decisive — that is the result."
+  ],
+  "formulas": [
+    {
+      "id": "bayesprior",
+      "label": "Posterior",
+      "expression": "p(θ | y) ∝ f(y | θ) p(θ)",
+      "note": "p(θ) is not optional in this formula. Hiding it is still choosing it."
+    },
+    {
+      "id": "pp",
+      "label": "Prior predictive",
+      "expression": "p(y) = ∫ f(y | θ) p(θ) dθ",
+      "note": "The distribution of fake data from the prior, before you look at y_obs."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Three priors on a probability π: a Beta(1,1) uniform, a Beta(2,8) weakly informative around 20%, and a U-shaped Beta(0.5,0.5) that piles mass near 0 and 1. “Flat” is not unique, and Beta(0.5,0.5) is a strong claim about extremes.",
+    "xLabel": "π  (e.g. a rare resistance allele)",
+    "curves": [
+      {
+        "id": "unif",
+        "label": "Beta(1,1)",
+        "mean": 0.5,
+        "sd": 0.28
+      },
+      {
+        "id": "weak",
+        "label": "Beta(2,8) ~ 20%",
+        "mean": 0.2,
+        "sd": 0.12
+      },
+      {
+        "id": "jeff",
+        "label": "U-shape (extremes)",
+        "mean": 0.5,
+        "sd": 0.4
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Prior probability — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Prior_probability",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Beta distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Beta_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman et al., Bayesian Data Analysis — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-conjugacy",
+    "stats-posterior-calibration",
+    "stats-mcmc",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "Flat on logit is not flat on π",
+    "setup": "A colleague puts N(0, 10²) on β₀ in an intercept-only logit, calling it “weak.” Translate to π.",
+    "steps": [
+      {
+        "title": "Push forward",
+        "body": "β₀ ~ N(0,100) implies π = logit⁻¹(β₀) is almost a point mass at 0 and 1 with a thin bridge. Most prior draws are π ≈ 0 or 1 — a strong claim about a resistance probability."
+      },
+      {
+        "title": "A lab-scale alternative",
+        "body": "N(0, 1.5²) on the log-odds scale puts most prior mass between about 0.05 and 0.95 on π. Still wide. Still named."
+      },
+      {
+        "title": "Check",
+        "body": "Simulate prior predictives of y in n = 20. If half the fake studies are 0/20 or 20/20 while your disease is not like that, the prior is not “weak” in the world you study."
+      }
+    ],
+    "takeaway": "Name the scale. Simulate y. Then defend p(θ) as you would defend a likelihood."
+  },
+  "check": [
+    {
+      "id": "prior-flat",
+      "kind": "conceptual",
+      "prompt": "A prior that is uniform on logit(π):",
+      "choices": [
+        "Is uniform on π as well",
+        "Puts heavy mass near π = 0 and π = 1 after the inverse-logit transform",
+        "Is the unique noninformative prior",
+        "Does not affect any posterior"
+      ],
+      "answer": "Puts heavy mass near π = 0 and π = 1 after the inverse-logit transform",
+      "why": "The Jacobian of the logit map piles mass at the ends of (0,1). Uniformity is parameterisation-dependent.",
+      "whyWrong": {
+        "Is uniform on π as well": "Only a uniform on π does that.",
+        "Is the unique noninformative prior": "There is no unique empty prior.",
+        "Does not affect any posterior": "It can dominate rare-event data."
+      }
+    },
+    {
+      "id": "prior-beta",
+      "kind": "calculation",
+      "prompt": "Beta(2,8) has mean a/(a+b) equal to:",
+      "choices": [
+        "0.2",
+        "0.25",
+        "0.5",
+        "2"
+      ],
+      "answer": "0.2",
+      "why": "2/(2+8) = 0.2. Variance is ab/[(a+b)²(a+b+1)] = 16/(100×11) ≈ 0.0145, SD ≈ 0.12 as on the plate.",
+      "whyWrong": {
+        "0.25": "2/8, missing the sum in the denominator.",
+        "0.5": "Beta(1,1) mean.",
+        "2": "A parameter, not the mean."
+      }
+    },
+    {
+      "id": "prior-figure",
+      "kind": "figure",
+      "prompt": "On the prior plate, why is the U-shaped curve labelled as a claim about extremes?",
+      "figureHint": "Three Betas including a wide U-shape.",
+      "choices": [
+        "Because Beta(0.5,0.5)-like shapes put extra prior mass near 0 and 1",
+        "Because U-shaped priors are uniform",
+        "Because that curve is a likelihood",
+        "Because Fisher information is U-shaped"
+      ],
+      "answer": "Because Beta(0.5,0.5)-like shapes put extra prior mass near 0 and 1",
+      "why": "Jeffreys for Bernoulli is Beta(½,½). It is a statement that extremes are more plausible a priori than 0.5 — often the opposite of a lab intuition for a rare allele.",
+      "whyWrong": {
+        "Because U-shaped priors are uniform": "Uniform is Beta(1,1), the first curve.",
+        "Because that curve is a likelihood": "These are priors.",
+        "Because Fisher information is U-shaped": "I(π)=1/(π(1−π)) is U-shaped, which is why Jeffreys is; the plate is still a prior drawing."
+      }
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "id": "stats-survey-error",
+  "title": "Survey error: sampling, clustering, and nonresponse",
+  "dek": "The sampling design is part of the likelihood (or of the Horvitz–Thompson weights). Pretending a cluster survey is iid is how SEs shrink and maps lie.",
+  "domain": "stats",
+  "aliases": [
+    "survey sampling",
+    "design effect",
+    "cluster sampling",
+    "Horvitz-Thompson",
+    "nonresponse",
+    "weights"
+  ],
+  "tags": [
+    "epi",
+    "survey",
+    "clustering",
+    "weights"
+  ],
+  "story": [
+    "A TB prevalence survey is usually stratified, clustered, and weighted. Each person has an inclusion probability π_i. The Horvitz–Thompson total is ∑ y_i / π_i. Software that runs an unweighted iid logit on the same rows estimates a different functional — the superpopulation of listed respondents, not the finite-population mean the protocol wrote.",
+    "Clustering (enumeration areas, households) induces positive correlation. Design effect DEFF ≈ 1+(m−1)ρ again. Report SEs that use the clusters as the resampling units (sandwich, bootstrap of PSUs, or a mixed model). n = 50,000 individuals with 400 clusters is not n = 50,000 for a district mean.",
+    "Nonresponse is not missing completely at random because households that refuse may differ in disease and in risk. Weights and imputation are models of that missingness. A 70% response rate with silence in the methods is a bias story, not a precision story."
+  ],
+  "deepTitle": "Weights, models, and the two populations",
+  "deep": [
+    "Design-based: inference is over the randomisation of the sample from a finite population. Model-based: a superpopulation model for Y, with the design maybe entering via weights or as part of the likelihood (cluster random effects). You can use both; you cannot ignore both.",
+    "Weights in a GLM: weighted IRLS estimates a weighted score. That can target a census mean. It is not the same as a mixed model of clustering. People often need both: weights for unequal π_i, clusters for SEs.",
+    "Stratification, if used in selection, should appear in the analysis (strata as fixed effects or as part of the survey design object). Post-stratification after the fact is a calibration model — useful, and another assumption.",
+    "Lab surveys of isolates inherit the clinic’s sampling: only diagnosed, only cultured, only sequenced. That is a survey error stack on top of the household survey stack. Transmission-genomics caveats were this problem in a different coat."
+  ],
+  "formulas": [
+    {
+      "id": "ht",
+      "label": "Horvitz–Thompson mean (sketch)",
+      "expression": "ȳ_HT = (∑ᵢ yᵢ / πᵢ) / (∑ᵢ 1/πᵢ)",
+      "note": "πᵢ = P(unit i in sample). Unweighted ȳ ignores πᵢ."
+    },
+    {
+      "id": "deff2",
+      "label": "Cluster design effect",
+      "expression": "DEFF ≈ 1 + (m − 1) ρ",
+      "note": "Same geometry as the power plate. Here it inflates SEs of a survey mean."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "A prevalence survey’s error stack: country design, strata, clusters (PSUs), households, persons — then nonresponse sitting as a missingness layer. An iid Bernoulli likelihood lives only at the bottom and pretends the upper layers were a simple random sample.",
+    "layers": [
+      {
+        "title": "Strata",
+        "nodes": [
+          "urban",
+          "rural"
+        ]
+      },
+      {
+        "title": "Clusters (PSUs)",
+        "nodes": [
+          "EA1",
+          "EA2",
+          "EA3",
+          "EA4"
+        ]
+      },
+      {
+        "title": "Households / persons",
+        "nodes": [
+          "h1",
+          "h2",
+          "h3",
+          "h4"
+        ]
+      },
+      {
+        "title": "Missingness",
+        "nodes": [
+          "respond",
+          "refuse",
+          "absent"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Survey sampling — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Survey_sampling",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Horvitz–Thompson estimator — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Horvitz%E2%80%93Thompson_estimator",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-hierarchical",
+    "stats-sandwich",
+    "stats-power",
+    "stats-incidence-prevalence",
+    "stats-transmission-genomics"
+  ],
+  "example": {
+    "title": "400 clusters, 50,000 X-rays, iid logit",
+    "setup": "National TB prevalence survey. Analyst fits an unweighted iid logit of X-ray-suggestive TB on age and sex, prints p < 10^{-12} for age.",
+    "steps": [
+      {
+        "title": "Wrong n",
+        "body": "SEs use n = 50,000. With ρ even 0.02 and m ≈ 125, DEFF is huge. Age may still matter; the stars are theatre."
+      },
+      {
+        "title": "Wrong mean",
+        "body": "If urban clusters were oversampled, unweighted age coefficients mix a sampling artefact. Use weights for the finite-population regression functional, or a model that includes the design variables."
+      },
+      {
+        "title": "Minimal adult analysis",
+        "body": "Survey-weighted estimator + cluster-robust SEs at PSU, or a hierarchical model with PSU random intercepts plus weights as a sensitivity. Print the number of PSUs next to every interval."
+      }
+    ],
+    "takeaway": "The design is data. Weights change the mean; clusters change the SE; nonresponse changes both."
+  },
+  "check": [
+    {
+      "id": "surv-iid",
+      "kind": "conceptual",
+      "prompt": "Analysing a cluster survey as iid Bernoulli rows typically:",
+      "choices": [
+        "Leaves point estimates and SEs untouched",
+        "Understates SEs (and may also bias means if inclusion probabilities vary)",
+        "Removes nonresponse",
+        "Is required by the Horvitz–Thompson theorem"
+      ],
+      "answer": "Understates SEs (and may also bias means if inclusion probabilities vary)",
+      "why": "Ignored ρ and ignored π_i. HT exists because π_i is not equal.",
+      "whyWrong": {
+        "Leaves point estimates and SEs untouched": "False.",
+        "Removes nonresponse": "It ignores it.",
+        "Is required by the Horvitz–Thompson theorem": "Opposite."
+      }
+    },
+    {
+      "id": "surv-calc",
+      "kind": "calculation",
+      "prompt": "Two people, π₁=0.5, y₁=1; π₂=0.1, y₂=0. A sketch HT total ∑ y/π equals:",
+      "choices": [
+        "1",
+        "2",
+        "0.5",
+        "0"
+      ],
+      "answer": "2",
+      "why": "1/0.5 + 0/0.1 = 2. The rare-inclusion person would have contributed more had y₂ been 1. Unweighted total of observed y is 1.",
+      "whyWrong": {
+        "1": "The unweighted sum of y.",
+        "0.5": "π₁.",
+        "0": "Would ignore y₁."
+      }
+    },
+    {
+      "id": "surv-figure",
+      "kind": "figure",
+      "prompt": "On the survey hierarchy, missingness is its own layer. Why not fold it into “persons” silently?",
+      "figureHint": "Bottom layer: respond / refuse / absent.",
+      "choices": [
+        "Because nonresponse is a missingness mechanism that can bias means, not only a smaller n",
+        "Because refusing people have π_i = 1 always",
+        "Because clusters forbid nonresponse",
+        "Because HT sets missing y to 0 without comment"
+      ],
+      "answer": "Because nonresponse is a missingness mechanism that can bias means, not only a smaller n",
+      "why": "The plate is an error stack. Precision and bias live on different layers.",
+      "whyWrong": {
+        "Because refusing people have π_i = 1 always": "No.",
+        "Because clusters forbid nonresponse": "No.",
+        "Because HT sets missing y to 0 without comment": "That would be a bad estimator, not HT as defined for the sampled units."
+      }
+    }
+  ]
+}

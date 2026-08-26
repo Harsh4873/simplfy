@@ -1,0 +1,192 @@
+{
+  "id": "stats-posterior-calibration",
+  "title": "Posterior calibration",
+  "dek": "A posterior is calibrated if, among the days you quoted 80% intervals, about 80% of those intervals cover the thing you claimed. Computation plus a prior does not grant this for free.",
+  "domain": "stats",
+  "aliases": [
+    "calibration",
+    "posterior predictive check",
+    "coverage of credible intervals",
+    "PPC",
+    "probability integral transform"
+  ],
+  "tags": [
+    "Bayes",
+    "calibration",
+    "predictive",
+    "diagnostics"
+  ],
+  "story": [
+    "Bayesian computation produces numbers. Calibration asks whether those numbers match frequencies in a world you are willing to describe. If you simulate θ from a prior (or from a hierarchical hyperprior), then y from the likelihood, then form 90% credible intervals, about 90% should cover θ — for that data-generating process.",
+    "If the likelihood omitted clustering, intervals will be too short. If the prior was wildly concentrated, they will cover the prior’s favourite neighbourhood, not the lab’s. Posterior predictive checks (replicate y_rep from p(y_rep | y) and compare to y) catch some of this without needing the true θ.",
+    "A 95% credible interval is still not a 95% confidence interval. You can have approximate frequentist coverage as a bonus of a well-specified model and a not-insane prior. You cannot rename the bonus as the definition."
+  ],
+  "deepTitle": "PPC, PIT, and simulation from the joint",
+  "deep": [
+    "Posterior predictive: y_rep ~ p(y_rep | y) = ∫ f(y_rep | θ) p(θ | y) dθ. Histograms of a discrepancy T(y_rep) versus T(y_obs) are a visual test. If T is the number of zeros in weekly counts and y_obs has far more zeros than y_rep, the Poisson-without-mixture story failed.",
+    "Probability integral transform: if the predictive cdf is right, F(y_obs | past) should look Uniform. Used more in sequential forecasting than in a one-shot DST paper, but the idea is the same: probabilities should be frequencies of events you defined.",
+    "Hierarchical calibration is trickier: you may want calibration for district-level θⱼ, not only for the hypermean μ. Shrinking hard can be well-calibrated for μ and poorly calibrated for a particular referral hospital that was never exchangeable.",
+    "MCMC error is not miscalibration of the model; it is miscomputation. Mixing the two in a diagnostics paragraph is how people “fix” a wrong likelihood by running more iterations."
+  ],
+  "formulas": [
+    {
+      "id": "ppc",
+      "label": "Posterior predictive",
+      "expression": "p(y_rep | y) = ∫ f(y_rep | θ) p(θ | y) dθ",
+      "note": "Compare T(y_rep) to T(y). That is a check of the joint model, prior included."
+    },
+    {
+      "id": "cover",
+      "label": "Nominal coverage (simulation)",
+      "expression": "P(θ ∈ C_{1−α}(Y) | DGP)  ≈  1−α",
+      "note": "A property you can measure in fake-data simulation. Not automatic."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic calibration of 80% credible intervals under three DGPs: well-specified iid Bernoulli, same mean with ignored household clustering, and a prior piled at the wrong end of π. Only the first bar sits near 80.",
+    "panels": [
+      {
+        "title": "iid model true",
+        "bars": [
+          {
+            "label": "cover%",
+            "value": 80
+          },
+          {
+            "label": "nominal",
+            "value": 80
+          }
+        ]
+      },
+      {
+        "title": "ignored clusters",
+        "bars": [
+          {
+            "label": "cover%",
+            "value": 54
+          },
+          {
+            "label": "nominal",
+            "value": 80
+          }
+        ]
+      },
+      {
+        "title": "bad prior, n small",
+        "bars": [
+          {
+            "label": "cover%",
+            "value": 41
+          },
+          {
+            "label": "nominal",
+            "value": 80
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Posterior predictive distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Posterior_predictive_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Calibration (statistics) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Calibration_(statistics)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman BDA — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-priors",
+    "stats-mcmc",
+    "stats-confidence-intervals",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "Too-short intervals on district FQ-R",
+    "setup": "Beta-Binomial iid model on isolates, 80% posterior intervals for each district’s πⱼ. A fake-data study that includes household clustering shows ~55% coverage.",
+    "steps": [
+      {
+        "title": "The PPC hint",
+        "body": "T = variance of district-level ȳⱼ. y_rep from the iid Beta-Binomial is too homogeneous. The data’s T sits in the tail of T(y_rep)."
+      },
+      {
+        "title": "Repair the likelihood",
+        "body": "Add a district or household random effect, or a Dirichlet-multinomial. Re-simulate coverage. The prior on τ now matters for unit-level calibration."
+      },
+      {
+        "title": "Do not lengthen intervals by hand",
+        "body": "Multiplying SDs by 1.5 in a figure is not a posterior. If you need a conservative interval for policy, say so as a decision rule, not as p(π | y)."
+      }
+    ],
+    "takeaway": "Calibration is a property of the whole joint model under a DGP you name. Credible is not a synonym for covered."
+  },
+  "check": [
+    {
+      "id": "cal-cred",
+      "kind": "conceptual",
+      "prompt": "A 90% credible interval is guaranteed to have 90% frequentist coverage:",
+      "choices": [
+        "Always, by Bayes’ theorem",
+        "Only under extra conditions (model and prior matching the DGP, regularity, honest computation) — not by the word “credible”",
+        "Never",
+        "When n>30"
+      ],
+      "answer": "Only under extra conditions (model and prior matching the DGP, regularity, honest computation) — not by the word “credible”",
+      "why": "Definition is posterior probability. Coverage is a sampling property you can check.",
+      "whyWrong": {
+        "Always, by Bayes’ theorem": "Bayes gives p(θ|y), not automatic coverage.",
+        "Never": "Well-specified models often approximately cover.",
+        "When n>30": "Not a theorem."
+      }
+    },
+    {
+      "id": "cal-calc",
+      "kind": "calculation",
+      "prompt": "You simulated 200 fake datasets from a DGP and built 80% credible intervals. 110 covered the true θ. Estimated coverage is:",
+      "choices": [
+        "80%",
+        "55%",
+        "110%",
+        "20%"
+      ],
+      "answer": "55%",
+      "why": "110/200 = 0.55. Nominal was 80; this DGP is miscalibrated (too short or off-centre).",
+      "whyWrong": {
+        "80%": "That was nominal, not achieved.",
+        "110%": "Counts are not percents.",
+        "20%": "The miss rate is 45%, not 20."
+      }
+    },
+    {
+      "id": "cal-figure",
+      "kind": "figure",
+      "prompt": "On the calibration small-multiples, the short cover% bar under “ignored clusters” is claiming:",
+      "figureHint": "Middle panel, cover% vs nominal 80.",
+      "choices": [
+        "Clustering makes intervals too wide",
+        "An iid posterior that pretends isolates are independent will typically undercover θ when the DGP is clustered",
+        "Priors cannot affect coverage",
+        "80% is a p-value"
+      ],
+      "answer": "An iid posterior that pretends isolates are independent will typically undercover θ when the DGP is clustered",
+      "why": "Fake precision. Same lesson as sandwich and mixed models, now in a Bayesian caption.",
+      "whyWrong": {
+        "Clustering makes intervals too wide": "The bar is short: undercoverage, too tight.",
+        "Priors cannot affect coverage": "The third panel is exactly that.",
+        "80% is a p-value": "It is a nominal interval level."
+      }
+    }
+  ]
+}

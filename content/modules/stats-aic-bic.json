@@ -1,0 +1,200 @@
+{
+  "id": "stats-aic-bic",
+  "title": "AIC and BIC are not tests",
+  "dek": "AIC estimates a predictive KL risk. BIC is a large-n approximation to a Bayes factor under a particular prior. Neither is a p-value, and neither requires nested models.",
+  "domain": "stats",
+  "aliases": [
+    "AIC",
+    "BIC",
+    "Akaike",
+    "Schwarz criterion",
+    "model selection",
+    "information criterion"
+  ],
+  "tags": [
+    "model comparison",
+    "AIC",
+    "BIC",
+    "prediction"
+  ],
+  "story": [
+    "AIC = −2ℓ(θ̂) + 2p. Smaller is better as an estimate of expected out-of-sample Kullback–Leibler risk (up to a constant). The 2p penalty is not a significance threshold. A difference of 0.4 is a shrug, not a star.",
+    "BIC = −2ℓ(θ̂) + p log n. The heavier penalty is a crude Laplace approximation to a marginal likelihood. BIC tends to pick simpler models as n grows if a true finite-dimensional model is in the list. AIC does not; it keeps extra parameters that still predict.",
+    "You may compute AIC for non-nested mean structures. You may not treat ΔAIC as χ² or as a posterior probability without extra work (Akaike weights are a heuristic). If you needed a test of a restriction, you wanted an LRT — previous plates."
+  ],
+  "deepTitle": "What n, what p, what likelihood",
+  "deep": [
+    "n in BIC is the number of independent sampling units. Using n = SNPs or n = reads when isolates are the units is how BIC becomes a fiction. For mixed models, p is effective degrees of freedom, not a head-count of every uⱼ.",
+    "AIC needs a genuine log-likelihood. Quasi-likelihood, sandwich estimating equations, and composite likelihoods need modified criteria (if any). Cross-validation is often the more honest predictive score in a genomics pipeline.",
+    "Nested special case: LRT uses 2Δℓ vs χ²_k. AIC prefers the larger model when 2Δℓ > 2k, i.e. when the LRT statistic exceeds twice the extra parameters — a different threshold than χ²_{k, 0.95}. They answer different questions even when both are legal.",
+    "WAIC/LOO in Bayes and AIC in ML are cousins: prediction, not confirmation. Bayes factors (next Bayesian plates) are confirmation-like and prior-sensitive. Do not mix all four in one table caption."
+  ],
+  "formulas": [
+    {
+      "id": "aic",
+      "label": "AIC",
+      "expression": "AIC = −2 ℓ(θ̂) + 2p",
+      "note": "Estimates relative KL predictive risk. Not a test."
+    },
+    {
+      "id": "bic",
+      "label": "BIC",
+      "expression": "BIC = −2 ℓ(θ̂) + p log n",
+      "note": "n = independent units. Heavier penalty than AIC for n > e² ≈ 7.4."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Same nested pair, different rules. Left: LRT threshold χ²_1 0.95 ≈ 3.84. Middle: AIC prefers the extra parameter if Λ > 2. Right: BIC’s bar grows with log n. These are not three estimates of one p-value.",
+    "panels": [
+      {
+        "title": "LRT 5% (k=1)",
+        "bars": [
+          {
+            "label": "keep H0",
+            "value": 3.84
+          },
+          {
+            "label": "reject",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "AIC (Δp=1)",
+        "bars": [
+          {
+            "label": "keep small",
+            "value": 2
+          },
+          {
+            "label": "prefer big",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "BIC n=100",
+        "bars": [
+          {
+            "label": "keep small",
+            "value": 4.6
+          },
+          {
+            "label": "prefer big",
+            "value": 8
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Akaike information criterion — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Akaike_information_criterion",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Bayesian information criterion — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayesian_information_criterion",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): ESL — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-lrt",
+    "stats-wald-score",
+    "stats-quasi-likelihood",
+    "stats-bayesian",
+    "stats-foundations"
+  ],
+  "example": {
+    "title": "Lineage term: test versus AIC",
+    "setup": "Bernoulli GLM for FQ-R. Reduced: mutation only, p = 2, ℓ = −98.4. Full: + lineage, p = 3, ℓ = −97.1. n = 240 isolates.",
+    "steps": [
+      {
+        "title": "LRT",
+        "body": "Λ = 2(1.3) = 2.6 vs χ²_1. p ≈ 0.11. Do not reject at 5%.",
+        "expression": "Λ = 2.6"
+      },
+      {
+        "title": "AIC",
+        "body": "ΔAIC = (−2ℓ_full + 2×3) − (−2ℓ_red + 2×2) = −2.6 + 2 = −0.6. Full slightly smaller AIC — a predictive shrug, not a discovery."
+      },
+      {
+        "title": "BIC",
+        "body": "p log n ≈ log 240 ≈ 5.48 extra penalty. BIC prefers the reduced model decisively. Same two fits, three captions. Write which question you asked."
+      }
+    ],
+    "takeaway": "Δℓ is one number. LRT, AIC, and BIC hang different signs on it. Pick the sign that matches the scientific job."
+  },
+  "check": [
+    {
+      "id": "aic-nottest",
+      "kind": "conceptual",
+      "prompt": "AIC is best described as:",
+      "choices": [
+        "A p-value for nested models",
+        "A penalised log-likelihood estimate of relative predictive KL risk",
+        "A Bayes factor",
+        "A sandwich covariance"
+      ],
+      "answer": "A penalised log-likelihood estimate of relative predictive KL risk",
+      "why": "That is Akaike’s target. Nestedness is not required. P-values are a different contract.",
+      "whyWrong": {
+        "A p-value for nested models": "That is an LRT.",
+        "A Bayes factor": "Closer to BIC’s motivation, and still not AIC.",
+        "A sandwich covariance": "No."
+      }
+    },
+    {
+      "id": "aic-calc",
+      "kind": "calculation",
+      "prompt": "ℓ̂ = −50, p = 4. AIC equals:",
+      "choices": [
+        "100",
+        "108",
+        "92",
+        "−50"
+      ],
+      "answer": "108",
+      "why": "−2(−50) + 8 = 100 + 8 = 108.",
+      "whyWrong": {
+        "100": "Forgot 2p.",
+        "92": "Subtracted 2p.",
+        "−50": "That is ℓ."
+      }
+    },
+    {
+      "id": "aic-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, why is the BIC “keep small” bar taller at n=100 than AIC’s?",
+      "figureHint": "AIC panel threshold 2 vs BIC panel ~4.6.",
+      "choices": [
+        "Because BIC always prefers the larger model",
+        "Because BIC’s penalty p log n is larger than AIC’s 2p for this n, so you need a bigger ℓ gain to prefer the extra parameter",
+        "Because LRT and BIC are the same at n=100",
+        "Because AIC is a posterior probability"
+      ],
+      "answer": "Because BIC’s penalty p log n is larger than AIC’s 2p for this n, so you need a bigger ℓ gain to prefer the extra parameter",
+      "why": "log 100 ≈ 4.6 versus 2. The plate is a threshold comparison, not a p-value.",
+      "whyWrong": {
+        "Because BIC always prefers the larger model": "Opposite.",
+        "Because LRT and BIC are the same at n=100": "3.84 vs 4.6, still different jobs.",
+        "Because AIC is a posterior probability": "No."
+      }
+    }
+  ]
+}

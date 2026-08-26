@@ -1,0 +1,193 @@
+{
+  "id": "stats-confounding",
+  "title": "Confounding versus the coefficient",
+  "dek": "A confounder is a common cause of treatment and outcome. It is not “any covariate that changed the estimate” and not “anything associated with Y.”",
+  "domain": "stats",
+  "aliases": [
+    "confounding",
+    "confounder",
+    "common cause",
+    "backdoor",
+    "noncollapsibility"
+  ],
+  "tags": [
+    "causal",
+    "confounding",
+    "regression",
+    "DAG"
+  ],
+  "story": [
+    "Confounding is a causal idea: U affects A and U affects Y, opening a backdoor. Association after “control” is a statistical idea. They meet when your controls are a sufficient adjustment set and your estimator is consistent for the functional the DAG identified.",
+    "Lineage confounding a mutation–MIC association is the genomics default. Socioeconomic confounding of a clinic’s apparent treatment effect is the epi default. In both, randomisation of A would have cut A’s incoming arrows from U. Regression is a substitute with a graph attached.",
+    "Noncollapsibility: in a logit, the marginal OR and the conditional-on-U OR can differ even without confounding (no arrow from U to A). Changing the coefficient when you add U is therefore not a diagnostic of confounding by itself. Look at the graph and at a collapsible scale (risk difference) if you need that diagnostic."
+  ],
+  "deepTitle": "Difference in coefficients, and what randomisation does",
+  "deep": [
+    "Omitted-variable algebra for OLS is a special case: bias = πγ when U is left out. For GLMs, compare nested scores, but do not treat Δβ as a causal theorem on the log-odds scale.",
+    "Measured confounding: put Z in the adjustment set if the DAG says so. Unmeasured confounding: sensitivity analysis, negative controls, or a design (randomisation, instrument, discontinuity). A sandwich SE does not bound unmeasured U.",
+    "Table 2 fallacy: reporting every coefficient in a mutually adjusted GLM as if each were a total causal effect. The model that identifies the effect of A given Z may not identify the effect of Z. Caption only the estimand you designed.",
+    "In WGS–DST, mixing “confounded by lineage” with “mediated by lineage” is a scientific fork: if lineage is a cause of carrying the mutation, it is a confounder of a total effect of something else, or a competitor. Draw it."
+  ],
+  "formulas": [
+    {
+      "id": "back",
+      "label": "Backdoor sketch",
+      "expression": "A ← U → Y   and   A → Y",
+      "note": "The U path is confounding. Blocking it (design or adjustment) is the job."
+    },
+    {
+      "id": "rd",
+      "label": "Collapsible contrast (risk difference)",
+      "expression": "RD = P(Y=1|A=1) − P(Y=1|A=0)",
+      "note": "More collapsible than ORs. Still not causal without an assignment assumption."
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Confounding as a fork: lineage (or SES, or lab) points to both exposure and outcome. The direct A→Y arrow is the target only after the fork is blocked. A sandwich on the A coefficient does not block U.",
+    "nodes": [
+      {
+        "id": "u",
+        "label": "U common cause",
+        "group": "enzyme",
+        "x": 50,
+        "y": 18,
+        "sub": "lineage / SES / lab"
+      },
+      {
+        "id": "a",
+        "label": "A exposure",
+        "group": "drug",
+        "x": 18,
+        "y": 70,
+        "sub": "mutation / Rx"
+      },
+      {
+        "id": "y",
+        "label": "Y outcome",
+        "group": "target",
+        "x": 82,
+        "y": 70,
+        "sub": "MIC / death"
+      }
+    ],
+    "edges": [
+      {
+        "from": "u",
+        "to": "a"
+      },
+      {
+        "from": "u",
+        "to": "y"
+      },
+      {
+        "from": "a",
+        "to": "y",
+        "label": "target?"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Causal Inference: The Mixtape — GitHub companion materials",
+      "url": "https://github.com/scunning1975/mixtape",
+      "attribution": "MIT-licensed companion repo. Confounding language restated in original Simplfy notes; book prose not ingested.",
+      "license": "MIT (companion repo) / original notes"
+    },
+    {
+      "title": "Confounding — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Confounding",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Table 2 fallacy — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Table_2_fallacy",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-dag-literacy",
+    "stats-omitted-variables",
+    "stats-potential-outcomes",
+    "stats-randomization",
+    "stats-population-structure"
+  ],
+  "example": {
+    "title": "Δβ is not a confounder detector on the OR scale",
+    "setup": "Logit of death on a new drug A. Add HIV. β_A moves from −0.4 to −0.2. A colleague calls HIV a confounder “because the coefficient changed.”",
+    "steps": [
+      {
+        "title": "Ask the graph",
+        "body": "Does HIV cause treatment assignment and death? If treatment was randomised, HIV is a precision covariate, not a confounder, even if Δβ is nonzero (noncollapsibility / chance)."
+      },
+      {
+        "title": "If observational",
+        "body": "HIV may well be a confounder. Then adjustment is on the table. Still report a risk difference or standardised means if you want a collapsible contrast."
+      },
+      {
+        "title": "Table 2",
+        "body": "Do not also publish “the causal effect of HIV” from the same mutually adjusted logit unless that was a second identified estimand."
+      }
+    ],
+    "takeaway": "Confounding is a fork in a graph. Coefficient change is a clue with false positives on noncollapsible scales."
+  },
+  "check": [
+    {
+      "id": "conf-def",
+      "kind": "conceptual",
+      "prompt": "A confounder of A → Y is best described as:",
+      "choices": [
+        "Any variable associated with Y",
+        "A common cause (or a proxy for one) that opens a backdoor between A and Y",
+        "Any variable that changes β_A when added, on any scale",
+        "The sandwich meat"
+      ],
+      "answer": "A common cause (or a proxy for one) that opens a backdoor between A and Y",
+      "why": "Causal definition. Association with Y is not enough (mediators, colliders, instruments).",
+      "whyWrong": {
+        "Any variable associated with Y": "Too broad.",
+        "Any variable that changes β_A when added, on any scale": "Noncollapsibility confuses this test.",
+        "The sandwich meat": "Variance, not confounding."
+      }
+    },
+    {
+      "id": "conf-calc",
+      "kind": "calculation",
+      "prompt": "OLS OVB: true β_A = 0, γ_U = 2, π_{U on A} = 0.5. Short-regression coefficient of A is:",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "0.5"
+      ],
+      "answer": "1",
+      "why": "δ = β + πγ = 0 + 0.5×2 = 1. A null causal effect looks like 1 because of the fork.",
+      "whyWrong": {
+        "0": "The causal β, not the short coefficient.",
+        "2": "γ, not the product.",
+        "0.5": "π, not the product."
+      }
+    },
+    {
+      "id": "conf-figure",
+      "kind": "figure",
+      "prompt": "On the fork diagram, why do two arrows leave U?",
+      "figureHint": "U points to A and to Y.",
+      "choices": [
+        "Because U is a mediator of A",
+        "Because a confounder is a common cause: it must feed both exposure and outcome",
+        "Because U is a collider",
+        "Because randomisation adds those arrows"
+      ],
+      "answer": "Because a confounder is a common cause: it must feed both exposure and outcome",
+      "why": "One arrow would be a different motif. Randomisation would delete U → A, not add it.",
+      "whyWrong": {
+        "Because U is a mediator of A": "Mediator sits on A → M → Y.",
+        "Because U is a collider": "Collider is A → U ← Y.",
+        "Because randomisation adds those arrows": "Randomisation removes U → A."
+      }
+    }
+  ]
+}

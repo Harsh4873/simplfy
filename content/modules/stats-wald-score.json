@@ -1,0 +1,173 @@
+{
+  "id": "stats-wald-score",
+  "title": "Wald and score tests",
+  "dek": "Three first-order equivalent tests: LRT uses both fits, Wald uses the full fit, score uses only the restricted fit. Finite samples pick a favourite, especially near boundaries.",
+  "domain": "stats",
+  "aliases": [
+    "Wald test",
+    "score test",
+    "Lagrange multiplier test",
+    "Rao score",
+    "trinity of tests"
+  ],
+  "tags": [
+    "inference",
+    "LRT",
+    "Wald",
+    "score"
+  ],
+  "story": [
+    "The trinity: LRT = 2(ℓ₁ − ℓ₀). Wald = (θ̂ − θ₀)ᵀ J(θ̂) (θ̂ − θ₀). Score = S(θ₀)ᵀ I(θ₀)⁻¹ S(θ₀). Under regularity they share a χ²_k limit. They are not the same number in your GLM output.",
+    "Wald needs the unrestricted MLE and a covariance at that point. If θ̂ exploded (separation) or se is junk, Wald is junk. Score needs only the restricted fit — attractive when the alternative is messy (extra random effect, extra mixture component).",
+    "Near 0/1 probabilities, Wald intervals from logit models are the ones that overshoot the parameter space. Score (Wilson) intervals for a single proportion are the textbook repair. The same geometry shows up in multiparameter GLMs."
+  ],
+  "deepTitle": "Which χ², and when they quarrel",
+  "deep": [
+    "Geometry: LRT is a comparison of heights of ℓ. Wald is a comparison of θ̂ to θ₀ in a quadratic approximation at θ̂. Score is a check of whether the slope at θ₀ is too big for a mean-zero score. If ℓ is quadratic they coincide. If ℓ is skewed they do not.",
+    "Robust Wald replaces J or I with a sandwich. There is no equally standard “sandwich LRT.” If you committed to sandwich SEs, the matching test is Wald (or a robust score).",
+    "Boundary: testing τ = 0, the score test can be set up with a one-sided reference; Wald is awkward because θ̂ piles at 0; LRT uses a mixture of χ². Software stars are often the wrong member of the trinity.",
+    "Degrees of freedom are the number of restrictions, as in Wilks. A Wald test of two coefficients jointly is χ²_2, not two starred t tests. Look at the covariance: highly correlated β̂s can be jointly significant or jointly null in ways the margins hide."
+  ],
+  "formulas": [
+    {
+      "id": "wald",
+      "label": "Wald",
+      "expression": "W = (θ̂ − θ₀)ᵀ Var̂(θ̂)⁻¹ (θ̂ − θ₀)",
+      "note": "Uses the unrestricted fit. z = β̂/se is the 1-df case."
+    },
+    {
+      "id": "score",
+      "label": "Score / Lagrange multiplier",
+      "expression": "R = S(θ₀)ᵀ I(θ₀)⁻¹ S(θ₀)",
+      "note": "Uses the restricted fit only. Pearson χ² for a proportion is a score test."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Same nested pair, three readings of ℓ. LRT: vertical gap between peaks. Wald: horizontal distance from θ̂ to the restriction, scaled by curvature at θ̂. Score: slope at the restriction, scaled by curvature there.",
+    "reduced": {
+      "label": "Restricted θ₀",
+      "params": [
+        "score uses slope here"
+      ]
+    },
+    "full": {
+      "label": "Unrestricted θ̂",
+      "params": [
+        "Wald uses curvature here",
+        "LRT uses both peaks"
+      ]
+    },
+    "statistic": "W, R, Λ  →  χ²_k",
+    "reference": "agree if ℓ is quadratic"
+  },
+  "sources": [
+    {
+      "title": "Wald test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Wald_test",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Score test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Score_test",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-lrt",
+    "stats-fisher-information",
+    "stats-confidence-intervals",
+    "stats-sandwich",
+    "stats-aic-bic"
+  ],
+  "example": {
+    "title": "Testing a proportion against 0.05",
+    "setup": "n = 40, y = 0 high-confidence BDQ mutations. H₀: π = 0.05. Compare Wald, score, LRT for a Bernoulli model.",
+    "steps": [
+      {
+        "title": "MLE",
+        "body": "π̂ = 0. Wald statistic uses se at 0, which is 0. W is undefined or insane. This is the separation/boundary cousin for a single proportion."
+      },
+      {
+        "title": "Score",
+        "body": "Under H₀, se₀ = √(0.05×0.95/40) ≈ 0.034. Score uses (π̂ − 0.05)/se₀. With π̂ = 0 this is a finite number. Pearson form is the usual textbook version.",
+        "expression": "z_score = (0 − 0.05)/√(π₀(1−π₀)/n)"
+      },
+      {
+        "title": "LRT",
+        "body": "Λ = 2(ℓ(0) − ℓ(0.05)) needs care at π̂ = 0 because log 0. The binomial likelihood at 0 is (1−π)^n, so ℓ(0.05) = 40 log 0.95, ℓ(π̂) = 0 in the extended sense. Finite, skewed, honest."
+      }
+    ],
+    "takeaway": "When θ̂ sits on a wall, prefer score or LRT (or Bayes). Wald assumed an interior peak."
+  },
+  "check": [
+    {
+      "id": "ws-which",
+      "kind": "conceptual",
+      "prompt": "The score test is computationally attractive when:",
+      "choices": [
+        "The alternative model is hard to maximise, but the null model is easy",
+        "You only have the unrestricted MLE",
+        "You want a Bayes factor",
+        "n is infinite by assumption"
+      ],
+      "answer": "The alternative model is hard to maximise, but the null model is easy",
+      "why": "Score uses S(θ₀) from the restricted fit. Extra variance components and extra mixture terms are the usual case.",
+      "whyWrong": {
+        "You only have the unrestricted MLE": "That is Wald’s diet.",
+        "You want a Bayes factor": "Different object.",
+        "n is infinite by assumption": "Asymptotics are shared; the finite-sample appeal is computational."
+      }
+    },
+    {
+      "id": "ws-calc",
+      "kind": "calculation",
+      "prompt": "β̂ = 2, se = 1, H₀: β = 0. Wald z equals:",
+      "choices": [
+        "2",
+        "1",
+        "4",
+        "0"
+      ],
+      "answer": "2",
+      "why": "z = β̂/se = 2. W = z² = 4 would be the χ²_1 form — not asked.",
+      "whyWrong": {
+        "1": "se, not z.",
+        "4": "That is W = z².",
+        "0": "The null value, not the statistic."
+      }
+    },
+    {
+      "id": "ws-figure",
+      "kind": "figure",
+      "prompt": "On the trinity plate, Wald is described as using curvature at θ̂. That fails when:",
+      "figureHint": "Full box: Wald uses curvature here.",
+      "choices": [
+        "ℓ is exactly quadratic",
+        "θ̂ is infinite or the Hessian at θ̂ is degenerate, so the quadratic at the peak is a bad or missing object",
+        "The null is easy to fit",
+        "Fisher information is additive"
+      ],
+      "answer": "θ̂ is infinite or the Hessian at θ̂ is degenerate, so the quadratic at the peak is a bad or missing object",
+      "why": "Separation, boundary MLEs, singular I. Score looks at the null instead.",
+      "whyWrong": {
+        "ℓ is exactly quadratic": "Then Wald is fine.",
+        "The null is easy to fit": "That helps score.",
+        "Fisher information is additive": "Unrelated failure mode."
+      }
+    }
+  ]
+}

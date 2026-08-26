@@ -1,0 +1,208 @@
+{
+  "id": "stats-transmission-genomics",
+  "title": "Transmission-genomics caveats",
+  "dek": "SNP distance is not a likelihood of who infected whom. Sampling bias, latency, within-host diversity, and the clock all sit between a tree and a transmission story.",
+  "domain": "stats",
+  "aliases": [
+    "transmission inference",
+    "outbreak genomics",
+    "SNP threshold",
+    "who infected whom",
+    "relapse vs reinfection"
+  ],
+  "tags": [
+    "phylogenetics",
+    "transmission",
+    "outbreak",
+    "bias"
+  ],
+  "story": [
+    "A 5-SNP threshold to call “transmission” is a decision rule, not a model. It can be a useful screen. It does not estimate a probability of a directed edge in a transmission tree, and it treats every SNP as equal information regardless of homoplasy, mixed infection, and missing cases.",
+    "The statistical objects you might actually write: a transmission tree (who infected whom), a phylogeny (correlated genomes), and a sampling process (who was sequenced). Equating the first with the second silently assumes complete sampling, no latency tricks, and no unobserved hosts.",
+    "Relapse versus reinfection is a within-patient tree question: a late isolate sitting far from the patient’s earlier genome looks like reinfection or mixed infection; a near-identical pair looks like relapse or persistent infection. Thresholds again, unless you write a likelihood with a within-host clock and a sampling model."
+  ],
+  "deepTitle": "Missing cases, and directed edges",
+  "deep": [
+    "If 80% of cases were not sequenced, a close pair in the tree may share an unsampled intermediary. Posterior probabilities on directed edges from software that assumes dense sampling will be overconfident. Put the sampling fraction in the methods, not only the SNP cutoff.",
+    "Direction: time stamps and a clock can tilt an edge; without them, an undirected cluster is the honest object. Inferring that A infected B because A was diagnosed first is an extra assignment assumption (no delayed diagnosis, no A infected from B’s earlier unsampled infection).",
+    "Within-host diversity: one colony pick is not the host’s pathogen population. Heteroresistance and mixed infection break both SNP distances and tree likelihoods that assume one sequence per host.",
+    "Population structure again: two patients in the same endemic lineage can be 20 SNPs apart without a recent transmission event. Compare distances to a lineage-specific background, not to a universal 5-SNP folklore."
+  ],
+  "formulas": [
+    {
+      "id": "notlik",
+      "label": "A threshold is not a likelihood",
+      "expression": "1{d(i,j) ≤ c}  ≠  P(i → j | data)",
+      "note": "c is a cutoff. The right-hand side needs a transmission model and a sampling model."
+    },
+    {
+      "id": "dsub",
+      "label": "SNP distance (sketch)",
+      "expression": "d(i,j) = # differing called sites",
+      "note": "Depends on QC, mixed calls, and which alignment. Not an invariant of nature."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From genomes to a transmission claim: tree or distances, then a sampling/latency model, then maybe directed edges. Skipping to a 5-SNP rule is the short-circuit the plate marks as an exit.",
+    "nodes": [
+      {
+        "id": "gen",
+        "label": "Genomes",
+        "x": 8,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "tree",
+        "label": "Tree / distances",
+        "x": 30,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "samp",
+        "label": "Sampling + clock",
+        "x": 54,
+        "y": 22,
+        "tone": "decision"
+      },
+      {
+        "id": "cut",
+        "label": "SNP cutoff only",
+        "x": 54,
+        "y": 62,
+        "tone": "end"
+      },
+      {
+        "id": "tx",
+        "label": "Transmission claims",
+        "x": 80,
+        "y": 22,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "gen",
+        "to": "tree"
+      },
+      {
+        "from": "tree",
+        "to": "samp"
+      },
+      {
+        "from": "tree",
+        "to": "cut",
+        "label": "short-circuit"
+      },
+      {
+        "from": "samp",
+        "to": "tx"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Molecular epidemiology — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Molecular_epidemiology",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tuberculosis",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Phylogenetic tree — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Phylogenetic_tree",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-trees",
+    "stats-molecular-clock",
+    "stats-population-structure",
+    "stats-se-sp",
+    "stats-survey-error"
+  ],
+  "example": {
+    "title": "Two patients, 4 SNPs, 40% of cases sequenced",
+    "setup": "d=4 SNPs, both MDR, same district, diagnosed 6 weeks apart. A dashboard flags “direct transmission.”",
+    "steps": [
+      {
+        "title": "What you have",
+        "body": "A close pair in a possibly endemic lineage, with sparse sampling. Compatible with direct transmission, a missing intermediary, a lab cross-contamination, or a common source."
+      },
+      {
+        "title": "What would upgrade the claim",
+        "body": "Epidemiological link, denser sampling, within-host deep sequencing that shows a donor cloud containing the recipient, dates that match a clock posterior. Still probabilistic."
+      },
+      {
+        "title": "What to write",
+        "body": "“Genetically clustered (4 SNPs), sampling fraction 40%; not a demonstrated directed event.” That sentence is statistics as hygiene."
+      }
+    ],
+    "takeaway": "Transmission is a missing-data network. SNP cutoffs are screens. Likelihoods need sampling."
+  },
+  "check": [
+    {
+      "id": "tx-cut",
+      "kind": "conceptual",
+      "prompt": "A SNP-distance cutoff to call transmission is:",
+      "choices": [
+        "The phylogenetic likelihood of a directed edge",
+        "A decision rule that can screen clusters but does not by itself estimate P(i→j | data)",
+        "Unbiased regardless of sampling fraction",
+        "A q-value"
+      ],
+      "answer": "A decision rule that can screen clusters but does not by itself estimate P(i→j | data)",
+      "why": "Left-hand side of the plate’s inequality. Sampling and a transmission model sit on the right.",
+      "whyWrong": {
+        "The phylogenetic likelihood of a directed edge": "A tree likelihood is not a transmission likelihood.",
+        "Unbiased regardless of sampling fraction": "Missing intermediaries wreck that.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "tx-calc",
+      "kind": "calculation",
+      "prompt": "100 cases, 40 sequenced. If you treat sequenced close pairs as “all transmissions,” you are analysing a sample of about:",
+      "choices": [
+        "100% of cases",
+        "40% of cases, with unsampled intermediaries possible",
+        "0%",
+        "5 SNPs"
+      ],
+      "answer": "40% of cases, with unsampled intermediaries possible",
+      "why": "40/100 = 0.4. The missing 60% are the sampling process the cutoff ignored.",
+      "whyWrong": {
+        "100% of cases": "The fantasy complete sample.",
+        "0%": "You did sequence some.",
+        "5 SNPs": "A cutoff, not a sampling fraction."
+      }
+    },
+    {
+      "id": "tx-figure",
+      "kind": "figure",
+      "prompt": "On the transmission flow plate, the “SNP cutoff only” exit is labelled a short-circuit because:",
+      "figureHint": "Branch from tree/distances down to cutoff, bypassing sampling+clock.",
+      "choices": [
+        "Cutoffs incorporate the sampling model automatically",
+        "They skip the sampling and clock model that would turn distances into (possibly directed) transmission claims",
+        "Trees are illegal in outbreaks",
+        "Clocks require Bonferroni"
+      ],
+      "answer": "They skip the sampling and clock model that would turn distances into (possibly directed) transmission claims",
+      "why": "That is the geometry of the plate.",
+      "whyWrong": {
+        "Cutoffs incorporate the sampling model automatically": "They do not.",
+        "Trees are illegal in outbreaks": "No.",
+        "Clocks require Bonferroni": "No."
+      }
+    }
+  ]
+}

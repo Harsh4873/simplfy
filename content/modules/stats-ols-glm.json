@@ -23,7 +23,8 @@
     "Exponential family density: f(y | θ, φ) = exp{(yθ − b(θ))/a(φ) + c(y, φ)}. Then μ = b′(θ), Var(Y) = b″(θ) a(φ). The canonical link sets η = θ, which is why logit is canonical for Bernoulli and log is canonical for Poisson.",
     "Fisher scoring / IRLS: iterate a weighted least-squares problem with working response z = η + (y − μ) g′(μ) and weights 1 / (V(μ) g′(μ)²). OLS is the first and last iteration of that procedure in the Gaussian identity case.",
     "Misspecification of V(μ) still leaves consistent β̂ for the mean parameters under a correct mean model (quasi-likelihood), with sandwich SEs. Overdispersed TB cluster counts are the textbook case for quasi-Poisson or a negative binomial, or for a hierarchical Poisson.",
-    "The LRT in GLMs is a difference in deviance. Wald uses β̂ / se(β̂). Do not mix a robust SE with a model-based LRT and call them the same test."
+    "The LRT in GLMs is a difference in deviance. Wald uses β̂ / se(β̂). Do not mix a robust SE with a model-based LRT and call them the same test.",
+    "Geometry of OLS is orthogonal projection; Gauss–Markov is BLUE inside a small class; diagnostics are how you see a hostage row; omitted variables change the target functional. Those specialised plates sit under this GLM umbrella. IRLS is the algorithm that makes a logit feel like weighted OLS."
   ],
   "formulas": [
     {
@@ -59,19 +60,24 @@
   },
   "sources": [
     {
-      "title": "OpenStax Introductory Statistics — linear regression and inference",
-      "url": "https://openstax.org/books/introductory-statistics/pages/12-introduction",
-      "attribution": "OLS intuition aligned with OpenStax CC BY; GLM exponential-family treatment is original teaching notes.",
-      "license": "CC BY 4.0 / original notes"
+      "title": "NIST e-Handbook — least squares",
+      "url": "https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd14.htm",
+      "attribution": "U.S. public domain. OLS definitional authority; GLM exponential-family treatment is original Simplfy notes.",
+      "license": "U.S. public domain"
     },
     {
       "title": "Generalized linear model — Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Generalized_linear_model",
       "attribution": "Family/link definitions adapted under CC BY-SA.",
       "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder, Generalized Linear Models",
+      "attribution": "Named as a standard GLM pointer. Structure and examples were not copied.",
+      "license": "Citation only"
     }
   ],
-  "related": ["stats-foundations", "stats-lrt", "stats-hierarchical", "stats-bayesian"],
+  "related": ["stats-ols-geometry", "stats-glm-link", "stats-iwls", "stats-logit", "stats-poisson", "stats-lrt"],
   "example": {
     "title": "Logit of smear-positive disease",
     "setup": "n = 400 TB cases. Y = 1 if smear-positive. Covariates: cavity (0/1), days of cough, HIV. Fit logit π = β₀ + β_cav + β_days + β_hiv. Nested comparison: drop cavity.",

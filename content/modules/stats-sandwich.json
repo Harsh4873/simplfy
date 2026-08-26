@@ -1,0 +1,168 @@
+{
+  "id": "stats-sandwich",
+  "title": "Sandwich variance and misspecification",
+  "dek": "If the mean model is right and the variance model is not, the MLE (or estimating equation) can still be consistent. The bread of the sandwich repairs the SE.",
+  "domain": "stats",
+  "aliases": [
+    "sandwich",
+    "Huber-White",
+    "robust SE",
+    "misspecification",
+    "estimating equation"
+  ],
+  "tags": [
+    "inference",
+    "GLM",
+    "robust",
+    "cluster"
+  ],
+  "story": [
+    "Maximum likelihood SEs from I(θ̂)⁻¹ believe the whole f, including Var(Y | x). Quasi-likelihood and sandwich SEs believe less. The estimating equation (the score) can have mean zero under a weaker model than the one that produced the information matrix.",
+    "Huber–White: Var(θ̂) ≈ B⁻¹ M B⁻¹, where B is the expected derivative of the score (the bread) and M is the covariance of the score (the meat). If the model is true, M = B = I and the sandwich collapses to I⁻¹. If not, it does not.",
+    "Cluster-robust meat sums scores within district or household before taking outer products. That is often the minimum adult SE in a TB survey even when you refuse a full mixed model. It does not fix a wrong mean: omitted confounding still biases β̂."
+  ],
+  "deepTitle": "What is consistent, and what is not a test",
+  "deep": [
+    "Consistency target: the solution of E[S(θ)] = 0. For a GLM, that is often the coefficient of a correctly specified mean g(E[Y|x]) = xᵀβ, even if V(μ) is wrong. For a misspecified mean, sandwich SEs are honest about noise around the wrong functional.",
+    "Do not mix a model-based LRT (which uses the full likelihood, including V) with sandwich SEs and call them one test. Wald with sandwich covariance is the matching robust test. Likelihood-ratio χ² is not sandwich-aware.",
+    "Finite-sample sandwiches can be liberal with few clusters. With 8 labs, a bias-reduced or clustered bootstrap SE is often more trustworthy than HC0. Report the number of clusters next to the robust SE.",
+    "In WGS association, sandwich-on-individuals still assumes the estimating equation is unbiased. Population structure that shifts both genotype and phenotype is a mean-model failure; a sandwich will not save you — see the GWAS plates."
+  ],
+  "formulas": [
+    {
+      "id": "sw",
+      "label": "Sandwich covariance",
+      "expression": "Var̂(θ̂) = B̂⁻¹ M̂ B̂⁻¹",
+      "note": "B = −∑ ∂Sᵢ/∂θᵀ, M = ∑ Sᵢ Sᵢᵀ (or clustered sums). HC0/HC1/HC3 are small-sample variants of M."
+    },
+    {
+      "id": "scoreEE",
+      "label": "Estimating equation",
+      "expression": "∑ᵢ Sᵢ(θ̂) = 0",
+      "note": "Mean-zero scores, not a fully believed density, are enough for consistency of θ̂."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Two layers of belief. Inner: mean model (what sandwich can still estimate). Outer: full exponential-family variance (what model-based I(θ) trusts). The meat of the sandwich lives in the gap between score covariance and model information.",
+    "reduced": {
+      "label": "Mean g(μ)=xᵀβ",
+      "params": [
+        "β consistent if mean OK"
+      ]
+    },
+    "full": {
+      "label": "Full GLM f(y|x,β,φ)",
+      "params": [
+        "β",
+        "V(μ)",
+        "independence"
+      ]
+    },
+    "statistic": "B⁻¹ M B⁻¹",
+    "reference": "collapses to I⁻¹ if f is true"
+  },
+  "sources": [
+    {
+      "title": "Heteroskedasticity-consistent standard errors — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Heteroskedasticity-consistent_standard_errors",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): ESL (Hastie, Tibshirani, Friedman) — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-quasi-likelihood",
+    "stats-ols-diagnostics",
+    "stats-overdispersion",
+    "stats-survey-error",
+    "stats-wald-score"
+  ],
+  "example": {
+    "title": "Overdispersed clinic counts",
+    "setup": "Weekly smear-positive counts modelled as Poisson(λᵢ) with log λᵢ = β₀ + β_rain rainᵢ. Residual deviance / df ≈ 3.2. Model-based se(β_rain) = 0.10.",
+    "steps": [
+      {
+        "title": "Mean may still be fine",
+        "body": "Rain might log-linearly shift the mean. Extra-Poisson variance (outbreaks, reporting) inflates Var(Y) above λ."
+      },
+      {
+        "title": "Sandwich",
+        "body": "The meat M is larger than I. A sandwich se might read 0.18. The point estimate β̂_rain need not move much if the mean is right.",
+        "expression": "se_sand > se_model"
+      },
+      {
+        "title": "Matching test",
+        "body": "Quote a sandwich Wald. Do not keep the Poisson LRT p-value and the sandwich SE in one sentence as if they were the same uncertainty."
+      }
+    ],
+    "takeaway": "Sandwich is honesty about variance, not a spell against a wrong mean."
+  },
+  "check": [
+    {
+      "id": "sand-mean",
+      "kind": "conceptual",
+      "prompt": "A sandwich SE around a GLM coefficient is most defensible when:",
+      "choices": [
+        "The mean model is plausible and you distrust V(μ) or independence",
+        "The mean is known to be wrong; sandwich removes confounding",
+        "You want an LRT that uses robust variance",
+        "n < 10 always"
+      ],
+      "answer": "The mean model is plausible and you distrust V(μ) or independence",
+      "why": "That is the quasi-likelihood/sandwich contract. Confounding is a mean failure.",
+      "whyWrong": {
+        "The mean is known to be wrong; sandwich removes confounding": "It does not.",
+        "You want an LRT that uses robust variance": "LRT is model-based; use a robust Wald or a working bootstrap.",
+        "n < 10 always": "Few clusters make sandwiches liberal, not automatically correct."
+      }
+    },
+    {
+      "id": "sand-calc",
+      "kind": "calculation",
+      "prompt": "If the GLM is correctly specified, the sandwich covariance should be close to I(θ̂)⁻¹. If meat M is about 4 times I and B ≈ I, sandwich variances are about:",
+      "choices": [
+        "the same as model-based",
+        "4 times model-based",
+        "1/4 of model-based",
+        "zero"
+      ],
+      "answer": "4 times model-based",
+      "why": "B⁻¹ M B⁻¹ ≈ I⁻¹ (4I) I⁻¹ = 4 I⁻¹ when B ≈ I.",
+      "whyWrong": {
+        "the same as model-based": "Only if M ≈ I.",
+        "1/4 of model-based": "Wrong direction.",
+        "zero": "No."
+      }
+    },
+    {
+      "id": "sand-figure",
+      "kind": "figure",
+      "prompt": "On the nested plate, the inner box is the mean model. Why is that the inner object?",
+      "figureHint": "Reduced: mean g(μ)=xᵀβ. Full: f including V(μ).",
+      "choices": [
+        "Because sandwich consistency lives on the mean’s estimating equation, which is weaker than the full density",
+        "Because V(μ) is always estimated before the mean",
+        "Because LRTs only need the inner box",
+        "Because Bayes forbids variance functions"
+      ],
+      "answer": "Because sandwich consistency lives on the mean’s estimating equation, which is weaker than the full density",
+      "why": "The geometry is belief: inner = what you need for β̂; outer = what model-based I trusts extra.",
+      "whyWrong": {
+        "Because V(μ) is always estimated before the mean": "IRLS iterates both.",
+        "Because LRTs only need the inner box": "LRTs use the full ℓ.",
+        "Because Bayes forbids variance functions": "Unrelated."
+      }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "id": "stats-factorial",
+  "title": "Factorial designs",
+  "dek": "A factorial runs combinations of factors on purpose so you can estimate main effects and interactions with the same budget. One-factor-at-a-time cannot see the interaction.",
+  "domain": "stats",
+  "aliases": [
+    "factorial design",
+    "interaction",
+    "2^k design",
+    "main effect",
+    "one factor at a time"
+  ],
+  "tags": [
+    "design",
+    "factorial",
+    "interaction",
+    "experiment"
+  ],
+  "story": [
+    "NIST’s industrial designs start with 2^k factorials: each factor at two levels, all combinations. With two factors A,B you see A, B, and AB from four cells. One-factor-at-a-time (change A, then change B from a new baseline) aliases the interaction into the “main effects” you think you measured.",
+    "In a genomics wet lab: medium × temperature, drug × lineage background, extraction kit × sequencer. If the kit effect reverses on one sequencer, that is an interaction. Publishing two separate one-way t-tests will miss it or mislabel it.",
+    "Replication of the whole factorial, or a fraction when k is large, is how you get an error term. A single unreplicated 2^k can still estimate effects; it cannot estimate σ² without extra assumptions (sparsity, higher-order interactions as noise)."
+  ],
+  "deepTitle": "Contrasts, aliasing, and GLMs on a design",
+  "deep": [
+    "Main-effect contrast for a two-level factor: average of Y at + minus average at −, over the other factors. Interaction contrast: half the difference of those simple effects. In a balanced 2^2 these are orthogonal — SEs share σ²/n_cell geometry.",
+    "Fractional factorials alias higher-order interactions with mains. That is a designed bet that some interactions are negligible. Write the alias structure; do not treat a 2^{k−p} as a full 2^k.",
+    "Analysis: OLS or a GLM with dummy/coding for factors, plus the products for interactions. Blocking and randomisation still apply: randomise run order, block by day. A designed X matrix does not make ε spherical if drift exists.",
+    "In observational genomics, “factorial” is sometimes used loosely for a cross-tab of lineage × HIV. That is not a designed factorial; interactions are still scientifically real, but identification is the causal plates, not NIST’s run table."
+  ],
+  "formulas": [
+    {
+      "id": "twotwo",
+      "label": "2² cell means",
+      "expression": "μ_{ab} = μ + α_a + β_b + (αβ)_{ab}",
+      "note": "Four means, three orthogonal contrasts plus a grand mean in the usual coding."
+    },
+    {
+      "id": "int",
+      "label": "Interaction contrast (two-level)",
+      "expression": "(ȳ_{11} − ȳ_{10}) − (ȳ_{01} − ȳ_{00})",
+      "note": "Difference of simple effects of A at the two levels of B."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "A 2×2 of schematic cell means. Left: additive (parallel simple effects). Right: interaction (simple effects disagree). One-factor-at-a-time would have walked only two edges of the square and missed the crossing.",
+    "panels": [
+      {
+        "title": "additive",
+        "bars": [
+          {
+            "label": "A− B−",
+            "value": 4
+          },
+          {
+            "label": "A+ B−",
+            "value": 7
+          },
+          {
+            "label": "A− B+",
+            "value": 6
+          }
+        ]
+      },
+      {
+        "title": "interaction",
+        "bars": [
+          {
+            "label": "A− B−",
+            "value": 4
+          },
+          {
+            "label": "A+ B−",
+            "value": 8
+          },
+          {
+            "label": "A+ B+",
+            "value": 5
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — factorial designs",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri33.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "NIST e-Handbook — one-factor-at-a-time (why not)",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri3347.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Factorial experiment — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Factorial_experiment",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-blocking",
+    "stats-randomization",
+    "stats-power",
+    "stats-ols-glm",
+    "stats-lrt"
+  ],
+  "example": {
+    "title": "Drug × medium on MIC",
+    "setup": "Two drugs, two media, 6 replicates per cell, log MIC. Cell means: (drug1, medA) 1.0; (drug1, medB) 1.1; (drug2, medA) 1.2; (drug2, medB) 2.0.",
+    "steps": [
+      {
+        "title": "Simple effects of medium",
+        "body": "For drug1, medium shift +0.1. For drug2, +0.8. Interaction contrast 0.7 on the log scale — a big deal, not a nuisance."
+      },
+      {
+        "title": "OFAT trap",
+        "body": "If you only compared media for drug1, you would have declared media equivalent and never seen drug2’s medium disaster."
+      },
+      {
+        "title": "Model",
+        "body": "OLS on log MIC with drug, medium, product. LRT or F for the product term is the interaction test. Then look at the four means; a star on the product is not a sentence."
+      }
+    ],
+    "takeaway": "Run the rectangle. Interactions are differences of simple effects, and they are often the scientific object."
+  },
+  "check": [
+    {
+      "id": "fac-ofat",
+      "kind": "conceptual",
+      "prompt": "One-factor-at-a-time designs are weak for interactions because:",
+      "choices": [
+        "They randomise more than factorials",
+        "They typically do not observe all combinations, so they cannot estimate how a simple effect changes across the other factor",
+        "NIST requires OFAT for biology",
+        "Interactions equal main effects by definition"
+      ],
+      "answer": "They typically do not observe all combinations, so they cannot estimate how a simple effect changes across the other factor",
+      "why": "The 2² needs four corners. OFAT walks two edges.",
+      "whyWrong": {
+        "They randomise more than factorials": "Unrelated / false.",
+        "NIST requires OFAT for biology": "NIST argues against OFAT as a default.",
+        "Interactions equal main effects by definition": "No."
+      }
+    },
+    {
+      "id": "fac-calc",
+      "kind": "calculation",
+      "prompt": "Cell means 4, 7, 6, 10 for (A−B−),(A+B−),(A−B+),(A+B+). Interaction contrast (ȳA+|B+ − ȳA−|B+) − (ȳA+|B− − ȳA−|B−) equals:",
+      "choices": [
+        "1",
+        "3",
+        "0",
+        "7"
+      ],
+      "answer": "1",
+      "why": "Simple effect of A at B+: 10−6=4. At B−: 7−4=3. Difference 1.",
+      "whyWrong": {
+        "3": "One of the simple effects.",
+        "0": "Would be additivity.",
+        "7": "A cell mean."
+      }
+    },
+    {
+      "id": "fac-figure",
+      "kind": "figure",
+      "prompt": "On the factorial small-multiples, the interaction panel is the one where:",
+      "figureHint": "Right panel’s A+ B+ bar is not a parallel shift.",
+      "choices": [
+        "Bars follow a parallel (additive) pattern",
+        "The A+ B+ cell fails to look like “A main plus B main,” i.e. the simple effects disagree",
+        "There is only one factor",
+        "Blocking is impossible"
+      ],
+      "answer": "The A+ B+ cell fails to look like “A main plus B main,” i.e. the simple effects disagree",
+      "why": "That is the crossing / non-parallel picture, drawn as bars.",
+      "whyWrong": {
+        "Bars follow a parallel (additive) pattern": "That is the left panel.",
+        "There is only one factor": "It is 2×2.",
+        "Blocking is impossible": "Unrelated."
+      }
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "id": "stats-gwas",
+  "title": "GWAS-lite: many SNPs, one phenotype",
+  "dek": "A GWAS is a mountain of association tests. The likelihood at each SNP is usually a GLM. The scientific objects are population structure, LD, and the error rate for the family of tests.",
+  "domain": "stats",
+  "aliases": [
+    "GWAS",
+    "genome-wide association",
+    "SNP association",
+    "Manhattan plot",
+    "genomic inflation"
+  ],
+  "tags": [
+    "genomics",
+    "GWAS",
+    "GLM",
+    "structure"
+  ],
+  "story": [
+    "At one SNP, a typical model is g(E[Y | G, C]) = β₀ + β_G G + Cᵀγ, with G a dosage 0/1/2 and C a handful of principal components or a kinship matrix. That is a GLM you already know. The mountain is m ≈ 10⁵–10⁷ such tests, dependent through LD.",
+    "A Manhattan plot is a display of −log10 p against genomic position. It is not a likelihood. Genomic inflation λ_GC is a median-based check of whether the bulk of tests looks like the null χ² they claim. λ > 1 can be structure, polygenicity, or a bad test.",
+    "TB bacterial GWAS is not human GWAS with smaller n. Clonality, recombination deserts, and lineage-tagging SNPs make “independent tests” a fiction. Linear mixed models with a kinship matrix, or phylogeny-aware models, are the structure plates — not a Bonferroni of iid χ²."
+  ],
+  "deepTitle": "The per-SNP likelihood, and what the peak is not",
+  "deep": [
+    "Score tests at each SNP (only the null GLM fitted once) are popular because they are fast. Wald/LRT need a fit per SNP. Rare variants with separation make Wald explode; use score, Firth, or a burden test that aggregates a window.",
+    "LD: a peak is a region, not a causal nucleotide. Fine-mapping and functional follow-up are extra models. Reporting the smallest p SNP as “the causal mutation” is a decoder-ring error.",
+    "Power: for a binary phenotype, n_cases and allele frequency set the game. A mutation at 1% in 200 isolates is a rare-event logistic, not a GWAS with 200,000 independent bits of information.",
+    "Hold out a phenotype, a lineage, or a country. A peak that dies on replication in a new lineage may have been a lineage tag. That is a feature of the data, not a software bug."
+  ],
+  "formulas": [
+    {
+      "id": "snpglm",
+      "label": "Per-SNP GLM",
+      "expression": "g(E[Y | G, C]) = β₀ + β_G G + Cᵀ γ",
+      "note": "G dosage; C structure covariates or a random effect with kinship."
+    },
+    {
+      "id": "lgc",
+      "label": "Genomic inflation (median)",
+      "expression": "λ_GC = median(χ²_obs) / median(χ²_1)",
+      "note": "A bulk-null check. λ≈1 is not proof of no confounding at the peaks."
+    }
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "A cartoon “peak”: a window of SNPs in LD with a functional allele. The tallest mark is the smallest p in the window, not a proof of causality. Structure covariates belong in the GLM, not in the caption after the fact.",
+    "gene": "locus (schematic)",
+    "start": 0,
+    "end": 100,
+    "unit": "kbp (cartoon)",
+    "regions": [
+      {
+        "start": 40,
+        "end": 62,
+        "label": "LD block"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 18,
+        "label": "p~0.2",
+        "note": "noise"
+      },
+      {
+        "pos": 48,
+        "label": "lead SNP",
+        "note": "smallest p"
+      },
+      {
+        "pos": 55,
+        "label": "functional?",
+        "note": "not the lead"
+      },
+      {
+        "pos": 80,
+        "label": "unlinked",
+        "note": "null-ish"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Genome-wide association study — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Genome-wide_association_study",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Population stratification — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Population_stratification",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): ESL / specialised GWAS reviews — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-population-structure",
+    "stats-fdr",
+    "stats-multiple-testing",
+    "stats-logit",
+    "stats-permutation"
+  ],
+  "example": {
+    "title": "A lineage-tagging SNP looks like FQ-R",
+    "setup": "A SNP present in 90% of L2 and 5% of other lineages. FQ-R is also enriched in L2. Per-SNP logistic of FQ-R on G without C: huge β_G. With lineage or PCs: β_G collapses.",
+    "steps": [
+      {
+        "title": "Unadjusted GLM",
+        "body": "The likelihood is Bernoulli in G. It is a real association. It is mostly the lineage fork, not a gyrA mechanism (unless the SNP is in gyrA)."
+      },
+      {
+        "title": "Adjust",
+        "body": "Put lineage or a kinship random effect in the mean / G. If the peak dies, it was structure. If it lives in gyrA QRDR, you may have a mechanism — still not a functional proof."
+      },
+      {
+        "title": "Error rate",
+        "body": "Whether you Bonferroni or FDR the remaining tests is a contract. Do not Bonferroni the unadjusted scan and then tell a mechanistic story."
+      }
+    ],
+    "takeaway": "The per-SNP likelihood is a GLM. The GWAS is that GLM plus structure plus a family-wise or FDR rule plus LD humility."
+  },
+  "check": [
+    {
+      "id": "gwas-peak",
+      "kind": "conceptual",
+      "prompt": "The SNP with the smallest p in a peak is:",
+      "choices": [
+        "The causal variant by definition",
+        "A lead marker in an LD neighbourhood; causality is extra scientific work",
+        "Independent of population structure by construction",
+        "A q-value"
+      ],
+      "answer": "A lead marker in an LD neighbourhood; causality is extra scientific work",
+      "why": "LD makes a mountain, not a pin. Structure can make a mountain of lineage tags.",
+      "whyWrong": {
+        "The causal variant by definition": "Decoder ring.",
+        "Independent of population structure by construction": "Opposite problem.",
+        "A q-value": "p and q are different."
+      }
+    },
+    {
+      "id": "gwas-calc",
+      "kind": "calculation",
+      "prompt": "median(χ²_obs)=0.91, median of χ²_1 is 0.455. λ_GC equals:",
+      "choices": [
+        "2",
+        "0.455",
+        "1",
+        "0.91"
+      ],
+      "answer": "2",
+      "why": "0.91/0.455=2. Inflation. Could be structure or polygenic signal in the bulk.",
+      "whyWrong": {
+        "0.455": "The null median, not λ.",
+        "1": "No inflation.",
+        "0.91": "The observed median, not the ratio."
+      }
+    },
+    {
+      "id": "gwas-figure",
+      "kind": "figure",
+      "prompt": "On the locus track, the functional mark is not at the lead SNP. The plate is teaching:",
+      "figureHint": "lead SNP vs functional? inside an LD block.",
+      "choices": [
+        "Lead p-values identify nucleotides",
+        "LD can make the smallest-p SNP a neighbour of the functional allele rather than the allele itself",
+        "Gene tracks forbid GLMs",
+        "Bonferroni moves the functional mark"
+      ],
+      "answer": "LD can make the smallest-p SNP a neighbour of the functional allele rather than the allele itself",
+      "why": "That is why peaks are windows. Fine-mapping is another model.",
+      "whyWrong": {
+        "Lead p-values identify nucleotides": "The plate contradicts that.",
+        "Gene tracks forbid GLMs": "No.",
+        "Bonferroni moves the functional mark": "Multiplicity does not move biology."
+      }
+    }
+  ]
+}

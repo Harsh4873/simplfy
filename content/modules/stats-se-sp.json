@@ -1,0 +1,177 @@
+{
+  "id": "stats-se-sp",
+  "title": "Sensitivity, specificity, and likelihood ratios",
+  "dek": "Se = P(T+|D+), Sp = P(T−|D−). They live on the test given disease. Prevalence is not in the formula — until you want PPV.",
+  "domain": "stats",
+  "aliases": [
+    "sensitivity",
+    "specificity",
+    "likelihood ratio",
+    "LR+",
+    "true positive rate",
+    "false positive rate"
+  ],
+  "tags": [
+    "epi",
+    "diagnosis",
+    "screening",
+    "TB"
+  ],
+  "story": [
+    "Fix a reference (culture, a composite, a latent class — say which). Sensitivity is the probability the index test is positive among the diseased. Specificity is the probability it is negative among the non-diseased. They are properties of a test-in-a-population, not of a single patient, and they move with spectrum (smear-negative disease is harder).",
+    "LR+ = Se / (1−Sp) = P(T+|D+)/P(T+|D−). LR− = (1−Se)/Sp. In a likelihood reading, the binary test contributes a factor LR+ or LR− to the odds of disease. That is Bayes for a 2×2, the same object as the Bayesian plates with a Bernoulli likelihood for T given D.",
+    "TB screening: a high-sensitivity NAAT still has a false-negative rate in paucibacillary disease. A high-specificity smear still misses most HIV-associated TB. Quoting Se/Sp from a smear-positive evaluation and using it in a community screen is a spectrum bias, not a rounding error."
+  ],
+  "deepTitle": "Estimation, and the reference standard problem",
+  "deep": [
+    "Binomial MLE: Sê = TP/(TP+FN), Sp̂ = TN/(TN+FP), with Wald or (better) score intervals. If the reference is imperfect, these estimate agreement with the reference, not Se/Sp versus truth. Latent-class models add a likelihood with two tests and a latent D — identifiable only with assumptions.",
+    "ROC: vary a threshold (MIC, cycle time, trace vs positive). Each threshold is a (1−Sp, Se) point. AUC is P(score_diseased > score_not) plus ties handling. It is not a likelihood ratio at the cut you actually use.",
+    "Design: case-control sampling of known D+ and D− estimates Se and Sp efficiently and does not estimate prevalence or PPV without an external π. A survey sample estimates all four with the survey’s error structure (next plates).",
+    "Clustered readers or labs: Se is not iid Bernoulli across 8 labs. Hierarchical β-binomial or a mixed logit for T given D is the honest likelihood."
+  ],
+  "formulas": [
+    {
+      "id": "sesp",
+      "label": "Se and Sp",
+      "expression": "Se = P(T+|D+),   Sp = P(T−|D−)",
+      "note": "Conditional on disease status. Prevalence does not enter."
+    },
+    {
+      "id": "lrplus",
+      "label": "Positive likelihood ratio",
+      "expression": "LR+ = Se / (1 − Sp)",
+      "note": "Multiplies prior odds of D to get posterior odds after T+."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "The 2×2 as two binomials: T | D+ and T | D−. Se and Sp are those two means. PPV lives in a different conditioning (D | T+) and needs π. Mixing the two conditionings is the most expensive confusion in a screening meeting.",
+    "reduced": {
+      "label": "Need π too",
+      "params": [
+        "PPV = P(D+|T+)",
+        "NPV = P(D−|T−)"
+      ]
+    },
+    "full": {
+      "label": "Test given disease",
+      "params": [
+        "Se = P(T+|D+)",
+        "Sp = P(T−|D−)",
+        "LR±"
+      ]
+    },
+    "statistic": "LR+ = Se/(1−Sp)",
+    "reference": "odds_post = LR × odds_prior"
+  },
+  "sources": [
+    {
+      "title": "Sensitivity and specificity — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sensitivity_and_specificity",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Likelihood ratios in diagnostic testing — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Likelihood_ratios_in_diagnostic_testing",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Introduction to Modern Statistics, 2nd edition",
+      "url": "https://openintro-ims.netlify.app/",
+      "attribution": "CC BY-SA 3.0 open text (Diez, Çetinkaya-Rundel, Barr). Probability and sampling facts only. This plate is original Simplfy teaching notes and is not a publisher-branded derivative.",
+      "license": "CC BY-SA 3.0"
+    }
+  ],
+  "related": [
+    "stats-predictive-values",
+    "stats-logit",
+    "stats-bayesian",
+    "stats-incidence-prevalence",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "Xpert-like numbers in a high-burden clinic",
+    "setup": "Se = 0.88, Sp = 0.98 versus culture (schematic adult pulmonary TB). Compute LR+ and LR−. Then wait for prevalence before PPV (next plate).",
+    "steps": [
+      {
+        "title": "LR+",
+        "body": "0.88 / (1−0.98) = 0.88/0.02 = 44. A positive result is a large lift in odds.",
+        "expression": "LR+ = 44"
+      },
+      {
+        "title": "LR−",
+        "body": "(1−0.88)/0.98 = 0.12/0.98 ≈ 0.12. A negative result is a substantial down-weight, not a metaphysical absence of MTB — especially if the prior is high or disease is paucibacillary (Se lower)."
+      },
+      {
+        "title": "Spectrum",
+        "body": "If this Se came from smear-positive inpatients, do not paste LR− into a community screen of people living with HIV. Re-estimate Se in that spectrum."
+      }
+    ],
+    "takeaway": "Se/Sp/LR are P(test | disease). Write the reference and the spectrum. PPV waits for π."
+  },
+  "check": [
+    {
+      "id": "se-cond",
+      "kind": "conceptual",
+      "prompt": "Sensitivity is a probability that conditions on:",
+      "choices": [
+        "A positive test",
+        "True disease-positive status",
+        "The prevalence π only",
+        "The posterior of θ"
+      ],
+      "answer": "True disease-positive status",
+      "why": "Se = P(T+|D+). PPV conditions on T+ instead.",
+      "whyWrong": {
+        "A positive test": "That is PPV’s conditioning.",
+        "The prevalence π only": "π is absent from Se.",
+        "The posterior of θ": "Wrong culture unless you modelled Se as a parameter."
+      }
+    },
+    {
+      "id": "se-calc",
+      "kind": "calculation",
+      "prompt": "Se=0.9, Sp=0.95. LR+ equals:",
+      "choices": [
+        "0.9",
+        "18",
+        "0.95",
+        "0.105"
+      ],
+      "answer": "18",
+      "why": "0.9 / 0.05 = 18.",
+      "whyWrong": {
+        "0.9": "Se, not LR+.",
+        "0.95": "Sp.",
+        "0.105": "That is closer to LR− = 0.1/0.95 ≈ 0.105."
+      }
+    },
+    {
+      "id": "se-figure",
+      "kind": "figure",
+      "prompt": "On the nested 2×2 plate, PPV sits in the inner box labelled “need π too.” That is because:",
+      "figureHint": "Inner: PPV/NPV; outer: Se/Sp/LR.",
+      "choices": [
+        "PPV = Se by definition",
+        "P(D+|T+) depends on prevalence as well as Se and Sp, unlike Se itself",
+        "Likelihood ratios require π in their definition",
+        "Specificity is PPV"
+      ],
+      "answer": "P(D+|T+) depends on prevalence as well as Se and Sp, unlike Se itself",
+      "why": "Bayes: posterior odds = LR × prior odds. Prior odds come from π.",
+      "whyWrong": {
+        "PPV = Se by definition": "The confusion the plate exists to prevent.",
+        "Likelihood ratios require π in their definition": "LR± do not include π.",
+        "Specificity is PPV": "No."
+      }
+    }
+  ]
+}

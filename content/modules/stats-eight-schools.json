@@ -1,0 +1,191 @@
+{
+  "id": "stats-eight-schools",
+  "title": "Several experiments, one hierarchical mean",
+  "dek": "When each site is noisy, a shared distribution over site effects is the scientific model. The famous eight-schools picture is this geometry — here with original district-survey numbers, not a textbook table.",
+  "domain": "stats",
+  "aliases": [
+    "eight schools idea",
+    "multi-site shrinkage",
+    "hierarchical site effects",
+    "exchangeable experiments"
+  ],
+  "tags": [
+    "hierarchical",
+    "shrinkage",
+    "meta-analysis",
+    "surveys"
+  ],
+  "story": [
+    "Eight labs, eight districts, eight trials: each reports an estimated effect yⱼ with a standard error σⱼ that you are, for a moment, willing to treat as known. The no-pooling picture treats the eight numbers as eight unrelated truths. The complete-pooling picture pretends they were one experiment. Both are usually wrong.",
+    "Hierarchical model: yⱼ | θⱼ ~ N(θⱼ, σⱼ²), θⱼ ~ N(μ, τ²). The posterior (or BLUP) of θⱼ shrinks yⱼ toward μ by an amount that depends on σⱼ versus τ. A tiny noisy site moves a lot; a precise site keeps its identity. That is the whole visual.",
+    "τ is not a nuisance to profile into oblivion without comment. If τ is near 0, you almost complete-pool and should say the sites look exchangeable. If τ is large, you almost no-pool and the shared mean is a weak story. Estimating τ from eight noisy sites is itself noisy — show p(τ | y), not a starred test that τ = 0."
+  ],
+  "deepTitle": "The model, and what this is not",
+  "deep": [
+    "Known-σⱼ Normal is a teaching likelihood. In a real survey, σⱼ comes from a first-stage model (binomial, sandwich, design-based). Plugging in σ̂ⱼ ignores that uncertainty; a fully Bayesian stack would put a model on the raw rows. Use the two-stage version when that is all you were given in a table.",
+    "The geometry is not a licence to average incompatible estimands. Eight “effects” that are actually different scientific functionals (different endpoints, different controls) should not share θⱼ ~ N(μ, τ²). Exchangeability is a scientific claim.",
+    "A forest plot of no-pooling intervals plus a hierarchical diamond is the usual figure. The diamond is not an LRT. The shrunk site intervals are the ones that should appear on a map of districts.",
+    "This plate deliberately does not reproduce any copyrighted school-coaching table. The algebra is older than any one book. If you want a historical pointer, look up hierarchical Normal models in a library; do not paste them here."
+  ],
+  "formulas": [
+    {
+      "id": "site",
+      "label": "Two-stage hierarchical Normal",
+      "expression": "yⱼ | θⱼ ~ N(θⱼ, σⱼ²),   θⱼ ~ N(μ, τ²)",
+      "note": "σⱼ treated as known in the teaching version."
+    },
+    {
+      "id": "shrinkj",
+      "label": "Shrinkage toward μ",
+      "expression": "E[θⱼ | y, μ, τ] = Bⱼ μ + (1−Bⱼ) yⱼ,   Bⱼ = σⱼ² / (σⱼ² + τ²)",
+      "note": "Bⱼ is the weight on the shared mean — large when site j is noisy."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Eight schematic site estimates (bars at no-pool yⱼ) versus shrunk θ̃ⱼ sitting closer to a shared μ (the flatter set). Noisy sites move more. This is the multi-experiment idea, drawn with invented district SEs — not a reproduced coaching-study table.",
+    "panels": [
+      {
+        "title": "noisy sites",
+        "bars": [
+          {
+            "label": "y",
+            "value": 18
+          },
+          {
+            "label": "shrunk",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "precise sites",
+        "bars": [
+          {
+            "label": "y",
+            "value": 12
+          },
+          {
+            "label": "shrunk",
+            "value": 11
+          }
+        ]
+      },
+      {
+        "title": "shared μ",
+        "bars": [
+          {
+            "label": "μ",
+            "value": 9
+          },
+          {
+            "label": "τ",
+            "value": 4
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Hierarchical Bayes model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hierarchical_Bayes_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Random effects model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Random_effects_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman et al. BDA discusses a well-known eight-schools example — cited only, not ingested or reproduced",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-partial-pooling",
+    "stats-hierarchical",
+    "stats-mixed-models",
+    "stats-bayesian",
+    "stats-bias-variance"
+  ],
+  "example": {
+    "title": "Eight district log-odds, invented SEs",
+    "setup": "District log-odds of FQ-R among RR-TB, two-stage: y = (0.1, 0.4, −0.2, 0.8, 0.0, 0.3, 1.1, −0.5) with σ = (0.5, 0.45, 0.6, 0.25, 0.7, 0.4, 0.2, 0.55). These numbers are original teaching values.",
+    "steps": [
+      {
+        "title": "No pooling",
+        "body": "District 7 looks high (1.1, se 0.2). District 8 looks low (−0.5, se 0.55). A map of yⱼ will advertise 8 as “protective” and 7 as an outbreak — one of those SEs is a fog."
+      },
+      {
+        "title": "Fit τ, μ",
+        "body": "A method-of-moments or Bayes fit will put μ somewhere near the precision-weighted mean and τ modest. District 8 shrinks hard toward μ because σ₈ is large. District 7 barely moves."
+      },
+      {
+        "title": "Sentence in the paper",
+        "body": "“District-specific log-odds are shrunk toward a survey mean; the apparent low district is compatible with noise.” That sentence is the eight-experiments idea. It does not require anyone’s table of schools."
+      }
+    ],
+    "takeaway": "Several noisy experiments: shrink in proportion to their σⱼ² relative to τ². Draw p(τ|y). Do not photocopy a famous table to do it."
+  },
+  "check": [
+    {
+      "id": "8s-B",
+      "kind": "conceptual",
+      "prompt": "In E[θⱼ|y] = Bⱼ μ + (1−Bⱼ) yⱼ with Bⱼ = σⱼ²/(σⱼ²+τ²), a very large site-SE σⱼ means:",
+      "choices": [
+        "Almost no shrinkage (Bⱼ ≈ 0)",
+        "Strong shrinkage toward μ (Bⱼ ≈ 1)",
+        "τ² must be infinite",
+        "The site is a collider"
+      ],
+      "answer": "Strong shrinkage toward μ (Bⱼ ≈ 1)",
+      "why": "Noisy yⱼ gets little weight. B is the weight on μ in this parameterisation.",
+      "whyWrong": {
+        "Almost no shrinkage (Bⱼ ≈ 0)": "That is small σⱼ (precise site).",
+        "τ² must be infinite": "τ is shared, not set by one σⱼ.",
+        "The site is a collider": "Unrelated DAG talk."
+      }
+    },
+    {
+      "id": "8s-calc",
+      "kind": "calculation",
+      "prompt": "σⱼ² = 4, τ² = 1, yⱼ = 10, μ = 2. Shrunk mean Bμ + (1−B)y with B = 4/(4+1) equals:",
+      "choices": [
+        "2",
+        "3.6",
+        "10",
+        "8.4"
+      ],
+      "answer": "3.6",
+      "why": "B = 0.8, 0.8×2 + 0.2×10 = 1.6 + 2 = 3.6. The noisy 10 is pulled most of the way to 2.",
+      "whyWrong": {
+        "2": "Complete pooling, B=1.",
+        "10": "No pooling, B=0.",
+        "8.4": "If you swapped B and 1−B: 0.2×2 + 0.8×10 = 8.4 — the wrong weight on μ."
+      }
+    },
+    {
+      "id": "8s-figure",
+      "kind": "figure",
+      "prompt": "On the eight-site small-multiples, noisy sites show a bigger gap between y and shrunk. That illustrates:",
+      "figureHint": "Left panel gap larger than middle panel gap.",
+      "choices": [
+        "Precise sites should be deleted",
+        "Shrinkage is stronger when σⱼ is large relative to τ",
+        "μ is a p-value",
+        "The figure reproduces a copyrighted school table"
+      ],
+      "answer": "Shrinkage is stronger when σⱼ is large relative to τ",
+      "why": "That is Bⱼ geometry. The caption states the numbers are schematic, not a reproduced table.",
+      "whyWrong": {
+        "Precise sites should be deleted": "Opposite — they keep their yⱼ.",
+        "μ is a p-value": "μ is the shared mean.",
+        "The figure reproduces a copyrighted school table": "The plate says it does not."
+      }
+    }
+  ]
+}

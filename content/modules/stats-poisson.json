@@ -1,0 +1,217 @@
+{
+  "id": "stats-poisson",
+  "title": "Poisson log-linear models",
+  "dek": "Y ~ Poisson(μ), log μ = xᵀβ + offset. The likelihood is ∑ (y log μ − μ). Mean equals variance until the data laugh.",
+  "domain": "stats",
+  "aliases": [
+    "Poisson regression",
+    "log-linear",
+    "count GLM",
+    "offset",
+    "rate model"
+  ],
+  "tags": [
+    "GLM",
+    "Poisson",
+    "counts",
+    "offset"
+  ],
+  "story": [
+    "Counts — colony-forming units, incident cases, variant reads — often start as Poisson. The log link keeps μ > 0. With an offset log(t), β on a covariate is a log rate ratio: μ = t e^{xᵀβ}.",
+    "The log-likelihood ℓ(β) = ∑ (yᵢ xᵢᵀβ − exp(xᵢᵀβ + oᵢ)) up to a factorial constant. Score Xᵀ(y − μ) = 0: again the exponential-family mean match. IRLS weights are W = μ for the canonical log link.",
+    "The Poisson variance V(μ) = μ is the fragile part. TB cluster sizes, weekly notifications, and RNA-seq counts are usually overdispersed. Quasi-Poisson, negative binomial, or a hierarchical Poisson are the three adult forks — not “the Poisson p-value was 10⁻¹² so it must be real.”"
+  ],
+  "deepTitle": "Offsets, zeros, and the likelihood you actually want",
+  "deep": [
+    "Offset discipline: person-time, culture-days, or sequencing depth belong in oᵢ = log tᵢ unless you have a reason to estimate a coefficient on log t (testing whether the rate scales linearly with exposure).",
+    "Many zeros: a Poisson with small μ can produce zeros honestly. Excess zeros from a mixture (no risk vs some risk) want a zero-inflated or hurdle likelihood. Those are not nested in a plain Poisson without a mixture parameter on the boundary.",
+    "Rate vs count: if tᵢ varies, modelling Y without an offset compares expected counts, not rates. A large district will dominate and you will rediscover population size.",
+    "Contingency tables with Poisson log-linear models are multinomial in disguise after conditioning on margins. Independence is a nested restriction on interaction terms — an LRT with a χ²_df that is the usual Pearson test’s likelihood cousin."
+  ],
+  "formulas": [
+    {
+      "id": "poisell",
+      "label": "Poisson log-likelihood (canonical log)",
+      "expression": "ℓ(β) = ∑ᵢ [ yᵢ ηᵢ − e^{ηᵢ} ],   ηᵢ = xᵢᵀβ + oᵢ",
+      "note": "Drop ∑ log(yᵢ!); it does not depend on β."
+    },
+    {
+      "id": "rate",
+      "label": "Rate form",
+      "expression": "E[Yᵢ] = tᵢ exp(xᵢᵀβ)",
+      "note": "offset oᵢ = log tᵢ. exp(β_k) is a rate ratio."
+    }
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "Poisson GLM with exposure: tᵢ is observed, log tᵢ is a deterministic offset, μᵢ = exp(xᵢᵀβ + log tᵢ), and yᵢ is the count. Forgetting tᵢ puts population size into β.",
+    "plates": [
+      {
+        "id": "n",
+        "label": "i = 1…n units",
+        "x": 16,
+        "y": 18,
+        "w": 70,
+        "h": 64
+      }
+    ],
+    "nodes": [
+      {
+        "id": "beta",
+        "label": "β",
+        "x": 8,
+        "y": 48,
+        "shape": "param"
+      },
+      {
+        "id": "x",
+        "label": "xᵢ",
+        "x": 28,
+        "y": 32,
+        "shape": "obs"
+      },
+      {
+        "id": "t",
+        "label": "tᵢ",
+        "x": 28,
+        "y": 64,
+        "shape": "obs"
+      },
+      {
+        "id": "eta",
+        "label": "ηᵢ",
+        "x": 50,
+        "y": 48,
+        "shape": "det"
+      },
+      {
+        "id": "y",
+        "label": "yᵢ",
+        "x": 74,
+        "y": 48,
+        "shape": "obs"
+      }
+    ],
+    "edges": [
+      {
+        "from": "beta",
+        "to": "eta"
+      },
+      {
+        "from": "x",
+        "to": "eta"
+      },
+      {
+        "from": "t",
+        "to": "eta"
+      },
+      {
+        "from": "eta",
+        "to": "y"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Poisson regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Poisson_regression",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-glm-link",
+    "stats-overdispersion",
+    "stats-quasi-likelihood",
+    "stats-logit",
+    "stats-incidence-prevalence"
+  ],
+  "example": {
+    "title": "Incident TB versus person-years",
+    "setup": "Two districts: 12 cases in 4000 person-years, 18 cases in 3000 person-years. Log-linear Poisson with a district dummy and offset log(PY).",
+    "steps": [
+      {
+        "title": "Rates",
+        "body": "District A: 12/4000 = 0.003 per PY. District B: 18/3000 = 0.006 per PY. Crude rate ratio = 2.",
+        "expression": "μ = PY · e^{β₀ + β_B 1_B}"
+      },
+      {
+        "title": "MLE",
+        "body": "With only a dummy and an offset, the MLE of the rate ratio is the crude ratio 2. The Poisson likelihood will also claim se from V = μ. If cases cluster in time, that se is too small."
+      },
+      {
+        "title": "Without offset",
+        "body": "A model for raw counts would compare 12 vs 18 and discover that B is larger in counts while missing that A had more person-time. That is a different scientific question."
+      }
+    ],
+    "takeaway": "Put exposure in the offset if the target is a rate. Then worry about V(μ) = μ."
+  },
+  "check": [
+    {
+      "id": "pois-off",
+      "kind": "conceptual",
+      "prompt": "An offset log(t) in a log-linear Poisson model is used to:",
+      "choices": [
+        "Estimate a coefficient on t freely",
+        "Force the mean to scale with exposure t so that β lives on a rate scale",
+        "Turn the Poisson into a Gaussian",
+        "Remove overdispersion"
+      ],
+      "answer": "Force the mean to scale with exposure t so that β lives on a rate scale",
+      "why": "The coefficient on log t is frozen at 1. Overdispersion is a separate issue.",
+      "whyWrong": {
+        "Estimate a coefficient on t freely": "That would be a covariate, not an offset.",
+        "Turn the Poisson into a Gaussian": "No.",
+        "Remove overdispersion": "No."
+      }
+    },
+    {
+      "id": "pois-calc",
+      "kind": "calculation",
+      "prompt": "Canonical log Poisson, μ = 4. IRLS weight W = μ equals:",
+      "choices": [
+        "1",
+        "4",
+        "2",
+        "16"
+      ],
+      "answer": "4",
+      "why": "For canonical log, W = μ. Mean 4, weight 4.",
+      "whyWrong": {
+        "1": "Gaussian cartoon.",
+        "2": "√μ confusion.",
+        "16": "μ², the wrong power."
+      }
+    },
+    {
+      "id": "pois-figure",
+      "kind": "figure",
+      "prompt": "On the Poisson plate, tᵢ is an observed node feeding the deterministic ηᵢ. That drawing says:",
+      "figureHint": "tᵢ and xᵢ both arrow into ηᵢ.",
+      "choices": [
+        "Exposure is a random effect with its own variance",
+        "Known exposure enters the linear predictor as an offset, not as a latent parameter",
+        "tᵢ is the outcome",
+        "Offsets require a prior"
+      ],
+      "answer": "Known exposure enters the linear predictor as an offset, not as a latent parameter",
+      "why": "Filled node: observed. Diamond η: deterministic function of x, β, and log t.",
+      "whyWrong": {
+        "Exposure is a random effect with its own variance": "That would be an empty circle with a distribution.",
+        "tᵢ is the outcome": "yᵢ is the count.",
+        "Offsets require a prior": "No."
+      }
+    }
+  ]
+}

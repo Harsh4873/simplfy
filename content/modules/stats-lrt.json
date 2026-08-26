@@ -22,7 +22,8 @@
     "Let ℓ(θ) be the log-likelihood. Suppose Θ₀ ⊂ Θ₁, with dim(Θ₁) − dim(Θ₀) = k. The Wilks statistic is Λ = 2(ℓ(θ̂₁) − ℓ(θ̂₀)). Under H₀: θ ∈ Θ₀, and standard regularity (identifiable interior point, interchange of derivative and integral, non-singular information), Λ →d χ²_k.",
     "The same comparison is the difference in residual deviance for GLMs: D₀ − D₁, which is exactly Λ when both models are estimated by ML in an exponential family. Wald and score tests are first-order equivalent to the LRT, but they are not the same finite-sample object: Wald uses only the full-model curvature, score uses only the reduced-model slope.",
     "Regularity fails on the boundary. Testing a variance component at 0, a mixture weight at 0, or a parameter on the edge of the simplex does not give a plain χ². The null distribution becomes a mixture of chi-squares, and p-values computed as χ²_k are anti-conservative. Phylogenetic and random-effect models in TB genomics hit this issue constantly.",
-    "Non-nested models (different mean structures that are not restrictions of each other) are outside Wilks. Use Vuong, AIC/BIC as estimates of predictive risk, or a encompassing model — but do not report an LRT p-value."
+    "Non-nested models (different mean structures that are not restrictions of each other) are outside Wilks. Use Vuong, AIC/BIC as estimates of predictive risk, or an encompassing model — but do not report an LRT p-value.",
+    "Wald and score tests are the other two members of the trinity (own plate). AIC and BIC reuse 2Δℓ with a penalty instead of a χ² tail (own plate). They are not LRTs with a different font. If the scientific job is a nested restriction, write Λ and k. If the job is predictive ranking of non-nested mean structures, write AIC and admit you left Wilks."
   ],
   "formulas": [
     {
@@ -48,18 +49,24 @@
   },
   "sources": [
     {
-      "title": "OpenStax Introductory Statistics — The Likelihood Ratio family of ideas, via nested model comparison in GLMs",
-      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
-      "attribution": "Teaching notes original to Simplfy; statistical framing aligned with OpenStax CC BY and standard GLM texts.",
-      "license": "CC BY 4.0 / original notes"
+      "title": "Likelihood-ratio test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Likelihood-ratio_test",
+      "attribution": "Glossary-level definition under CC BY-SA. Nested-model exposition and TB-lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
     },
     {
       "title": "Wilks, S. S. (1938). The large-sample distribution of the likelihood ratio for testing composite hypotheses.",
       "attribution": "Classic regularity result; cited, not reproduced.",
       "license": "Citation only"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain handbook for testing language. Wilks geometry is original teaching notes.",
+      "license": "U.S. public domain"
     }
   ],
-  "related": ["stats-foundations", "stats-ols-glm", "stats-bayesian", "stats-hierarchical"],
+  "related": ["stats-foundations", "stats-wald-score", "stats-aic-bic", "stats-ols-glm", "stats-likelihood", "stats-hierarchical"],
   "example": {
     "title": "Lineage as an extra term in a Bernoulli GLM",
     "setup": "n = 240 RR-TB isolates. Outcome: 1 if phenotypic moxifloxacin MIC > critical concentration. Reduced model: logit π = β₀ + β_fq (presence of a gyrA QRDR mutation). Full model adds lineage (L2 vs other) and the mutation×lineage interaction. Maximized log-likelihoods: ℓ₀ = −98.4 (2 parameters), ℓ₁ = −93.1 (4 parameters).",

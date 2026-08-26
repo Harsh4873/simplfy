@@ -1,0 +1,218 @@
+{
+  "id": "stats-mcmc",
+  "title": "MCMC without theatre",
+  "dek": "Markov chain Monte Carlo draws from a posterior by simulating a Markov chain whose stationary law is p(θ | y). Diagnostics are part of the result; pretty traces are not a posterior.",
+  "domain": "stats",
+  "aliases": [
+    "MCMC",
+    "Metropolis-Hastings",
+    "Gibbs sampler",
+    "HMC",
+    "R-hat",
+    "effective sample size"
+  ],
+  "tags": [
+    "Bayes",
+    "computation",
+    "MCMC",
+    "diagnostics"
+  ],
+  "story": [
+    "When p(θ | y) has no closed form, you build a Markov chain θ^{(t)} such that, after a burn-in you must justify, the time average of g(θ^{(t)}) estimates E[g(θ) | y]. Metropolis–Hastings proposes a move and accepts with min(1, posterior ratio × proposal ratio). Gibbs updates full conditionals when they are conjugate. Hamiltonian Monte Carlo uses gradients to propose better moves in high dimension.",
+    "The chain is not the posterior. A histogram of draws is a Monte Carlo estimate of the posterior. If the chain has not mixed, the histogram is a portrait of where you started plus a local trap.",
+    "Report: several chains from dispersed starts, overlap (R̂ near 1 as a necessary not sufficient check), effective sample size for the functionals you quote, and divergences or rejected leaps if you used HMC. A single long chain with R̂ undefined is not a flex."
+  ],
+  "deepTitle": "Accept/reject, ESS, and what can silently fail",
+  "deep": [
+    "Metropolis–Hastings ratio for a target π(θ) = p(θ | y): accept with α = min(1, [π(θ') q(θ|θ')] / [π(θ) q(θ'|θ)]). When q is symmetric, the q terms cancel. You never need the marginal m(y); it cancels in π(θ')/π(θ). That is the whole trick.",
+    "Effective sample size: autocorrelated draws carry less information than iid posterior draws. ESS ≈ B / (1 + 2 ∑ ρ_t) in a crude AR picture. Quote Monte Carlo SEs, especially for tail quantiles of a rare-allele probability.",
+    "Funnel geometries (a hierarchical τ near 0 with many unit effects) break naive random-walk Metropolis and stress HMC. Reparameterise (non-centred) rather than “raise adapt_delta until the warning goes away” as a lifestyle.",
+    "A model that does not identify θ produces a chain that wanders along a ridge. That is a scientific message. Tightening a prior until the chain looks pretty is a different paper than the one you started."
+  ],
+  "formulas": [
+    {
+      "id": "mh",
+      "label": "Metropolis–Hastings accept",
+      "expression": "α = min(1,  π(θ′) q(θ|θ′) / (π(θ) q(θ′|θ)) )",
+      "note": "π(θ) ∝ f(y|θ) p(θ). The marginal likelihood cancels."
+    },
+    {
+      "id": "mcmean",
+      "label": "Ergodic average",
+      "expression": "(1/T) ∑_{t=1}^T g(θ^{(t)})  →  E[g(θ)|y]",
+      "note": "Needs stationarity + ergodicity. Diagnostics argue for that, they do not prove it."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "MCMC as a loop with an exit to diagnostics. Draws become a posterior estimate only after mixing and ESS are argued. The accept/reject node is Metropolis; HMC replaces the proposal, not the need for checks.",
+    "nodes": [
+      {
+        "id": "start",
+        "label": "θ start",
+        "x": 8,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "prop",
+        "label": "Propose θ′",
+        "x": 30,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "acc",
+        "label": "Accept / reject",
+        "x": 52,
+        "y": 40,
+        "tone": "decision"
+      },
+      {
+        "id": "diag",
+        "label": "R̂, ESS, traps",
+        "x": 76,
+        "y": 18,
+        "tone": "process"
+      },
+      {
+        "id": "post",
+        "label": "Posterior summaries",
+        "x": 76,
+        "y": 62,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "start",
+        "to": "prop"
+      },
+      {
+        "from": "prop",
+        "to": "acc"
+      },
+      {
+        "from": "acc",
+        "to": "prop",
+        "label": "iterate"
+      },
+      {
+        "from": "acc",
+        "to": "diag"
+      },
+      {
+        "from": "diag",
+        "to": "post",
+        "label": "if mixed"
+      },
+      {
+        "from": "diag",
+        "to": "prop",
+        "label": "if not"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Metropolis–Hastings algorithm — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Markov chain Monte Carlo — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman BDA; McElreath, Statistical Rethinking — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-priors",
+    "stats-posterior-calibration",
+    "stats-hierarchical",
+    "stats-conjugacy"
+  ],
+  "example": {
+    "title": "A two-parameter logit and a ridge",
+    "setup": "Logit with two almost collinear covariates (lineage dummy and a SNP in perfect LD with lineage). Posterior of (β_lin, β_snp) is a ridge. A short Metropolis run looks “converged” in each margin and lies in 2-D.",
+    "steps": [
+      {
+        "title": "Look at the joint",
+        "body": "Scatter of draws: a diagonal cloud. Margins are wide. The chain may still mix along the ridge or it may stick. ESS for β_lin + β_snp (the identified sum) will be much higher than ESS for each coefficient."
+      },
+      {
+        "title": "Scientific move",
+        "body": "Drop one covariate, or put a joint prior that encodes “these are two names for one effect,” or report the identified functional. More iterations will not invent a second piece of information."
+      },
+      {
+        "title": "What to print",
+        "body": "R̂ and ESS for the functionals in the abstract, plus a sentence that the two coefficients are not separately identified. A pretty density of β_snp alone is theatre."
+      }
+    ],
+    "takeaway": "MCMC estimates the posterior you wrote. If that posterior is a ridge, the honest output is a ridge."
+  },
+  "check": [
+    {
+      "id": "mcmc-cancel",
+      "kind": "conceptual",
+      "prompt": "Metropolis–Hastings can avoid computing the marginal likelihood m(y) because:",
+      "choices": [
+        "m(y) is always 1",
+        "m(y) cancels in the posterior ratio π(θ′)/π(θ)",
+        "Priors cancel instead",
+        "You replace the likelihood by AIC"
+      ],
+      "answer": "m(y) cancels in the posterior ratio π(θ′)/π(θ)",
+      "why": "π(θ) = f(y|θ)p(θ)/m(y). The ratio drops m(y). That is why MH is usable.",
+      "whyWrong": {
+        "m(y) is always 1": "No.",
+        "Priors cancel instead": "Priors remain in the ratio unless they are equal.",
+        "You replace the likelihood by AIC": "No."
+      }
+    },
+    {
+      "id": "mcmc-ess",
+      "kind": "calculation",
+      "prompt": "You have 4000 post-warmup draws but ESS for a mean is 200. Relative to iid posterior draws, this is about:",
+      "choices": [
+        "20 times less information for that mean",
+        "the same information",
+        "4000/1.96",
+        "zero information"
+      ],
+      "answer": "20 times less information for that mean",
+      "why": "4000/200 = 20. Autocorrelation thinned the information. Tail quantiles are often worse.",
+      "whyWrong": {
+        "the same information": "ESS exists because it is not the same.",
+        "4000/1.96": "Unrelated.",
+        "zero information": "200 iid-equivalents is not zero."
+      }
+    },
+    {
+      "id": "mcmc-figure",
+      "kind": "figure",
+      "prompt": "On the MCMC flow plate, why does “posterior summaries” sit behind a diagnostics node?",
+      "figureHint": "R̂, ESS, traps before summaries.",
+      "choices": [
+        "Because traces are the scientific estimand",
+        "Because a histogram of unmixed draws is not yet a trustworthy estimate of p(θ|y)",
+        "Because Metropolis forbids summaries",
+        "Because ESS must equal n, the sample size of y"
+      ],
+      "answer": "Because a histogram of unmixed draws is not yet a trustworthy estimate of p(θ|y)",
+      "why": "The plate’s whole point: computation, then argument for mixing, then numbers in the paper.",
+      "whyWrong": {
+        "Because traces are the scientific estimand": "θ is.",
+        "Because Metropolis forbids summaries": "No.",
+        "Because ESS must equal n, the sample size of y": "ESS is about MCMC draws, not n."
+      }
+    }
+  ]
+}

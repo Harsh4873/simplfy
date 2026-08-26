@@ -1,0 +1,216 @@
+{
+  "id": "stats-fdr",
+  "title": "FDR and q-values",
+  "dek": "FDR is an expected fraction of false discoveries among rejections. A q-value is an estimated FDR if you reject at this and all more extreme p-values. Neither is a p-value.",
+  "domain": "stats",
+  "aliases": [
+    "FDR",
+    "false discovery rate",
+    "q-value",
+    "Benjamini-Hochberg",
+    "Storey",
+    "π0"
+  ],
+  "tags": [
+    "genomics",
+    "FDR",
+    "q-value",
+    "BH"
+  ],
+  "story": [
+    "Let R be the number of rejections and V the number of false ones. FDR = E[V/R | R>0] P(R>0) (Benjamini–Hochberg’s original form; people often write E[V/R] with 0/0 := 0). You tolerate a fraction of mistakes among the hits, not a probability of any mistake.",
+    "BH: sort p_{(1)} ≤ … ≤ p_{(m)}, reject k̂ = max {k : p_{(k)} ≤ (k/m) α}. Under independence (and some positive dependence), this controls FDR at α. It is not Bonferroni. The implied threshold is data-dependent — more rejections licence a looser p-cut.",
+    "Storey’s q-value estimates, for each test, the FDR of the rejection set that includes this test and all stronger ones, with a π₀ estimate of the null fraction. A q of 0.06 is not a p of 0.06. Caption it as an FDR estimate."
+  ],
+  "deepTitle": "π₀, dependence, and catalogue screens",
+  "deep": [
+    "BH is conservative if many alternatives are true (π₀ < 1); Storey estimates π₀ from the right tail of p-values. In a well-powered RNA-seq contrast, π₀ might be 0.8; in a GWAS of a polygenic trait, most SNPs are near-null and π₀ ≈ 1, so BH and Bonferroni-ish thresholds can sit closer.",
+    "Dependence: BH remains valid under PRDS-type positive dependence. Strong clumping (the same isolate driving every gene) can still distort. Cluster the tests scientifically (genes, LD blocks) or use permutation of a structured null.",
+    "q-value ≠ posterior probability of H₀. A local FDR / two-group model is closer to that Bayesian object and needs a mixing model for p-values. Do not write “q = 0.01 so P(null)=0.01.”",
+    "TB catalogue screens (thousands of variants vs a phenotype): FDR is usually the right contract for hypothesis generation. A drug-licensing claim wants a different error rate and a designed experiment."
+  ],
+  "formulas": [
+    {
+      "id": "bh",
+      "label": "BH threshold",
+      "expression": "k̂ = max{k : p_{(k)} ≤ (k/m) α},   reject p_{(1)}…p_{(k̂)}",
+      "note": "Controls FDR at α under independence / PRDS."
+    },
+    {
+      "id": "q",
+      "label": "q-value (Storey sketch)",
+      "expression": "q(p_{(k)}) ≈ π̂₀ m p_{(k)} / k",
+      "note": "Estimated FDR of the rejection set with cutoff p_{(k)}. Monotone-adjusted in software."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From a pile of p-values to a rejection set with an FDR contract: sort, compare to the (k/m)α line, optionally estimate π₀, report q-values. The exit to FWER is Bonferroni/Holm — a different product.",
+    "nodes": [
+      {
+        "id": "p",
+        "label": "p₁…p_m",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "sort",
+        "label": "Sort p_{(k)}",
+        "x": 32,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "bh",
+        "label": "BH / π₀, q",
+        "x": 54,
+        "y": 22,
+        "tone": "decision"
+      },
+      {
+        "id": "fwer",
+        "label": "FWER path",
+        "x": 54,
+        "y": 62,
+        "tone": "end"
+      },
+      {
+        "id": "set",
+        "label": "Rejection set",
+        "x": 80,
+        "y": 22,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "p",
+        "to": "sort"
+      },
+      {
+        "from": "sort",
+        "to": "bh",
+        "label": "FDR"
+      },
+      {
+        "from": "sort",
+        "to": "fwer",
+        "label": "Bonferroni"
+      },
+      {
+        "from": "bh",
+        "to": "set"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "False discovery rate — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/False_discovery_rate",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Q-value — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Q-value_(statistics)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Benjamini–Hochberg procedure — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Benjamini%E2%80%93Hochberg_procedure",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Efron, Large-Scale Inference — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-multiple-testing",
+    "stats-gwas",
+    "stats-permutation",
+    "stats-aic-bic",
+    "stats-power"
+  ],
+  "example": {
+    "title": "BH on 10 p-values",
+    "setup": "Sorted p: 0.001, 0.008, 0.012, 0.020, 0.040, 0.09, 0.12, 0.30, 0.45, 0.80. m=10, α=0.05. Which k pass BH?",
+    "steps": [
+      {
+        "title": "Line",
+        "body": "(k/10)×0.05 = 0.005, 0.010, 0.015, 0.020, 0.025, …",
+        "expression": "p_{(k)} ≤ 0.005 k"
+      },
+      {
+        "title": "Compare",
+        "body": "k=1: 0.001≤0.005 yes. k=2: 0.008≤0.010 yes. k=3: 0.012≤0.015 yes. k=4: 0.020≤0.020 yes. k=5: 0.040>0.025 no. Max k with all the rule (BH takes the largest k that satisfies, including earlier yeses) is k=4."
+      },
+      {
+        "title": "Caption",
+        "body": "Four discoveries at FDR 5% (BH). Not four p-values < 0.05, and not FWER 5%."
+      }
+    ],
+    "takeaway": "BH is a comparison to a sloped line, not to 0.05. q-values summarise that line."
+  },
+  "check": [
+    {
+      "id": "fdr-notp",
+      "kind": "conceptual",
+      "prompt": "A q-value of 0.10 means, in Storey’s interpretation:",
+      "choices": [
+        "P(H₀ | data) = 0.10 for that test",
+        "An estimated FDR of about 10% for the rejection set of this and all more significant tests",
+        "FWER = 0.10",
+        "The MLE of π is 0.10"
+      ],
+      "answer": "An estimated FDR of about 10% for the rejection set of this and all more significant tests",
+      "why": "q is an FDR estimate, not a posterior probability of a point null and not FWER.",
+      "whyWrong": {
+        "P(H₀ | data) = 0.10 for that test": "Local FDR / a two-group Bayes model is a different object.",
+        "FWER = 0.10": "Wrong error rate.",
+        "The MLE of π is 0.10": "Unrelated."
+      }
+    },
+    {
+      "id": "fdr-calc",
+      "kind": "calculation",
+      "prompt": "m=1000, k=50, p_{(50)}=0.002, π̂₀=1. Storey-style q sketch π̂₀ m p / k equals:",
+      "choices": [
+        "0.04",
+        "0.002",
+        "1",
+        "0.05"
+      ],
+      "answer": "0.04",
+      "why": "1 × 1000 × 0.002 / 50 = 2 / 50 = 0.04.",
+      "whyWrong": {
+        "0.002": "That is the p-value.",
+        "1": "π̂₀.",
+        "0.05": "A common α, not this arithmetic."
+      }
+    },
+    {
+      "id": "fdr-figure",
+      "kind": "figure",
+      "prompt": "On the FDR flow plate, Bonferroni is a separate exit. That split exists because:",
+      "figureHint": "FDR path vs FWER path after sorting.",
+      "choices": [
+        "BH and Bonferroni control the same error rate with different fonts",
+        "FDR and FWER are different operating characteristics, so they are different products not two names for BH",
+        "q-values are permutation p-values",
+        "π₀ is a likelihood ratio"
+      ],
+      "answer": "FDR and FWER are different operating characteristics, so they are different products not two names for BH",
+      "why": "The plate is a fork in the error-rate contract.",
+      "whyWrong": {
+        "BH and Bonferroni control the same error rate with different fonts": "They do not.",
+        "q-values are permutation p-values": "No.",
+        "π₀ is a likelihood ratio": "π₀ is a null fraction."
+      }
+    }
+  ]
+}
