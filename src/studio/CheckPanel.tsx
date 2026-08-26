@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { gradeAnswer } from "../quiz/grade";
 import type { CheckItem, StudyModule } from "../catalog/types";
-import { relatedFromText } from "../library/fieldNote";
+import { relatedForLibraryItem } from "../library/fieldNote";
 import type { StudioApi, Topic } from "./useStudio";
 
 function CheckCard({
@@ -58,7 +58,7 @@ function CheckCard({
 
 function checksFor(topic: Topic, modules: StudyModule[]): { module: StudyModule; items: CheckItem[] } | null {
   if (topic.source === "catalog") return { module: topic.module, items: topic.module.check };
-  const related = relatedFromText(`${topic.item.name} ${topic.item.text}`, modules);
+  const related = relatedForLibraryItem(topic.item, modules);
   if (!related[0]) return null;
   return { module: related[0], items: related[0].check };
 }

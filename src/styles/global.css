@@ -1,13 +1,13 @@
 :root {
   --chassis: #0c0d0f;
   --panel: #131418;
-  --well: #efeee9;
-  --plate: #fafaf7;
-  --ink: #141414;
+  --well: #101116;
+  --plate: #181a20;
+  --ink: #ecebe6;
   --readout: #ecebe6;
   --accent: #c23a4a;
   --ok: #73b894;
-  --ok-ink: #2a6b4c;
+  --ok-ink: #73b894;
 
   --bg: var(--chassis);
   --fg: var(--readout);
@@ -241,17 +241,10 @@ a:hover {
 }
 
 .stage {
-  --bg: var(--well);
-  --fg: var(--ink);
-  --mute: #5e5e5b;
-  --rule: #d0ccc3;
-  --fill: var(--plate);
-  --ok-fg: var(--ok-ink);
-  --focus: var(--ink);
-  background: var(--bg);
-  color: var(--fg);
   padding: 40px 52px 80px;
-  color-scheme: light;
+  background: var(--chassis);
+  color: var(--fg);
+  color-scheme: dark;
 }
 
 .rail-block + .rail-block {
@@ -546,6 +539,104 @@ kbd {
   background: var(--plate);
 }
 
+.brief h2,
+.brief h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 1.55em 0 0.5em;
+}
+
+.brief h2 {
+  font-size: var(--fs-5);
+}
+
+.brief h3 {
+  font-size: var(--fs-4);
+}
+
+.brief p {
+  margin: 0 0 1em;
+  font-size: var(--fs-4);
+  line-height: 1.55;
+  max-width: 66ch;
+}
+
+.brief-table-wrap {
+  margin: 12px 0 22px;
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  background: var(--fill);
+}
+
+.brief-table-wrap .kicker {
+  padding: 10px 12px 0;
+}
+
+.brief-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.brief-table th,
+.brief-table td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.brief-table th {
+  font-size: var(--fs-0);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.brief-table td.mono {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+
+.plate-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.plate-link:hover {
+  color: var(--fg);
+}
+
+.raw-dump {
+  margin-top: 36px;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  font-size: var(--fs-2);
+  color: var(--mute);
+}
+
+.raw-dump summary {
+  cursor: pointer;
+  color: var(--mute);
+}
+
+.raw-dump pre {
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--mute);
+}
+
 .story p,
 .deep p {
   margin: 0 0 1em;
@@ -817,7 +908,7 @@ kbd {
   }
 
   .stage {
-    --rule: #6d6a64;
-    --mute: #3d3d3b;
+    --rule: #5a5c62;
+    --mute: #c4c4bc;
   }
 }

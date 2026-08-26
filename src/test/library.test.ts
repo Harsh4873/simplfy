@@ -5,7 +5,7 @@ import {
   putLibraryItem,
   type LibraryItem,
 } from "../library/db";
-import { parseDroppedFile } from "../library/parse";
+import { parseDroppedFile, mimeForDroppedFile } from "../library/parse";
 import { extractTerms, firstLineTitle } from "../library/fieldNote";
 
 describe("local library", () => {
@@ -33,5 +33,13 @@ describe("local library", () => {
     expect(extractTerms(parsed.text).some((term) => term.label.toLowerCase().includes("nested") || term.label.toLowerCase().includes("likelihood"))).toBe(
       true,
     );
+  });
+
+  it("treats a dropped .md as markdown even when the browser says text/plain", async () => {
+    const file = new File(["# LRT\n\nNested models."], "note.md", { type: "text/plain" });
+    expect(mimeForDroppedFile(file)).toBe("text/markdown");
+    const parsed = await parseDroppedFile(file);
+    expect(parsed.parseNote?.toLowerCase()).toMatch(/markdown/);
+    expect(parsed.text).toContain("Nested models");
   });
 });

@@ -15,8 +15,9 @@ import {
   type LibraryItem,
   type RecallCard,
 } from "../library/db";
-import { firstLineTitle } from "../library/fieldNote";
-import { MAX_FILE_BYTES, parseDroppedFile } from "../library/parse";
+import { withBrief } from "../library/hydrate";
+import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
+import { composeBrief } from "../md/compose";
 import { recallFromMiss } from "../quiz/grade";
 import type { CheckItem } from "../catalog/types";
 import type { ToolId } from "./tools";
@@ -43,9 +44,15 @@ export function useStudio() {
 
   const refresh = useCallback(async (database: IDBDatabase) => {
     const [items, cards] = await Promise.all([listLibrary(database), listRecall(database)]);
-    setLibrary(items);
+    const hydrated: LibraryItem[] = [];
+    for (const item of items) {
+      const next = withBrief(item, loaded.modules);
+      if (next !== item) await putLibraryItem(database, next);
+      hydrated.push(next);
+    }
+    setLibrary(hydrated);
     setRecall(cards);
-  }, []);
+  }, [loaded.modules]);
 
   useEffect(() => {
     let cancelled = false;
@@ -124,16 +131,19 @@ export function useStudio() {
             continue;
           }
           const parsed = await parseDroppedFile(file);
+          const mime = mimeForDroppedFile(file);
+          const brief = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
           const item: LibraryItem = {
             id: crypto.randomUUID(),
             kind: "file",
-            name: file.name,
-            mime: file.type || "application/octet-stream",
+            name: brief?.title ?? file.name,
+            mime,
             size: file.size,
             text: parsed.text,
             parseNote: parsed.parseNote,
             createdAt: Date.now(),
             blob: file,
+            brief,
           };
           await putLibraryItem(db, item);
           last = item;
@@ -145,28 +155,31 @@ export function useStudio() {
         setBusy(false);
       }
     },
-    [db, openLibrary, refresh],
+    [db, loaded.modules, openLibrary, refresh],
   );
 
   const addNote = useCallback(
-    async (body: string) => {
-      if (!db || !body.trim()) return;
+    async (raw: string) => {
+      if (!db || !raw.trim()) return;
+      const body = raw.trim();
+      const brief = composeBrief(body, loaded.modules);
       const item: LibraryItem = {
         id: crypto.randomUUID(),
         kind: "note",
-        name: firstLineTitle(body, "Pasted note"),
-        mime: "text/plain",
+        name: brief.title,
+        mime: "text/markdown",
         size: body.length,
-        text: body.trim(),
+        text: body,
         parseNote: "Pasted note, stored only in this browser.",
         createdAt: Date.now(),
+        brief,
       };
       await putLibraryItem(db, item);
       await refresh(db);
       openLibrary(item);
       setNotice("Note kept in the local library.");
     },
-    [db, openLibrary, refresh],
+    [db, loaded.modules, openLibrary, refresh],
   );
 
   const removeLibrary = useCallback(

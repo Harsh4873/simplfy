@@ -11,6 +11,28 @@ const TEXT_TYPES = new Set([
 
 const TEXT_EXT = [".txt", ".md", ".csv", ".tsv", ".json", ".xml", ".html", ".tex", ".r", ".py", ".tsv"];
 
+const MIME_BY_EXT: Record<string, string> = {
+  ".md": "text/markdown",
+  ".txt": "text/plain",
+  ".csv": "text/csv",
+  ".tsv": "text/tab-separated-values",
+  ".json": "application/json",
+  ".xml": "application/xml",
+  ".html": "text/html",
+  ".tex": "text/plain",
+  ".r": "text/plain",
+  ".py": "text/plain",
+};
+
+export function mimeForDroppedFile(file: File): string {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".md")) return "text/markdown";
+  if (file.type) return file.type;
+  const ext = Object.keys(MIME_BY_EXT).find((item) => name.endsWith(item));
+  if (ext) return MIME_BY_EXT[ext];
+  return "application/octet-stream";
+}
+
 export type ParsedFile = {
   text: string;
   parseNote?: string;
@@ -63,7 +85,13 @@ export async function parseDroppedFile(file: File): Promise<ParsedFile> {
   }
   if (isTextFile(file)) {
     const text = await file.text();
-    return { text, parseNote: "Stored as searchable text." };
+    const markdown = mimeForDroppedFile(file) === "text/markdown";
+    return {
+      text,
+      parseNote: markdown
+        ? "Markdown stored as original text. The studio composes a lab brief on file."
+        : "Stored as searchable text.",
+    };
   }
   return {
     text: "",
