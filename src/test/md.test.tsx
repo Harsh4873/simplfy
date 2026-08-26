@@ -38,7 +38,11 @@ describe("lab brief pipeline", () => {
     expect(brief.title).not.toMatch(/\*\*/);
     expect(tableText(brief)).toMatch(/prpD/);
     expect(tableText(brief)).toMatch(/cmaA2/);
+    expect(brief.title).toMatch(/prpRDC/i);
+    expect(brief.title).toMatch(/cmaA2/i);
     expect(brief.links.some((link) => link.moduleId === "stats-lrt")).toBe(true);
+    expect(brief.links.some((link) => link.moduleId === "tb-rifampin")).toBe(true);
+    expect(brief.links.every((link) => link.text.toLowerCase() !== "interaction")).toBe(true);
     expect(brief.blocks.some((block) => block.kind === "figure")).toBe(true);
     expect(brief.blocks.some((block) => block.kind === "figure" && block.spec.kind === "small-multiples")).toBe(true);
   });

@@ -241,6 +241,18 @@ export function tidyHeading(raw: string): string {
     .replace(/[.]+$/, "");
 }
 
+function coveredBy(name: string, gene: string): boolean {
+  const a = name.toLowerCase();
+  const b = gene.toLowerCase();
+  if (a === b || a.includes(b) || b.includes(a)) return true;
+  const operon = name.match(/^([a-z]{3})([A-Z]{2,})$/);
+  const locus = gene.match(/^([a-z]{3})([A-Za-z0-9]+)$/);
+  if (operon && locus && operon[1] === locus[1]) {
+    return operon[2].toUpperCase().includes(locus[2][0].toUpperCase());
+  }
+  return false;
+}
+
 export function inventTitle(stripped: string, hits: NamedHit[]): string {
   const count = stripped.match(/(\d+)\s+LRT workbooks/i);
   const operon = stripped.match(/\bis\s+(prpRDC|[a-z]{3}[A-Z]{2,})\b/);
@@ -248,9 +260,7 @@ export function inventTitle(stripped: string, hits: NamedHit[]): string {
   const names: string[] = [];
   if (operon) names.push(operon[1]);
   for (const hit of ranked) {
-    if (names.some((name) => name.toLowerCase().includes(hit.gene.toLowerCase()) || hit.gene.toLowerCase().includes(name.toLowerCase()))) {
-      continue;
-    }
+    if (names.some((name) => coveredBy(name, hit.gene))) continue;
     names.push(hit.gene);
     if (names.length >= 2) break;
   }

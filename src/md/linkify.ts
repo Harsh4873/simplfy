@@ -26,6 +26,11 @@ const STOP_PHRASE = new Set([
   "are",
   "not",
   "but",
+  "interaction",
+  "regression",
+  "comparison",
+  "experiments",
+  "experiment",
 ]);
 
 const EXTRA: Record<string, string[]> = {
@@ -98,7 +103,8 @@ function phrasesFor(module: StudyModule): { phrase: string; weight: number }[] {
   const tail = module.id.split("-").pop() ?? "";
   if (tail.length >= 2 && tail.length <= 5) add(tail, 7);
   for (const tag of module.tags) {
-    if (tag.length >= 3 && (isGeneLike(tag) || tag.length <= 12)) add(tag, 4);
+    if (!isGeneLike(tag) && !/^[A-Z0-9-]{2,8}$/.test(tag)) continue;
+    add(tag, 4);
   }
   if (module.visual.kind === "gene-track") add(module.visual.gene, 9);
   const hay = [module.title, module.dek, module.aliases.join(" "), module.tags.join(" "), module.story.join(" ")].join(
