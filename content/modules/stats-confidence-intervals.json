@@ -1,0 +1,187 @@
+{
+  "id": "stats-confidence-intervals",
+  "title": "Confidence intervals as procedures",
+  "dek": "A 95% confidence interval is a random set with a coverage claim. Today’s endpoints are numbers; the 95% lives on the procedure.",
+  "domain": "stats",
+  "aliases": [
+    "confidence interval",
+    "coverage",
+    "Wald interval",
+    "score interval",
+    "profile interval"
+  ],
+  "tags": [
+    "inference",
+    "coverage",
+    "Wald",
+    "likelihood"
+  ],
+  "story": [
+    "A confidence interval is a set-valued estimator C(Y) such that P_θ(θ ∈ C(Y)) is at least (or approximately) 1−α for each θ in a class. After you observe y, the set C(y) either covers or it does not. There is no remaining random 95% attached to that particular interval unless you switch to a posterior.",
+    "Wald: θ̂ ± z_{1−α/2} se. Score (Wilson, for binomial) inverts a test that uses null variance. Profile likelihood intervals invert an LRT. They agree in regular large samples and quarrel when events are rare or parameters sit near a wall.",
+    "In TB screening papers, a Wald interval for a sensitivity estimated from 8 culture-positive cases will happily go negative or above 1. That is the procedure talking, not the biology. Use a score or profile interval, or a Beta posterior with a named prior."
+  ],
+  "deepTitle": "Inversion, and what 95% is not",
+  "deep": [
+    "Duality: a 1−α interval is the set of θ₀ not rejected by a level-α test of H₀: θ = θ₀. Change the test (Wald, score, LRT) and you change the interval. This is why “the” 95% interval does not exist.",
+    "Coverage can be conservative or liberal at finite n. Clopper–Pearson binomial intervals are conservative; some approximate methods undershoot near 0. Simulation from the model you claim is the adult coverage check.",
+    "Nuisance parameters: a Wald interval for ψ uses a se that already plugged in λ̂. A profile interval maximises λ at each ψ. They are first-order equivalent and can differ for variance components and ratios.",
+    "Do not caption a confidence interval as “95% probability that π sits here” in a frequentist methods section. If you want that sentence, write a prior and a posterior."
+  ],
+  "formulas": [
+    {
+      "id": "wald",
+      "label": "Wald interval",
+      "expression": "θ̂ ± z_{1−α/2} se(θ̂)",
+      "note": "Uses alternative-variance (observed) se. Can violate bounds of Θ."
+    },
+    {
+      "id": "profileI",
+      "label": "Profile likelihood interval",
+      "expression": "{ψ : 2(ℓ(θ̂) − ℓ_p(ψ)) ≤ χ²_{1, 1−α}}",
+      "note": "Invert the LRT. Respects the shape of ℓ, including skew."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Coverage is a property of many hypothetical repetitions (left idea), not a probability tag on one printed interval (right idea). The bars are schematic: a well-calibrated procedure versus a Wald procedure that undershoots near a boundary.",
+    "panels": [
+      {
+        "title": "Interior π=0.4, n=80",
+        "bars": [
+          {
+            "label": "Wald",
+            "value": 94
+          },
+          {
+            "label": "score",
+            "value": 95
+          }
+        ]
+      },
+      {
+        "title": "Rare π=0.05, n=20",
+        "bars": [
+          {
+            "label": "Wald",
+            "value": 82
+          },
+          {
+            "label": "score",
+            "value": 94
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Confidence interval — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Confidence_interval",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Introduction to Modern Statistics, 2nd edition",
+      "url": "https://openintro-ims.netlify.app/",
+      "attribution": "CC BY-SA 3.0 open text (Diez, Çetinkaya-Rundel, Barr). Probability and sampling facts only. This plate is original Simplfy teaching notes and is not a publisher-branded derivative.",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-wald-score",
+    "stats-lrt",
+    "stats-bootstrap",
+    "stats-predictive-values"
+  ],
+  "example": {
+    "title": "Binomial interval for Xpert sensitivity",
+    "setup": "8 culture-positive pulmonary TB cases, 7 detected by NAAT. Estimate Se = 7/8 = 0.875. Compare Wald versus a bounded interval.",
+    "steps": [
+      {
+        "title": "Wald",
+        "body": "se = √(0.875×0.125/8) ≈ 0.117. 0.875 ± 1.96×0.117 ≈ (0.65, 1.10). The upper end is not a probability.",
+        "expression": "0.875 ± 1.96√(p̂(1−p̂)/n)"
+      },
+      {
+        "title": "Score / Wilson",
+        "body": "Inverting the score test keeps the interval inside (0,1) and uses p(1−p) under the candidate p, not only at p̂. The numeric interval is still wide — n = 8 is the story."
+      },
+      {
+        "title": "What to write",
+        "body": "“7/8; 95% score interval …” plus the case definition. Do not advertise 87.5% as a stable programme constant."
+      }
+    ],
+    "takeaway": "Coverage is about the recipe. Near 0 or 1, change the recipe before you change the biology."
+  },
+  "check": [
+    {
+      "id": "ci-cov",
+      "kind": "conceptual",
+      "prompt": "After the data are in, a realised 95% confidence interval:",
+      "choices": [
+        "Contains θ with posterior probability 0.95 by definition",
+        "Is a fixed set; the 95% referred to the procedure’s coverage, not a remaining lottery ticket on this set",
+        "Must include the MLE and the prior mode",
+        "Is invalid unless n>30"
+      ],
+      "answer": "Is a fixed set; the 95% referred to the procedure’s coverage, not a remaining lottery ticket on this set",
+      "why": "That is the frequentist ontology. If you want a remaining probability, use a posterior.",
+      "whyWrong": {
+        "Contains θ with posterior probability 0.95 by definition": "That is a credible interval.",
+        "Must include the MLE and the prior mode": "A CI need not involve a prior; some intervals can even exclude an MLE in odd constructions, though Wald includes it.",
+        "Is invalid unless n>30": "Small-n intervals exist (exact binomial, profile)."
+      }
+    },
+    {
+      "id": "ci-wald",
+      "kind": "calculation",
+      "prompt": "Wald 95% interval for a mean, θ̂ = 10, se = 2, z = 1.96. Endpoints nearest:",
+      "choices": [
+        "(8,12)",
+        "(6.08, 13.92)",
+        "(10, 14)",
+        "(0, 1)"
+      ],
+      "answer": "(6.08, 13.92)",
+      "why": "10 ± 1.96×2 = 10 ± 3.92.",
+      "whyWrong": {
+        "(8,12)": "That used ±1 se, not ±1.96 se.",
+        "(10, 14)": "Asymmetric nonsense.",
+        "(0, 1)": "Wrong scale."
+      }
+    },
+    {
+      "id": "ci-figure",
+      "kind": "figure",
+      "prompt": "On the coverage small-multiples, what does the short Wald bar at π=0.05, n=20 mean?",
+      "figureHint": "Right panel, Wald vs score.",
+      "choices": [
+        "Wald intervals are shorter therefore better",
+        "The Wald procedure’s actual coverage fell below the nominal 95% in that rare-event regime",
+        "Score intervals do not contain π̂",
+        "Coverage is a Bayesian probability in both bars"
+      ],
+      "answer": "The Wald procedure’s actual coverage fell below the nominal 95% in that rare-event regime",
+      "why": "The y-axis is schematic coverage percentage. A short bar is undercoverage, the usual Wald failure near 0.",
+      "whyWrong": {
+        "Wald intervals are shorter therefore better": "The bar is coverage, not width.",
+        "Score intervals do not contain π̂": "Not the claim.",
+        "Coverage is a Bayesian probability in both bars": "The plate is frequentist coverage."
+      }
+    }
+  ]
+}

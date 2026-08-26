@@ -1,0 +1,213 @@
+{
+  "id": "stats-iwls",
+  "title": "Iteratively weighted least squares",
+  "dek": "IRLS / IWLS fits a GLM by repeating weighted OLS on a working response. Gaussian identity OLS is the algorithm that finishes in one step.",
+  "domain": "stats",
+  "aliases": [
+    "IRLS",
+    "IWLS",
+    "Fisher scoring",
+    "working response",
+    "GLM algorithm"
+  ],
+  "tags": [
+    "GLM",
+    "computation",
+    "Fisher scoring",
+    "weights"
+  ],
+  "story": [
+    "A GLM log-likelihood is generally not a quadratic in β. Fisher scoring linearises the score and solves a weighted least-squares problem at each step. The working response is z = η + (y − μ) g′(μ), with weights W = 1 / (V(μ) [g′(μ)]²).",
+    "Each iteration: compute μ(β_old), build z and W, regress z on X with weights W, get β_new. Stop when the score is numerically zero. That is IRLS. Newton uses the observed Hessian instead of expected information; for canonical links they often coincide.",
+    "This is why GLM software feels like regression: it is regression, iterated, in a metric the family chose. It is also why starting values, complete separation, and exploding weights are numerical siblings of scientific problems (perfect prediction, μ̂ on the boundary)."
+  ],
+  "deepTitle": "Working weights as information",
+  "deep": [
+    "At convergence, Var̂(β̂) ≈ (Xᵀ W X)⁻¹ φ, with W evaluated at μ̂. Those weights are Fisher information in disguise. Quasi-likelihood keeps the same IRLS and replaces φ or V(μ) without a full pmf.",
+    "Canonical Bernoulli: g′(μ) = 1/(μ(1−μ)), V(μ) = μ(1−μ), so W = μ(1−μ). Points with μ̂ near 0 or 1 get tiny weight — the algorithm itself downweights sure events. That is information, not a bug, until complete separation makes μ̂ hit 0/1 and W collapse.",
+    "Offsets enter η before z is built. Observation weights (survey weights) multiply W. Do not confuse survey weights with IRLS working weights; they can both be present.",
+    "Failure to converge is a result. Report it. Firth / penalised logistic, exact logistic, or a Bayesian prior with positive curvature are the usual scientific exits, not “more iterations.”"
+  ],
+  "formulas": [
+    {
+      "id": "z",
+      "label": "Working response",
+      "expression": "z = η + (y − μ) g′(μ)",
+      "note": "A linearised outcome on the η scale."
+    },
+    {
+      "id": "W",
+      "label": "IRLS weight",
+      "expression": "W = 1 / ( V(μ) [g′(μ)]² )",
+      "note": "Expected information contribution of that row."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "IRLS as a loop of weighted projections. Gaussian identity: W is constant and z = y, so the loop is one OLS step. Logistic: W = μ(1−μ) changes every round.",
+    "nodes": [
+      {
+        "id": "b0",
+        "label": "β_old",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "mu",
+        "label": "μ, η",
+        "x": 32,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "zw",
+        "label": "build z, W",
+        "x": 54,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "wls",
+        "label": "weighted OLS",
+        "x": 76,
+        "y": 18,
+        "tone": "decision"
+      },
+      {
+        "id": "done",
+        "label": "β̂, (XᵀWX)⁻¹",
+        "x": 76,
+        "y": 62,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "b0",
+        "to": "mu"
+      },
+      {
+        "from": "mu",
+        "to": "zw"
+      },
+      {
+        "from": "zw",
+        "to": "wls"
+      },
+      {
+        "from": "wls",
+        "to": "mu",
+        "label": "not yet"
+      },
+      {
+        "from": "wls",
+        "to": "done",
+        "label": "score ≈ 0"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Iteratively reweighted least squares — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder, Generalized Linear Models",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-glm-link",
+    "stats-ols-geometry",
+    "stats-logit",
+    "stats-quasi-likelihood",
+    "stats-ols-glm"
+  ],
+  "example": {
+    "title": "One IRLS step for a Bernoulli intercept-only model",
+    "setup": "n = 4, y = (0,0,1,1). Start at β₀ = 0, so μ = 0.5, η = 0. Canonical logit: g′(μ) = 1/(μ(1−μ)) = 4, V = 0.25, W = 0.25.",
+    "steps": [
+      {
+        "title": "Working z",
+        "body": "zᵢ = 0 + (yᵢ − 0.5)×4 = 4yᵢ − 2. So z = (−2,−2,2,2).",
+        "expression": "z = η + (y−μ)g′(μ)"
+      },
+      {
+        "title": "Weighted OLS",
+        "body": "Equal weights, intercept-only: β_new = z̄ = 0. Already the MLE (logit of 0.5). The algorithm noticed immediately because the start was the truth for this balanced sample."
+      },
+      {
+        "title": "If y were (0,0,0,1)",
+        "body": "Start at 0.5, one step moves toward logit(0.25). Later steps refine. If y were (0,0,0,0), weights collapse toward 0 and you meet the boundary problem."
+      }
+    ],
+    "takeaway": "IRLS is weighted projection of a working z. When W dies, the likelihood is telling you about the edge of Θ."
+  },
+  "check": [
+    {
+      "id": "iwls-ols",
+      "kind": "conceptual",
+      "prompt": "Gaussian identity GLM makes IRLS collapse to one OLS fit because:",
+      "choices": [
+        "W is constant and z = y, so the working regression is OLS on the original outcome",
+        "Gaussian models have no score",
+        "Weights are always μ(1−μ)",
+        "Projections are illegal in GLMs"
+      ],
+      "answer": "W is constant and z = y, so the working regression is OLS on the original outcome",
+      "why": "g′ = 1, V = 1 (or σ² absorbed in φ). No iteration needed.",
+      "whyWrong": {
+        "Gaussian models have no score": "They do: Xᵀ(y−μβ)/σ².",
+        "Weights are always μ(1−μ)": "That is Bernoulli canonical.",
+        "Projections are illegal in GLMs": "IRLS is a sequence of projections."
+      }
+    },
+    {
+      "id": "iwls-w",
+      "kind": "calculation",
+      "prompt": "Canonical logit, μ = 0.2. Working weight W = μ(1−μ) equals:",
+      "choices": [
+        "0.2",
+        "0.16",
+        "1",
+        "0.8"
+      ],
+      "answer": "0.16",
+      "why": "0.2×0.8 = 0.16. Near 0 or 1, W shrinks.",
+      "whyWrong": {
+        "0.2": "The mean, not the Bernoulli variance.",
+        "1": "Gaussian weight cartoon.",
+        "0.8": "1−μ, not the product."
+      }
+    },
+    {
+      "id": "iwls-figure",
+      "kind": "figure",
+      "prompt": "On the IRLS flow plate, the back-arrow “not yet” means:",
+      "figureHint": "Loop from weighted OLS back to μ, η.",
+      "choices": [
+        "The algorithm is drawing a posterior",
+        "β_new is used to rebuild μ, z, W until the score is numerically zero",
+        "You must randomise rows each iteration",
+        "W is a prior precision"
+      ],
+      "answer": "β_new is used to rebuild μ, z, W until the score is numerically zero",
+      "why": "That is iteration. Convergence is a score ≈ 0 statement.",
+      "whyWrong": {
+        "The algorithm is drawing a posterior": "IRLS is frequentist scoring (or a MAP if you added a penalty).",
+        "You must randomise rows each iteration": "No.",
+        "W is a prior precision": "W is expected information weight."
+      }
+    }
+  ]
+}

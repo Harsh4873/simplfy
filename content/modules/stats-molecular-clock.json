@@ -1,0 +1,172 @@
+{
+  "id": "stats-molecular-clock",
+  "title": "Clocks, rates, and dated trees",
+  "dek": "A clock maps substitutions to time. Strict clocks assume one rate. Relaxed clocks add a hierarchical law on rates. Sampling times identify the map only with assumptions.",
+  "domain": "stats",
+  "aliases": [
+    "molecular clock",
+    "strict clock",
+    "relaxed clock",
+    "substitution rate",
+    "dated tree"
+  ],
+  "tags": [
+    "phylogenetics",
+    "clock",
+    "rate",
+    "time"
+  ],
+  "story": [
+    "Branch length t_subst = rate × t_years (plus a unit choice). If you have sampling dates and enough substitutions, you can hope to estimate the rate and then date internal nodes. If everyone was sampled in the same month, the time origin and the rate trade off — a ridge, the Fisher-information plate again.",
+    "Strict clock: one rate μ for all branches. Relaxed clock: μ_b ~ some distribution (log-normal, exponential) with a hyperparameter. That is a hierarchical model on branches. It is not a proof that evolution “relaxed”; it is extra parameters to absorb rate heterogeneity.",
+    "TB clocks are famously awkward: slow substitution, mixed sampling, possible rate variation in outbreaks versus latency. A dated tree with pretty 95% node bars can be a prior in costume. Report the sampling-date span and a sensitivity to clock model."
+  ],
+  "deepTitle": "Identifiability and the likelihood",
+  "deep": [
+    "Likelihood: P(alignment | T, μ, dates, Q). Dates enter by constraining tip times. Root time and μ often want a prior because the likelihood ridge is real. MCMC on this space is the MCMC plate with extra discrete topology moves.",
+    "If the clock is wrong, dates are wrong even if the topology is right. A strict clock on a dataset with a fast outbreak clade and a slow background will smear both.",
+    "Rate estimates from outbreak-only windows can be faster than long-term rates (time-dependent rates, purifying selection). Extrapolating an outbreak μ to date a 200-year-old lineage is a scientific leap, not a software default.",
+    "Confidence/credible bars on node dates ignore some sources (recombination, alignment error, biased sampling of cases). Treat them as conditional on the model class."
+  ],
+  "formulas": [
+    {
+      "id": "clock",
+      "label": "Strict clock map",
+      "expression": "t_subst = μ · t_years",
+      "note": "μ in substitutions per site per year. One μ for all branches."
+    },
+    {
+      "id": "relaxed",
+      "label": "Relaxed clock (hierarchical)",
+      "expression": "μ_b ~ p(μ | λ),   t_subst,b = μ_b · t_years,b",
+      "note": "λ is a hyperparameter. Extra variance on dates."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Identifiability cartoon: a peaked posterior on rate when sampling dates span years, a flatter ridge when all tips are contemporaneous, and a shifted peak if you force a strict clock on heterogeneous rates. The x-axis is μ, not calendar time.",
+    "xLabel": "substitution rate μ (schematic)",
+    "curves": [
+      {
+        "id": "span",
+        "label": "dated tips, long span",
+        "mean": 0.2,
+        "sd": 0.25
+      },
+      {
+        "id": "same",
+        "label": "contemporaneous tips",
+        "mean": 0.1,
+        "sd": 1.0
+      },
+      {
+        "id": "miss",
+        "label": "strict clock, rates differ",
+        "mean": 0.7,
+        "sd": 0.35
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Molecular clock — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Molecular_clock",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Relaxed molecular clock — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Relaxed_clock",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): standard phylogenetics texts — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-trees",
+    "stats-transmission-genomics",
+    "stats-mcmc",
+    "stats-fisher-information",
+    "stats-priors"
+  ],
+  "example": {
+    "title": "All isolates from one month",
+    "setup": "80 RR-TB genomes from May 2024, no historical samples. A pipeline still prints a dated tree with a root in 1998 ± 4 years.",
+    "steps": [
+      {
+        "title": "Ridge",
+        "body": "Without a time span at the tips, μ and root time trade. The printed date is mostly the prior on μ (or a default rate)."
+      },
+      {
+        "title": "What you can still do",
+        "body": "Undated trees, clustering by substitutions, comparison to a rate from a dataset that actually had dates. Do not launder a default μ as measurement."
+      },
+      {
+        "title": "If you add 2012 archives",
+        "body": "Now there is a span. Re-estimate. Show sensitivity to strict vs relaxed and to excluding suspected mixed infections."
+      }
+    ],
+    "takeaway": "Dates need a clock and a sampling span. Pretty bars are not a substitute for either."
+  },
+  "check": [
+    {
+      "id": "clock-id",
+      "kind": "conceptual",
+      "prompt": "When all genomes are sampled at essentially one time, a dated-tree rate is often weakly identified because:",
+      "choices": [
+        "Trees cannot have branch lengths",
+        "Root time and substitution rate trade off along a ridge without a tip-date span",
+        "Q must be zero",
+        "FDR forbids clocks"
+      ],
+      "answer": "Root time and substitution rate trade off along a ridge without a tip-date span",
+      "why": "t_subst = μ × years. Scale μ up, shrink years, same substitutions. Dates at tips pin the scale.",
+      "whyWrong": {
+        "Trees cannot have branch lengths": "They can, in substitutions.",
+        "Q must be zero": "No.",
+        "FDR forbids clocks": "No."
+      }
+    },
+    {
+      "id": "clock-calc",
+      "kind": "calculation",
+      "prompt": "t_subst = 0.002 substitutions/site, μ = 1×10^{-7} /site/year. Implied years ≈",
+      "choices": [
+        "2",
+        "20000",
+        "2000",
+        "0.002"
+      ],
+      "answer": "20000",
+      "why": "years = t_subst / μ = 0.002 / 1e-7 = 2e4.",
+      "whyWrong": {
+        "2": "Off by 10^4.",
+        "2000": "Off by 10.",
+        "0.002": "That is t_subst."
+      }
+    },
+    {
+      "id": "clock-figure",
+      "kind": "figure",
+      "prompt": "On the clock density plate, the contemporaneous-tips curve is almost flat. That geometry is:",
+      "figureHint": "Wide sd curve labelled contemporaneous tips.",
+      "choices": [
+        "A highly identified rate",
+        "A weakly identified μ when there is no sampling span, i.e. a ridge in (μ, root time)",
+        "Proof that relaxed clocks are illegal",
+        "A bootstrap of SNPs"
+      ],
+      "answer": "A weakly identified μ when there is no sampling span, i.e. a ridge in (μ, root time)",
+      "why": "Flat expected curvature is small Fisher information for μ.",
+      "whyWrong": {
+        "A highly identified rate": "Opposite of flat.",
+        "Proof that relaxed clocks are illegal": "No.",
+        "A bootstrap of SNPs": "Different uncertainty."
+      }
+    }
+  ]
+}

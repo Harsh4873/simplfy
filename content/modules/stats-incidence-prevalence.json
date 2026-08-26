@@ -1,0 +1,204 @@
+{
+  "id": "stats-incidence-prevalence",
+  "title": "Incidence versus prevalence",
+  "dek": "Prevalence is a stock. Incidence is a flow. Risk, rate, and odds are not synonyms, and duration ties the stock to the flow.",
+  "domain": "stats",
+  "aliases": [
+    "incidence",
+    "prevalence",
+    "risk",
+    "rate",
+    "person-time",
+    "duration"
+  ],
+  "tags": [
+    "epi",
+    "incidence",
+    "prevalence",
+    "TB"
+  ],
+  "story": [
+    "Prevalence P = proportion with disease at a time (or in a defined window). Incidence is new events: either a risk (proportion of a closed cohort that develops disease over time t) or a rate (events per person-time). A survey of who has TB today estimates prevalence. A cohort of household contacts estimates incidence (with incomplete follow-up, as a rate).",
+    "In a steady state, prevalence ≈ incidence rate × mean duration. Long-duration treated TB and long latency make prevalence a poor proxy for current transmission. A district can have high prevalence from old cases and falling incidence, or the reverse during an outbreak of rapid disease.",
+    "Poisson log-linear models with an offset log(person-time) target rates. Logistic models of “ever diseased in the window” target risks (or prevalences in a cross-section). Using a logit on counts without exposure time rediscovers population size (Poisson plate)."
+  ],
+  "deepTitle": "Risk, rate, odds, and sampling",
+  "deep": [
+    "Risk in a closed cohort: Yᵢ ~ Bernoulli(π), π = 1 − S(t) for a survival function. Censoring makes the Bernoulli likelihood wrong; use a hazard model or a Poisson approximation with person-time if hazards are small.",
+    "Rate: events / person-time. Two events in one person still count two in a rate (if you allow repeated events); a first-event risk would not. Define the event.",
+    "Odds = π/(1−π). Case-control studies estimate odds ratios; with rare incidence, OR ≈ rate ratio or risk ratio. TB disease in a high-burden clinic is not always rare — do not paste the rare-disease slogan onto smear-positivity.",
+    "Sampling: a prevalent case series oversamples long-duration disease (length-biased sampling). Associations with slow chronic forms will look stronger than in an incident series. For TB, that matters if you study delayed diagnosis using a cross-section of current patients."
+  ],
+  "formulas": [
+    {
+      "id": "papprox",
+      "label": "Steady-state sketch",
+      "expression": "prevalence ≈ incidence rate × mean duration",
+      "note": "A cartoon that is already enough to stop treating P as a transmission meter."
+    },
+    {
+      "id": "rate",
+      "label": "Incidence rate",
+      "expression": "λ̂ = events / person-time",
+      "note": "Poisson MLE with offset log(PT) in a single-cell model."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Stock versus flow: incidence feeds the prevalent pool; duration (and cure/death/migration) empties it. A survey snapshots the pool. A cohort counts the arrows in. Mixing the snapshot with a Poisson rate without person-time is the usual spreadsheet error.",
+    "nodes": [
+      {
+        "id": "inc",
+        "label": "Incidence (flow)",
+        "x": 12,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "pool",
+        "label": "Prevalent pool",
+        "x": 42,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "exit",
+        "label": "Cure / death / out",
+        "x": 72,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "surv",
+        "label": "Survey snapshot",
+        "x": 72,
+        "y": 62,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "inc",
+        "to": "pool"
+      },
+      {
+        "from": "pool",
+        "to": "exit",
+        "label": "duration"
+      },
+      {
+        "from": "pool",
+        "to": "surv"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Incidence (epidemiology) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Incidence_(epidemiology)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Prevalence — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Prevalence",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Introduction to Modern Statistics, 2nd edition",
+      "url": "https://openintro-ims.netlify.app/",
+      "attribution": "CC BY-SA 3.0 open text (Diez, Çetinkaya-Rundel, Barr). Probability and sampling facts only. This plate is original Simplfy teaching notes and is not a publisher-branded derivative.",
+      "license": "CC BY-SA 3.0"
+    }
+  ],
+  "related": [
+    "stats-poisson",
+    "stats-predictive-values",
+    "stats-survey-error",
+    "stats-se-sp",
+    "stats-logit"
+  ],
+  "example": {
+    "title": "Same 40 cases, two captions",
+    "setup": "District A: 40 TB diagnoses this year, 100,000 people, mean duration in the prevalent pool ~ 0.5 years (faster care). District B: 40 diagnoses, same population, mean duration ~ 2 years (slow care).",
+    "steps": [
+      {
+        "title": "Rates",
+        "body": "If 40 are incident counts, incidence looks similar (40/100,000 per year) — until you ask completeness of diagnosis."
+      },
+      {
+        "title": "Prevalence cartoon",
+        "body": "P ≈ λ × duration. B’s snapshot survey would find about four times as many current cases if the cartoon held. High prevalence here is duration, not a four-fold outbreak."
+      },
+      {
+        "title": "Model choice",
+        "body": "A prevalence survey wants a survey-weighted Bernoulli/logit of current disease. A notification Poisson wants person-years and a completeness story. Do not fit one and caption the other."
+      }
+    ],
+    "takeaway": "Name stock or flow. Duration is the missing multiplier, not a footnote."
+  },
+  "check": [
+    {
+      "id": "inc-stock",
+      "kind": "conceptual",
+      "prompt": "A household contact study that counts new TB over 18 months is targeting:",
+      "choices": [
+        "Point prevalence at baseline only",
+        "Incidence (risk or rate, depending on how time-at-risk is handled)",
+        "Specificity of Xpert",
+        "A q-value"
+      ],
+      "answer": "Incidence (risk or rate, depending on how time-at-risk is handled)",
+      "why": "New events over time. Baseline X-ray prevalence would be a stock.",
+      "whyWrong": {
+        "Point prevalence at baseline only": "That is a snapshot.",
+        "Specificity of Xpert": "A test property.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "inc-calc",
+      "kind": "calculation",
+      "prompt": "Steady-state cartoon: rate 0.002 per year, mean duration 2 years. Prevalence ≈",
+      "choices": [
+        "0.001",
+        "0.004",
+        "2",
+        "0.002"
+      ],
+      "answer": "0.004",
+      "why": "0.002 × 2 = 0.004 (0.4%).",
+      "whyWrong": {
+        "0.001": "Halved instead of multiplied.",
+        "2": "Duration, not P.",
+        "0.002": "The rate, not P."
+      }
+    },
+    {
+      "id": "inc-figure",
+      "kind": "figure",
+      "prompt": "On the stock-flow map, the survey snapshot hangs off the prevalent pool, not off the incidence arrow. That drawing says:",
+      "figureHint": "Survey snapshot node attached to the pool.",
+      "choices": [
+        "A prevalence survey measures the flow of new cases directly",
+        "A cross-sectional survey sees the stock, which mixes past incidence with duration",
+        "Incidence cannot be estimated in any design",
+        "Poisson offsets estimate prevalence by default"
+      ],
+      "answer": "A cross-sectional survey sees the stock, which mixes past incidence with duration",
+      "why": "That is the plate’s geometry. Cohorts count the inflow.",
+      "whyWrong": {
+        "A prevalence survey measures the flow of new cases directly": "Opposite.",
+        "Incidence cannot be estimated in any design": "Cohorts and complete notification systems try.",
+        "Poisson offsets estimate prevalence by default": "Offsets target rates when the outcome is a count of events."
+      }
+    }
+  ]
+}

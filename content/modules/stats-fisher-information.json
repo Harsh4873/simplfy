@@ -1,0 +1,168 @@
+{
+  "id": "stats-fisher-information",
+  "title": "Fisher information",
+  "dek": "I(θ) = E[−∇²ℓ(θ)] = Var(score). It is the expected curvature of the log-likelihood, and the usual large-sample precision of the MLE.",
+  "domain": "stats",
+  "aliases": [
+    "Fisher information",
+    "observed information",
+    "expected information",
+    "Cramér-Rao",
+    "information matrix"
+  ],
+  "tags": [
+    "estimation",
+    "information",
+    "MLE",
+    "precision"
+  ],
+  "story": [
+    "The score S(θ) = ∇ℓ is a mean-zero random vector under regularity. Its covariance is Fisher information I(θ). Equivalently I(θ) = E[−∇²ℓ(θ)]: expected curvature. Lots of information means a peaky expected log-likelihood and a tight MLE.",
+    "Observed information J(θ̂) = −∇²ℓ(θ̂) is the Hessian you have in hand after the fit. Expected information wants an average over Y, often evaluated at θ̂. Software SE columns are usually √diag(J⁻¹) or √diag(I(θ̂)⁻¹). They are not mystical.",
+    "Additivity: independent experiments add information. Two labs with independent isolates give I_total = I₁ + I₂. Dependent reads from the same isolate do not. That is the whole reason phylogenetic and mixed models exist: they stop you from adding information you do not have."
+  ],
+  "deepTitle": "Regularity, inversion, and units",
+  "deep": [
+    "For iid data, I_n(θ) = n I₁(θ), so se(θ̂) ≈ 1/√(n I₁). That is the √n in every delta-method talk. If you change parameterisation, information transforms by a Jacobian: I_φ = I_θ / (dφ/dθ)² in 1-D. Quote SEs on the scale you interpret.",
+    "Singular I(θ) means local non-identification: two directions in parameter space the data cannot separate. Classic in over-parameterised mixture models and in some clock-plus-tree phylogenetic likelihoods. A giant SE or a failed inversion is a scientific message.",
+    "Cramér–Rao uses I(θ) as a bound for unbiased estimators. Asymptotic efficiency of the MLE is the statement that √n (θ̂ − θ) →d N(0, I₁⁻¹). Both fail on boundaries and for non-iid likelihoods you have not written.",
+    "In a Bernoulli experiment I₁(π) = 1/(π(1−π)). Information is smallest near 0 and 1 — rare resistance alleles are poorly estimated not because the lab is careless but because the curvature vanishes."
+  ],
+  "formulas": [
+    {
+      "id": "I",
+      "label": "Fisher information",
+      "expression": "I(θ) = E[S(θ)S(θ)ᵀ] = E[−∇²ℓ(θ)]",
+      "note": "Equality needs interchange of derivative and integral (regularity)."
+    },
+    {
+      "id": "asymp",
+      "label": "MLE large-sample law",
+      "expression": "√n (θ̂ − θ) →d N(0, I₁(θ)⁻¹)",
+      "note": "Interior, identified, iid or analogous ergodic setting."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Information as curvature: a peaked log-likelihood (large I) versus a flat one (small I). The nested-model plate is reused here as a reminder that extra parameters spend curvature; a singular I is a flat ridge, not a peak.",
+    "reduced": {
+      "label": "Identified slice",
+      "params": [
+        "θ_1 (curved)"
+      ]
+    },
+    "full": {
+      "label": "Ridge in (θ₁, θ₂)",
+      "params": [
+        "θ_1",
+        "θ_2 ≈ a + b θ_1",
+        "I nearly singular"
+      ]
+    },
+    "statistic": "I(θ) = E[−∇²ℓ]",
+    "reference": "invertible I  ⇒  se ≈ √diag(I⁻¹)"
+  },
+  "sources": [
+    {
+      "title": "Fisher information — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fisher_information",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-mle",
+    "stats-delta-method",
+    "stats-foundations",
+    "stats-wald-score",
+    "stats-likelihood"
+  ],
+  "example": {
+    "title": "Information for a Poisson rate",
+    "setup": "Yᵢ iid Poisson(λ), n = 9, ȳ = 2. Compute I(λ) and the model-based SE of λ̂ = ȳ.",
+    "steps": [
+      {
+        "title": "One-observation information",
+        "body": "ℓ₁ = y log λ − λ. Score y/λ − 1. −∂²ℓ₁/∂λ² = y/λ², so I₁(λ) = E[Y]/λ² = 1/λ.",
+        "expression": "I₁(λ) = 1/λ"
+      },
+      {
+        "title": "Sample of n",
+        "body": "I_n(λ) = n/λ. At λ̂ = 2, se ≈ √(λ̂/n) = √(2/9) ≈ 0.47. Same as Var(ȳ) = λ/n."
+      },
+      {
+        "title": "Reparameterise",
+        "body": "If φ = log λ, I₁(φ) = λ = e^φ. SE on the log scale is 1/√(nλ) ≈ 0.24. A Wald interval on φ, then exponentiated, is often better behaved than λ̂ ± 1.96×0.47 when λ is small."
+      }
+    ],
+    "takeaway": "I(θ) is expected curvature. Invert it on the scale you will interpret, or transform with the delta method."
+  },
+  "check": [
+    {
+      "id": "fish-add",
+      "kind": "conceptual",
+      "prompt": "Independent experiments add Fisher information. Dependent observations from the same isolate:",
+      "choices": [
+        "Also add I as if they were independent",
+        "Do not add a full I each; the joint likelihood must carry the dependence",
+        "Have zero information",
+        "Force observed and expected information to coincide"
+      ],
+      "answer": "Do not add a full I each; the joint likelihood must carry the dependence",
+      "why": "Additivity of I is additivity of independent scores. Shared isolates, trees, and labs break that.",
+      "whyWrong": {
+        "Also add I as if they were independent": "That double-counts.",
+        "Have zero information": "They have information, just not n times I₁.",
+        "Force observed and expected information to coincide": "Unrelated."
+      }
+    },
+    {
+      "id": "fish-bern",
+      "kind": "calculation",
+      "prompt": "iid Bernoulli, n = 50, π = 0.2. Expected information I_n(π) equals:",
+      "choices": [
+        "50 / 0.16",
+        "50",
+        "0.16",
+        "1/50"
+      ],
+      "answer": "50 / 0.16",
+      "why": "I₁(π) = 1/(π(1−π)) = 1/0.16, so I_n = 50/0.16 = 312.5. SE would be 1/√I_n = √(0.16/50).",
+      "whyWrong": {
+        "50": "That is n, not I.",
+        "0.16": "That is π(1−π), the variance of one Y, not information.",
+        "1/50": "That is 1/n, not I."
+      }
+    },
+    {
+      "id": "fish-figure",
+      "kind": "figure",
+      "prompt": "On the information plate, the “ridge” in the full box is warning you about:",
+      "figureHint": "Full model lists θ₂ ≈ a + b θ₁ and singular I.",
+      "choices": [
+        "A well-identified MLE with tiny SEs",
+        "A direction in parameter space the likelihood does not curve, so I is nearly singular",
+        "The χ² reference of an LRT",
+        "A prior density"
+      ],
+      "answer": "A direction in parameter space the likelihood does not curve, so I is nearly singular",
+      "why": "Non-identification is flatness. Inverting I then explodes or fails — which is the correct alarm.",
+      "whyWrong": {
+        "A well-identified MLE with tiny SEs": "The opposite geometry.",
+        "The χ² reference of an LRT": "Different object, though nested LRTs also fail when I is singular under H₀.",
+        "A prior density": "The plate is frequentist curvature."
+      }
+    }
+  ]
+}

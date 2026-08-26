@@ -1,0 +1,186 @@
+{
+  "id": "stats-gauss-markov",
+  "title": "Gauss–Markov and BLUE",
+  "dek": "Among linear unbiased estimators of Xβ, OLS has the smallest variance when errors are uncorrelated with equal variance. That is a small kingdom.",
+  "domain": "stats",
+  "aliases": [
+    "Gauss-Markov",
+    "BLUE",
+    "best linear unbiased",
+    "spherical errors",
+    "homoskedasticity"
+  ],
+  "tags": [
+    "OLS",
+    "efficiency",
+    "assumptions",
+    "variance"
+  ],
+  "story": [
+    "Gauss–Markov: if E[ε | X] = 0 and Var(ε | X) = σ² I, then OLS is BLUE — best linear unbiased estimator of any linear functional cᵀβ. “Best” means smallest variance in the class of estimators that are linear in Y and unbiased.",
+    "The theorem does not say OLS is maximum likelihood (that needs Gaussianity). It does not say OLS is best among nonlinear estimators (James–Stein, ridge, lasso live outside the class). It does not say the coefficient is causal (that is E[ε | X] as a structural residual, a different fight).",
+    "When Var(ε | X) is not spherical — heteroskedasticity, clustering — OLS can remain unbiased for the linear projection and stop being BLUE. GLS, mixed models, or sandwich SEs are the three usual responses, and they are not interchangeable."
+  ],
+  "deepTitle": "The assumption list, without folklore",
+  "deep": [
+    "Linearity here means E[Y | X] = Xβ, or at least that you are targeting the population linear projection. Unbiasedness of β̂ needs E[Xᵀε] = 0, which follows from E[ε | X] = 0.",
+    "No multicollinearity in the theorem’s unique-BLUE form: X full column rank. Near-collinearity does not break unbiasedness; it inflates Var(β̂) = σ² (XᵀX)⁻¹.",
+    "Normality is not on the list. It enters for exact t and F, and for MLE = OLS. Large-n Wald tests can proceed with sandwich SEs without Gaussian ε.",
+    "If you add a random effect, you have left the BLUE-for-OLS theorem and entered GLS: the BLUE is (Xᵀ V⁻¹ X)⁻¹ Xᵀ V⁻¹ Y for known V. Estimating V is why mixed-model SEs need care (REML, Kenward–Roger, Bayes)."
+  ],
+  "formulas": [
+    {
+      "id": "blue",
+      "label": "Gauss–Markov",
+      "expression": "E[ε|X]=0, Var(ε|X)=σ² I  ⇒  OLS is BLUE for Xβ",
+      "note": "Linear + unbiased class only."
+    },
+    {
+      "id": "varb",
+      "label": "OLS covariance (spherical)",
+      "expression": "Var(β̂ | X) = σ² (XᵀX)⁻¹",
+      "note": "Replace with sandwich or GLS formula when σ² I fails."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "How small the BLUE kingdom is. Each layer adds an assumption. OLS-as-projection always exists; BLUE needs spherical errors; exact t needs Gaussian errors; causal β needs a structural residual mean zero.",
+    "layers": [
+      {
+        "title": "Always (full rank X)",
+        "nodes": [
+          "projection Ŷ = P Y"
+        ]
+      },
+      {
+        "title": "+ E[ε|X]=0, Var=σ²I",
+        "nodes": [
+          "BLUE",
+          "Var=σ²(XᵀX)⁻¹"
+        ]
+      },
+      {
+        "title": "+ Gaussian ε",
+        "nodes": [
+          "MLE",
+          "exact t/F"
+        ]
+      },
+      {
+        "title": "+ structural residual",
+        "nodes": [
+          "causal β",
+          "not in GM"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Gauss–Markov theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — least squares assumptions",
+      "url": "https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd14.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Further reading (not ingested): ESL — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-ols-geometry",
+    "stats-ols-diagnostics",
+    "stats-sandwich",
+    "stats-omitted-variables",
+    "stats-mixed-models"
+  ],
+  "example": {
+    "title": "Heteroskedastic MIC by dose",
+    "setup": "log MIC vs dose. Residual scatter fans out at high dose (variance grows). OLS line still estimates the linear projection. Model-based SEs using s² (XᵀX)⁻¹ do not.",
+    "steps": [
+      {
+        "title": "What survives",
+        "body": "If E[log MIC | dose] is linear, β̂_dose remains consistent. Gauss–Markov’s “best” is gone because Var(ε|X) ≠ σ² I."
+      },
+      {
+        "title": "What to print",
+        "body": "Sandwich SE, or WLS with a variance model, or a GLM with a better V(μ). Do not quote the default OLS t as if GM still applied."
+      },
+      {
+        "title": "What not to claim",
+        "body": "BLUE is not a causal badge. Even with spherical errors, dose was not randomised in this notebook."
+      }
+    ],
+    "takeaway": "Name the class: projection, BLUE, MLE, or causal. Gauss–Markov is only the second."
+  },
+  "check": [
+    {
+      "id": "gm-class",
+      "kind": "conceptual",
+      "prompt": "Gauss–Markov says OLS is best among:",
+      "choices": [
+        "All estimators, including ridge and Bayes",
+        "Linear unbiased estimators, when errors are spherical and mean-zero given X",
+        "All consistent estimators",
+        "Causal estimators in DAGs"
+      ],
+      "answer": "Linear unbiased estimators, when errors are spherical and mean-zero given X",
+      "why": "The class is small on purpose. Shrinkage estimators can beat OLS in MSE by leaving the unbiased class.",
+      "whyWrong": {
+        "All estimators, including ridge and Bayes": "Those are outside the linear unbiased class.",
+        "All consistent estimators": "Too big a class; no uniformly best.",
+        "Causal estimators in DAGs": "GM is not a causal theorem."
+      }
+    },
+    {
+      "id": "gm-var",
+      "kind": "calculation",
+      "prompt": "Simple regression through the origin, n = 4, x = (1,1,1,1), σ² = 4. Var(β̂) = σ² / ∑ xᵢ² equals:",
+      "choices": [
+        "1",
+        "4",
+        "0.25",
+        "16"
+      ],
+      "answer": "1",
+      "why": "∑ xᵢ² = 4, Var = 4/4 = 1. (XᵀX)⁻¹ = 1/4, times σ² = 1.",
+      "whyWrong": {
+        "4": "That is σ², not divided by ∑x².",
+        "0.25": "That is 1/∑x² without σ².",
+        "16": "σ² × ∑x², inverted."
+      }
+    },
+    {
+      "id": "gm-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy plate, causal β sits on the bottom layer because:",
+      "figureHint": "Four layers from projection to structural residual.",
+      "choices": [
+        "Causality is implied by BLUE",
+        "A structural E[ε|X]=0 is an extra scientific claim, not granted by the Gauss–Markov algebra",
+        "t-tests require DAGs",
+        "Projection matrices are directed acyclic graphs"
+      ],
+      "answer": "A structural E[ε|X]=0 is an extra scientific claim, not granted by the Gauss–Markov algebra",
+      "why": "The plate separates geometry, BLUE, Gaussian MLE, and causal interpretation.",
+      "whyWrong": {
+        "Causality is implied by BLUE": "It is not.",
+        "t-tests require DAGs": "t-tests require Gaussianity or large n, not DAGs.",
+        "Projection matrices are directed acyclic graphs": "Different objects."
+      }
+    }
+  ]
+}

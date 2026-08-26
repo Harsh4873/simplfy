@@ -1,0 +1,182 @@
+{
+  "id": "stats-random-variables",
+  "title": "Random variables and sampling models",
+  "dek": "A random variable is a measurable map from outcomes to numbers. The sampling model is the joint law you claim for the data before you see them.",
+  "domain": "stats",
+  "aliases": [
+    "random variable",
+    "RV",
+    "expectation",
+    "variance",
+    "iid",
+    "sampling model",
+    "probability mass",
+    "density"
+  ],
+  "tags": [
+    "probability",
+    "foundations",
+    "expectation",
+    "iid"
+  ],
+  "story": [
+    "In a genomics lab the object called “the data” is already a reduction: read counts, a binary DST call, a MIC, a SNP dosage. A random variable Y is the mathematical name for that reduction before it is observed. Writing Y ~ f(y | θ) is not a claim that nature is a computer; it is a claim about which probabilities you will use to score models.",
+    "Independence is a modelling choice, not a moral fact. Isolates from one household, reads from one library, and SNPs in LD are dependent. The iid story Y₁,…,Yₙ iid f(·|θ) is the starter kit: the joint density factors as ∏ f(yᵢ | θ), and the log-likelihood becomes a sum. Break the factorisation and you have changed the likelihood, not merely the standard error.",
+    "Expectation E[Y] and variance Var(Y) = E[(Y − E[Y])²] live on the sampling model, not on a spreadsheet cell. Once y is observed, ȳ is a number. Calling that number “the mean” without saying whether you mean the sample mean or E[Y] is how talks go sideways."
+  ],
+  "deepTitle": "Laws you actually write",
+  "deep": [
+    "Discrete: P(Y = y) = f(y | θ), ∑_y f = 1. Continuous: P(Y ∈ A) = ∫_A f(y | θ) dy. Mixed observations (a MIC that is censored at the assay ceiling) need a likelihood that mixes a density on the interior with a mass at the boundary; pretending everything is Gaussian is a specification error, not a convenience.",
+    "Linearity of expectation does not need independence: E[∑ aᵢ Yᵢ] = ∑ aᵢ E[Yᵢ]. Variance does: Var(∑ Yᵢ) = ∑ Var(Yᵢ) + 2 ∑_{i<j} Cov(Yᵢ,Yⱼ). Clustered TB surveys inflate Var(∑ Yᵢ) through the covariances. That is why a hierarchical likelihood or a cluster-robust sandwich appears later in this sequence.",
+    "iid is stronger than uncorrelated, and uncorrelated is stronger than “we randomised.” Randomisation justifies an assignment mechanism in a design-based analysis; it does not by itself make outcomes independent after you condition on shared lab reagents. Write the joint model you are willing to defend.",
+    "Transformations: if g is one-to-one and smooth, the density of Z = g(Y) carries a Jacobian. Log CFU and logit(π) are not the same random variable as CFU and π. Estimate on the scale where the sampling model is plausible, then map with the delta method or a posterior push-forward."
+  ],
+  "formulas": [
+    {
+      "id": "joint-iid",
+      "label": "iid joint law",
+      "expression": "f(y₁,…,yₙ | θ) = ∏ᵢ f(yᵢ | θ)",
+      "note": "The likelihood is this function of θ after y is plugged in. Dependence kills the product."
+    },
+    {
+      "id": "var-sum",
+      "label": "Variance of a sum",
+      "expression": "Var(∑ᵢ Yᵢ) = ∑ᵢ Var(Yᵢ) + 2 ∑_{i<j} Cov(Yᵢ,Yⱼ)",
+      "note": "Independence zeros the covariances. Clustering does not."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Three sampling models on the same numeric scale: a tight assay error, a noisier field measurement, and a mixture-like smear of two labs. Changing the law of Y changes every likelihood downstream — not just the picture.",
+    "xLabel": "numeric observation y (schematic MIC or log-count)",
+    "curves": [
+      {
+        "id": "tight",
+        "label": "Assay-scale Y",
+        "mean": 0.1,
+        "sd": 0.35
+      },
+      {
+        "id": "field",
+        "label": "Field-scale Y",
+        "mean": 0.2,
+        "sd": 0.8
+      },
+      {
+        "id": "mix",
+        "label": "Two-lab smear",
+        "mean": 1.1,
+        "sd": 1.15
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — gallery of distributions",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda366.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Random variable — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Random_variable",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Introduction to Modern Statistics, 2nd edition",
+      "url": "https://openintro-ims.netlify.app/",
+      "attribution": "CC BY-SA 3.0 open text (Diez, Çetinkaya-Rundel, Barr). Probability and sampling facts only. This plate is original Simplfy teaching notes and is not a publisher-branded derivative.",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-exponential-family",
+    "stats-likelihood",
+    "stats-foundations",
+    "stats-sampling-distribution",
+    "stats-inequalities"
+  ],
+  "example": {
+    "title": "Two isolates, one household",
+    "setup": "Let Y₁, Y₂ be Bernoulli indicators of smear-positivity for two household members. Marginal P(Yⱼ = 1) = π. If you treat them as iid, the likelihood for one household is π^{y₁+y₂}(1−π)^{2−y₁−y₂}. If a shared exposure U induces correlation, that product is the wrong joint.",
+    "steps": [
+      {
+        "title": "Write the iid likelihood",
+        "body": "Under iid Bernoulli(π), one household contributes ℓ = (y₁+y₂) log π + (2−y₁−y₂) log(1−π). Two positive smears look like binomial evidence with n = 2.",
+        "expression": "L_iid(π) = π^{y₁+y₂}(1−π)^{2−y₁−y₂}"
+      },
+      {
+        "title": "Name the dependence",
+        "body": "A random-intercept model logit πⱼ = μ + b_house, b_house ~ N(0, τ²) induces Cov(Y₁,Y₂) > 0. The marginal probability of two positives exceeds π². Using L_iid overstates information about μ."
+      },
+      {
+        "title": "What changes in the lab notebook",
+        "body": "If the scientific target is household risk, keep the cluster in the likelihood. If the target is a population mean and you insist on a working independence model, at least use a cluster-robust variance — and admit the likelihood is misspecified."
+      }
+    ],
+    "takeaway": "The random variable is the sampling claim. Independence is part of that claim, not a default font."
+  },
+  "check": [
+    {
+      "id": "rv-iid",
+      "kind": "conceptual",
+      "prompt": "The product likelihood ∏ f(yᵢ | θ) is justified when:",
+      "choices": [
+        "The spreadsheet has one row per observation",
+        "The modelled random variables are independent given θ",
+        "n > 30",
+        "The variables are uncorrelated after a PCA rotation of SNPs"
+      ],
+      "answer": "The modelled random variables are independent given θ",
+      "why": "The joint density factors if and only if the modelled variables are independent (conditional on θ). Row layout, n, and PCA do not license the product.",
+      "whyWrong": {
+        "The spreadsheet has one row per observation": "A table is not a sampling model.",
+        "n > 30": "Sample size does not create independence.",
+        "The variables are uncorrelated after a PCA rotation of SNPs": "Uncorrelated is weaker than independent, and PCA does not make a likelihood correct."
+      }
+    },
+    {
+      "id": "rv-var",
+      "kind": "calculation",
+      "prompt": "Y₁, Y₂ each have variance 1 and correlation 0.5. What is Var(Y₁+Y₂)?",
+      "choices": [
+        "2",
+        "3",
+        "1",
+        "0.5"
+      ],
+      "answer": "3",
+      "why": "Var(Y₁+Y₂) = 1+1+2·0.5·1·1 = 3. The covariance term is not optional.",
+      "whyWrong": {
+        "2": "That is the independent case, Cov = 0.",
+        "1": "That is one variance, not the sum.",
+        "0.5": "That is the correlation, not a variance."
+      }
+    },
+    {
+      "id": "rv-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, why are three curves drawn on one y-axis?",
+      "figureHint": "Assay-scale, field-scale, and two-lab smear.",
+      "choices": [
+        "Because all measurements share one true sampling law",
+        "To show that changing the law of Y — assay noise versus field noise versus lab mixture — is a different model, not a cosmetic rescaling",
+        "Because variance is a property of a single observed number",
+        "Because iid products ignore the density of Y"
+      ],
+      "answer": "To show that changing the law of Y — assay noise versus field noise versus lab mixture — is a different model, not a cosmetic rescaling",
+      "why": "Each curve is a candidate sampling model. Downstream MLEs and tests inherit whichever law you pick.",
+      "whyWrong": {
+        "Because all measurements share one true sampling law": "The plate is arguing the opposite: the law is a choice.",
+        "Because variance is a property of a single observed number": "Variance lives on the random variable, not on a realised cell.",
+        "Because iid products ignore the density of Y": "The product is built from that density."
+      }
+    }
+  ]
+}

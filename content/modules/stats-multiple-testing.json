@@ -1,0 +1,200 @@
+{
+  "id": "stats-multiple-testing",
+  "title": "Multiple testing and error rates",
+  "dek": "m tests create a union of false-positive opportunities. Family-wise error and false-discovery rate are different operating characteristics. Name which one you bought.",
+  "domain": "stats",
+  "aliases": [
+    "multiple testing",
+    "multiple comparisons",
+    "Bonferroni",
+    "FWER",
+    "family-wise error",
+    "union bound"
+  ],
+  "tags": [
+    "genomics",
+    "FWER",
+    "Bonferroni",
+    "p-values"
+  ],
+  "story": [
+    "One valid level-α test has P(false rejection) ≤ α under its null. m independent valid tests have P(at least one false rejection) = 1 − (1−α)^m ≈ mα when α is small. That is why a genome of unadjusted 0.05 stars is a random number generator.",
+    "Family-wise error rate (FWER) is P(V ≥ 1), V = number of false rejections. Bonferroni uses the union bound: each test at α/m, FWER ≤ α even under dependence. Šidák uses the independence formula. Holm is a stepwise FWER method that dominates Bonferroni.",
+    "False-discovery rate (next plate) is E[V/R | R>0] P(R>0), the expected fraction of rejections that are false. It is not a FWER. GWAS historically used a FWER-ish genome-wide threshold; RNA-seq and catalogue screens often use FDR. Mixing the names in a caption is a methods error."
+  ],
+  "deepTitle": "Dependence, and what a p-value still is",
+  "deep": [
+    "Positive dependence (LD, same isolates in every gene test) makes Bonferroni conservative: FWER < α. That is not a reason to unadjust; it is a reason that Westfall–Young permutation or a mixed-model null can buy power while keeping FWER.",
+    "A p-value remains P(T as or more extreme | this test’s H₀), not P(H₀ | data). Multiplicity adjustments change the rejection rule, not the definition of a single p.",
+    "Nested tests and sequential looks (interims) are another multiplicity. Bonferroni on 400,000 SNPs plus three interims plus five phenotypes is a stack. Pre-specify the family you are protecting.",
+    "Effect sizes and replication still matter. A Bonferroni-significant SNP with a tiny, batch-confounded effect is a small p, not a drug target."
+  ],
+  "formulas": [
+    {
+      "id": "fwer",
+      "label": "FWER",
+      "expression": "FWER = P(V ≥ 1)",
+      "note": "V = false rejections in the family you defined."
+    },
+    {
+      "id": "bonf",
+      "label": "Bonferroni",
+      "expression": "reject i if pᵢ ≤ α / m",
+      "note": "Union bound. Valid under any dependence. Conservative under positive dependence."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic expected false rejections if you do not adjust: at α=0.05, m=1,20,200. The bars are mα under independent true nulls — the union-bound scale of the problem, not a GWAS analysis.",
+    "panels": [
+      {
+        "title": "m=1 test",
+        "bars": [
+          {
+            "label": "E[V]",
+            "value": 5
+          },
+          {
+            "label": "α%",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "m=20",
+        "bars": [
+          {
+            "label": "E[V]",
+            "value": 100
+          },
+          {
+            "label": "α%",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "m=200",
+        "bars": [
+          {
+            "label": "E[V]",
+            "value": 1000
+          },
+          {
+            "label": "α%",
+            "value": 5
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Multiple comparisons problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Multiple_comparisons_problem",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Family-wise error rate — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Family-wise_error_rate",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Bonferroni correction — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bonferroni_correction",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): ESL — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-fdr",
+    "stats-gwas",
+    "stats-permutation",
+    "stats-inequalities",
+    "stats-power"
+  ],
+  "example": {
+    "title": "20 candidate resistance genes, unadjusted 0.05",
+    "setup": "m = 20 valid tests, all null, independent, α = 0.05 each. What FWER did you actually run?",
+    "steps": [
+      {
+        "title": "Union",
+        "body": "P(at least one star) = 1 − 0.95^{20} ≈ 0.64. You did not run a 5% procedure; you ran a 64% procedure.",
+        "expression": "FWER = 1 − (1−α)^m"
+      },
+      {
+        "title": "Bonferroni",
+        "body": "Threshold 0.05/20 = 0.0025. FWER ≤ 0.05. Power at each gene drops; that is the bill."
+      },
+      {
+        "title": "If you wanted discoveries not FWER",
+        "body": "BH FDR at 10% (next plate) is a different contract: among the genes you flag, you expect 10% to be false, not “64% chance of any error.”"
+      }
+    ],
+    "takeaway": "Define the family and the error rate. Unadjusted 0.05 across a screen is not a 5% study."
+  },
+  "check": [
+    {
+      "id": "mt-fwer",
+      "kind": "conceptual",
+      "prompt": "Bonferroni controls:",
+      "choices": [
+        "The false-discovery rate by construction",
+        "The family-wise error rate via a union bound, at the price of power",
+        "The Type II error only",
+        "Calibration of a posterior"
+      ],
+      "answer": "The family-wise error rate via a union bound, at the price of power",
+      "why": "pᵢ ≤ α/m. FDR is a different target (BH).",
+      "whyWrong": {
+        "The false-discovery rate by construction": "That is BH / Storey, not Bonferroni.",
+        "The Type II error only": "It increases Type II typically.",
+        "Calibration of a posterior": "No."
+      }
+    },
+    {
+      "id": "mt-calc",
+      "kind": "calculation",
+      "prompt": "m = 10 independent true-null tests, α = 0.05 unadjusted. FWER = 1−0.95^{10} is closest to:",
+      "choices": [
+        "0.05",
+        "0.40",
+        "0.50",
+        "1"
+      ],
+      "answer": "0.40",
+      "why": "1 − 0.95^10 ≈ 1 − 0.599 = 0.401.",
+      "whyWrong": {
+        "0.05": "Per-test α, not FWER.",
+        "0.50": "A round overestimate.",
+        "1": "Would need m huge or α=1."
+      }
+    },
+    {
+      "id": "mt-figure",
+      "kind": "figure",
+      "prompt": "On the multiple-testing small-multiples, E[V] grows with m while α% stays 5. The plate is saying:",
+      "figureHint": "Three panels, E[V] bars exploding.",
+      "choices": [
+        "Unadjusted α=0.05 keeps the expected number of false rejections at 5% of m, which is not a FWER of 5%",
+        "Bonferroni forbids m>1",
+        "E[V] is a posterior",
+        "FWER equals E[V] always"
+      ],
+      "answer": "Unadjusted α=0.05 keeps the expected number of false rejections at 5% of m, which is not a FWER of 5%",
+      "why": "E[V]=mα under all-null independent tests. FWER = P(V≥1) is already large when E[V] is large.",
+      "whyWrong": {
+        "Bonferroni forbids m>1": "No.",
+        "E[V] is a posterior": "It is an expectation under the null simulation.",
+        "FWER equals E[V] always": "One is a probability of any error, one is a count expectation."
+      }
+    }
+  ]
+}

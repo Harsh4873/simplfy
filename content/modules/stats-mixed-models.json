@@ -1,0 +1,236 @@
+{
+  "id": "stats-mixed-models",
+  "title": "Linear and generalized mixed models",
+  "dek": "g(E[y | u]) = Xβ + Zu, u ~ N(0, G). Fixed β, random u. The marginal likelihood integrates u — and that integral is why software is not a GLM.",
+  "domain": "stats",
+  "aliases": [
+    "mixed model",
+    "LMM",
+    "GLMM",
+    "random intercept",
+    "random slope",
+    "BLUP"
+  ],
+  "tags": [
+    "hierarchical",
+    "GLMM",
+    "random effects",
+    "REML"
+  ],
+  "story": [
+    "A mixed model is a hierarchical model written in the language of fixed and random effects. Fixed: population-level β. Random: unit-level uⱼ drawn from a distribution you will estimate (or put a prior on). The linear mixed model is Gaussian; the GLMM puts a GLM mean around Xβ + Zu.",
+    "BLUPs (best linear unbiased predictors) of uⱼ are the shrinkage estimates. They are not OLS dummies. Using dummies for 80 labs overfits the small labs; using a random intercept shrinks them. That was the last plate.",
+    "Inference for β in a GLMM is not a GLM LRT you already know: the likelihood is an integral over u. Laplace, Gauss–Hermite, PQL, or MCMC are approximations to that integral. PQL can be badly biased for binary data with small clusters. Say which integral you used."
+  ],
+  "deepTitle": "Marginal likelihood, REML, and the two βs",
+  "deep": [
+    "Gaussian LMM: y | u ~ N(Xβ + Zu, R), u ~ N(0, G), so marginally y ~ N(Xβ, ZGZᵀ + R). GLS with that V is the MLE/REML story. REML adjusts for the lost df in β before estimating G; it is preferred for variance components.",
+    "GLMM: the marginal pmf is ∫ ∏ f(yᵢⱼ | β, uⱼ) φ(uⱼ | τ) duⱼ. There is no closed GLM. Population-average (GEE) β is not the same as cluster-conditional GLMM β for logit/probit. Quote which. For log-linear Poisson with a Gaussian random intercept they differ by a known offset in the intercept, not in slopes, under some conditions — still name the target.",
+    "Random slopes: uⱼ is a vector, G is a covariance. A random slope on time or on dose needs enough units with variation in that covariate. Two time points and a free 2×2 G is a wish, not a model.",
+    "Boundary: H₀: τ = 0, mixture χ². Wald on τ̂/se is worse. A confidence interval for τ that includes 0 is often the honest report when J is small."
+  ],
+  "formulas": [
+    {
+      "id": "glmm",
+      "label": "GLMM",
+      "expression": "g(E[y | u]) = Xβ + Zu,   u ~ N(0, G)",
+      "note": "The likelihood for (β, G) integrates u."
+    },
+    {
+      "id": "lmmV",
+      "label": "LMM marginal covariance",
+      "expression": "Var(y) = Z G Zᵀ + R",
+      "note": "This V is what GLS would use if it were known."
+    }
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "Random-intercept GLMM: a unit plate around uⱼ, a row plate around yᵢⱼ. β is shared. Integrating the uⱼ plate is the computational and inferential cost.",
+    "plates": [
+      {
+        "id": "j",
+        "label": "unit j = 1…J",
+        "x": 12,
+        "y": 12,
+        "w": 76,
+        "h": 76
+      },
+      {
+        "id": "i",
+        "label": "row i in j",
+        "x": 30,
+        "y": 28,
+        "w": 50,
+        "h": 46
+      }
+    ],
+    "nodes": [
+      {
+        "id": "tau",
+        "label": "τ",
+        "x": 8,
+        "y": 20,
+        "shape": "param"
+      },
+      {
+        "id": "u",
+        "label": "uⱼ",
+        "x": 22,
+        "y": 48,
+        "shape": "param"
+      },
+      {
+        "id": "beta",
+        "label": "β",
+        "x": 8,
+        "y": 70,
+        "shape": "param"
+      },
+      {
+        "id": "x",
+        "label": "xᵢⱼ",
+        "x": 45,
+        "y": 36,
+        "shape": "obs"
+      },
+      {
+        "id": "eta",
+        "label": "ηᵢⱼ",
+        "x": 58,
+        "y": 52,
+        "shape": "det"
+      },
+      {
+        "id": "y",
+        "label": "yᵢⱼ",
+        "x": 76,
+        "y": 52,
+        "shape": "obs"
+      }
+    ],
+    "edges": [
+      {
+        "from": "tau",
+        "to": "u"
+      },
+      {
+        "from": "u",
+        "to": "eta"
+      },
+      {
+        "from": "beta",
+        "to": "eta"
+      },
+      {
+        "from": "x",
+        "to": "eta"
+      },
+      {
+        "from": "eta",
+        "to": "y"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mixed model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mixed_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Generalized linear mixed model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Generalized_linear_mixed_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman & Hill — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-hierarchical",
+    "stats-partial-pooling",
+    "stats-ols-glm",
+    "stats-eight-schools",
+    "stats-overdispersion"
+  ],
+  "example": {
+    "title": "Lab as a random intercept in MIC",
+    "setup": "log MIC for a drug, 9 labs, unequal n. Fixed: mutation, lineage. Random: lab intercept. Gaussian LMM.",
+    "steps": [
+      {
+        "title": "Why random",
+        "body": "Labs are a sample of laboratories, not the nine you wish to treat as the whole population of dummies. You want SEs for mutation that include lab-to-lab shifts."
+      },
+      {
+        "title": "V",
+        "body": "Two rows in the same lab correlate because they share u_lab. Ignoring that, mutation SEs collapse. The LMM’s ZGZᵀ + R is the sandwich you might have built by clustering on lab — with extra structure."
+      },
+      {
+        "title": "Report",
+        "body": "β̂_mut with a df method (Kenward–Roger, Satterthwaite) or a posterior interval. Print τ̂_lab and its interval. If τ̂ ≈ 0, say so; do not drop the term in silence and return to iid SEs without a sentence."
+      }
+    ],
+    "takeaway": "Random is a distribution over units you will not dummy to death. The integral over that distribution is the likelihood."
+  },
+  "check": [
+    {
+      "id": "mix-int",
+      "kind": "conceptual",
+      "prompt": "The likelihood used to estimate (β, τ) in a GLMM is:",
+      "choices": [
+        "The GLM likelihood that pretends uⱼ are extra fixed coefficients",
+        "The integral of the conditional GLM likelihood times the density of u",
+        "Always a Poisson pmf",
+        "The residual sum of squares only"
+      ],
+      "answer": "The integral of the conditional GLM likelihood times the density of u",
+      "why": "That marginal likelihood is the mixed-model object. Dummy-variable OLS/GLM is no-pooling.",
+      "whyWrong": {
+        "The GLM likelihood that pretends uⱼ are extra fixed coefficients": "No-pooling.",
+        "Always a Poisson pmf": "Family is a choice.",
+        "The residual sum of squares only": "Gaussian LMM is a special case, still with G."
+      }
+    },
+    {
+      "id": "mix-calc",
+      "kind": "calculation",
+      "prompt": "Random-intercept Gaussian, Var(uⱼ)=4, residual Var=5, two rows in the same unit. Corr(y_{1}, y_{2}) equals:",
+      "choices": [
+        "4/9",
+        "4/5",
+        "1",
+        "0"
+      ],
+      "answer": "4/9",
+      "why": "ICC = τ² / (τ²+σ²) = 4/9. That is also Corr of two rows sharing u.",
+      "whyWrong": {
+        "4/5": "τ²/σ², not the ICC.",
+        "1": "Perfect correlation would need σ²=0.",
+        "0": "Independence, the model you left."
+      }
+    },
+    {
+      "id": "mix-figure",
+      "kind": "figure",
+      "prompt": "On the mixed-model plate, uⱼ is an empty circle inside the unit plate. That mark means:",
+      "figureHint": "uⱼ is a parameter node; yᵢⱼ is filled.",
+      "choices": [
+        "uⱼ is observed like y",
+        "uⱼ is a latent unit effect with a distribution (parameter / random), not a recorded covariate",
+        "uⱼ is a deterministic offset",
+        "τ is observed"
+      ],
+      "answer": "uⱼ is a latent unit effect with a distribution (parameter / random), not a recorded covariate",
+      "why": "Plate notation: empty = unknown with a law, filled = observed, diamond = deterministic.",
+      "whyWrong": {
+        "uⱼ is observed like y": "Then it would be filled.",
+        "uⱼ is a deterministic offset": "That would be a diamond, like η.",
+        "τ is observed": "τ is a hyperparameter (empty, outside or on the rim)."
+      }
+    }
+  ]
+}

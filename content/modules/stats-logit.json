@@ -1,0 +1,173 @@
+{
+  "id": "stats-logit",
+  "title": "Logistic regression",
+  "dek": "Bernoulli or binomial likelihood, logit link: ℓ(β) = ∑ [ y xᵀβ − log(1+e^{xᵀβ}) ]. Coefficients are log odds ratios in that mean model.",
+  "domain": "stats",
+  "aliases": [
+    "logistic regression",
+    "logit model",
+    "odds ratio",
+    "Bernoulli GLM",
+    "binary regression"
+  ],
+  "tags": [
+    "GLM",
+    "logit",
+    "odds",
+    "binary"
+  ],
+  "story": [
+    "Write Yᵢ ~ Bernoulli(πᵢ), logit πᵢ = xᵢᵀβ. The likelihood is the product π^y (1−π)^{1−y}. That is the whole model. Everything else — odds ratios, ROC plots, p-values — is a reading of this likelihood or a different target grafted onto it.",
+    "exp(β_k) multiplies the odds π/(1−π), not the risk π, unless π is small enough that odds ≈ risk. In pulmonary TB, smear-positivity is not rare; do not caption an odds ratio as a risk ratio.",
+    "Complete separation (a covariate perfectly predicts y) drives |β̂| → ∞ and IRLS weights to 0. That is an infinite MLE, not a huge effect you should publish as 400.0. Penalisation or a prior is the statistical response; “drop the covariate” is a scientific decision."
+  ],
+  "deepTitle": "Likelihood, OR vs RR, and sparse events",
+  "deep": [
+    "Log-likelihood: ℓ(β) = ∑ᵢ { yᵢ ηᵢ − log(1+e^{ηᵢ}) } with η = xᵀβ (no extra φ). Score: Xᵀ(y − π) = 0. At the MLE, predicted frequencies match observed totals in the column space of X — the exponential-family mean match.",
+    "Risk ratio from a logit model is a function of x, not a single exp(β). If you want a risk ratio or risk difference as the scientific parameter, fit a log or identity binomial (checking that μ stays in range) or report derived predictions.",
+    "Rare events: Firth penalty, exact methods, or a weakly informative prior on β. Wald intervals on huge β̂ are theatre. Profile or posterior intervals keep the shape of ℓ.",
+    "Clustered binary data: the Bernoulli product is wrong. Use a mixed logit, GEE with sandwich, or a survey design. An LRT that ignores clustering is anti-conservative."
+  ],
+  "formulas": [
+    {
+      "id": "logitell",
+      "label": "Bernoulli log-likelihood",
+      "expression": "ℓ(β) = ∑ᵢ [ yᵢ xᵢᵀβ − log(1 + exp(xᵢᵀβ)) ]",
+      "note": "Canonical logit, φ = 1."
+    },
+    {
+      "id": "or",
+      "label": "Odds ratio",
+      "expression": "OR_k = exp(β_k)",
+      "note": "Holds for a 0/1 covariate under this mean model, adjusted for the other columns of X."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Logistic mean as a sigmoid on the η scale: three linear predictors (HIV−/HIV+/cavitary) shift π without ever leaving (0,1). The curves are sampling laws of a latent sketch; the scientific object is π(x) = logit⁻¹(xᵀβ).",
+    "xLabel": "linear predictor η (schematic)",
+    "curves": [
+      {
+        "id": "lo",
+        "label": "π ≈ 0.12 profile",
+        "mean": -0.8,
+        "sd": 0.7
+      },
+      {
+        "id": "mid",
+        "label": "π ≈ 0.4 profile",
+        "mean": 0.15,
+        "sd": 0.7
+      },
+      {
+        "id": "hi",
+        "label": "π ≈ 0.8 profile",
+        "mean": 1.1,
+        "sd": 0.7
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Logistic regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Logistic_regression",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Agresti, Categorical Data Analysis — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-glm-link",
+    "stats-iwls",
+    "stats-lrt",
+    "stats-poisson",
+    "stats-se-sp"
+  ],
+  "example": {
+    "title": "Odds ratio for cavitation",
+    "setup": "n = 200 TB cases, Y = smear-positive. β̂_cav = 0.693, se = 0.28, adjusted for HIV and days of cough. Interpret and test.",
+    "steps": [
+      {
+        "title": "OR",
+        "body": "exp(0.693) ≈ 2.00. Adjusted odds of smear-positivity are about twice as high with cavitation, in this mean model.",
+        "expression": "OR̂ = e^{0.693} ≈ 2.0"
+      },
+      {
+        "title": "Interval on a better scale",
+        "body": "Wald on β: 0.693 ± 1.96×0.28 ≈ (0.14, 1.24). Exponentiate: OR interval ≈ (1.15, 3.46). Do not form 2.00 ± 1.96×(2.00×0.28) and pretend it is as good."
+      },
+      {
+        "title": "LRT cousin",
+        "body": "Drop cavitation, compare ℓ. If n is not tiny, Wald and LRT will agree. If cavitation is rare, prefer the LRT or a profile interval."
+      }
+    ],
+    "takeaway": "Write the Bernoulli likelihood, quote OR as exp(β), and refuse to rename it a risk ratio when π is not small."
+  },
+  "check": [
+    {
+      "id": "logit-rr",
+      "kind": "conceptual",
+      "prompt": "An odds ratio from a logit GLM equals a risk ratio when:",
+      "choices": [
+        "Always, by invariance",
+        "Approximately when the outcome is rare, or exactly only in special designs/limits — not in general at moderate π",
+        "Never",
+        "When n>30"
+      ],
+      "answer": "Approximately when the outcome is rare, or exactly only in special designs/limits — not in general at moderate π",
+      "why": "Odds = π/(1−π). If π is small, 1−π ≈ 1 and OR ≈ RR. Smear-positivity is often not rare.",
+      "whyWrong": {
+        "Always, by invariance": "Invariance maps MLEs, it does not make OR = RR.",
+        "Never": "The rare-disease approximation exists.",
+        "When n>30": "Sample size is not the issue."
+      }
+    },
+    {
+      "id": "logit-calc",
+      "kind": "calculation",
+      "prompt": "Intercept-only logit, 30 successes in 100 trials. MLE of π is 0.3. MLE of β₀ = logit(π) is closest to:",
+      "choices": [
+        "0.3",
+        "−0.847",
+        "0.847",
+        "1"
+      ],
+      "answer": "−0.847",
+      "why": "logit(0.3) = log(0.3/0.7) = log(3/7) ≈ log(0.4286) ≈ −0.847.",
+      "whyWrong": {
+        "0.3": "That is π̂, not β̂₀.",
+        "0.847": "Sign error (would be logit(0.7)).",
+        "1": "Not the logit of 0.3."
+      }
+    },
+    {
+      "id": "logit-figure",
+      "kind": "figure",
+      "prompt": "On the density plate the three curves sit at different means but stay as proper densities. The logistic lesson is:",
+      "figureHint": "Three profiles labelled with different π.",
+      "choices": [
+        "The linear predictor can shift π without leaving (0,1), unlike an unconstrained identity mean",
+        "Logistic regression requires Gaussian Y",
+        "Odds ratios are visible as areas under the curve",
+        "The rightmost curve is a prior"
+      ],
+      "answer": "The linear predictor can shift π without leaving (0,1), unlike an unconstrained identity mean",
+      "why": "The sigmoid mean is the point. The cartoon densities are schematic, not the Bernoulli pmf itself.",
+      "whyWrong": {
+        "Logistic regression requires Gaussian Y": "Y is Bernoulli.",
+        "Odds ratios are visible as areas under the curve": "OR comes from β, not from those areas.",
+        "The rightmost curve is a prior": "All three are schematic sampling profiles."
+      }
+    }
+  ]
+}

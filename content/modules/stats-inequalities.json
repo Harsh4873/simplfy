@@ -1,0 +1,201 @@
+{
+  "id": "stats-inequalities",
+  "title": "Inequalities used in practice",
+  "dek": "Markov, Chebyshev, Hoeffding, and Jensen are not trivia. They are how you bound a tail, justify a concentration inequality, or remember that means and transforms do not commute.",
+  "domain": "stats",
+  "aliases": [
+    "Markov inequality",
+    "Chebyshev",
+    "Hoeffding",
+    "Jensen",
+    "concentration",
+    "union bound"
+  ],
+  "tags": [
+    "probability",
+    "bounds",
+    "concentration",
+    "convexity"
+  ],
+  "story": [
+    "Graduate probability is full of inequalities that look like homework until you need a sample-size floor, a multiple-testing union bound, or a reason that E[log L] is not log E[L]. The ones that actually show up in a genomics lab are few, and they are worth keeping sharp.",
+    "Markov: for Y ≥ 0 and t > 0, P(Y ≥ t) ≤ E[Y]/t. Chebyshev is Markov applied to (Y − μ)²: P(|Y − μ| ≥ kσ) ≤ 1/k². These bounds are often loose. Their job is existence and scaling — n in a denominator — not a pretty 95% interval.",
+    "Hoeffding-type bounds control tails of bounded independent sums and underwrite many “n log p” multiple-testing sample-size slogans. Jensen says that for convex φ, φ(E[Y]) ≤ E[φ(Y)]. Log-likelihoods, KL, and log-transforms of CFU all live or die on that convexity."
+  ],
+  "deepTitle": "Four bounds, written so you can use them",
+  "deep": [
+    "Union bound: P(∪ Aⱼ) ≤ ∑ P(Aⱼ). This is the Bonferroni calculation. For m tests each at level α/m, family-wise error ≤ α regardless of dependence. The price is power. FDR procedures refuse this bound as the operating criterion; they do not refute it as a probability inequality.",
+    "Hoeffding (bounded independent sum): if Yᵢ ∈ [aᵢ,bᵢ] independent, S = ∑ (Yᵢ − E[Yᵢ]), then P(S ≥ t) ≤ exp{−2t² / ∑ (bᵢ−aᵢ)²}. Binary DST calls are bounded. Read counts are not; do not quote Hoeffding on raw RNA-seq.",
+    "Jensen on the log: E[log Y] ≤ log E[Y] for Y > 0. The MLE maximises a sample average of log f; the ELBO in variational Bayes is a Jensen bound on log m(y). Confusing E[Y] with exp(E[log Y]) is how geometric-mean CFU slides lie.",
+    "Chebyshev gives a distribution-free 1/k² tail. For k = 3, at most 1/9 of the mass sits beyond 3σ. A Normal tail at 3σ is about 0.003. If you need the Normal tail, you have assumed a shape, not invoked Chebyshev."
+  ],
+  "formulas": [
+    {
+      "id": "cheb",
+      "label": "Chebyshev",
+      "expression": "P(|Y − μ| ≥ k σ) ≤ 1/k²",
+      "note": "Distribution-free. Loose if you actually have light tails."
+    },
+    {
+      "id": "jensen",
+      "label": "Jensen",
+      "expression": "φ(E[Y]) ≤ E[φ(Y)]  for convex φ",
+      "note": "Equality iff φ is linear on the support, or Y is degenerate."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "How much tail you can claim from Chebyshev versus a Normal model at the same kσ. The bars are upper bounds or actual tail probabilities, not data. Chebyshev is honest and conservative; Normal is a shape assumption.",
+    "yLabel": "P(|Z| ≥ kσ)",
+    "panels": [
+      {
+        "title": "k = 2",
+        "bars": [
+          {
+            "label": "Cheb ≤",
+            "value": 0.25
+          },
+          {
+            "label": "Normal",
+            "value": 0.046
+          }
+        ]
+      },
+      {
+        "title": "k = 3",
+        "bars": [
+          {
+            "label": "Cheb ≤",
+            "value": 0.111
+          },
+          {
+            "label": "Normal",
+            "value": 0.003
+          }
+        ]
+      },
+      {
+        "title": "k = 4",
+        "bars": [
+          {
+            "label": "Cheb ≤",
+            "value": 0.0625
+          },
+          {
+            "label": "Normal",
+            "value": 6e-05
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Chebyshev's inequality — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Chebyshev%27s_inequality",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Jensen's inequality — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Jensen%27s_inequality",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Wasserman, All of Statistics",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-random-variables",
+    "stats-multiple-testing",
+    "stats-bootstrap",
+    "stats-sampling-distribution",
+    "stats-likelihood"
+  ],
+  "example": {
+    "title": "Union bound on 20 independent DST genes",
+    "setup": "You flag a gene if a permutation p-value is < 0.05. There are m = 20 candidate genes. Under a global null, what does Bonferroni actually guarantee?",
+    "steps": [
+      {
+        "title": "Write the union",
+        "body": "Let Aⱼ be the event that gene j is flagged. Family-wise error is P(∪ Aⱼ). Without independence, the only free bound is ∑ P(Aⱼ).",
+        "expression": "P(∪ Aⱼ) ≤ ∑ⱼ P(Aⱼ)"
+      },
+      {
+        "title": "Set per-test α",
+        "body": "If each test is valid at level 0.05/20 = 0.0025, then FWER ≤ 20 × 0.0025 = 0.05. That holds even if genes are in LD."
+      },
+      {
+        "title": "Name the cost",
+        "body": "A true resistance gene with modest n will often fail 0.0025. FDR (next plates) spends the error budget on the expected fraction of false discoveries among rejections, which is a different operating characteristic — not a tighter union bound."
+      }
+    ],
+    "takeaway": "Use Markov/Chebyshev/union when you need a guarantee without a shape. Buy a shape (Normal, permutation) when you need power."
+  },
+  "check": [
+    {
+      "id": "ineq-jensen",
+      "kind": "conceptual",
+      "prompt": "Jensen’s inequality implies that for CFU counts Y > 0:",
+      "choices": [
+        "mean(log Y) equals log(mean Y)",
+        "log(E[Y]) ≥ E[log Y], so the log of the mean is at least the mean of the logs",
+        "Variance is always infinite",
+        "The MLE of E[Y] is exp(mean log Y)"
+      ],
+      "answer": "log(E[Y]) ≥ E[log Y], so the log of the mean is at least the mean of the logs",
+      "why": "log is concave, so the inequality reverses relative to the convex statement: E[log Y] ≤ log E[Y]. Geometric means sit below arithmetic means.",
+      "whyWrong": {
+        "mean(log Y) equals log(mean Y)": "Only if Y is degenerate.",
+        "Variance is always infinite": "Unrelated.",
+        "The MLE of E[Y] is exp(mean log Y)": "That would be a lognormal-mean estimator, not a general MLE of E[Y]."
+      }
+    },
+    {
+      "id": "ineq-cheb",
+      "kind": "calculation",
+      "prompt": "Using only Chebyshev, a distribution-free bound on P(|Y−μ| ≥ 2σ) is:",
+      "choices": [
+        "≤ 0.05",
+        "≤ 0.25",
+        "≤ 0.003",
+        "= 0"
+      ],
+      "answer": "≤ 0.25",
+      "why": "1/k² with k = 2 is 1/4. The Normal tail ~0.05 is a different, stronger assumption.",
+      "whyWrong": {
+        "≤ 0.05": "That is a Normal-ish tail, not Chebyshev.",
+        "≤ 0.003": "That is a Normal 3σ tail, misplaced.",
+        "= 0": "Chebyshev never claims a zero tail at finite k."
+      }
+    },
+    {
+      "id": "ineq-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, why is the Chebyshev bar always taller?",
+      "figureHint": "Panels for k = 2, 3, 4 with Cheb vs Normal.",
+      "choices": [
+        "Because Chebyshev assumes lighter tails than Normal",
+        "Because Chebyshev is a distribution-free upper bound, while the Normal bar is a specific tail probability",
+        "Because Normal inequalities are illegal",
+        "Because kσ is defined only for Chebyshev"
+      ],
+      "answer": "Because Chebyshev is a distribution-free upper bound, while the Normal bar is a specific tail probability",
+      "why": "The plate is a reminder that a bound is not a tail. You may use the bound when you refuse a shape.",
+      "whyWrong": {
+        "Because Chebyshev assumes lighter tails than Normal": "It assumes almost nothing; that is why it is larger.",
+        "Because Normal inequalities are illegal": "They are assumptions, not crimes.",
+        "Because kσ is defined only for Chebyshev": "kσ is just a distance."
+      }
+    }
+  ]
+}

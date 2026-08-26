@@ -1,0 +1,203 @@
+{
+  "id": "stats-exponential-family",
+  "title": "Exponential families",
+  "dek": "If the density is exp{(T(y)ᵀη − A(η))/φ + c(y,φ)}, then mean, variance, and the score are derivatives of A. That is why GLMs feel inevitable.",
+  "domain": "stats",
+  "aliases": [
+    "exponential family",
+    "natural parameter",
+    "sufficient statistic",
+    "log partition",
+    "dispersion",
+    "canonical link"
+  ],
+  "tags": [
+    "probability",
+    "GLM",
+    "sufficiency",
+    "likelihood"
+  ],
+  "story": [
+    "An exponential family is a sampling model whose log-density is linear in a finite sufficient statistic T(y). Once you write f(y | η) = h(y) exp{T(y)ᵀη − A(η)}, the whole dance of MLEs, Fisher information, and GLMs is derivatives of the log-partition A.",
+    "Bernoulli, Poisson, Gaussian with known variance, gamma, and multinomial all sit in this class (or a dispersion extension). The canonical parameter η is not always the mean: for Bernoulli, η = logit(π); for Poisson, η = log λ. That is why those links are called canonical.",
+    "Sufficiency is the practical punchline: the MLE depends on the data only through T(y). For iid Bernoulli, T = ∑ yᵢ. For iid Gaussian mean, T = ∑ yᵢ. If your “model” needs the whole list of residuals as a sufficient statistic, you have left the exponential family — not a crime, but you should know you left."
+  ],
+  "deepTitle": "Mean, variance, and the GLM hook",
+  "deep": [
+    "Natural-form density (scalar, for a lab notebook): f(y | θ, φ) = exp{(yθ − b(θ))/a(φ) + c(y,φ)}. Then E[Y] = b′(θ) and Var(Y) = b″(θ) a(φ). Fisher information for θ in one observation is b″(θ)/a(φ). The score (y − μ)/ (φ V(μ) g′(μ)) in a GLM is this derivative in costume.",
+    "Canonical link: set the linear predictor equal to the natural parameter, g(μ) = θ(μ). Logit is canonical for Bernoulli because θ = log(π/(1−π)). Log is canonical for Poisson because θ = log λ. Non-canonical links (probit, complementary log-log, identity-for-Poisson) are allowed; IRLS still works; interpretation and small-sample behaviour change.",
+    "Dispersion φ is known in strict Bernoulli/Poisson (φ = 1) and estimated in Gaussian and gamma. Quasi-likelihood keeps the mean–variance map V(μ) without committing to a full exponential-family density — the estimating equation is the same, the likelihood ratio is not.",
+    "In TB WGS–DST, a Bernoulli likelihood for a binary catalogue call is an exponential family. A finite-mixture of resistant and susceptible subpopulations is not a one-parameter exponential family in the mixture weight; the sufficient statistic is no longer a single count, and boundary issues appear."
+  ],
+  "formulas": [
+    {
+      "id": "expfam",
+      "label": "One-parameter exponential family",
+      "expression": "f(y | θ, φ) = exp{(yθ − b(θ))/a(φ) + c(y, φ)}",
+      "note": "μ = b′(θ), Var(Y) = b″(θ) a(φ)."
+    },
+    {
+      "id": "canon",
+      "label": "Canonical examples",
+      "expression": "Bernoulli: θ = logit(π);   Poisson: θ = log λ;   N(μ,σ²): θ = μ/σ²",
+      "note": "The GLM canonical link is the map μ ↦ θ(μ)."
+    }
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Members of the exponential-family workshop. Size marks how often the family is the actual likelihood in a TB/genomics notebook, not a popularity contest among textbooks.",
+    "terms": [
+      {
+        "label": "Bernoulli / logit",
+        "weight": 10
+      },
+      {
+        "label": "Poisson / log",
+        "weight": 9
+      },
+      {
+        "label": "Gaussian / identity",
+        "weight": 8
+      },
+      {
+        "label": "binomial / n trials",
+        "weight": 8
+      },
+      {
+        "label": "gamma / log",
+        "weight": 5
+      },
+      {
+        "label": "multinomial / softmax",
+        "weight": 6
+      },
+      {
+        "label": "negbin (overdispersed counts)",
+        "weight": 7
+      },
+      {
+        "label": "T(y) sufficient",
+        "weight": 9
+      },
+      {
+        "label": "A(η) log-partition",
+        "weight": 8
+      },
+      {
+        "label": "quasi-likelihood cousin",
+        "weight": 6
+      },
+      {
+        "label": "mixture: not 1-p expfam",
+        "weight": 7
+      },
+      {
+        "label": "canonical link",
+        "weight": 8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Exponential family — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Exponential_family",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder, Generalized Linear Models",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-likelihood",
+    "stats-glm-link",
+    "stats-ols-glm",
+    "stats-foundations",
+    "stats-quasi-likelihood"
+  ],
+  "example": {
+    "title": "Poisson as an exponential family",
+    "setup": "Colony counts Y ~ Poisson(λ) on a plate with exposure t already absorbed into λ. Write the density in exponential form and read off μ, V(μ), and the MLE from n iid plates.",
+    "steps": [
+      {
+        "title": "Rewrite the pmf",
+        "body": "P(Y=y) = e^{−λ} λ^y / y! = exp{y log λ − λ − log(y!)}. So θ = log λ, b(θ) = e^θ, a(φ) = 1, T(y) = y.",
+        "expression": "y log λ − λ − log(y!)"
+      },
+      {
+        "title": "Mean and variance",
+        "body": "b′(θ) = e^θ = λ, b″(θ) = e^θ = λ. Mean equals variance. That is the Poisson marriage a GLM will impose unless you move to quasi-Poisson or negative binomial."
+      },
+      {
+        "title": "iid MLE",
+        "body": "ℓ(λ) = (∑ yᵢ) log λ − nλ. Score ∑ yᵢ/λ − n = 0 ⇒ λ̂ = ȳ. Sufficiency made the list of counts disappear except as a sum."
+      }
+    ],
+    "takeaway": "If you can see T(y) and A(η), you already know the mean, the variance, and usually the MLE."
+  },
+  "check": [
+    {
+      "id": "exp-canon",
+      "kind": "conceptual",
+      "prompt": "The canonical link for a Bernoulli likelihood is logit because:",
+      "choices": [
+        "Logit is the only link that gives odds ratios",
+        "The natural parameter of the Bernoulli exponential family is log(π/(1−π))",
+        "Probit is not a GLM",
+        "Canonical links force φ = 1"
+      ],
+      "answer": "The natural parameter of the Bernoulli exponential family is log(π/(1−π))",
+      "why": "Canonical means η = θ(μ). For Bernoulli that map is logit. Odds ratios are a consequence, not the definition. Probit is a perfectly legal non-canonical GLM.",
+      "whyWrong": {
+        "Logit is the only link that gives odds ratios": "Odds ratios come from a logit linear predictor, which is the canonical choice, but that is interpretation after the fact.",
+        "Probit is not a GLM": "Probit is a Bernoulli GLM with a different link.",
+        "Canonical links force φ = 1": "Dispersion is a separate knob."
+      }
+    },
+    {
+      "id": "exp-calc",
+      "kind": "calculation",
+      "prompt": "iid Poisson, n = 5, counts 0,1,3,2,4. What is the MLE of λ, and what sufficient statistic produced it?",
+      "choices": [
+        "λ̂ = 2, from ∑ yᵢ = 10",
+        "λ̂ = 4, from max yᵢ",
+        "λ̂ = 0, from the zero count",
+        "λ̂ = 5, from n"
+      ],
+      "answer": "λ̂ = 2, from ∑ yᵢ = 10",
+      "why": "In the Poisson exponential family T = ∑ yᵢ = 10, λ̂ = T/n = 2. The maximum observation is not sufficient.",
+      "whyWrong": {
+        "λ̂ = 4, from max yᵢ": "The max is not the sufficient statistic.",
+        "λ̂ = 0, from the zero count": "One zero does not set the mean to 0.",
+        "λ̂ = 5, from n": "n is the sample size, not the mean."
+      }
+    },
+    {
+      "id": "exp-figure",
+      "kind": "figure",
+      "prompt": "On the constellation plate, why is “mixture: not 1-p expfam” listed among the families?",
+      "figureHint": "Terms include Bernoulli/logit and a mixture warning.",
+      "choices": [
+        "Because mixtures are the canonical link for Poisson",
+        "To mark that a finite mixture generally leaves the one-parameter exponential family, so a single count is no longer sufficient",
+        "Because exponential families forbid extra variance",
+        "Because T(y) is undefined for counts"
+      ],
+      "answer": "To mark that a finite mixture generally leaves the one-parameter exponential family, so a single count is no longer sufficient",
+      "why": "The plate is a workshop map, including the exit door. Heteroresistance mixtures are the TB-shaped version of that exit.",
+      "whyWrong": {
+        "Because mixtures are the canonical link for Poisson": "They are not a link.",
+        "Because exponential families forbid extra variance": "Dispersion and negative binomial exist.",
+        "Because T(y) is undefined for counts": "For Poisson, T(y) = y."
+      }
+    }
+  ]
+}

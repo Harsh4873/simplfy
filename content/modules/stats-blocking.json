@@ -1,0 +1,184 @@
+{
+  "id": "stats-blocking",
+  "title": "Blocking and stratification",
+  "dek": "Block on what you can control and what you know will move Y. Randomise within blocks. Analyse the blocks you used.",
+  "domain": "stats",
+  "aliases": [
+    "blocking",
+    "randomised block",
+    "stratified randomisation",
+    "paired design",
+    "nuisance factor"
+  ],
+  "tags": [
+    "design",
+    "blocking",
+    "precision",
+    "experiment"
+  ],
+  "story": [
+    "NIST: blocking is the isolation of a known nuisance source of variability — batch, day, lab, sex, site — so that treatment comparisons are made inside homogeneous slices. You randomise treatments within each block. The block is in the design, so it belongs in the analysis.",
+    "The payoff is precision. If labs differ a lot and you randomise treatments within lab, the lab main effect is removed from the treatment contrast’s error term (in the usual additive block model). Ignoring blocks in the analysis puts that variation back into the residual and you paid for a design you then threw away.",
+    "Blocking is not matching after the fact, and it is not confounding control in an observational study (though stratified sampling is a cousin). If you cannot assign treatment, you cannot block in this sense."
+  ],
+  "deepTitle": "Additive blocks, interactions, and paired tests",
+  "deep": [
+    "Model sketch: Y_{ij} = μ + τ_i + β_j + ε_{ij}, ε iid (or the GLM analogue). Treatment i, block j. The block sum of squares is removed from SSE. If treatment×block interaction exists and you have no replication inside cells, you cannot separate interaction from error — a reason to replicate or to use a mixed block effect.",
+    "Paired t-test is a randomised block with two treatments and blocks of size 2 (before/after only if the order was randomised or the contrast is not a causal assignment). Sign tests and permutation within pairs are the nonparametric siblings.",
+    "Over-blocking: slicing until each block has almost no treatment comparison left. Under-blocking: ignoring a huge batch effect you could have balanced. Pre-specify the blocking factors you can actually assign within.",
+    "In a multi-lab MIC experiment, block (or stratify) by lab. In a trial, stratify randomisation by site and sputum smear. Then use those strata in the primary analysis."
+  ],
+  "formulas": [
+    {
+      "id": "rbd",
+      "label": "Randomised block (Gaussian additive)",
+      "expression": "Y_{ij} = μ + τ_{treatment(i)} + β_{block(j)} + ε_{ij}",
+      "note": "Treatment contrasts are within-block. Analyse β_j; do not dump it into ε."
+    },
+    {
+      "id": "pair",
+      "label": "Paired contrast",
+      "expression": "D_j = Y_{1j} − Y_{0j},   test E[D]=0",
+      "note": "Blocks of size 2. Permute signs of D_j under a sharp null."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Blocking as nested assignment: labs (or days, sites) are slices; treatments are randomised inside each slice. The analysis that matches keeps the slice in the mean or as a random intercept.",
+    "layers": [
+      {
+        "title": "Block (lab / day / site)",
+        "nodes": [
+          "Lab A",
+          "Lab B",
+          "Lab C"
+        ]
+      },
+      {
+        "title": "Randomised Z inside block",
+        "nodes": [
+          "Rx",
+          "ctrl",
+          "Rx",
+          "ctrl",
+          "Rx",
+          "ctrl"
+        ]
+      },
+      {
+        "title": "Outcomes Y",
+        "nodes": [
+          "MIC",
+          "MIC",
+          "MIC",
+          "MIC",
+          "MIC",
+          "MIC"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — blocking",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri334.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Randomized block design — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Randomized_block_design",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-randomization",
+    "stats-factorial",
+    "stats-mixed-models",
+    "stats-power",
+    "stats-ols-diagnostics"
+  ],
+  "example": {
+    "title": "Three labs, two media",
+    "setup": "Compare two culture media for time-to-positivity. 3 labs, 8 specimens each. Completely randomised across 24 without regard to lab, versus randomised 4+4 within each lab.",
+    "steps": [
+      {
+        "title": "Unblocked",
+        "body": "By chance a lab that is slow overall might get more of media 1. Treatment contrast is entangled with lab. Even if balanced by luck, residual variance includes lab."
+      },
+      {
+        "title": "Blocked",
+        "body": "4+4 inside each lab. Lab main effect drops out of the media contrast. Analyse lab as a block (fixed) or a random intercept if labs are a sample."
+      },
+      {
+        "title": "Do not average first",
+        "body": "Averaging the three lab-specific differences is close to the block analysis. Pooling all 24 as iid is the design you did not run."
+      }
+    ],
+    "takeaway": "Block on big, known, assignable nuisances. Then put the block in the model."
+  },
+  "check": [
+    {
+      "id": "blk-why",
+      "kind": "conceptual",
+      "prompt": "The main statistical reason to block is:",
+      "choices": [
+        "To create confounding on purpose",
+        "To remove a known nuisance source of variation from the treatment comparison’s error, improving precision",
+        "To avoid randomisation",
+        "To make AIC smaller by adding noise"
+      ],
+      "answer": "To remove a known nuisance source of variation from the treatment comparison’s error, improving precision",
+      "why": "NIST’s blocking idea. You still randomise within blocks.",
+      "whyWrong": {
+        "To create confounding on purpose": "Opposite.",
+        "To avoid randomisation": "Blocking is a restricted randomisation.",
+        "To make AIC smaller by adding noise": "No."
+      }
+    },
+    {
+      "id": "blk-calc",
+      "kind": "calculation",
+      "prompt": "Paired design, 5 pairs, differences D = (1, 2, 0, 2, 1). Mean D̄ =",
+      "choices": [
+        "1.2",
+        "6",
+        "2",
+        "0"
+      ],
+      "answer": "1.2",
+      "why": "(1+2+0+2+1)/5 = 6/5 = 1.2. The paired test lives on these five numbers, not on ten unpaired rows.",
+      "whyWrong": {
+        "6": "The sum, not the mean.",
+        "2": "The mode/max, not the mean.",
+        "0": "One of the differences, not the mean."
+      }
+    },
+    {
+      "id": "blk-figure",
+      "kind": "figure",
+      "prompt": "On the blocking hierarchy, treatments sit inside labs. Analysing as one iid pile of MICs would:",
+      "figureHint": "Lab layer above randomised Z layer.",
+      "choices": [
+        "Match the design",
+        "Ignore the block structure you paid for and typically inflate (or mis-state) the residual variation for the treatment contrast",
+        "Be required by Gauss–Markov",
+        "Delete SUTVA"
+      ],
+      "answer": "Ignore the block structure you paid for and typically inflate (or mis-state) the residual variation for the treatment contrast",
+      "why": "The plate is nested assignment. The analysis should be nested too.",
+      "whyWrong": {
+        "Match the design": "It would not.",
+        "Be required by Gauss–Markov": "GM is about spherical errors in a given X, not an excuse to drop blocks.",
+        "Delete SUTVA": "Unrelated."
+      }
+    }
+  ]
+}

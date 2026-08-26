@@ -1,0 +1,215 @@
+{
+  "id": "stats-randomization",
+  "title": "Randomisation as an assignment mechanism",
+  "dek": "Randomisation is a known law for Z. It cuts confounding arrows into treatment. It does not make outcomes independent of households, labs, or time.",
+  "domain": "stats",
+  "aliases": [
+    "randomization",
+    "randomisation",
+    "random assignment",
+    "RCT",
+    "assignment mechanism"
+  ],
+  "tags": [
+    "design",
+    "causal",
+    "experiment",
+    "assignment"
+  ],
+  "story": [
+    "NIST’s first commandment of comparative experiments is randomisation: assign treatments by a known chance mechanism, not by convenience or by who arrived on Tuesday. The statistical object is p(Z | design). Potential outcomes can depend on anything; Z is not allowed to depend on them.",
+    "That assignment independence is why a difference in means has a causal reading (under SUTVA). It is not why a GLM SE is right. Clustered outcomes still need clustered SEs or a mixed model. Randomisation of patients inside households does not remove household correlation in Y.",
+    "Restricted randomisation (blocks, minimisation, stratified assignment) is still randomisation if the restriction is in the design you analyse. Analysing a blocked experiment as if it were completely randomised throws away precision and can be slightly wrong."
+  ],
+  "deepTitle": "What is randomised, and the analysis that matches",
+  "deep": [
+    "Unit of randomisation should match the intervention: households for a ventilation trial, districts for a policy, patients for a drug. Analysing the wrong level is the ecological/atomistic fork.",
+    "Randomisation inference: the null “no effect for anyone” plus the known assignment law gives an exact (or simulation-exact) p-value by permuting Z. That is the permutation plate specialised to a design.",
+    "Blinding is not randomisation. It is a measurement-protection against some arrows into the recorded Y. You can randomise without blinding (cluster policy trials) and you can blind poorly after randomising.",
+    "Covariate adjustment after randomisation can increase precision. It is not required for unbiasedness of the ITT difference in means. Pre-specify it. Fishing for the covariate that stars the treatment is a different assignment mechanism called the file drawer."
+  ],
+  "formulas": [
+    {
+      "id": "rand",
+      "label": "Random assignment (complete, n1 treated)",
+      "expression": "P(Z = z) = 1 / C(n, n₁)   for |z|_1 = n₁",
+      "note": "A known finite-population assignment law. Stratified versions multiply within strata."
+    },
+    {
+      "id": "itt",
+      "label": "ITT contrast",
+      "expression": "τ̂_ITT = Ȳ_{Z=1} − Ȳ_{Z=0}",
+      "note": "Effect of assignment. Unbiased for the assignment ATE under the design, plus SUTVA."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Design spine from NIST: define the experimental unit, randomise the intervention at that unit, measure Y, analyse using the assignment law you actually used (including blocks). Convenience assignment exits to confounding.",
+    "nodes": [
+      {
+        "id": "unit",
+        "label": "Name the unit",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "asg",
+        "label": "Randomise Z",
+        "x": 34,
+        "y": 40,
+        "tone": "decision"
+      },
+      {
+        "id": "y",
+        "label": "Measure Y",
+        "x": 58,
+        "y": 18,
+        "tone": "process"
+      },
+      {
+        "id": "conv",
+        "label": "Convenience Z",
+        "x": 58,
+        "y": 62,
+        "tone": "end"
+      },
+      {
+        "id": "an",
+        "label": "Analyse the design",
+        "x": 84,
+        "y": 18,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "unit",
+        "to": "asg"
+      },
+      {
+        "from": "asg",
+        "to": "y",
+        "label": "known p(Z)"
+      },
+      {
+        "from": "asg",
+        "to": "conv",
+        "label": "if skipped"
+      },
+      {
+        "from": "y",
+        "to": "an"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — randomisation",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri333.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "NIST e-Handbook — process improvement / experimental design",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/pri.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Randomized experiment — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Randomized_experiment",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-blocking",
+    "stats-potential-outcomes",
+    "stats-permutation",
+    "stats-confounding",
+    "stats-power"
+  ],
+  "example": {
+    "title": "Household ventilation trial",
+    "setup": "40 households, assign a ventilation kit to 20 by a random partition. Outcome: incident TB over 18 months among members. Temptation: analyse 180 people as iid randomised.",
+    "steps": [
+      {
+        "title": "Unit",
+        "body": "Z is a household variable. The assignment law is over 40 labels, not 180."
+      },
+      {
+        "title": "SUTVA",
+        "body": "Interference between neighbouring households may remain. Within household, members share Z by design — that is clustering, not interference of assignment, if the kit was meant for the house."
+      },
+      {
+        "title": "Analysis",
+        "body": "Household-level rates, mixed models, or cluster-robust SEs. A person-level t-test uses the wrong p(Z) and the wrong independence."
+      }
+    ],
+    "takeaway": "Randomise the unit you intervene on. Analyse that assignment law. Correlation in Y is a separate sentence."
+  },
+  "check": [
+    {
+      "id": "rand-indep",
+      "kind": "conceptual",
+      "prompt": "Randomisation of treatment Z primarily buys you:",
+      "choices": [
+        "Independent outcomes Yᵢ even within households",
+        "Independence (or known dependence) between Z and the potential outcomes, cutting confounding into assignment",
+        "Gaussian errors",
+        "A smaller AIC"
+      ],
+      "answer": "Independence (or known dependence) between Z and the potential outcomes, cutting confounding into assignment",
+      "why": "Assignment mechanism. Outcome dependence is a different modelling job.",
+      "whyWrong": {
+        "Independent outcomes Yᵢ even within households": "Randomisation does not do that.",
+        "Gaussian errors": "No.",
+        "A smaller AIC": "No."
+      }
+    },
+    {
+      "id": "rand-calc",
+      "kind": "calculation",
+      "prompt": "Complete randomisation of n=4 units, n₁=2 treated. Number of possible assignment vectors is C(4,2) =",
+      "choices": [
+        "4",
+        "6",
+        "16",
+        "2"
+      ],
+      "answer": "6",
+      "why": "4 choose 2 = 6. Each equally likely under this design. Permutation tests enumerate them.",
+      "whyWrong": {
+        "4": "n, not C(n,2).",
+        "16": "2^4, unrestricted Bernoulli assignment including 0 or 4 treated.",
+        "2": "n₁, not the number of assignments."
+      }
+    },
+    {
+      "id": "rand-figure",
+      "kind": "figure",
+      "prompt": "On the randomisation flow plate, why is “convenience Z” an exit?",
+      "figureHint": "Decision node to randomise vs convenience.",
+      "choices": [
+        "Because convenience assignment is still a known p(Z) like complete randomisation",
+        "Because without a known chance mechanism, confounding arrows into Z remain a live scientific problem",
+        "Because NIST forbids measuring Y",
+        "Because blocking is convenience"
+      ],
+      "answer": "Because without a known chance mechanism, confounding arrows into Z remain a live scientific problem",
+      "why": "The plate is a design spine. Convenience assignment is observational study in a lab coat.",
+      "whyWrong": {
+        "Because convenience assignment is still a known p(Z) like complete randomisation": "It is not known in the design sense.",
+        "Because NIST forbids measuring Y": "No.",
+        "Because blocking is convenience": "Blocking is restricted randomisation, next plate."
+      }
+    }
+  ]
+}

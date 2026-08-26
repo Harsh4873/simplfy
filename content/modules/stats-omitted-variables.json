@@ -1,0 +1,195 @@
+{
+  "id": "stats-omitted-variables",
+  "title": "Omitted variables in linear models",
+  "dek": "Leave a relevant regressor out and OLS estimates a different functional — the projection onto the columns you kept. Call that bias only after you name the target.",
+  "domain": "stats",
+  "aliases": [
+    "omitted variable bias",
+    "OVB",
+    "confounding in regression",
+    "left-out variable",
+    "specification bias"
+  ],
+  "tags": [
+    "OLS",
+    "bias",
+    "confounding",
+    "causal"
+  ],
+  "story": [
+    "Suppose the long regression is Y = Xβ + Zγ + ε with E[ε | X,Z] = 0. The short regression of Y on X only estimates δ in Y = Xδ + u, where δ = β + (XᵀX)⁻¹ Xᵀ Z γ in the sample (and a population analogue with covariances). The extra term is omitted-variable bias for β if β was the target.",
+    "If the target was the predictive projection onto X, there is no bias — you got that projection. The word “bias” smuggles a target. In a genomics lab this is the difference between “association with lineage” and “effect of a mutation holding lineage fixed.”",
+    "The sign of the bias is the product of (how Z enters Y) and (how Z correlates with X). A resistance mutation that tracks lineage will look like a lineage effect in a short model, and like a mutation effect in a long model, and like neither if you still omitted treatment history."
+  ],
+  "deepTitle": "Algebra, DAGs, and what OLS cannot see",
+  "deep": [
+    "Scalar formula: bias = γ · (coefficient of Z on X). If γ = 0 (Z does not enter the mean of Y) or Z is uncorrelated with X, the short coefficient equals β. Randomisation of X is the design way to force the second.",
+    "Including Z can also be wrong: if Z is a collider or a mediator you wanted to leave in the total effect, the long regression estimates a different causal functional. Omitted-variable folklore that “more controls are always better” is false in DAG language — see the causal plates.",
+    "Measurement error in X, not omission of Z, is a different bias (usually attenuation for classical error). Sandwich SEs do not fix either.",
+    "In GLMs the algebra is not exactly (XᵀX)⁻¹ XᵀZγ, but the same moral holds: the coefficient is defined by the score of the model you fit. Nested LRTs compare those models; they do not tell you which target is scientific."
+  ],
+  "formulas": [
+    {
+      "id": "ovb",
+      "label": "Short vs long OLS (population sketch)",
+      "expression": "δ = β + π γ",
+      "note": "π is the coefficient from the auxiliary regression of the omitted Z on included X. Vector form: a projection remainder."
+    },
+    {
+      "id": "aux",
+      "label": "Auxiliary regression",
+      "expression": "Z = Xπ + residual",
+      "note": "Omitted-variable bias for β is zero if π = 0 or γ = 0."
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "The omitted-variable path: X is correlated with Z, Z shifts Y, and a short regression of Y on X absorbs part of γ into δ. Randomising X would cut the X—Z association; controlling Z in the mean is the regression move, when Z is a confounder not a collider.",
+    "nodes": [
+      {
+        "id": "x",
+        "label": "X included",
+        "group": "enzyme",
+        "x": 16,
+        "y": 30,
+        "sub": "mutation"
+      },
+      {
+        "id": "z",
+        "label": "Z omitted",
+        "group": "drug",
+        "x": 50,
+        "y": 78,
+        "sub": "lineage / Rx"
+      },
+      {
+        "id": "y",
+        "label": "Y",
+        "group": "target",
+        "x": 84,
+        "y": 30,
+        "sub": "resistance"
+      }
+    ],
+    "edges": [
+      {
+        "from": "x",
+        "to": "y",
+        "label": "β (target?)"
+      },
+      {
+        "from": "z",
+        "to": "y",
+        "label": "γ"
+      },
+      {
+        "from": "z",
+        "to": "x",
+        "label": "π ≠ 0"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Omitted-variable bias — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Omitted-variable_bias",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Causal Inference: The Mixtape — companion GitHub",
+      "url": "https://github.com/scunning1975/mixtape",
+      "attribution": "MIT-licensed companion materials. Omitted-variable algebra restated in original Simplfy language with TB-lab examples; book prose not ingested.",
+      "license": "MIT (companion repo) / original notes"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-ols-geometry",
+    "stats-confounding",
+    "stats-dag-literacy",
+    "stats-potential-outcomes",
+    "stats-ols-glm"
+  ],
+  "example": {
+    "title": "gyrA and lineage",
+    "setup": "Short logit or OLS-on-linear-probability: FQ-R ~ gyrA QRDR mutation. Long: add lineage L2. Mutation is more common in L2, and L2 has higher FQ-R for additional reasons (treatment history, other alleles).",
+    "steps": [
+      {
+        "title": "Auxiliary",
+        "body": "Regress the mutation on L2: π > 0. The omitted lineage coefficient γ > 0 on FQ-R. Short mutation coefficient is inflated relative to the long-regression β."
+      },
+      {
+        "title": "Name the target",
+        "body": "If the scientific question is “does this mutation shift MIC holding lineage and treatment fixed?”, the long model is closer (and still not a DAG-complete causal model). If the question is “what is the predictive association in the population?”, the short model is a legitimate projection."
+      },
+      {
+        "title": "LRT is not the referee of targets",
+        "body": "A nested LRT will likely reject the short model. That says lineage earns likelihood, not that β is the causal effect of gyrA."
+      }
+    ],
+    "takeaway": "Write δ = β + πγ, then write the sentence for β you actually wanted."
+  },
+  "check": [
+    {
+      "id": "ovb-zero",
+      "kind": "conceptual",
+      "prompt": "Omitted-variable bias for the included coefficient is zero if:",
+      "choices": [
+        "n > 30",
+        "The omitted Z does not enter the mean of Y, or Z is uncorrelated with included X",
+        "You use sandwich SEs",
+        "You always add every measured covariate"
+      ],
+      "answer": "The omitted Z does not enter the mean of Y, or Z is uncorrelated with included X",
+      "why": "γ = 0 or π = 0. Sandwich does not remove mean bias. Adding colliders can create bias.",
+      "whyWrong": {
+        "n > 30": "Asymptotics do not cancel a missing confounder.",
+        "You use sandwich SEs": "Variance, not mean.",
+        "You always add every measured covariate": "Mediators and colliders disagree."
+      }
+    },
+    {
+      "id": "ovb-calc",
+      "kind": "calculation",
+      "prompt": "Scalar OVB: β = 1, γ = 2, π = 0.3. Short coefficient δ ≈",
+      "choices": [
+        "1",
+        "1.6",
+        "2.3",
+        "0.3"
+      ],
+      "answer": "1.6",
+      "why": "δ = β + πγ = 1 + 0.3×2 = 1.6.",
+      "whyWrong": {
+        "1": "That is β, the long-regression target.",
+        "2.3": "β + γ + π.",
+        "0.3": "That is π."
+      }
+    },
+    {
+      "id": "ovb-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, the arrow from Z to X labelled π ≠ 0 is there because:",
+      "figureHint": "Z omitted points at both X and Y.",
+      "choices": [
+        "Omitted-variable bias for β needs Z to be associated with the included regressor",
+        "π is a p-value",
+        "X cannot affect Y if π ≠ 0",
+        "This is a collider triangle by definition"
+      ],
+      "answer": "Omitted-variable bias for β needs Z to be associated with the included regressor",
+      "why": "If π = 0, short and long coefficients agree even when γ ≠ 0 (Z is a pure noise predictor of Y).",
+      "whyWrong": {
+        "π is a p-value": "π is the auxiliary coefficient.",
+        "X cannot affect Y if π ≠ 0": "β can still be nonzero.",
+        "This is a collider triangle by definition": "This drawing is the confounder / omitted-regressor picture; colliders are a different fork — see DAG literacy."
+      }
+    }
+  ]
+}

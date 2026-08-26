@@ -23,7 +23,8 @@
     "For independent observations, L(θ) = ∏ f(yᵢ | θ) and ℓ(θ) = Σ log f(yᵢ | θ). The score S(θ) = ∇ℓ, and the MLE solves S(θ̂) = 0 when the maximum is interior. Observed information is −∇²ℓ(θ̂); expected (Fisher) information is E[−∇²ℓ(θ)].",
     "Invariance: if θ̂ is the MLE of θ, g(θ̂) is the MLE of g(θ). Delta method: √n (g(θ̂) − g(θ)) →d N(0, ∇gᵀ I⁻¹ ∇g). This is how you get a standard error for a transmission probability that was estimated on the logit scale.",
     "Misspecification: if the true distribution is not in {f(·|θ)}, the MLE converges to the Kullback–Leibler projection, not to “the truth.” Sandwich (Huber–White) variance is the adult response. In TB WGS–DST, the catalogue model is misspecified by design; sandwich and hierarchical residuals are not optional garnish.",
-    "Bayesian analysis uses the same f(y|θ) as a likelihood and multiplies by a prior. The likelihood function does not change teams. What changes is whether you treat θ as unknown-but-fixed or as a random variable."
+    "Bayesian analysis uses the same f(y|θ) as a likelihood and multiplies by a prior. The likelihood function does not change teams. What changes is whether you treat θ as unknown-but-fixed or as a random variable.",
+    "The rest of this stats wave unpacks the objects named here: exponential families and the score, Fisher information and the delta method, nested LRTs versus AIC, and partial pooling when the iid product is a lie. Read this plate as the dictionary; the specialised plates are the verbs."
   ],
   "formulas": [
     {
@@ -51,19 +52,24 @@
   },
   "sources": [
     {
-      "title": "OpenStax Introductory Statistics — sampling and estimation chapters",
-      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
-      "attribution": "Foundational sampling language aligned with OpenStax CC BY; likelihood treatment is original teaching notes at a higher level than the OpenStax main text.",
-      "license": "CC BY 4.0 / original notes"
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Definitional authority for estimation language; likelihood exposition is original Simplfy notes.",
+      "license": "U.S. public domain"
     },
     {
       "title": "Likelihood function — Wikipedia",
       "url": "https://en.wikipedia.org/wiki/Likelihood_function",
-      "attribution": "Definitional background adapted under CC BY-SA.",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition is original.",
       "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Casella & Berger, Statistical Inference",
+      "attribution": "Named only as a standard graduate pointer. Proofs and examples were not copied.",
+      "license": "Citation only"
     }
   ],
-  "related": ["stats-lrt", "stats-ols-glm", "stats-bayesian", "stats-hierarchical"],
+  "related": ["stats-likelihood", "stats-mle", "stats-fisher-information", "stats-lrt", "stats-exponential-family", "stats-bayesian"],
   "example": {
     "title": "Bernoulli MLE for a FQ-R proportion",
     "setup": "n = 50 sequenced RR-TB isolates, y = 8 with a high-confidence gyrA QRDR mutation. Model: Yᵢ iid Bernoulli(π). Estimate π and a Wald interval.",

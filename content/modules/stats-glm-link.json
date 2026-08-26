@@ -1,0 +1,203 @@
+{
+  "id": "stats-glm-link",
+  "title": "GLM links and mean maps",
+  "dek": "A GLM has three moving parts: a linear predictor η = Xβ, a link g(μ) = η, and a variance function V(μ). Mixing them up is how logistic papers report risk ratios by accident.",
+  "domain": "stats",
+  "aliases": [
+    "link function",
+    "canonical link",
+    "logit",
+    "log link",
+    "identity link",
+    "inverse link"
+  ],
+  "tags": [
+    "GLM",
+    "link",
+    "mean",
+    "exponential family"
+  ],
+  "story": [
+    "The linear predictor is not the mean. g(μ) = xᵀβ maps a real line η onto the legal range of μ. Identity is fine for a Gaussian mean on ℝ. Logit maps to (0,1). Log maps to (0,∞). Using identity for a probability is a model you can fit in a narrow range and then watch produce μ̂ outside [0,1].",
+    "Canonical links make η equal the exponential-family natural parameter. They give nicer IRLS and a globally concave log-likelihood in β for full-rank X in the standard families. They are not morally required: probit and complementary log-log are Bernoulli GLMs with different g.",
+    "The inverse link μ = g⁻¹(xᵀβ) is the mean you should plot. Coefficients live on the η scale. exp(β) is a rate ratio for log-linear Poisson and an odds ratio for logit, not a universal “effect size.”"
+  ],
+  "deepTitle": "Offsets, non-canonical links, and prediction",
+  "deep": [
+    "Offset: η = xᵀβ + offset. For incidence, offset = log(person-time). For WGS, sometimes log(coverage). An offset is a coefficient frozen at 1, not a covariate you forgot to estimate.",
+    "Non-canonical links lose some exponential-family niceties: IRLS still runs, but the observed Hessian and expected information can disagree more, and the log-likelihood need not be globally concave (rare but real for some links).",
+    "Prediction intervals on the μ scale need the inverse link and a variance that includes both Var(β̂) and the GLM’s V(μ). A Normal interval on η, then pushed through g⁻¹, is the usual first move (delta method plate).",
+    "Saturated mean: n parameters, μ̂ᵢ = yᵢ (in regular cases). Deviance compares your structured μ(x) to that saturated peak. That is why GLM goodness-of-fit talk is a nested likelihood comparison in disguise."
+  ],
+  "formulas": [
+    {
+      "id": "link",
+      "label": "GLM mean",
+      "expression": "g(μᵢ) = xᵢᵀ β   or   μᵢ = g⁻¹(xᵢᵀ β)",
+      "note": "β is interpreted on the η = g(μ) scale."
+    },
+    {
+      "id": "canonlist",
+      "label": "Canonical pairs",
+      "expression": "Gaussian: identity;  Bernoulli: logit;  Poisson: log",
+      "note": "Canonical ≠ compulsory."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Three boxes you must name in a GLM: covariates into η, link to μ, family from μ to the law of Y. Software defaults are not a methods section.",
+    "nodes": [
+      {
+        "id": "x",
+        "label": "xᵢ, β",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "eta",
+        "label": "η = xᵀβ",
+        "x": 34,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "mu",
+        "label": "μ = g⁻¹(η)",
+        "x": 58,
+        "y": 40,
+        "tone": "decision",
+        "detail": "link"
+      },
+      {
+        "id": "y",
+        "label": "Y ~ family(μ, V)",
+        "x": 84,
+        "y": 40,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "x",
+        "to": "eta"
+      },
+      {
+        "from": "eta",
+        "to": "mu"
+      },
+      {
+        "from": "mu",
+        "to": "y"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Generalized linear model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Generalized_linear_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Link function — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Link_function_(statistics)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder, Generalized Linear Models",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-exponential-family",
+    "stats-iwls",
+    "stats-logit",
+    "stats-poisson",
+    "stats-ols-glm"
+  ],
+  "example": {
+    "title": "Identity versus logit for a probability",
+    "setup": "Linear probability model: μ = β₀ + β_hiv. Logit model: logit μ = β₀ + β_hiv. HIV prevalence in the sample is 0.4, smear-positivity 0.55 overall.",
+    "steps": [
+      {
+        "title": "Range",
+        "body": "Identity can predict μ̂ = 1.1 for a high-risk profile. Logit cannot. That is not aesthetic; it is whether μ is a probability."
+      },
+      {
+        "title": "Coefficient units",
+        "body": "Identity β_hiv is a risk difference. Logit β_hiv is a log odds ratio. Exponentiating an identity coefficient is a mistake."
+      },
+      {
+        "title": "When identity is used anyway",
+        "body": "For a randomised trial risk difference, identity-binomial or OLS on the binary outcome can be a target-functional choice. Then you own heteroskedasticity and possible μ̂ outside [0,1], and you say so."
+      }
+    ],
+    "takeaway": "Name g, name the scale of β, name V(μ). Then exp(β) either means something or it does not."
+  },
+  "check": [
+    {
+      "id": "link-scale",
+      "kind": "conceptual",
+      "prompt": "In a log-link Poisson GLM, exp(β_k) is:",
+      "choices": [
+        "An odds ratio",
+        "A multiplicative shift in the mean μ (a rate ratio if an offset is log exposure)",
+        "A risk difference",
+        "Fisher information"
+      ],
+      "answer": "A multiplicative shift in the mean μ (a rate ratio if an offset is log exposure)",
+      "why": "log μ = … + β_k x_k ⇒ μ multiplies by e^{β_k} per unit x. Odds ratios are the logit story.",
+      "whyWrong": {
+        "An odds ratio": "Wrong link.",
+        "A risk difference": "Identity-binomial story.",
+        "Fisher information": "Unrelated object."
+      }
+    },
+    {
+      "id": "link-inv",
+      "kind": "calculation",
+      "prompt": "Logit η = 0. The mean μ = logit⁻¹(0) equals:",
+      "choices": [
+        "0",
+        "0.5",
+        "1",
+        "e"
+      ],
+      "answer": "0.5",
+      "why": "logit⁻¹(η) = e^η/(1+e^η). At 0, 1/2.",
+      "whyWrong": {
+        "0": "That would be η → −∞.",
+        "1": "η → +∞.",
+        "e": "Wrong map."
+      }
+    },
+    {
+      "id": "link-figure",
+      "kind": "figure",
+      "prompt": "On the GLM flow plate, where does the variance function V(μ) live?",
+      "figureHint": "x → η → μ → Y ~ family.",
+      "choices": [
+        "Only inside the β vector",
+        "In the last arrow, the family that maps μ to the law of Y",
+        "In the intercept alone",
+        "In the hat matrix of OLS"
+      ],
+      "answer": "In the last arrow, the family that maps μ to the law of Y",
+      "why": "Link is the middle arrow. Variance/family is the sampling model of Y given μ.",
+      "whyWrong": {
+        "Only inside the β vector": "β lives in η.",
+        "In the intercept alone": "No.",
+        "In the hat matrix of OLS": "Gaussian identity special case."
+      }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "id": "stats-overdispersion",
+  "title": "Overdispersion in counts and binaries",
+  "dek": "If Var(Y) exceeds the exponential-family script, SEs and p-values from φ = 1 are too small. The mean model may still be fine.",
+  "domain": "stats",
+  "aliases": [
+    "overdispersion",
+    "extra-Poisson",
+    "extra-binomial",
+    "negative binomial",
+    "heterogeneity"
+  ],
+  "tags": [
+    "GLM",
+    "variance",
+    "counts",
+    "hierarchical"
+  ],
+  "story": [
+    "Poisson says Var = μ. Binomial says Var = nπ(1−π). Real TB case counts, cluster sizes, and even binary outcomes with unmodelled clusters, overshoot. The Pearson dispersion φ̂ = X² / df is the first alarm, not a diagnosis.",
+    "Diagnosis splits: (1) wrong mean (missing curvature, missing offset, outliers) inflates residuals; (2) genuine extra-Poisson heterogeneity. Residual plots and a better mean come before a second variance parameter.",
+    "Scientific sources of extra variance in this lab: household clustering, lab batches, bursts of transmission, heteroresistance mixtures. Those are hierarchical or mixture likelihoods, of which quasi-φ is a blunt average."
+  ],
+  "deepTitle": "NB, mixed Poisson, and what φ cannot see",
+  "deep": [
+    "Negative binomial: Y | λ ~ Poisson(λ), λ ~ Gamma, so Var = μ + μ²/k. The quadratic term matters in the tail. Quasi-Poisson keeps Var = φμ, linear in μ. Predictions and weights disagree when μ spans decades (RNA-seq, district populations).",
+    "Random-intercept Poisson: Var_marginal(Y) > E[Y] automatically. That overdispersion has a name (τ²) and a clustering unit. φ̂ from a GLM that ignored clusters is a smear of τ².",
+    "Underdispersion exists (Var < μ) in tightly regulated assays. Quasi φ̂ < 1 then inflates precision if you naively take it; check the assay before celebrating.",
+    "Binary overdispersion at n_i = 1 is not identifiable as φ in a Bernoulli GLM (φ is not free). Extra-binomial variation needs replicated binomials (n_i > 1) or a random effect. Do not quote quasi-binomial φ on unique Bernoulli rows."
+  ],
+  "formulas": [
+    {
+      "id": "phihat",
+      "label": "Pearson dispersion",
+      "expression": "φ̂ = (1/(n−p)) ∑ (yᵢ − μ̂ᵢ)² / V(μ̂ᵢ)",
+      "note": "≈1 if the variance function is right and the mean is not badly wrong."
+    },
+    {
+      "id": "nbvar",
+      "label": "NB variance",
+      "expression": "Var(Y) = μ + μ²/k",
+      "note": "k → ∞ recovers Poisson. Quasi-Poisson instead uses φμ."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Variance recipes against μ. Poisson is the diagonal Var=μ. Quasi-Poisson is a steeper line. Negative binomial bends up. A mixed Poisson sits somewhere depending on τ². Pick with a residual plot and a clustering story, not a smallest p.",
+    "panels": [
+      {
+        "title": "small μ",
+        "bars": [
+          {
+            "label": "Pois",
+            "value": 2
+          },
+          {
+            "label": "qPois",
+            "value": 4
+          },
+          {
+            "label": "NB",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "large μ",
+        "bars": [
+          {
+            "label": "Pois",
+            "value": 8
+          },
+          {
+            "label": "qPois",
+            "value": 16
+          },
+          {
+            "label": "NB",
+            "value": 28
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Overdispersion — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Overdispersion",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Negative binomial distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Negative_binomial_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-poisson",
+    "stats-quasi-likelihood",
+    "stats-hierarchical",
+    "stats-mixed-models",
+    "stats-sandwich"
+  ],
+  "example": {
+    "title": "φ̂ = 3.5 on district counts",
+    "setup": "Poisson GLM for annual RR-TB counts by district, offset log(population). Pearson φ̂ = 3.5. Two large districts had outbreaks.",
+    "steps": [
+      {
+        "title": "Do not stop at φ",
+        "body": "Add an outbreak year term or a random intercept for district. If φ̂ falls toward 1, the extra variance had a name."
+      },
+      {
+        "title": "If φ̂ stays high",
+        "body": "Quasi-Poisson or NB. With a huge range of μ, NB’s μ²/k term is more plausible than a single φ."
+      },
+      {
+        "title": "Report",
+        "body": "Write the variance function in the methods. A Poisson p-value with φ̂ = 3.5 in the supplement is a contradiction, not a robustness check."
+      }
+    ],
+    "takeaway": "Overdispersion is extra variance looking for a unit. φ̂ is a smoke alarm."
+  },
+  "check": [
+    {
+      "id": "od-phi",
+      "kind": "conceptual",
+      "prompt": "A Pearson φ̂ of 4 in a Poisson GLM most directly suggests:",
+      "choices": [
+        "The MLE of β is inconsistent even if the mean is right",
+        "Residuals are about twice as large as Poisson V=μ expected (SEs too small if you ignore it)",
+        "The offset is illegal",
+        "You must use OLS"
+      ],
+      "answer": "Residuals are about twice as large as Poisson V=μ expected (SEs too small if you ignore it)",
+      "why": "√4 = 2, so residual SD is about double. Mean-model consistency can still hold.",
+      "whyWrong": {
+        "The MLE of β is inconsistent even if the mean is right": "Quasi/Poisson scores can still be mean-zero.",
+        "The offset is illegal": "Unrelated.",
+        "You must use OLS": "No."
+      }
+    },
+    {
+      "id": "od-nb",
+      "kind": "calculation",
+      "prompt": "NB variance μ + μ²/k with μ = 10, k = 5 equals:",
+      "choices": [
+        "10",
+        "30",
+        "50",
+        "2"
+      ],
+      "answer": "30",
+      "why": "10 + 100/5 = 10 + 20 = 30. Poisson would have been 10.",
+      "whyWrong": {
+        "10": "Poisson.",
+        "50": "10 + 100/2.5 or μ + μ².",
+        "2": "k/μ confusion."
+      }
+    },
+    {
+      "id": "od-figure",
+      "kind": "figure",
+      "prompt": "On the variance small-multiples, why does NB grow faster than quasi-Poisson as μ gets large?",
+      "figureHint": "small μ vs large μ panels.",
+      "choices": [
+        "Because NB variance has a μ²/k term while quasi-Poisson stays linear in μ",
+        "Because Poisson is quadratic",
+        "Because φ̂ must be < 1",
+        "Because offsets cancel V(μ)"
+      ],
+      "answer": "Because NB variance has a μ²/k term while quasi-Poisson stays linear in μ",
+      "why": "That is the panel’s lesson for RNA-seq-scale μ versus modest weekly counts.",
+      "whyWrong": {
+        "Because Poisson is quadratic": "Poisson is linear, Var=μ.",
+        "Because φ̂ must be < 1": "Opposite of overdispersion.",
+        "Because offsets cancel V(μ)": "No."
+      }
+    }
+  ]
+}

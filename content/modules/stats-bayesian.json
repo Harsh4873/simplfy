@@ -23,7 +23,8 @@
     "Conjugate example: Y ~ Binomial(n, π), π ~ Beta(a, b). Posterior is Beta(a + y, b + n − y). The MLE y/n is the posterior mode as a,b → 1 (uniform) in this parameterization, and the posterior mean (a+y)/(a+b+n) shrinks toward the prior mean a/(a+b).",
     "Nonconjugate models (most GLMs, most phylogenetics) need MCMC, variational inference, or Laplace/INLA. Diagnostics (R̂, ESS, divergences in HMC) are part of the result. A pretty density plot from an unconverged chain is not a posterior.",
     "Prior elicitation in a genomics lab is often hierarchical rather than a single Beta: mutation-specific effects shrunk toward a drug-specific mean, drug means shrunk toward a class. That is the next plate. A “flat prior on the probability scale” can be surprisingly informative on the logit scale, and vice versa.",
-    "Model comparison: Bayes factors are ratios of marginal likelihoods. They are not LRTs. WAIC/LOO are predictive criteria closer in spirit to AIC. Mixing a Bayes factor with a p-value in one sentence is a category error."
+    "Model comparison: Bayes factors are ratios of marginal likelihoods. They are not LRTs. WAIC/LOO are predictive criteria closer in spirit to AIC. Mixing a Bayes factor with a p-value in one sentence is a category error.",
+    "Priors are scientific statements (own plate). Conjugacy is arithmetic when the kernel closes. Calibration is whether 80% intervals cover 80% of the time under a named DGP. MCMC is how you compute when the kernel does not close. None of those is optional garnish on a “Bayesian analysis” caption."
   ],
   "formulas": [
     {
@@ -57,13 +58,18 @@
       "license": "CC BY-SA 4.0"
     },
     {
-      "title": "OpenStax Introductory Statistics — probability rules, extended here to parameter inference",
-      "url": "https://openstax.org/books/introductory-statistics/pages/3-introduction",
-      "attribution": "Original teaching notes on conjugate updating; OpenStax for probability hygiene.",
-      "license": "CC BY 4.0 / original notes"
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain for probability hygiene. Conjugate updating and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman et al., Bayesian Data Analysis",
+      "attribution": "Named only as a standard Bayesian pointer. Structure, proofs, and examples were not copied.",
+      "license": "Citation only"
     }
   ],
-  "related": ["stats-foundations", "stats-hierarchical", "stats-lrt", "tb-wgs-dst"],
+  "related": ["stats-priors", "stats-conjugacy", "stats-mcmc", "stats-posterior-calibration", "stats-hierarchical", "stats-foundations"],
   "example": {
     "title": "Beta–Binomial for a rare BDQ allele",
     "setup": "In a new survey, y = 1 isolate with an atpE mutation among n = 80 BDQ-naïve RR-TB genomes. Prior from a previous lab: π ~ Beta(2, 98), mean 2%. Update.",

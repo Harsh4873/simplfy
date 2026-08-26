@@ -1,0 +1,194 @@
+{
+  "id": "stats-ols-diagnostics",
+  "title": "OLS diagnostics",
+  "dek": "Residuals, leverage, and influence are how you see whether the projection you computed is a scientific fit or a hostage to one row.",
+  "domain": "stats",
+  "aliases": [
+    "residuals",
+    "leverage",
+    "Cook's distance",
+    "QQ plot",
+    "influence",
+    "studentized residual"
+  ],
+  "tags": [
+    "OLS",
+    "diagnostics",
+    "residuals",
+    "influence"
+  ],
+  "story": [
+    "A residual eᵢ = yᵢ − ŷᵢ is not yet a diagnostic. Scale it. A standardised residual uses σ̂ √(1−hᵢᵢ) in the denominator because a high-leverage point is expected to have a smaller raw residual. Studentised residuals leave observation i out of σ̂.",
+    "Leverage hᵢᵢ flags unusual x. Cook’s distance and DFBETAS flag influence on β̂ — a point can have a small residual and still move a slope if it sits far out in x. In MIC-by-dose plots, the highest dose often is both.",
+    "QQ plots of residuals check Gaussianity of e, which you need for exact t, not for BLUE. Residual-versus-fitted and scale-location plots check curvature and heteroskedasticity, which you need for the mean and the SEs. Do not run a 12-plot ritual without a sentence."
+  ],
+  "deepTitle": "Leave-one-out and what to do next",
+  "deep": [
+    "Hat: hᵢᵢ = xᵢᵀ (XᵀX)⁻¹ xᵢ. Rule of thumb hᵢᵢ > 2p/n is a flag, not a theorem. In designed experiments with replication, leverages are often equal by construction — diagnostics then move to residual plots.",
+    "Cook’s Dᵢ ∝ hᵢᵢ eᵢ² / (1−hᵢᵢ)². Large D means β̂_{(−i)} moved. Report whether the scientific conclusion (sign, interval excluding 0) moved, not only whether D exceeded 4/n.",
+    "If residual plots show a curve, the linear mean is wrong — transform Y, add a term, or leave OLS. If they show a fan, the spherical-error SE is wrong — sandwich, WLS, or a GLM variance function. If one isolate owns the slope, that is a data-point problem, not a software option.",
+    "GLM Pearson and deviance residuals are the analogues. High-leverage binary points (complete separation) break MLEs rather than just Cook’s D. Diagnostics do not stop at Gaussian OLS."
+  ],
+  "formulas": [
+    {
+      "id": "stdres",
+      "label": "Standardised residual",
+      "expression": "rᵢ = eᵢ / (σ̂ √(1 − hᵢᵢ))",
+      "note": "The √(1−hᵢᵢ) is geometry, not optional garnish."
+    },
+    {
+      "id": "cook",
+      "label": "Cook’s distance (proportional form)",
+      "expression": "Dᵢ ∝ (eᵢ² hᵢᵢ) / (1 − hᵢᵢ)²",
+      "note": "Combines residual size and leverage into influence on β̂."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic diagnostic signatures. Left: one high-leverage isolate. Middle: a fan (heteroskedasticity). Right: a curved mean. These are different failures; they do not share one fix.",
+    "panels": [
+      {
+        "title": "Leverage flag",
+        "bars": [
+          {
+            "label": "typical h",
+            "value": 2
+          },
+          {
+            "label": "far x",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "Fan (Var↑)",
+        "bars": [
+          {
+            "label": "low ŷ",
+            "value": 2
+          },
+          {
+            "label": "high ŷ",
+            "value": 8
+          }
+        ]
+      },
+      {
+        "title": "Curve (mean)",
+        "bars": [
+          {
+            "label": "|e| mid",
+            "value": 1
+          },
+          {
+            "label": "|e| ends",
+            "value": 6
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — residual analysis",
+      "url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Cook's distance — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Cook%27s_distance",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-ols-geometry",
+    "stats-gauss-markov",
+    "stats-sandwich",
+    "stats-omitted-variables",
+    "stats-ols-glm"
+  ],
+  "example": {
+    "title": "One high-dose isolate",
+    "setup": "OLS of log MIC on dose, n = 18. Seventeen points in dose 0–2. One isolate at dose 10 with a moderate residual. Default slope is steep. Leave that row out and the slope halves.",
+    "steps": [
+      {
+        "title": "Compute h and D",
+        "body": "The dose-10 row will have large hᵢᵢ. Even a modest eᵢ can make Dᵢ huge because of the (1−h)² denominator."
+      },
+      {
+        "title": "Scientific fork",
+        "body": "If dose 10 is a protocol-valid observation, keep it and perhaps use a nonlinear mean or robust regression, and report sensitivity. If it is a mis-labelled dilution, it is not a data point."
+      },
+      {
+        "title": "Do not average the two slopes",
+        "body": "The two fits are answering different questions (with versus without that design point). Write both, plus the residual plot, in the supplement. That is diagnostics as science, not as a delete-outliers ritual."
+      }
+    ],
+    "takeaway": "Influence is a sensitivity analysis. Deleting in silence is not."
+  },
+  "check": [
+    {
+      "id": "diag-h",
+      "kind": "conceptual",
+      "prompt": "High leverage means:",
+      "choices": [
+        "The residual must be large",
+        "The point is unusual in covariate space and can own its fitted value",
+        "The coefficient is causal",
+        "σ² is infinite"
+      ],
+      "answer": "The point is unusual in covariate space and can own its fitted value",
+      "why": "hᵢᵢ is a property of x, not of y. Residuals can be small at high leverage; that is when influence is sneaky.",
+      "whyWrong": {
+        "The residual must be large": "High h actually tends to shrink |e|.",
+        "The coefficient is causal": "Unrelated.",
+        "σ² is infinite": "Unrelated."
+      }
+    },
+    {
+      "id": "diag-calc",
+      "kind": "calculation",
+      "prompt": "If hᵢᵢ = 0.5, σ̂ = 2, eᵢ = 1, the standardised residual rᵢ = eᵢ/(σ̂√(1−hᵢᵢ)) is:",
+      "choices": [
+        "0.5",
+        "1",
+        "0.707",
+        "2"
+      ],
+      "answer": "0.707",
+      "why": "√(1−0.5)=√0.5≈0.707, so denominator 2×0.707≈1.414, r≈1/1.414≈0.707.",
+      "whyWrong": {
+        "0.5": "That is h, not r.",
+        "1": "That ignores both σ̂ and leverage.",
+        "2": "That is σ̂."
+      }
+    },
+    {
+      "id": "diag-figure",
+      "kind": "figure",
+      "prompt": "On the diagnostic small-multiples, why are leverage, fan, and curve separate panels?",
+      "figureHint": "Three titled panels with different bar patterns.",
+      "choices": [
+        "Because one robust SE fixes all three",
+        "Because they are different failures of the OLS story (x-space, variance, mean) and need different next moves",
+        "Because QQ plots are illegal",
+        "Because Cook’s D is a likelihood"
+      ],
+      "answer": "Because they are different failures of the OLS story (x-space, variance, mean) and need different next moves",
+      "why": "The plate is a triage board. Do not collapse it into “check residuals.”",
+      "whyWrong": {
+        "Because one robust SE fixes all three": "Sandwich does not fix a curved mean or a bogus point.",
+        "Because QQ plots are illegal": "They are one Gaussianity check.",
+        "Because Cook’s D is a likelihood": "It is an influence measure."
+      }
+    }
+  ]
+}

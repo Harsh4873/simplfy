@@ -1,0 +1,213 @@
+{
+  "id": "stats-bootstrap",
+  "title": "Bootstrap",
+  "dek": "Replace the unknown sampling distribution of T(Y) with the distribution of T(Y*) under resampling from a fitted world — empirical or parametric.",
+  "domain": "stats",
+  "aliases": [
+    "bootstrap",
+    "percentile interval",
+    "BCa",
+    "resampling",
+    "parametric bootstrap"
+  ],
+  "tags": [
+    "estimation",
+    "resampling",
+    "standard error",
+    "intervals"
+  ],
+  "story": [
+    "The bootstrap is not “sampling with replacement because computers are cheap.” It is a plug-in estimate of a sampling distribution: the world F is unknown, so use F̂, draw Y* ~ F̂, and look at T(Y*) − T(Y) as a stand-in for T(Y) − θ.",
+    "Nonparametric bootstrap resamples rows of the observed sample (or clusters, if you have clusters). Parametric bootstrap resamples from f(· | θ̂). They coincide in large n for well-specified regular models and diverge when the model is wrong or the statistic is not a smooth function of F.",
+    "Percentile intervals, basic (pivotal) intervals, and BCa intervals are different mappings from the bootstrap sample of T* to a set. A histogram of T* is not yet an interval, and it is not a posterior."
+  ],
+  "deepTitle": "When the resample is the right experiment",
+  "deep": [
+    "IID rows: resample isolates. Clustered surveys: resample districts, keeping isolates inside a district together. Phylogenies: a naive site bootstrap is a different scientific claim (uncertainty in the alignment given a tree model) than resampling independent lineages.",
+    "Failure modes: n too small, T not Hadamard-differentiable (sample quantiles at 0, MLE on a boundary, max statistic), and dependence you did not resample. If 30% of bootstrap MLEs hit π* = 0, the percentile interval is a portrait of the boundary, not a 95% coverage machine.",
+    "Parametric bootstrap of an LRT: simulate from the fitted null, recompute Λ*, and use the simulated tail instead of χ². This is often the right reference when regularity is doubtful and n is modest — more honest than a starred p from software defaults.",
+    "Bayesian posterior sampling is not a bootstrap. You can compare a posterior interval to a bootstrap interval as a robustness check; you may not caption a bootstrap histogram as p(θ | y)."
+  ],
+  "formulas": [
+    {
+      "id": "plugin",
+      "label": "Bootstrap plug-in",
+      "expression": "L(F̂)  ≈  law of T(Y*) − T(Y)  as a stand-in for  law of T(Y) − θ",
+      "note": "Y* ~ F̂. Choose F̂ empirical or parametric."
+    },
+    {
+      "id": "pct",
+      "label": "Percentile interval",
+      "expression": "[T*(α/2), T*(1−α/2)]",
+      "note": "Simple, not always best calibrated. Basic interval uses 2T − T*."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Bootstrap as a loop: fit F̂ from the observed sample, resample, recompute T, collect the cloud of T*. The cloud estimates a sampling law, not a posterior of θ.",
+    "nodes": [
+      {
+        "id": "y",
+        "label": "Observed y",
+        "x": 10,
+        "y": 36,
+        "tone": "start"
+      },
+      {
+        "id": "fhat",
+        "label": "Form F̂",
+        "x": 34,
+        "y": 36,
+        "tone": "process",
+        "detail": "empirical or f(θ̂)"
+      },
+      {
+        "id": "star",
+        "label": "Draw y*",
+        "x": 58,
+        "y": 36,
+        "tone": "process"
+      },
+      {
+        "id": "t",
+        "label": "T(y*) cloud",
+        "x": 82,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "int",
+        "label": "SE / interval",
+        "x": 82,
+        "y": 58,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "y",
+        "to": "fhat"
+      },
+      {
+        "from": "fhat",
+        "to": "star"
+      },
+      {
+        "from": "star",
+        "to": "t"
+      },
+      {
+        "from": "star",
+        "to": "int"
+      },
+      {
+        "from": "star",
+        "to": "fhat",
+        "label": "B times"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bootstrapping (statistics) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bootstrapping_(statistics)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — quantitative techniques (resampling context)",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Efron & Tibshirani, An Introduction to the Bootstrap",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-confidence-intervals",
+    "stats-delta-method",
+    "stats-permutation",
+    "stats-sandwich"
+  ],
+  "example": {
+    "title": "Cluster bootstrap for a district survey",
+    "setup": "12 districts, unequal nⱼ, estimator: survey mean of a binary FQ-R call with no hierarchical model, just a weighted mean π̂. Naive iid row bootstrap would pretend isolates are the independent units.",
+    "steps": [
+      {
+        "title": "Wrong resample",
+        "body": "Drawing isolates with replacement ignores the district cluster. The bootstrap SE will be too small if within-district correlation is positive — the usual TB-survey fact."
+      },
+      {
+        "title": "Right resample",
+        "body": "Draw 12 districts with replacement, keep each district’s isolates intact, recompute the weighted mean. That estimates the sampling law of the survey design you actually ran (approximately).",
+        "expression": "districts* ~ with replacement from {1…12}"
+      },
+      {
+        "title": "What the cloud will show",
+        "body": "With 12 clusters the T* histogram will be lumpy. That lumpiness is information: n_cluster = 12 is the effective experiment. A smooth Normal SE from 400 isolates was the fiction."
+      }
+    ],
+    "takeaway": "Resample the independent pieces of the design. Sites, reads, and SNPs are usually not those pieces."
+  },
+  "check": [
+    {
+      "id": "boot-what",
+      "kind": "conceptual",
+      "prompt": "A nonparametric bootstrap histogram of T* estimates:",
+      "choices": [
+        "The posterior of θ under a flat prior",
+        "The sampling distribution of T under a plug-in world F̂",
+        "The likelihood function L(θ | y)",
+        "The bias of every competing estimator"
+      ],
+      "answer": "The sampling distribution of T under a plug-in world F̂",
+      "why": "That is the plug-in principle. It is not Bayes unless you add a prior and a different algorithm.",
+      "whyWrong": {
+        "The posterior of θ under a flat prior": "Caption error.",
+        "The likelihood function L(θ | y)": "L is a curve in θ, not a histogram of T*.",
+        "The bias of every competing estimator": "You can estimate bias of this T; not magic for all T."
+      }
+    },
+    {
+      "id": "boot-calc",
+      "kind": "calculation",
+      "prompt": "B = 1000 bootstrap copies of a mean, sd(T*) = 0.04. A bootstrap SE for the mean is:",
+      "choices": [
+        "0.04",
+        "0.04/√1000",
+        "1.96×0.04",
+        "40"
+      ],
+      "answer": "0.04",
+      "why": "The bootstrap SE is the SD of the T* cloud, already on the scale of T, not divided by √B. B is Monte Carlo precision of that SD.",
+      "whyWrong": {
+        "0.04/√1000": "That would be an SE of a Monte Carlo mean of T*, not the SE of T.",
+        "1.96×0.04": "That is a half-width, not the SE.",
+        "40": "Nonsense scaling."
+      }
+    },
+    {
+      "id": "boot-figure",
+      "kind": "figure",
+      "prompt": "On the bootstrap flow plate, the loop labelled “B times” is there because:",
+      "figureHint": "Arrow from draw y* back toward F̂.",
+      "choices": [
+        "One resample already is the sampling distribution",
+        "Monte Carlo approximation of the plug-in law needs many T(y*)",
+        "B is the sample size n",
+        "Each loop updates a posterior"
+      ],
+      "answer": "Monte Carlo approximation of the plug-in law needs many T(y*)",
+      "why": "The bootstrap distribution is a probability law; B draws approximate it.",
+      "whyWrong": {
+        "One resample already is the sampling distribution": "One draw is one number.",
+        "B is the sample size n": "B is the number of resamples.",
+        "Each loop updates a posterior": "Wrong culture."
+      }
+    }
+  ]
+}

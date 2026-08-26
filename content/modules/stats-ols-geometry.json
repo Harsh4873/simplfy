@@ -1,0 +1,207 @@
+{
+  "id": "stats-ols-geometry",
+  "title": "Geometry of ordinary least squares",
+  "dek": "OLS is the orthogonal projection of Y onto the column space of X. Residuals are what is left in the orthogonal complement.",
+  "domain": "stats",
+  "aliases": [
+    "OLS geometry",
+    "projection",
+    "hat matrix",
+    "column space",
+    "residual vector"
+  ],
+  "tags": [
+    "OLS",
+    "regression",
+    "projection",
+    "hat matrix"
+  ],
+  "story": [
+    "Write Y ∈ ℝⁿ and X an n×p matrix with full column rank. The OLS fit Ŷ = P_X Y, where P_X = X(XᵀX)⁻¹Xᵀ is the hat matrix, the orthogonal projector onto col(X). β̂ = (XᵀX)⁻¹ Xᵀ Y is the coordinate of that projection in the X basis.",
+    "Residuals e = (I − P_X) Y live in the orthogonal complement. That is why Xᵀ e = 0: residuals are uncorrelated with the columns you projected onto, in the sample inner product. Adding a column to X can only shrink ‖e‖, never increase it.",
+    "If ε ~ N(0, σ² I), then Ŷ and e are independent, eᵀe / σ² ~ χ²_{n−p}, and the usual t and F tests are exact. The geometry did not need Gaussianity to define the projection; Gaussianity made the sampling laws pretty."
+  ],
+  "deepTitle": "Hat diagonals, collinearity, and the likelihood",
+  "deep": [
+    "Leverage hᵢᵢ = (P_X)ᵢᵢ, between 0 and 1, with ∑ hᵢᵢ = p. A high-leverage isolate is far in covariate space; it can own its fitted value. Geometry first, “outlier” talk second.",
+    "Collinearity: if two columns are nearly linearly dependent, col(X) is well defined but the coordinates β̂ are unstable — XᵀX has a large condition number. Predictions Ŷ can still be fine where the design actually sits.",
+    "Likelihood: under Y ~ N(Xβ, σ² I), the log-likelihood is −(n/2) log σ² − ‖Y − Xβ‖² / (2σ²). Maximising in β is exactly minimising the residual sum of squares. OLS is MLE in that Gaussian identity GLM, which is why this plate sits under the GLM family tree.",
+    "Weighted least squares is the same picture in a different inner product: ⟨u,v⟩_W = uᵀ W v. GLS with known covariance V uses W = V⁻¹. Estimated V (GLS, mixed models) makes the projector random; that is a different sampling story."
+  ],
+  "formulas": [
+    {
+      "id": "proj",
+      "label": "OLS projector",
+      "expression": "Ŷ = P_X Y,   P_X = X(XᵀX)⁻¹ Xᵀ",
+      "note": "P_X² = P_X = P_Xᵀ. Rank p if X has full column rank."
+    },
+    {
+      "id": "orth",
+      "label": "Normal equations",
+      "expression": "Xᵀ (Y − Xβ̂) = 0",
+      "note": "Residuals orthogonal to col(X)."
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Y is split into a fitted vector in the column space of X and a residual in the orthogonal complement. OLS is that split, not a causal claim about the columns.",
+    "nodes": [
+      {
+        "id": "y",
+        "label": "Y ∈ ℝⁿ",
+        "group": "target",
+        "x": 12,
+        "y": 50,
+        "sub": "observed"
+      },
+      {
+        "id": "col",
+        "label": "col(X)",
+        "group": "enzyme",
+        "x": 48,
+        "y": 22,
+        "sub": "Ŷ = P_X Y"
+      },
+      {
+        "id": "orth",
+        "label": "col(X)⊥",
+        "group": "drug",
+        "x": 48,
+        "y": 78,
+        "sub": "e = (I−P)Y"
+      },
+      {
+        "id": "b",
+        "label": "β̂ coords",
+        "group": "target",
+        "x": 84,
+        "y": 22,
+        "sub": "in X basis"
+      }
+    ],
+    "edges": [
+      {
+        "from": "y",
+        "to": "col",
+        "label": "project"
+      },
+      {
+        "from": "y",
+        "to": "orth",
+        "label": "residual"
+      },
+      {
+        "from": "col",
+        "to": "b"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — least squares",
+      "url": "https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd14.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Projection matrix — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Projection_matrix",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Further reading (not ingested): ESL — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-gauss-markov",
+    "stats-ols-glm",
+    "stats-ols-diagnostics",
+    "stats-omitted-variables",
+    "stats-foundations"
+  ],
+  "example": {
+    "title": "Two-column design, one residual check",
+    "setup": "n = 5 isolates, X = [1, dose], dose = (0,0,1,1,4). Y = log MIC. After OLS, the point with dose 4 has hᵢᵢ large. Geometry says that point owns its fitted value.",
+    "steps": [
+      {
+        "title": "Rank",
+        "body": "Two independent columns, p = 2. Residual df = 3. P_X is 5×5 with trace 2."
+      },
+      {
+        "title": "Leverage",
+        "body": "The dose = 4 row is far from the cloud at 0–1. Its hᵢᵢ will sit well above the mean leverage p/n = 0.4. A small residual there can still be influential once you look at Cook’s distance (diagnostics plate)."
+      },
+      {
+        "title": "Likelihood link",
+        "body": "If you believe Gaussian identity errors, this projection is the MLE. If MIC is censored at an assay ceiling, the likelihood is no longer ‖Y − Xβ‖² and the geometry is only a starting value."
+      }
+    ],
+    "takeaway": "See the projection first. Coefficients are coordinates; leverage is geometry; Gaussianity is extra."
+  },
+  "check": [
+    {
+      "id": "geom-p",
+      "kind": "conceptual",
+      "prompt": "The hat matrix P_X is:",
+      "choices": [
+        "The covariance of β̂",
+        "The orthogonal projector onto the column space of X",
+        "A prior precision",
+        "Always equal to I_n"
+      ],
+      "answer": "The orthogonal projector onto the column space of X",
+      "why": "Ŷ = P_X Y is the geometric definition of OLS.",
+      "whyWrong": {
+        "The covariance of β̂": "That is σ² (XᵀX)⁻¹ under Gauss–Markov plus spherical errors.",
+        "A prior precision": "Wrong culture.",
+        "Always equal to I_n": "Only if col(X) is all of ℝⁿ, i.e. p = n, perfect fit."
+      }
+    },
+    {
+      "id": "geom-trace",
+      "kind": "calculation",
+      "prompt": "n = 40, p = 5 (full rank, includes intercept). ∑ᵢ hᵢᵢ equals:",
+      "choices": [
+        "40",
+        "5",
+        "8",
+        "1"
+      ],
+      "answer": "5",
+      "why": "trace(P_X) = rank(P_X) = p = 5. Mean leverage is p/n = 0.125.",
+      "whyWrong": {
+        "40": "That is n, trace of I.",
+        "8": "p/n inverted badly.",
+        "1": "Trace of a single dummy, not this P."
+      }
+    },
+    {
+      "id": "geom-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, Y splits into col(X) and col(X)⊥. That split is OLS because:",
+      "figureHint": "Project versus residual arrows from Y.",
+      "choices": [
+        "Residuals are chosen to maximise R² by including the complement in the fit",
+        "The fitted vector is the closest point of col(X) to Y in Euclidean distance, leaving the residual orthogonal",
+        "Causal effects always lie in the complement",
+        "P_X is a likelihood ratio"
+      ],
+      "answer": "The fitted vector is the closest point of col(X) to Y in Euclidean distance, leaving the residual orthogonal",
+      "why": "Orthogonal projection is nearest-point geometry. That is OLS.",
+      "whyWrong": {
+        "Residuals are chosen to maximise R² by including the complement in the fit": "The complement is left out of the fit by construction.",
+        "Causal effects always lie in the complement": "Causality is not geometry of X.",
+        "P_X is a likelihood ratio": "It is a projector."
+      }
+    }
+  ]
+}

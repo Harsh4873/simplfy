@@ -1,0 +1,194 @@
+{
+  "id": "stats-predictive-values",
+  "title": "PPV, NPV, and screening arithmetic",
+  "dek": "PPV = P(D+|T+). It moves with prevalence. A superb test in a rare-disease screen still yields mostly false positives.",
+  "domain": "stats",
+  "aliases": [
+    "PPV",
+    "NPV",
+    "positive predictive value",
+    "negative predictive value",
+    "Bayes theorem diagnosis"
+  ],
+  "tags": [
+    "epi",
+    "screening",
+    "Bayes",
+    "TB"
+  ],
+  "story": [
+    "PPV = Se π / (Se π + (1−Sp)(1−π)). NPV = Sp (1−π) / ((1−Se)π + Sp(1−π)). Same Bayes as the Beta–Binomial plate, now with a binary test. If you remember one formula from screening, remember that PPV is not Se.",
+    "Community TB screening: π might be 1%. Even Sp = 0.99 and Se = 0.90 give PPV ≈ 0.48. Half of positives are false in that arithmetic. Clinic triage with π = 20% using the same test has PPV ≈ 0.96. Prevalence changed the number you should quote, not the cartridge.",
+    "Predictive values estimated in a case-control diagnostic study (50% diseased by design) are not the PPV in the field. Either recompute with a local π or sample the target population."
+  ],
+  "deepTitle": "Odds form, and policy thresholds",
+  "deep": [
+    "Odds form: posterior odds = LR+ × prior odds for a positive test. Prior odds = π/(1−π). This is the clean computation and the one that generalises to more than one test if you are careful about dependence.",
+    "Two tests are not independent given D just because you multiplied LRs. Xpert and smear both depend on bacillary load. The joint likelihood is a 4-cell multinomial given D, not LR_xpert × LR_smear unless you defend conditional independence.",
+    "Decision: choose operating point (trace vs positive, who to X-ray) by costs of FN vs FP, not by maximising Youden’s J in a vacuum. That is a loss function, not a p-value.",
+    "Uncertainty: δ-method or a Beta posterior on Se, Sp, π. With 8 culture-positives, Se is a wide posterior; PPV inherits that width."
+  ],
+  "formulas": [
+    {
+      "id": "ppv",
+      "label": "PPV",
+      "expression": "PPV = (Se π) / (Se π + (1−Sp)(1−π))",
+      "note": "Bayes. Plug field π, not the case-control mix."
+    },
+    {
+      "id": "odds",
+      "label": "Odds update",
+      "expression": "odds(D | T+) = LR+ · π/(1−π)",
+      "note": "Then PPV = odds/(1+odds)."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Same Se=0.90, Sp=0.99, three prevalences. PPV collapses as π falls. The test did not get worse; the prior odds did. This is why community TB screening is an arithmetic problem as much as a cartridge problem.",
+    "panels": [
+      {
+        "title": "π=20% clinic",
+        "bars": [
+          {
+            "label": "PPV",
+            "value": 96
+          },
+          {
+            "label": "Se",
+            "value": 90
+          }
+        ]
+      },
+      {
+        "title": "π=5%",
+        "bars": [
+          {
+            "label": "PPV",
+            "value": 83
+          },
+          {
+            "label": "Se",
+            "value": 90
+          }
+        ]
+      },
+      {
+        "title": "π=1% community",
+        "bars": [
+          {
+            "label": "PPV",
+            "value": 48
+          },
+          {
+            "label": "Se",
+            "value": 90
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Positive and negative predictive values — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Positive_and_negative_predictive_values",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Bayes' theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayes%27_theorem",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    }
+  ],
+  "related": [
+    "stats-se-sp",
+    "stats-bayesian",
+    "stats-incidence-prevalence",
+    "stats-survey-error",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "Community screen, π = 0.01",
+    "setup": "Se=0.90, Sp=0.99, π=0.01. 10,000 people.",
+    "steps": [
+      {
+        "title": "Expected cells",
+        "body": "100 diseased, 90 true positives. 9,900 non-diseased, 99 false positives. PPV = 90/(90+99) ≈ 0.48.",
+        "expression": "90 / 189 ≈ 0.48"
+      },
+      {
+        "title": "NPV",
+        "body": "10 false negatives, 9,801 true negatives. NPV = 9801/(9801+10) ≈ 0.999. Reassuring negatives, unimpressive positives."
+      },
+      {
+        "title": "Policy",
+        "body": "A confirmatory algorithm for T+ is not optional at this π. Quoting Se=90% to the community as if it were PPV is the error this plate exists to prevent."
+      }
+    ],
+    "takeaway": "Compute expected TP and FP from π, Se, Sp. PPV is their ratio, not the cartridge brochure."
+  },
+  "check": [
+    {
+      "id": "ppv-pi",
+      "kind": "conceptual",
+      "prompt": "Holding Se and Sp fixed, decreasing prevalence:",
+      "choices": [
+        "Increases PPV",
+        "Decreases PPV, because false positives from the large D− pool dominate",
+        "Leaves PPV equal to Se",
+        "Sets Sp to 1"
+      ],
+      "answer": "Decreases PPV, because false positives from the large D− pool dominate",
+      "why": "The denominator’s (1−Sp)(1−π) term grows as π falls.",
+      "whyWrong": {
+        "Increases PPV": "Opposite.",
+        "Leaves PPV equal to Se": "The classic confusion.",
+        "Sets Sp to 1": "No."
+      }
+    },
+    {
+      "id": "ppv-calc",
+      "kind": "calculation",
+      "prompt": "Se=1, Sp=0.99, π=0.01. PPV equals:",
+      "choices": [
+        "1",
+        "0.50",
+        "0.99",
+        "0.01"
+      ],
+      "answer": "0.50",
+      "why": "TP mass = 0.01, FP mass = 0.01×0.99 wait: (1−Sp)(1−π)=0.01×0.99=0.0099. PPV=0.01/(0.01+0.0099)≈0.50. With π=0.01 and FPR=0.01, PPV≈0.5 when Se=1.",
+      "whyWrong": {
+        "1": "Se, not PPV.",
+        "0.99": "Sp.",
+        "0.01": "π."
+      }
+    },
+    {
+      "id": "ppv-figure",
+      "kind": "figure",
+      "prompt": "On the PPV small-multiples, Se stays 90 while PPV bars fall. The constant Se bar is there to show:",
+      "figureHint": "Each panel has PPV and Se; Se is flat across panels.",
+      "choices": [
+        "That Se is PPV",
+        "That the test’s Se did not change with π; PPV did",
+        "That NPV equals Se",
+        "That LR+ includes π"
+      ],
+      "answer": "That the test’s Se did not change with π; PPV did",
+      "why": "The plate is a prevalence slide, not a worse cartridge.",
+      "whyWrong": {
+        "That Se is PPV": "The opposite lesson.",
+        "That NPV equals Se": "No.",
+        "That LR+ includes π": "LR+ does not."
+      }
+    }
+  ]
+}

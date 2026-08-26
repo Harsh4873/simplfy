@@ -1,0 +1,181 @@
+{
+  "id": "stats-trees",
+  "title": "Trees as sampling models",
+  "dek": "A phylogeny is a hypothesis about correlated genomes. The likelihood is a Markov process along branches, not a product over isolates.",
+  "domain": "stats",
+  "aliases": [
+    "phylogenetic tree",
+    "tree likelihood",
+    "branch length",
+    "topology",
+    "Felsenstein"
+  ],
+  "tags": [
+    "phylogenetics",
+    "likelihood",
+    "dependence",
+    "genomics"
+  ],
+  "story": [
+    "Once isolates are related, the iid product ∏ f(yᵢ | θ) is the wrong joint. A tree T plus a substitution model Q defines a joint law on the alignment by running a Markov chain down branches and mixing at internal nodes. That joint is the phylogenetic likelihood L(T, Q, times | data).",
+    "Topology is a discrete parameter (or a posterior on trees). Branch lengths are usually in expected substitutions, not years, until a clock model maps them. Bootstrapping columns of the alignment is a common uncertainty ritual; it answers a different question than resampling independent outbreaks.",
+    "In TB, trees are used as pictures of lineage and as inputs to transmission inference. A pretty tree is not a likelihood. If the substitution model ignores recombination, long branches and mixed ancestry will still be drawn — confidently."
+  ],
+  "deepTitle": "Pruning, and what the bootstrap is not",
+  "deep": [
+    "Felsenstein pruning: the likelihood at a parent node is a sum over child states of emission × transition(Q, t). Complexity linear in sites × states × nodes, not exponential in isolates. That is why trees are computable and why misspecified Q still gives you a number.",
+    "Comparing two nested substitution models (HKY vs GTR extra parameters) can be an LRT if the trees and other bits are handled honestly — often they are not, because T is itself estimated. AIC on a fixed tree is a partial comparison. Posterior model probabilities need priors on trees, which are a research field, not a checkbox.",
+    "Recombination: a single tree is the wrong geometry when different genomic windows have different ancestries. Networks, ancestral recombination graphs, or “don’t pretend this is a tree” are the adult moves in a recombining region.",
+    "Independence of sites is another product you may not have (RNA structure, mutational hotspots). Composite likelihoods still produce peaks; SEs need sandwich or block bootstrap."
+  ],
+  "formulas": [
+    {
+      "id": "treelik",
+      "label": "Tree likelihood (sketch)",
+      "expression": "L(T, Q | alignment) = P(alignment | T, Q)",
+      "note": "A joint over correlated tips, computed by pruning, not by iid isolates."
+    },
+    {
+      "id": "trans",
+      "label": "Branch transition",
+      "expression": "P(t) = exp(Q t)",
+      "note": "t in expected substitutions. A clock will later map t to years."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "A tree as nested correlation: a root process splits, each branch runs a substitution Markov chain, tips are the observed genomes. Isolates in a clade are dependent because they share the path to the clade ancestor — the opposite of an iid product.",
+    "layers": [
+      {
+        "title": "Root process",
+        "nodes": [
+          "Q, root π"
+        ]
+      },
+      {
+        "title": "Internal branches",
+        "nodes": [
+          "clade A",
+          "clade B"
+        ]
+      },
+      {
+        "title": "Tips (genomes)",
+        "nodes": [
+          "i1",
+          "i2",
+          "i3",
+          "i4"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Computational phylogenetics — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Computational_phylogenetics",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Substitution model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Substitution_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Phylogenetic tree — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Phylogenetic_tree",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Felsenstein, Inferring Phylogenies — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-molecular-clock",
+    "stats-transmission-genomics",
+    "stats-likelihood",
+    "stats-population-structure",
+    "stats-hierarchical"
+  ],
+  "example": {
+    "title": "Two outbreak genomes, one likelihood",
+    "setup": "Two isolates differ by 3 SNPs. An iid Bernoulli-per-site model treats 3/genome-length as if n = sites. A tree model treats them as a short shared branch plus two tiny terminal branches.",
+    "steps": [
+      {
+        "title": "Wrong product",
+        "body": "∏_sites f(y_site | π) with independent isolates double-counts the shared history. SEs on π collapse."
+      },
+      {
+        "title": "Tree joint",
+        "body": "One short internal branch explains most of the similarity. The data for a substitution rate are closer to “one outbreak” than to “two independent patients × 4 Mb.”"
+      },
+      {
+        "title": "Still a model",
+        "body": "If the three SNPs are in a recombined patch, even the tree joint is wrong. Look at the window, do not only look at the cartoon."
+      }
+    ],
+    "takeaway": "The phylogenetic likelihood is a joint. Using it as a picture without writing P(data | T, Q) is decoration."
+  },
+  "check": [
+    {
+      "id": "tree-iid",
+      "kind": "conceptual",
+      "prompt": "A phylogenetic likelihood differs from an iid-isolate product because:",
+      "choices": [
+        "Trees forbid substitution models",
+        "Tips share ancestral paths, so the joint does not factor over isolates",
+        "Branch lengths are p-values",
+        "Q must be identity"
+      ],
+      "answer": "Tips share ancestral paths, so the joint does not factor over isolates",
+      "why": "That is the whole point of writing P(alignment | T, Q).",
+      "whyWrong": {
+        "Trees forbid substitution models": "They require one.",
+        "Branch lengths are p-values": "They are expected substitutions (or time).",
+        "Q must be identity": "No."
+      }
+    },
+    {
+      "id": "tree-calc",
+      "kind": "calculation",
+      "prompt": "Two-state Jukes–Cant-style sketch: P(same state | t) = 0.5 + 0.5 e^{−2t}. At t=0 this equals:",
+      "choices": [
+        "0",
+        "0.5",
+        "1",
+        "e"
+      ],
+      "answer": "1",
+      "why": "e^0=1, so 0.5+0.5=1. Zero branch length means no change. As t→∞ it goes to 0.5.",
+      "whyWrong": {
+        "0": "That would be a forced change.",
+        "0.5": "The equilibrium, t→∞.",
+        "e": "Not a probability here."
+      }
+    },
+    {
+      "id": "tree-figure",
+      "kind": "figure",
+      "prompt": "On the tree hierarchy, why do clade nodes sit above tips?",
+      "figureHint": "Root → clades → genomes.",
+      "choices": [
+        "Because clades are observed like fasta files",
+        "Because shared internal branches are the dependence the iid product forgot",
+        "Because Q lives only at the tips",
+        "Because bootstrapping deletes internal nodes"
+      ],
+      "answer": "Because shared internal branches are the dependence the iid product forgot",
+      "why": "The plate is nested correlation, the hierarchical-model cousin with a tree index.",
+      "whyWrong": {
+        "Because clades are observed like fasta files": "Clades are latent (usually).",
+        "Because Q lives only at the tips": "Q runs on every branch.",
+        "Because bootstrapping deletes internal nodes": "No."
+      }
+    }
+  ]
+}

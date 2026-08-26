@@ -1,0 +1,194 @@
+{
+  "id": "stats-potential-outcomes",
+  "title": "Potential outcomes",
+  "dek": "Each unit has Y(1) and Y(0). You observe one. Causal effects are comparisons of those two, not coefficients from a convenience regression.",
+  "domain": "stats",
+  "aliases": [
+    "potential outcomes",
+    "counterfactual",
+    "SUTVA",
+    "ATE",
+    "ignorability",
+    "assignment mechanism"
+  ],
+  "tags": [
+    "causal",
+    "experiment",
+    "ATE",
+    "identification"
+  ],
+  "story": [
+    "Write two random variables per person: Yᵢ(1) if treated (new regimen, vaccine, community A), Yᵢ(0) if not. The individual effect is Yᵢ(1) − Yᵢ(0). You never see both. The fundamental problem of causal inference is missing data with a structure, not a GLM complaint.",
+    "SUTVA (stable unit treatment value): one version of treatment, and no interference — your neighbour’s treatment does not write your Y(1). TB transmission studies violate interference constantly. Then the potential outcome needs a richer index (who else was treated).",
+    "Assignment mechanism: the law of Zᵢ given covariates and potential outcomes. Randomisation makes Z independent of (Y(0),Y(1)). Observational studies replace that with a modelled ignorability claim: (Y(0),Y(1)) ⊥ Z | X. That claim is not granted by putting X in a logit."
+  ],
+  "deepTitle": "ATE, ATT, and what a coefficient is",
+  "deep": [
+    "ATE = E[Y(1) − Y(0)]. ATT = E[Y(1) − Y(0) | Z=1]. These differ when treatment effects are heterogeneous and treatment is selective. A randomised trial with full compliance estimates an ATE for the trial population, not for the country.",
+    "Under randomisation, the difference in means is unbiased for the ATE (plus SUTVA). Under ignorability and overlap, a correctly specified outcome regression, weighting by propensity scores, or a doubly robust mix can target the ATE. Overlap: if some X has P(Z=1|X) = 0 or 1, you have no empirical counterfactual there.",
+    "A logit of “outcome on treatment plus covariates” estimates a conditional association. It equals a causal log odds ratio only extra assumptions (no unmeasured confounding, correct mean, no interference, consistency of the treatment variable). Write those, or write “association.”",
+    "Instrumental variables, difference-in-differences, and regression discontinuity are other assignment stories. They are not in this plate. Do not paste a DAG from a book; draw the assignment you actually had."
+  ],
+  "formulas": [
+    {
+      "id": "ate",
+      "label": "ATE",
+      "expression": "τ_ATE = E[Y(1) − Y(0)]",
+      "note": "A mean of missing contrasts. Identification needs an assignment assumption."
+    },
+    {
+      "id": "obs",
+      "label": "Consistency / observation rule",
+      "expression": "Y = Z Y(1) + (1−Z) Y(0)",
+      "note": "You see the potential outcome corresponding to the treatment actually taken."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "For three schematic units, both potential outcomes exist as bars; the faded bar is the one you did not see. The causal contrast is the pair, not the observed Y alone. Unit 3’s missing Y(1) is why you need an assignment story, not another covariate in silence.",
+    "panels": [
+      {
+        "title": "unit A treated",
+        "bars": [
+          {
+            "label": "Y(1) seen",
+            "value": 8
+          },
+          {
+            "label": "Y(0) miss",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "unit B control",
+        "bars": [
+          {
+            "label": "Y(1) miss",
+            "value": 6
+          },
+          {
+            "label": "Y(0) seen",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "unit C treated",
+        "bars": [
+          {
+            "label": "Y(1) seen",
+            "value": 2
+          },
+          {
+            "label": "Y(0) miss",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Causal Inference: The Mixtape — GitHub companion materials",
+      "url": "https://github.com/scunning1975/mixtape",
+      "attribution": "MIT-licensed companion repo. Potential-outcome and DAG literacy restated in original Simplfy language with TB-lab examples. Book prose was not ingested.",
+      "license": "MIT (companion repo) / original notes"
+    },
+    {
+      "title": "Rubin causal model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Rubin_causal_model",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Average treatment effect — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Average_treatment_effect",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-dag-literacy",
+    "stats-confounding",
+    "stats-randomization",
+    "stats-omitted-variables",
+    "stats-logit"
+  ],
+  "example": {
+    "title": "A new shorter regimen, incomplete observation",
+    "setup": "Z = 1 if assigned a 6-month regimen. Y = 1 if relapse-free at 12 months. Some patients in the control arm take the new drugs privately (noncompliance). Some households share treatment (interference).",
+    "steps": [
+      {
+        "title": "Name Y(z)",
+        "body": "Even before data, write Y(1), Y(0). If interference matters, write Yᵢ(z_i, z_{−i}) and admit the ATE as first defined is not the scientific object."
+      },
+      {
+        "title": "Assignment",
+        "body": "If Z was randomised at patient level, ITT contrasts E[Y | Z=1] − E[Y | Z=0] still has a design-based reading as an effect of assignment, not of ingestion."
+      },
+      {
+        "title": "Do not quietly switch estimands",
+        "body": "Per-protocol OLS among compliers is closer to an ATT-like object with selection. It needs a new identification sentence, not the randomisation sentence."
+      }
+    ],
+    "takeaway": "Write the missing potential outcomes, the interference claim, and the assignment. Then choose an estimator."
+  },
+  "check": [
+    {
+      "id": "po-fund",
+      "kind": "conceptual",
+      "prompt": "The fundamental problem of causal inference is:",
+      "choices": [
+        "That OLS is biased",
+        "That for each unit you observe at most one of Y(1), Y(0)",
+        "That p-values are illegal",
+        "That ATE is always zero"
+      ],
+      "answer": "That for each unit you observe at most one of Y(1), Y(0)",
+      "why": "Missing counterfactuals. OLS bias is a later, optional problem.",
+      "whyWrong": {
+        "That OLS is biased": "Not the definition.",
+        "That p-values are illegal": "No.",
+        "That ATE is always zero": "No."
+      }
+    },
+    {
+      "id": "po-calc",
+      "kind": "calculation",
+      "prompt": "Three units with observed Y: treated 8, control 5, treated 2. You cannot compute the ATE from these three numbers alone because:",
+      "choices": [
+        "n<30",
+        "the missing Y(0)s and Y(1)s are not in the list — 8,5,2 are not a complete pair of potential outcomes",
+        "ATE is a Bayesian object",
+        "SUTVA forbids means"
+      ],
+      "answer": "the missing Y(0)s and Y(1)s are not in the list — 8,5,2 are not a complete pair of potential outcomes",
+      "why": "Difference of observed means needs an assignment assumption to equal an ATE. The raw three numbers are not even that difference yet without grouping, and grouping still leaves missing counterfactuals.",
+      "whyWrong": {
+        "n<30": "Not the reason.",
+        "ATE is a Bayesian object": "ATE is a functional of potential outcomes.",
+        "SUTVA forbids means": "SUTVA is about versions and interference."
+      }
+    },
+    {
+      "id": "po-figure",
+      "kind": "figure",
+      "prompt": "On the potential-outcome small-multiples, each panel has a faded “miss” bar. That bar is:",
+      "figureHint": "Y(0) miss or Y(1) miss in each unit.",
+      "choices": [
+        "A residual from OLS",
+        "The counterfactual you did not observe, which is why causal effects are not read off a single realised Y",
+        "A prior",
+        "Fisher information"
+      ],
+      "answer": "The counterfactual you did not observe, which is why causal effects are not read off a single realised Y",
+      "why": "The plate is the missing-data picture of causal inference.",
+      "whyWrong": {
+        "A residual from OLS": "Residuals are not potential outcomes.",
+        "A prior": "No.",
+        "Fisher information": "No."
+      }
+    }
+  ]
+}

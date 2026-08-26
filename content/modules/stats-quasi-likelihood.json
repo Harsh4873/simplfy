@@ -1,0 +1,168 @@
+{
+  "id": "stats-quasi-likelihood",
+  "title": "Quasi-likelihood",
+  "dek": "Keep a mean μ(β) and a variance V(μ), drop a full density. The score still looks like a GLM score. The LRT is no longer χ² for free.",
+  "domain": "stats",
+  "aliases": [
+    "quasi-likelihood",
+    "quasi-Poisson",
+    "quasi-binomial",
+    "estimating equation GLM"
+  ],
+  "tags": [
+    "GLM",
+    "quasi",
+    "overdispersion",
+    "sandwich"
+  ],
+  "story": [
+    "Wedderburn’s quasi-likelihood uses only E[Y] = μ(β) and Var(Y) = φ V(μ). The quasi-score is ∑ (∂μ/∂β) (y − μ) / (φ V(μ)), the same shape as an exponential-family score. IRLS still runs. You get β̂ and a dispersion φ̂, usually Pearson χ² / df.",
+    "Quasi-Poisson: V(μ) = μ, φ > 1 inflates SEs by √φ relative to Poisson. Quasi-binomial: V = μ(1−μ), φ > 1 for extra-binomial variation. These are not models for P(Y=y); they are estimating equations.",
+    "Because there is no fully specified ℓ, a “likelihood ratio” is a difference in quasi-deviance. Its reference is not automatically χ². Sandwich Wald or an F-style adjustment with φ̂ is the matching language. Do not print a Poisson LRT next to a quasi-Poisson fit and call it one analysis."
+  ],
+  "deepTitle": "What you lose when you drop the density",
+  "deep": [
+    "Consistency of β̂ still wants a correct mean. φ and V handle second moments. If the mean is wrong, quasi-likelihood is consistently wrong with honest-ish SEs.",
+    "AIC/BIC need a likelihood. Quasi-AIC variants exist as heuristics; they are not the AIC theorem. For genuine model comparison of mean structures, a nested quasi-deviance test with an F reference (φ estimated) is the usual compromise.",
+    "Negative binomial is a real likelihood with a second parameter k for overdispersion. It is not the same as quasi-Poisson: weights and predictions differ, and NB can be compared with LRTs. Use NB if you need a pmf (predictive intervals, AIC).",
+    "GEE is quasi-likelihood with a working correlation across clusters. The sandwich is mandatory. It estimates population-average β, not the cluster-conditional β of a mixed GLM."
+  ],
+  "formulas": [
+    {
+      "id": "qscore",
+      "label": "Quasi-score",
+      "expression": "U(β) = ∑ (∂μᵢ/∂β) (yᵢ − μᵢ) / (φ V(μᵢ))",
+      "note": "Set U(β̂) = 0. Same estimating equation as a GLM with that V."
+    },
+    {
+      "id": "phi",
+      "label": "Dispersion plug-in",
+      "expression": "φ̂ = (1/(n−p)) ∑ (yᵢ − μ̂ᵢ)² / V(μ̂ᵢ)",
+      "note": "Pearson form. Multiplies the model-based covariance."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Full exponential-family likelihood sits outside. Quasi-likelihood keeps the mean and V(μ) inner box and treats φ as a scale for SEs. Nested LRTs live in the outer box; they are not automatically licensed inside the inner box.",
+    "reduced": {
+      "label": "Quasi: μ, V, φ",
+      "params": [
+        "β from U(β)=0",
+        "φ̂ Pearson"
+      ]
+    },
+    "full": {
+      "label": "Density f(y|μ,φ)",
+      "params": [
+        "β MLE",
+        "true ℓ",
+        "AIC/LRT"
+      ]
+    },
+    "statistic": "U(β) = 0",
+    "reference": "Wald/F with φ̂, not free χ² LRT"
+  },
+  "sources": [
+    {
+      "title": "Quasi-likelihood — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Quasi-likelihood",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): McCullagh & Nelder — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-overdispersion",
+    "stats-sandwich",
+    "stats-poisson",
+    "stats-iwls",
+    "stats-aic-bic"
+  ],
+  "example": {
+    "title": "Quasi-Poisson on weekly cases",
+    "setup": "n = 52 weeks, Poisson GLM residual Pearson χ² = 140 on 50 df. Covariate: rain. Model-based se(β_rain) = 0.08.",
+    "steps": [
+      {
+        "title": "φ̂",
+        "body": "φ̂ ≈ 140/50 = 2.8. Quasi-Poisson se ≈ 0.08 × √2.8 ≈ 0.13.",
+        "expression": "se_quasi = se_pois √φ̂"
+      },
+      {
+        "title": "Point estimate",
+        "body": "β̂_rain is the same as Poisson IRLS with V = μ. Only the SE and tests change if you keep the same mean."
+      },
+      {
+        "title": "If you need a likelihood",
+        "body": "Fit NB(μ, k), quote AIC or an LRT for rain inside NB. That is a different second-moment model, not a relabeling of φ̂."
+      }
+    ],
+    "takeaway": "Quasi multiplies SEs when V is the right shape and φ is not 1. It does not create a density."
+  },
+  "check": [
+    {
+      "id": "quasi-lik",
+      "kind": "conceptual",
+      "prompt": "Quasi-likelihood specifies:",
+      "choices": [
+        "A full pmf/pdf for Y",
+        "A mean map and a variance function (plus a scale), not necessarily a density",
+        "Only a prior",
+        "Only the hat matrix"
+      ],
+      "answer": "A mean map and a variance function (plus a scale), not necessarily a density",
+      "why": "That is the point of “quasi.” AIC and LRTs lose their free χ² licence.",
+      "whyWrong": {
+        "A full pmf/pdf for Y": "That would be a GLM family.",
+        "Only a prior": "No.",
+        "Only the hat matrix": "No."
+      }
+    },
+    {
+      "id": "quasi-phi",
+      "kind": "calculation",
+      "prompt": "Poisson se = 0.10, φ̂ = 4. Quasi-Poisson se is:",
+      "choices": [
+        "0.10",
+        "0.20",
+        "0.40",
+        "0.025"
+      ],
+      "answer": "0.20",
+      "why": "Multiply by √φ̂ = 2.",
+      "whyWrong": {
+        "0.10": "Forgot the scale.",
+        "0.40": "Multiplied by φ not √φ.",
+        "0.025": "Divided instead of multiplied."
+      }
+    },
+    {
+      "id": "quasi-figure",
+      "kind": "figure",
+      "prompt": "On the nested plate, why is AIC listed in the outer (density) box?",
+      "figureHint": "Full box includes true ℓ and AIC/LRT.",
+      "choices": [
+        "Because AIC is a sandwich estimator",
+        "Because AIC is defined from a likelihood; quasi-deviance is not that object",
+        "Because quasi-likelihood maximises AIC by construction",
+        "Because φ̂ is the AIC penalty"
+      ],
+      "answer": "Because AIC is defined from a likelihood; quasi-deviance is not that object",
+      "why": "The plate is a licence map. Inner box: estimating equations. Outer box: genuine ℓ.",
+      "whyWrong": {
+        "Because AIC is a sandwich estimator": "No.",
+        "Because quasi-likelihood maximises AIC by construction": "It maximises a quasi-log-likelihood.",
+        "Because φ̂ is the AIC penalty": "AIC penalty is parameter count (or effective df)."
+      }
+    }
+  ]
+}

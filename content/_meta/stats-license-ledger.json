@@ -1,0 +1,56 @@
+{
+  "id": "stats-license-ledger",
+  "domain": "stats",
+  "note": "License map for Simplfy stats plates. Lesson text is original teaching notes. Definitional authority: NIST e-Handbook (U.S. public domain) and original Simplfy language, then Wikipedia CC BY-SA as glossary. Companion repos used only where their license permits (Mixtape GitHub, MIT). Named graduate textbooks are citation-only further reading and were not ingested.",
+  "preferred_sources": [
+    {
+      "name": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "license": "U.S. public domain",
+      "use": "Definitional authority for estimation, least squares, experimental design, sample size, residual analysis."
+    },
+    {
+      "name": "Online Statistics Education (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "license": "Public domain",
+      "use": "Sampling, power, and probability hygiene. Worked TB-lab examples are original."
+    },
+    {
+      "name": "Introduction to Modern Statistics, 2nd edition (Diez, Çetinkaya-Rundel, Barr)",
+      "url": "https://openintro-ims.netlify.app/",
+      "license": "CC BY-SA 3.0",
+      "use": "Sparse probability/sampling facts only. Plates are original Simplfy notes and are not publisher-branded derivatives."
+    },
+    {
+      "name": "Wikipedia glossary pages",
+      "license": "CC BY-SA 4.0",
+      "use": "Short definitional background. Exposition, likelihoods, figures, and checks are original."
+    },
+    {
+      "name": "Causal Inference: The Mixtape companion GitHub",
+      "url": "https://github.com/scunning1975/mixtape",
+      "license": "MIT (companion repo)",
+      "use": "Potential-outcome and DAG literacy restated in original language. Book prose not ingested."
+    }
+  ],
+  "citation_only_not_ingested": [
+    "Casella & Berger, Statistical Inference",
+    "Wasserman, All of Statistics",
+    "Gelman et al., Bayesian Data Analysis",
+    "Gelman & Hill, Data Analysis Using Regression and Multilevel/Hierarchical Models",
+    "McElreath, Statistical Rethinking",
+    "Agresti, Categorical Data Analysis",
+    "McCullagh & Nelder, Generalized Linear Models",
+    "Hastie, Tibshirani, Friedman, The Elements of Statistical Learning",
+    "Efron & Tibshirani, An Introduction to the Bootstrap",
+    "Efron, Large-Scale Inference",
+    "Felsenstein, Inferring Phylogenies",
+    "Wilks (1938) likelihood-ratio paper (citation of the theorem, not a reproduction)"
+  ],
+  "skipped": [
+    {
+      "name": "OpenStax textbooks",
+      "reason": "Anti-LLM ingest policy for this wave; not used as source text."
+    }
+  ]
+}

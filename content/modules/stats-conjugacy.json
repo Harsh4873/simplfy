@@ -1,0 +1,200 @@
+{
+  "id": "stats-conjugacy",
+  "title": "Conjugate updating",
+  "dek": "A conjugate prior is one that stays in the same family after multiplication by the likelihood. It is a computational convenience, not a moral law.",
+  "domain": "stats",
+  "aliases": [
+    "conjugate prior",
+    "Beta-Binomial",
+    "Gamma-Poisson",
+    "Normal-Normal",
+    "posterior closed form"
+  ],
+  "tags": [
+    "Bayes",
+    "conjugacy",
+    "Beta",
+    "Gamma"
+  ],
+  "story": [
+    "If p(θ) and f(y|θ) multiply to a kernel in the same family as p(θ), you can update by arithmetic. Beta–Binomial, Gamma–Poisson, Normal–Normal (known variance) are the three you will actually use on a whiteboard.",
+    "The update has a story: Beta(a,b) plus y successes in n trials becomes Beta(a+y, b+n−y). The prior acted like a−1 extra successes and b−1 extra failures in the Uniform-as-Beta(1,1) counting, or like a pseudo-counts of a and b in the mean a/(a+b) counting — say which convention you are using.",
+    "Most GLMs, mixed models, and phylogenetic models are not conjugate. Then conjugacy is a building block inside a Gibbs sampler or a variational factor, not the whole posterior."
+  ],
+  "deepTitle": "Kernels you should recognise",
+  "deep": [
+    "Poisson(λ) with Gamma(α, β) rate prior (shape-rate): posterior Gamma(α + ∑ yᵢ, β + n). Mean (α + ∑ y)/(β + n) shrinks ȳ toward α/β. This is empirical-Bayes cousin to a random-effect Poisson.",
+    "Normal mean, known σ², prior N(μ₀, τ₀²): posterior precision 1/τₙ² = 1/τ₀² + n/σ², posterior mean a precision-weighted average of μ₀ and ȳ. That one line is hierarchical shrinkage in a tuxedo.",
+    "Dirichlet–multinomial is the compositional version for lineage frequencies. Pseudo-counts stop you from writing log 0 when a lineage is unseen in a small district.",
+    "Conjugacy does not calibrate you. A conjugate posterior can be overconfident if the likelihood was iid fiction. Posterior predictive checks still apply."
+  ],
+  "formulas": [
+    {
+      "id": "bb",
+      "label": "Beta–Binomial",
+      "expression": "π ~ Beta(a,b),  y|π ~ Bin(n,π)  ⇒  π|y ~ Beta(a+y, b+n−y)",
+      "note": "Mean (a+y)/(a+b+n)."
+    },
+    {
+      "id": "gp",
+      "label": "Gamma–Poisson (shape-rate)",
+      "expression": "λ ~ G(α,β),  yᵢ iid Pois(λ)  ⇒  λ|y ~ G(α+∑y, β+n)",
+      "note": "Rate β; mean α/β. Check your software’s shape-scale convention."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Conjugate arithmetic: prior counts plus data counts, same family. The plate is a bookkeeping diagram, not a claim that the world is Beta.",
+    "nodes": [
+      {
+        "id": "pr",
+        "label": "Beta(a,b)",
+        "x": 12,
+        "y": 40,
+        "tone": "start",
+        "detail": "prior"
+      },
+      {
+        "id": "dat",
+        "label": "y, n−y",
+        "x": 38,
+        "y": 40,
+        "tone": "process",
+        "detail": "binomial"
+      },
+      {
+        "id": "po",
+        "label": "Beta(a+y, b+n−y)",
+        "x": 70,
+        "y": 40,
+        "tone": "end",
+        "detail": "posterior"
+      },
+      {
+        "id": "pred",
+        "label": "posterior predictive",
+        "x": 70,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "pr",
+        "to": "dat",
+        "label": "× likelihood"
+      },
+      {
+        "from": "dat",
+        "to": "po"
+      },
+      {
+        "from": "po",
+        "to": "pred"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Conjugate prior — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Conjugate_prior",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Beta distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Beta_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman BDA — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-bayesian",
+    "stats-priors",
+    "stats-partial-pooling",
+    "stats-mcmc",
+    "stats-exponential-family"
+  ],
+  "example": {
+    "title": "Gamma–Poisson for a quiet week of cases",
+    "setup": "Prior for a district weekly rate λ: Gamma(shape 2, rate 1/2), mean 4. Observe y = 0 this week. Update.",
+    "steps": [
+      {
+        "title": "Posterior",
+        "body": "Gamma(2+0, 0.5+1) = Gamma(2, 1.5). Mean 2/1.5 ≈ 1.33. The zero pulled the mean down; the prior stopped you at 0.",
+        "expression": "E[λ|y=0] = 2 / 1.5 ≈ 1.33"
+      },
+      {
+        "title": "Predictive",
+        "body": "A new week still has a chance of 0, 1, 2… under the posterior predictive (Negative binomial in this conjugate pair). Do not quote λ̂ = 0 as the district’s rate."
+      },
+      {
+        "title": "If y = 20",
+        "body": "Gamma(22, 1.5), mean ≈ 14.7, closer to the data. Conjugacy is shrinkage that knows n."
+      }
+    ],
+    "takeaway": "Pseudo-counts are the prior. Arithmetic is the posterior. Calibration is a separate question."
+  },
+  "check": [
+    {
+      "id": "conj-what",
+      "kind": "conceptual",
+      "prompt": "Conjugacy means:",
+      "choices": [
+        "The prior is true",
+        "The posterior stays in the same parametric family as the prior after multiplying by the likelihood",
+        "MCMC is forbidden",
+        "The MLE equals the posterior mean always"
+      ],
+      "answer": "The posterior stays in the same parametric family as the prior after multiplying by the likelihood",
+      "why": "A kernel-closed update. Truth and equality with the MLE are extra.",
+      "whyWrong": {
+        "The prior is true": "Conjugacy is algebraic.",
+        "MCMC is forbidden": "Gibbs often uses conjugacy inside MCMC.",
+        "The MLE equals the posterior mean always": "Only in limits or special priors."
+      }
+    },
+    {
+      "id": "conj-calc",
+      "kind": "calculation",
+      "prompt": "π ~ Beta(4,4), then y = 0 successes in n = 2 trials. Posterior mean is:",
+      "choices": [
+        "0.5",
+        "0.4",
+        "0",
+        "0.25"
+      ],
+      "answer": "0.4",
+      "why": "Posterior Beta(4+0, 4+2) = Beta(4,6). Mean 4/10 = 0.4. The prior mean 0.5 was pulled toward the two failures.",
+      "whyWrong": {
+        "0.5": "That is the prior mean, pre-data.",
+        "0": "The MLE is 0; the conjugate mean is not.",
+        "0.25": "That would be 2/8 or a different pseudo-count mix."
+      }
+    },
+    {
+      "id": "conj-figure",
+      "kind": "figure",
+      "prompt": "On the conjugate flow plate, the last node “posterior predictive” is fed by the posterior, not by the prior alone. That means:",
+      "figureHint": "Arrow from Beta(a+y, b+n−y) down to posterior predictive.",
+      "choices": [
+        "New data are scored under p(ỹ | y), which integrates the updated θ, not under the original prior predictive",
+        "The posterior predictive is the likelihood L(θ|y)",
+        "Conjugacy forbids prediction",
+        "The prior is discarded before predicting"
+      ],
+      "answer": "New data are scored under p(ỹ | y), which integrates the updated θ, not under the original prior predictive",
+      "why": "Bookkeeping continues after the update. Calibration later uses these predictives.",
+      "whyWrong": {
+        "The posterior predictive is the likelihood L(θ|y)": "Different object: L is a curve in θ; a posterior predictive is a distribution on ỹ.",
+        "Conjugacy forbids prediction": "The opposite — it makes p(ỹ|y) easy (Beta-Binomial, NB, …).",
+        "The prior is discarded before predicting": "It is already inside the posterior."
+      }
+    }
+  ]
+}

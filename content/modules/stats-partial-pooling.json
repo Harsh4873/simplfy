@@ -1,0 +1,188 @@
+{
+  "id": "stats-partial-pooling",
+  "title": "Partial pooling and shrinkage",
+  "dek": "Complete pooling: one θ. No pooling: a θⱼ per unit. Partial pooling: θⱼ share a distribution, so small units borrow strength. The weights are information, not taste.",
+  "domain": "stats",
+  "aliases": [
+    "partial pooling",
+    "shrinkage",
+    "borrow strength",
+    "complete pooling",
+    "no pooling",
+    "exchangeability"
+  ],
+  "tags": [
+    "hierarchical",
+    "shrinkage",
+    "Bayes",
+    "surveys"
+  ],
+  "story": [
+    "Three estimators of district FQ-R. Complete pooling: π̂ = y_total / n_total. No pooling: π̂ⱼ = yⱼ/nⱼ. Partial pooling: π̂ⱼ is a weighted average of π̂ⱼ^{local} and a shared mean. When nⱼ = 4, the weight on the local fraction should be small. When nⱼ = 400, it should be large.",
+    "The Gaussian–Gaussian formula is the picture: E[θⱼ | y] = λⱼ ȳⱼ + (1−λⱼ) μ with λⱼ = τ² / (τ² + σ²/nⱼ). τ² is between-unit variance. If districts are nearly identical, τ² is small and everyone shrinks. If they are wildly different, τ² is large and you almost no-pool.",
+    "Exchangeability is the scientific licence: given the covariates you already put in the mean, you are willing to treat the leftover unit effects as draws from one distribution. A referral hospital is often not exchangeable with a rural clinic. Put “referral” in the mean; do not ask τ² to launder it."
+  ],
+  "deepTitle": "Weights, hyperparameters, and bias on purpose",
+  "deep": [
+    "λⱼ is Fisher-information geometry: local precision nⱼ/σ² versus prior precision 1/τ². Empirical Bayes plugs in τ̂, μ̂. Fully Bayes puts a posterior on τ and so a posterior on each λⱼ. When J (number of units) is small, τ̂ is noisy and shrinkage is uncertain — show that.",
+    "MSE: shrinkage is biased for each θⱼ toward μ and often wins on MSE for the small j. It can lose for a true outlier unit. That is why you inspect residuals at the unit level and consider a mixture of types, not one Normal.",
+    "Complete pooling is partial pooling with τ² = 0. No pooling is τ² = ∞. LRT of τ = 0 is a boundary test (hierarchical plate). AIC on a no-pooling dummy model uses a dishonest n if you then interpret dummies as a population.",
+    "In mutation catalogues, partial pooling across drugs in a class, or across genes in a pathway, is the same weights with a different index j. Do not pool across mechanisms you would never call exchangeable in lab meeting."
+  ],
+  "formulas": [
+    {
+      "id": "lam",
+      "label": "Gaussian–Gaussian weight",
+      "expression": "λⱼ = τ² / (τ² + σ²/nⱼ)",
+      "note": "Weight on the local mean. Small nⱼ ⇒ small λⱼ ⇒ shrink toward μ."
+    },
+    {
+      "id": "postmean",
+      "label": "Posterior / BLUP mean",
+      "expression": "θ̃ⱼ = λⱼ ȳⱼ + (1 − λⱼ) μ",
+      "note": "Same algebra in a Normal mixed model (BLUP) and a Normal–Normal Bayes."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Schematic estimates of four district rates. No pooling jumps around at small n. Complete pooling is a flat line. Partial pooling moves the small districts toward the shared mean and leaves the large one almost where it was.",
+    "panels": [
+      {
+        "title": "n=4, 0 events",
+        "bars": [
+          {
+            "label": "no pool",
+            "value": 1
+          },
+          {
+            "label": "partial",
+            "value": 8
+          },
+          {
+            "label": "pool",
+            "value": 10
+          }
+        ]
+      },
+      {
+        "title": "n=50, 12 events",
+        "bars": [
+          {
+            "label": "no pool",
+            "value": 24
+          },
+          {
+            "label": "partial",
+            "value": 22
+          },
+          {
+            "label": "pool",
+            "value": 10
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Empirical Bayes method — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Empirical_Bayes_method",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Shrinkage estimator — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Shrinkage_estimator",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman & Hill — cited, not ingested",
+      "attribution": "Named only as a standard graduate pointer. Structure, proofs, numerical tables, and examples were not copied.",
+      "license": "Citation only"
+    }
+  ],
+  "related": [
+    "stats-hierarchical",
+    "stats-eight-schools",
+    "stats-mixed-models",
+    "stats-bias-variance",
+    "stats-conjugacy"
+  ],
+  "example": {
+    "title": "0/4 is not a different species from 12/50",
+    "setup": "Districts: 0/4, 1/5, 3/40, 12/50. Survey mean about 16/99 ≈ 0.16. Normal approximation is crude for 0/4; the λ geometry still teaches.",
+    "steps": [
+      {
+        "title": "No pooling",
+        "body": "0%, 20%, 7.5%, 24%. The map is a noise map."
+      },
+      {
+        "title": "Guess τ",
+        "body": "If between-district SD on a probability scale is modest, λ for n=4 is small. 0/4 shrinks toward 16%, not to a published 0%. 12/50 barely moves."
+      },
+      {
+        "title": "Better likelihood",
+        "body": "Use logit-normal or Beta-Binomial hierarchical, not a Normal on raw proportions. The moral of λⱼ survives; the Gaussian formula was a lantern, not the analysis."
+      }
+    ],
+    "takeaway": "Shrinkage is weighted averaging with weights from nⱼ and τ². Publishing 0/4 as 0% refuses the weights."
+  },
+  "check": [
+    {
+      "id": "pp-lam",
+      "kind": "conceptual",
+      "prompt": "In the Gaussian–Gaussian formula, increasing nⱼ:",
+      "choices": [
+        "Decreases λⱼ, more shrinkage",
+        "Increases λⱼ, less shrinkage toward μ",
+        "Sets τ² to 0",
+        "Makes OLS biased"
+      ],
+      "answer": "Increases λⱼ, less shrinkage toward μ",
+      "why": "λ = τ² / (τ² + σ²/n). Bigger n shrinks the second term, λ → 1.",
+      "whyWrong": {
+        "Decreases λⱼ, more shrinkage": "Opposite.",
+        "Sets τ² to 0": "τ² is a hyperparameter, not a function of one nⱼ.",
+        "Makes OLS biased": "Unrelated slogan."
+      }
+    },
+    {
+      "id": "pp-calc",
+      "kind": "calculation",
+      "prompt": "τ² = 1, σ² = 4, nⱼ = 4. λⱼ equals:",
+      "choices": [
+        "0.5",
+        "1",
+        "0.2",
+        "4"
+      ],
+      "answer": "0.5",
+      "why": "σ²/n = 1, λ = 1/(1+1) = 0.5. Equal weight on local mean and μ.",
+      "whyWrong": {
+        "1": "That would be no pooling (λ=1).",
+        "0.2": "If you used n not σ²/n.",
+        "4": "A variance, not a weight."
+      }
+    },
+    {
+      "id": "pp-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples, the n=4 district’s partial-pool bar sits between no-pool and complete-pool because:",
+      "figureHint": "Left panel: no pool ~0, partial mid, pool ~survey mean.",
+      "choices": [
+        "Partial pooling is a coin flip independent of n",
+        "Small-n units are pulled toward the shared mean but not all the way unless τ² = 0",
+        "Complete pooling uses only that district",
+        "No pooling is a Bayes estimator"
+      ],
+      "answer": "Small-n units are pulled toward the shared mean but not all the way unless τ² = 0",
+      "why": "That interpolation is the definition of partial pooling.",
+      "whyWrong": {
+        "Partial pooling is a coin flip independent of n": "λⱼ depends on nⱼ.",
+        "Complete pooling uses only that district": "Opposite.",
+        "No pooling is a Bayes estimator": "No pooling ignores the shared prior."
+      }
+    }
+  ]
+}

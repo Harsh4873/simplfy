@@ -23,7 +23,8 @@
     "Random-intercept GLM: g(E[y_{ij} | b_j]) = x_{ij}ᵀβ + b_j, b_j ~ N(0, τ²). Marginalizing the Gaussian random intercept in a nonlinear GLM does not give a GLM; that is why people use PQL, Gauss–Hermite, Laplace, or MCMC.",
     "The LRT for H₀: τ = 0 is a boundary test. The null distribution is not χ²_1; it is a 50:50 mixture of χ²_0 and χ²_1. Software that prints a naïve p-value is wrong in a known direction (anti-conservative).",
     "Bayesian hierarchies need a prior on τ. A prior that piles up at 0 (some improper and some “noninformative” choices) can overshrink. Half-t or exponential priors on scale, and checking by prior predictive, are the adult moves.",
-    "Phylogenetic correlation is a hierarchical model with a different covariance: random effects along a tree, or a Gaussian process on SNP distance. Ignoring relatedness and then claiming a lineage effect is the same error as ignoring clusters in a survey."
+    "Phylogenetic correlation is a hierarchical model with a different covariance: random effects along a tree, or a Gaussian process on SNP distance. Ignoring relatedness and then claiming a lineage effect is the same error as ignoring clusters in a survey.",
+    "Partial pooling is the λⱼ geometry; mixed models are the integral over u; several noisy experiments sharing a mean is the eight-sites idea (original district numbers, not a copyrighted table). Those plates are this one, unpacked. The boundary LRT for τ=0 remains the inference trap that software still prints as χ²_1."
   ],
   "formulas": [
     {
@@ -57,13 +58,18 @@
       "license": "CC BY-SA 4.0"
     },
     {
-      "title": "OpenStax Introductory Statistics — sampling from clusters, extended to random-effects models in original notes",
-      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
-      "attribution": "Original teaching notes on shrinkage and boundary LRTs.",
-      "license": "CC BY 4.0 / original notes"
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain. Shrinkage algebra, boundary LRTs, and TB-survey examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Further reading (not ingested): Gelman & Hill, Data Analysis Using Regression and Multilevel/Hierarchical Models",
+      "attribution": "Named only as a standard hierarchical pointer. Structure, tables, and examples were not copied.",
+      "license": "Citation only"
     }
   ],
-  "related": ["stats-bayesian", "stats-ols-glm", "stats-lrt", "tb-wgs-dst", "stats-foundations"],
+  "related": ["stats-partial-pooling", "stats-mixed-models", "stats-eight-schools", "stats-bayesian", "stats-lrt", "tb-wgs-dst"],
   "example": {
     "title": "District FQ-R rates with n_j = 4",
     "setup": "Four districts report FQ-R among RR-TB: 0/4, 1/5, 3/40, 12/50. A no-pooling analyst quotes 0%, 20%, 7.5%, 24%. A hierarchical Beta-Binomial (or logit-normal) shares strength.",

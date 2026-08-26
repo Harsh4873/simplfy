@@ -1,0 +1,174 @@
+{
+  "id": "stats-power",
+  "title": "Power and sample size",
+  "dek": "Power is P(reject H₀ | a specific alternative, a design, a test). It is not P(H₁ | star) and not a number you compute after seeing p = 0.06.",
+  "domain": "stats",
+  "aliases": [
+    "power",
+    "sample size",
+    "type II error",
+    "minimal detectable effect",
+    "operating characteristic"
+  ],
+  "tags": [
+    "design",
+    "power",
+    "sample size",
+    "testing"
+  ],
+  "story": [
+    "Fix a test, a Type I level α, a design (n, blocks, clusters), and a scientifically interesting alternative θ₁. Power is the probability of rejection when θ = θ₁. 80% is a convention, not a law of nature. Underpowered studies of a real effect mostly produce noisy estimates, not “proof of absence.”",
+    "Sample-size formulas from NIST and public-domain texts are inverted power calculations for simple Gaussian or binomial two-sample tests. They need an effect size in scientific units, a variance, and α. Inventing all three after the data exist is p-hacking’s cousin, post hoc power — a one-to-one function of the p-value, not new information.",
+    "Clustered TB trials, rare mutations, and FDR across a genome change the arithmetic. Effective n is closer to the number of independent clusters or independent lineages. Bonferroni or BH spends α; power at a given alternative falls. Compute that, do not only compute a two-sample t as if you had iid people and one test."
+  ],
+  "deepTitle": "The operating curve, and clustered n",
+  "deep": [
+    "Gaussian two-sample, equal n, known σ: n per arm ≈ 2 (z_{1−α/2} + z_{power})² σ² / δ² for a difference δ. Unknown σ replaces z with t and iterates. Binary outcomes use a similar sketch with p(1−p) in place of σ², or simulation from a GLM.",
+    "Minimal detectable effect: invert the formula for δ given n. That is often the more honest grant sentence than “we will have 80% power for an OR of 1.05 with 40 isolates.”",
+    "Random effects: if ICC = ρ, design effect ≈ 1 + (m−1)ρ for clusters of size m. Divide naive n by that. A household trial that ignores this is not 180 independent people.",
+    "Bayesian design uses a different operating characteristic (e.g. expected width of a posterior interval, or decision risk). Still needs a design alternative or a prior over θ. Still not post hoc."
+  ],
+  "formulas": [
+    {
+      "id": "nform",
+      "label": "Two-sample Gaussian n (sketch)",
+      "expression": "n_arm ≈ 2 (z_{1−α/2} + z_{1−β})² σ² / δ²",
+      "note": "δ = mean difference you care about. Not the observed difference after the study."
+    },
+    {
+      "id": "deff",
+      "label": "Cluster design effect",
+      "expression": "DEFF ≈ 1 + (m − 1) ρ",
+      "note": "Inflates required n. ρ = ICC."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Power as overlapping sampling laws of a test statistic: a null-centred law and an alternative-centred law. The rejection cut is fixed by α under the null. The area of the alternative law beyond that cut is power. Post hoc power redraws this with δ̂, which is circular.",
+    "xLabel": "test statistic (schematic)",
+    "curves": [
+      {
+        "id": "null",
+        "label": "law under H₀",
+        "mean": 0.0,
+        "sd": 0.7
+      },
+      {
+        "id": "alt",
+        "label": "law under θ₁ (powered)",
+        "mean": 1.4,
+        "sd": 0.7
+      },
+      {
+        "id": "weak",
+        "label": "law under tiny θ (underpowered)",
+        "mean": 0.35,
+        "sd": 0.7
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NIST e-Handbook — sample sizes",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section2/prc22.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "Power of a test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Power_of_a_test",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-randomization",
+    "stats-factorial",
+    "stats-confidence-intervals",
+    "stats-fdr",
+    "stats-survey-error"
+  ],
+  "example": {
+    "title": "Household ICC eats your n",
+    "setup": "Want 80% power, α = 0.05 two-sided, binary outcome, risk difference 0.10, p ≈ 0.2, σ² ≈ 0.16. Naive two-sample n_arm ≈ 2 (1.96+0.84)² (0.16)/0.01 ≈ 251. Households of m = 4, ρ = 0.1.",
+    "steps": [
+      {
+        "title": "Naive",
+        "body": "About 250 people per arm if iid. You do not have iid."
+      },
+      {
+        "title": "DEFF",
+        "body": "1 + (4−1)×0.1 = 1.3. Need about 30% more people, or equivalently fewer independent households than you thought.",
+        "expression": "n_eff ≈ n / DEFF"
+      },
+      {
+        "title": "Grant sentence",
+        "body": "Power is computed at RD = 0.10 with ICC 0.1, 4 members, two-sided 5%. If the scientific δ is 0.03, this design is a precision study, not an 80% power study — say that."
+      }
+    ],
+    "takeaway": "Power lives at a named alternative and a named design. Clusters and multiple tests rewrite n."
+  },
+  "check": [
+    {
+      "id": "pow-post",
+      "kind": "conceptual",
+      "prompt": "Post hoc power computed from the observed effect and the observed p-value:",
+      "choices": [
+        "Is independent information about whether the study was large enough",
+        "Is essentially a recoding of the p-value, not a design calculation at a pre-specified δ",
+        "Equals 1 − α always",
+        "Is required by Wilks"
+      ],
+      "answer": "Is essentially a recoding of the p-value, not a design calculation at a pre-specified δ",
+      "why": "Observed power is a monotone function of |T|. It does not rescue p = 0.06.",
+      "whyWrong": {
+        "Is independent information about whether the study was large enough": "It is not independent of the result.",
+        "Equals 1 − α always": "No.",
+        "Is required by Wilks": "No."
+      }
+    },
+    {
+      "id": "pow-deff",
+      "kind": "calculation",
+      "prompt": "m = 5, ρ = 0.2. DEFF ≈ 1+(m−1)ρ equals:",
+      "choices": [
+        "1.8",
+        "5.2",
+        "0.2",
+        "1"
+      ],
+      "answer": "1.8",
+      "why": "1 + 4×0.2 = 1.8. You need 1.8 times as many people as the iid formula.",
+      "whyWrong": {
+        "5.2": "m+ρ or similar mash.",
+        "0.2": "That is ρ.",
+        "1": "The iid design effect."
+      }
+    },
+    {
+      "id": "pow-figure",
+      "kind": "figure",
+      "prompt": "On the power density plate, the tiny-shift curve sits almost on the null. That picture is:",
+      "figureHint": "Three laws of a test statistic; one barely shifted.",
+      "choices": [
+        "High power for that tiny θ",
+        "Low power: most of the alternative law still misses the α cut drawn under the null",
+        "Proof that α was 80%",
+        "A posterior under H₁"
+      ],
+      "answer": "Low power: most of the alternative law still misses the α cut drawn under the null",
+      "why": "Power is the alternative area beyond the null cut. A tiny shift leaves little of that area.",
+      "whyWrong": {
+        "High power for that tiny θ": "Opposite.",
+        "Proof that α was 80%": "α is the null tail, not power.",
+        "A posterior under H₁": "These are sampling laws of a statistic."
+      }
+    }
+  ]
+}

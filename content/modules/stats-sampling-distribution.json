@@ -1,0 +1,180 @@
+{
+  "id": "stats-sampling-distribution",
+  "title": "Sampling distributions of estimators",
+  "dek": "An estimator is a function of the data. Its sampling distribution is the law of that function under repeated draws from the model — not the histogram of yesterday’s point estimates.",
+  "domain": "stats",
+  "aliases": [
+    "sampling distribution",
+    "standard error",
+    "se",
+    "Monte Carlo",
+    "estimator as a function"
+  ],
+  "tags": [
+    "estimation",
+    "inference",
+    "standard error",
+    "Monte Carlo"
+  ],
+  "story": [
+    "θ̂ = T(Y₁,…,Yₙ) is a random variable because the data are. A sampling distribution is the law of T under the model you claimed. A standard error is an estimated standard deviation of that law. A confidence interval is a set-valued function of the data with a coverage claim under that same law.",
+    "You do not get to see the sampling distribution from one experiment. You approximate it with asymptotics (Normal, χ²), with a bootstrap, or with simulation from a fitted model. Mixing those three without naming which one you used is how methods sections become folklore.",
+    "Bias, variance, and MSE are properties of the sampling distribution. “This estimate is biased” said about a single number is a category error unless you mean “this procedure is biased.” In a TB survey with n = 12 districts, the procedure’s bias can dwarf the pretty SE printed by software."
+  ],
+  "deepTitle": "SE, coverage, and simulation",
+  "deep": [
+    "If θ̂ is approximately N(θ, v/n), then se = √v̂/n is a plug-in. Coverage of θ̂ ± 1.96 se is a statement about the procedure, P(interval covers θ) → 1−α, not about the posterior probability that θ sits in today’s interval.",
+    "Monte Carlo check: draw Y^(b) from f(·|θ₀), compute T^(b), look at the histogram. If your analytic SE does not match sd(T^(b)), believe the simulation for that finite n and go find the regularity you broke (boundary, sparse events, dependence).",
+    "The bootstrap (next plate) resamples the empirical distribution instead of the parametric f. Parametric bootstrap resamples f(·|θ̂). They answer related but not identical questions, especially under model misspecification.",
+    "In WGS–DST, the sampling unit is usually the isolate, not the SNP. A sampling distribution that pretends 400,000 sites are iid observations of one scientific parameter is a fiction; the relevant n is closer to the number of independent lineages."
+  ],
+  "formulas": [
+    {
+      "id": "se",
+      "label": "Standard error",
+      "expression": "se(θ̂) = √Var̂(θ̂)",
+      "note": "An estimate of the sampling SD, not the SD of the scientific error of one number in a moral sense."
+    },
+    {
+      "id": "mse",
+      "label": "Mean squared error",
+      "expression": "MSE(θ̂) = Var(θ̂) + Bias(θ̂)²",
+      "note": "Bias–variance lives here. Consistency is MSE → 0, not “unbiased for finite n.”"
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Three cartoon sampling laws for the same estimator: a well-behaved large-n Normal, a small-n skew (events are rare), and a tighter law after you actually increased n. The x-axis is the estimator, not the raw observation.",
+    "xLabel": "estimator θ̂",
+    "curves": [
+      {
+        "id": "large",
+        "label": "Large-n law of θ̂",
+        "mean": 0.2,
+        "sd": 0.35
+      },
+      {
+        "id": "small",
+        "label": "Small-n skewed law",
+        "mean": 0.05,
+        "sd": 0.7
+      },
+      {
+        "id": "bigger",
+        "label": "Same estimator, bigger n",
+        "mean": 0.22,
+        "sd": 0.18
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Online Statistics Education: A Multimedia Course of Study (OnlineStatBook)",
+      "url": "https://onlinestatbook.com/",
+      "attribution": "Public-domain textbook (Rice University / NASA / University of Houston). Sampling and probability hygiene only; worked examples are original.",
+      "license": "Public domain"
+    },
+    {
+      "title": "NIST e-Handbook — quantitative techniques",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35.htm",
+      "attribution": "United States government work, treated as public domain. Used as definitional authority; lesson text, TB-lab examples, and checks are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Introduction to Modern Statistics, 2nd edition",
+      "url": "https://openintro-ims.netlify.app/",
+      "attribution": "CC BY-SA 3.0 open text (Diez, Çetinkaya-Rundel, Barr). Probability and sampling facts only. This plate is original Simplfy teaching notes and is not a publisher-branded derivative.",
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "title": "Sampling distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sampling_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-foundations",
+    "stats-bias-variance",
+    "stats-bootstrap",
+    "stats-confidence-intervals",
+    "stats-mle"
+  ],
+  "example": {
+    "title": "SE of a resistance proportion",
+    "setup": "n = 25 isolates, y = 5 with a high-confidence katG S315T. Estimator π̂ = y/n. Model: iid Bernoulli(π). What sampling law are you quoting with se = √(π̂(1−π̂)/n)?",
+    "steps": [
+      {
+        "title": "Exact law",
+        "body": "nπ̂ ~ Binomial(n, π). That is the sampling distribution. It is discrete and, at π = 0.1, still noticeably skewed.",
+        "expression": "nπ̂ ~ Binomial(25, π)"
+      },
+      {
+        "title": "Normal approximation",
+        "body": "se ≈ √(0.2×0.8/25) = √0.0064 = 0.08. A Wald interval 0.20 ± 1.57×0.08 is using a Normal stand-in for the binomial law. With 5 events, a score interval is the less theatrical object."
+      },
+      {
+        "title": "Monte Carlo check",
+        "body": "Simulate Binomial(25, 0.2) a few thousand times. If the histogram’s SD is ~0.08, the formula matched the model. If isolates are household-clustered, the simulated SD from a hierarchical draw will exceed 0.08 — that is the missing covariance."
+      }
+    ],
+    "takeaway": "Name the law of the estimator. The printed SE is only as honest as that law."
+  },
+  "check": [
+    {
+      "id": "samp-se",
+      "kind": "conceptual",
+      "prompt": "A standard error is:",
+      "choices": [
+        "The probability that θ̂ equals θ",
+        "An estimate of the standard deviation of the estimator under the sampling model",
+        "The posterior SD of θ by definition",
+        "The residual of a GLM"
+      ],
+      "answer": "An estimate of the standard deviation of the estimator under the sampling model",
+      "why": "SE is a sampling-distribution object. A posterior SD is a different number with a different meaning.",
+      "whyWrong": {
+        "The probability that θ̂ equals θ": "That is usually zero in continuous models.",
+        "The posterior SD of θ by definition": "Only if you are doing Bayes and even then you should not rename it SE without comment.",
+        "The residual of a GLM": "Residuals are on observations, not on the estimator’s law."
+      }
+    },
+    {
+      "id": "samp-calc",
+      "kind": "calculation",
+      "prompt": "iid Bernoulli, n = 100, π̂ = 0.09. Model-based se(π̂) is closest to:",
+      "choices": [
+        "0.09",
+        "0.029",
+        "0.9",
+        "0.003"
+      ],
+      "answer": "0.029",
+      "why": "√(0.09×0.91/100) = √0.000819 ≈ 0.0286.",
+      "whyWrong": {
+        "0.09": "That is π̂, not its SE.",
+        "0.9": "Off by a factor of n.",
+        "0.003": "That is roughly the variance 0.000819, not the SD."
+      }
+    },
+    {
+      "id": "samp-figure",
+      "kind": "figure",
+      "prompt": "On the sampling-distribution plate, the x-axis is the estimator. What would be a misreading?",
+      "figureHint": "Three curves labelled as laws of θ̂.",
+      "choices": [
+        "Treating those curves as the sampling model of a single observation Yᵢ",
+        "Noticing that bigger n tightens the law of θ̂",
+        "Noticing small-n skew",
+        "Using the plate to remember that θ̂ is random"
+      ],
+      "answer": "Treating those curves as the sampling model of a single observation Yᵢ",
+      "why": "The plate is about T(Y), not about Yᵢ. Conflating them is the classic “histogram of the data versus histogram of the estimator” error.",
+      "whyWrong": {
+        "Noticing that bigger n tightens the law of θ̂": "That is the point of the third curve.",
+        "Noticing small-n skew": "That is the second curve.",
+        "Using the plate to remember that θ̂ is random": "Correct use."
+      }
+    }
+  ]
+}

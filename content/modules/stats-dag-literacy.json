@@ -1,0 +1,222 @@
+{
+  "id": "stats-dag-literacy",
+  "title": "DAG literacy for lab studies",
+  "dek": "A directed acyclic graph is a hypothesis about missing arrows. d-separation says which independences that hypothesis implies. Adjustment is not “add all covariates.”",
+  "domain": "stats",
+  "aliases": [
+    "DAG",
+    "directed acyclic graph",
+    "d-separation",
+    "collider",
+    "backdoor",
+    "mediator"
+  ],
+  "tags": [
+    "causal",
+    "DAG",
+    "confounding",
+    "collider"
+  ],
+  "story": [
+    "Nodes are variables. Arrows are direct causal claims you are willing to defend. No cycles. The graph is not the data. If you omit an arrow you believe exists, the independences you read off are fiction.",
+    "Three motifs: confounder (fork) X ← U → Y, mediator X → M → Y, collider X → C ← Y. Conditioning on a confounder can block a backdoor. Conditioning on a mediator removes a path you might have wanted in a total effect. Conditioning on a collider (or a descendant of one) opens a spurious association.",
+    "In TB genomics, lineage is often a confounder of mutation–phenotype associations. Hospital is often a collider if you condition on who got sequenced. “We adjusted for everything in the electronic record” is how you open colliders."
+  ],
+  "deepTitle": "Backdoors, and what a DAG cannot do",
+  "deep": [
+    "Backdoor criterion (sketch): a set Z blocks every backdoor path from treatment A to outcome Y and contains no descendant of A. Then adjustment for Z identifies the ATE under the usual consistency/positivity extras. This is a graphical licence, not a software option named “multivariate.”",
+    "d-separation: a path is blocked by Z if it contains a chain or fork whose middle node is in Z, or a collider whose middle node is not in Z and has no descendant in Z. If all paths from A to Y are blocked given Z, the DAG claims A ⊥ Y | Z.",
+    "A DAG does not give you SEs, functional forms, or SUTVA. It does not bless a logit. After identification, you still fit a model or a nonparametric adjustment.",
+    "Do not copy textbook DAGs from copyrighted monographs. Draw the study you ran: who was sampled, who was sequenced, who was treated, which lab measured MIC."
+  ],
+  "formulas": [
+    {
+      "id": "backdoor",
+      "label": "Adjustment formula (discrete sketch)",
+      "expression": "E[Y(a)] = ∑_z E[Y | A=a, Z=z] P(Z=z)",
+      "note": "Needs a sufficient adjustment set Z from the DAG, plus positivity."
+    },
+    {
+      "id": "collider",
+      "label": "Collider warning",
+      "expression": "A → C ← Y   then   A  ⊥̸  Y | C   in general",
+      "note": "Conditioning on C (sequenced, hospitalised) can create a false association."
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Three motifs in one TB-shaped drawing: lineage as a fork into mutation and phenotype, treatment as a mediator or a second cause, and “got WGS” as a collider fed by severity and by access. Adjusting for lineage can be a backdoor close; adjusting for WGS-ascertainment can be a collider open.",
+    "nodes": [
+      {
+        "id": "lin",
+        "label": "lineage",
+        "group": "enzyme",
+        "x": 16,
+        "y": 22,
+        "sub": "fork / confounder"
+      },
+      {
+        "id": "mut",
+        "label": "mutation",
+        "group": "drug",
+        "x": 16,
+        "y": 70,
+        "sub": "A"
+      },
+      {
+        "id": "ph",
+        "label": "phenotype",
+        "group": "target",
+        "x": 50,
+        "y": 70,
+        "sub": "Y"
+      },
+      {
+        "id": "wgs",
+        "label": "got WGS",
+        "group": "enzyme",
+        "x": 84,
+        "y": 22,
+        "sub": "collider C"
+      },
+      {
+        "id": "sev",
+        "label": "severity",
+        "group": "drug",
+        "x": 50,
+        "y": 22,
+        "sub": "feeds C"
+      }
+    ],
+    "edges": [
+      {
+        "from": "lin",
+        "to": "mut"
+      },
+      {
+        "from": "lin",
+        "to": "ph"
+      },
+      {
+        "from": "mut",
+        "to": "ph"
+      },
+      {
+        "from": "sev",
+        "to": "ph"
+      },
+      {
+        "from": "sev",
+        "to": "wgs"
+      },
+      {
+        "from": "mut",
+        "to": "wgs",
+        "label": "access / interest"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Causal Inference: The Mixtape — GitHub companion materials",
+      "url": "https://github.com/scunning1975/mixtape",
+      "attribution": "MIT-licensed companion repo. Potential-outcome and DAG literacy restated in original Simplfy language with TB-lab examples. Book prose was not ingested.",
+      "license": "MIT (companion repo) / original notes"
+    },
+    {
+      "title": "Causal diagram — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Causal_diagram",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Collider (statistics) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Collider_(statistics)",
+      "attribution": "Glossary-level definition under CC BY-SA. Exposition, likelihoods, and lab examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-potential-outcomes",
+    "stats-confounding",
+    "stats-omitted-variables",
+    "stats-gwas",
+    "stats-population-structure"
+  ],
+  "example": {
+    "title": "Conditioning on who was sequenced",
+    "setup": "Mutation A and severe disease Y both increase the chance of WGS. You analyse only sequenced isolates. A spurious A—Y association appears even if A does not cause Y.",
+    "steps": [
+      {
+        "title": "Name the collider",
+        "body": "A → WGS ← Y (or severity → WGS ← access, with A associated with access). Conditioning on WGS=1 opens the path."
+      },
+      {
+        "title": "What adjustment cannot do",
+        "body": "Putting WGS in a regression among sequenced people does not close this; they are already selected. You need a model of ascertainment, a different sample, or a scientific claim that WGS is independent of Y given A."
+      },
+      {
+        "title": "Lineage fork",
+        "body": "Separately, lineage → A and lineage → Y is a backdoor. Adjusting for lineage (or PCs) is the usual close — different motif from the collider."
+      }
+    ],
+    "takeaway": "Forks you close; colliders you do not open. “Adjust for all” does not know the difference."
+  },
+  "check": [
+    {
+      "id": "dag-col",
+      "kind": "conceptual",
+      "prompt": "Conditioning on a collider typically:",
+      "choices": [
+        "Blocks a backdoor path, like conditioning on a confounder",
+        "Opens a path and can create a non-causal association",
+        "Estimates the ATE by the backdoor formula automatically",
+        "Is required by SUTVA"
+      ],
+      "answer": "Opens a path and can create a non-causal association",
+      "why": "That is the collider motif. Hospital, death, and “got sequenced” are the usual lab colliders.",
+      "whyWrong": {
+        "Blocks a backdoor path, like conditioning on a confounder": "Opposite motif.",
+        "Estimates the ATE by the backdoor formula automatically": "Wrong criterion.",
+        "Is required by SUTVA": "SUTVA is not about colliders."
+      }
+    },
+    {
+      "id": "dag-calc",
+      "kind": "calculation",
+      "prompt": "A and Y independent Bernoulli(0.5). Collider C = 1 iff A=1 or Y=1. Among C=1, P(Y=1 | A=0) equals:",
+      "choices": [
+        "0.5",
+        "1",
+        "0",
+        "2/3"
+      ],
+      "answer": "1",
+      "why": "If A=0 and C=1, Y must be 1 (otherwise C would be 0). So P(Y=1|A=0,C=1)=1, while P(Y=1|A=1,C=1)=0.5. Selection on C manufactured an association.",
+      "whyWrong": {
+        "0.5": "That is the population association (none). It is also P(Y=1|A=1,C=1), not the A=0 slice.",
+        "0": "Y is forced on, not off, when A=0 and C=1.",
+        "2/3": "That is P(C=1)=3/4 related counts; not this conditional."
+      }
+    },
+    {
+      "id": "dag-figure",
+      "kind": "figure",
+      "prompt": "On the motif map, “got WGS” is labelled a collider. Adjusting for it (or analysing only sequenced isolates) is dangerous because:",
+      "figureHint": "got WGS fed by severity and by mutation/access.",
+      "choices": [
+        "Colliders are confounders, so you must adjust",
+        "Conditioning on a common effect of two causes can open a non-causal path between those causes",
+        "WGS is a mediator of lineage",
+        "DAGs forbid binary nodes"
+      ],
+      "answer": "Conditioning on a common effect of two causes can open a non-causal path between those causes",
+      "why": "That is the WGS ascertainment problem the plate is drawn to show.",
+      "whyWrong": {
+        "Colliders are confounders, so you must adjust": "Opposite advice.",
+        "WGS is a mediator of lineage": "Not the label on that node.",
+        "DAGs forbid binary nodes": "No."
+      }
+    }
+  ]
+}
