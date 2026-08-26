@@ -19,6 +19,7 @@ export function WorkedExample({ topic, api }: { topic: Topic | null; api: Studio
     return (
       <div className="dock-empty">
         <p className="kicker">Worked example</p>
+        <h2>Stepper idle</h2>
         <p>Bundled plates carry a stepper. File a note and we will borrow the nearest one.</p>
       </div>
     );

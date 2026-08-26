@@ -36,6 +36,12 @@ export function IntakeRail({ api }: { api: StudioApi }) {
     form.reset();
   };
 
+  const filtering = Boolean(api.query.trim());
+  const shown = filtering ? api.hits.slice(0, 14) : api.hits.slice(0, 8);
+  const resultLabel = filtering
+    ? `${api.hits.length} match${api.hits.length === 1 ? "" : "es"}`
+    : `Cabinet · ${api.modules.length} plates`;
+
   return (
     <aside className={cx("rail", api.drawer === "intake" && "is-open")} aria-label="Intake">
       <div className="rail-block">
@@ -58,7 +64,7 @@ export function IntakeRail({ api }: { api: StudioApi }) {
           />
           <kbd>/</kbd>
         </div>
-        <p className="hint">Search hits bundled plates and whatever you have filed locally.</p>
+        <p className="hint">Hits bundled plates and whatever you have filed locally.</p>
         {!api.query ? (
           <div className="chips" aria-label="Suggested plates">
             {SUGGESTIONS.map((term) => (
@@ -78,42 +84,59 @@ export function IntakeRail({ api }: { api: StudioApi }) {
       </div>
 
       <div className="rail-block">
-        <p className="kicker">Results</p>
-        <ul className="hit-list">
-          {api.hits.slice(0, 14).map((hit) =>
-            hit.kind === "module" ? (
-              <li key={`m-${hit.module.id}`}>
-                <button
-                  type="button"
-                  className={cx(
-                    "hit",
-                    api.topic?.source === "catalog" && api.topic.module.id === hit.module.id && "is-active",
-                  )}
-                  onClick={() => api.openModule(hit.module)}
-                >
-                  <span className={cx("domain", hit.module.domain)}>{hit.module.domain === "tb" ? "TB" : "Stats"}</span>
-                  <span className="hit-title">{hit.module.title}</span>
-                  <span className="hit-dek">{hit.module.dek}</span>
-                </button>
-              </li>
-            ) : (
-              <li key={`l-${hit.item.id}`}>
-                <button
-                  type="button"
-                  className="hit"
-                  onClick={() => {
-                    const item = api.library.find((row) => row.id === hit.item.id);
-                    if (item) api.openLibrary(item);
-                  }}
-                >
-                  <span className="domain library">Local</span>
-                  <span className="hit-title">{hit.item.name}</span>
-                  <span className="hit-dek">{hit.item.text.slice(0, 140) || "Filed without extractable text."}</span>
-                </button>
-              </li>
-            ),
-          )}
-        </ul>
+        <p className="kicker" aria-live="polite">
+          {resultLabel}
+        </p>
+        {filtering && api.hits.length === 0 ? (
+          <div className="rail-empty">
+            <p>No plates for “{api.query.trim()}”.</p>
+            <p className="hint">Try a gene, a drug, a test, or a model.</p>
+          </div>
+        ) : (
+          <ul className="hit-list">
+            {shown.map((hit, index) =>
+              hit.kind === "module" ? (
+                <li key={`m-${hit.module.id}`}>
+                  <button
+                    type="button"
+                    className={cx(
+                      "hit",
+                      api.topic?.source === "catalog" && api.topic.module.id === hit.module.id && "is-active",
+                    )}
+                    onClick={() => api.openModule(hit.module)}
+                  >
+                    <span className="hit-index">{String(index + 1).padStart(2, "0")}</span>
+                    <span className={cx("domain", hit.module.domain)}>{hit.module.domain === "tb" ? "TB" : "Stats"}</span>
+                    <span className="hit-title">{hit.module.title}</span>
+                    <span className="hit-dek">{hit.module.dek}</span>
+                    <span className="hit-meta">{hit.module.visual.kind.replaceAll("-", " ")}</span>
+                  </button>
+                </li>
+              ) : (
+                <li key={`l-${hit.item.id}`}>
+                  <button
+                    type="button"
+                    className={cx(
+                      "hit",
+                      api.topic?.source === "library" && api.topic.item.id === hit.item.id && "is-active",
+                    )}
+                    onClick={() => {
+                      const item = api.library.find((row) => row.id === hit.item.id);
+                      if (item) api.openLibrary(item);
+                    }}
+                  >
+                    <span className="hit-index">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="domain library">Local</span>
+                    <span className="hit-title">{hit.item.name}</span>
+                    <span className="hit-dek">{hit.item.text.slice(0, 140) || "Filed without extractable text."}</span>
+                    <span className="hit-meta">field note</span>
+                  </button>
+                </li>
+              ),
+            )}
+          </ul>
+        )}
+        {!filtering ? <p className="hint">Type to filter the cabinet.</p> : null}
       </div>
 
       <div className="rail-block">
@@ -144,7 +167,7 @@ export function IntakeRail({ api }: { api: StudioApi }) {
         </div>
         <form className="paste" onSubmit={(event) => void onPaste(event)}>
           <label htmlFor="note">Paste a paragraph</label>
-          <textarea id="note" name="note" rows={5} placeholder="Methods, a confusing paragraph, a gene list…" />
+          <textarea id="note" name="note" rows={4} placeholder="Methods, a confusing paragraph, a gene list…" />
           <button type="submit" className="solid" disabled={!api.ready}>
             File in the studio
           </button>
@@ -154,7 +177,10 @@ export function IntakeRail({ api }: { api: StudioApi }) {
       <div className="rail-block">
         <p className="kicker">Library</p>
         {api.library.length === 0 ? (
-          <p className="empty-line">Nothing filed yet. It will survive refresh on this device.</p>
+          <div className="rail-empty">
+            <p className="empty-line">Nothing filed yet.</p>
+            <p className="hint">Notes and drops survive refresh on this device only.</p>
+          </div>
         ) : (
           <ul className="lib-list">
             {api.library.map((item) => (

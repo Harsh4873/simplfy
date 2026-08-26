@@ -19,8 +19,9 @@ import { firstLineTitle } from "../library/fieldNote";
 import { MAX_FILE_BYTES, parseDroppedFile } from "../library/parse";
 import { recallFromMiss } from "../quiz/grade";
 import type { CheckItem } from "../catalog/types";
+import type { ToolId } from "./tools";
 
-export type ToolId = "check" | "map" | "example" | "recall";
+export type { ToolId };
 export type DrawerId = "intake" | "dock" | null;
 
 export type Topic =

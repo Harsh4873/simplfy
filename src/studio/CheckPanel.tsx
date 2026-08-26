@@ -81,6 +81,7 @@ export function CheckPanel({
     return (
       <div className="dock-empty">
         <p className="kicker">Check</p>
+        <h2>No plate on stage</h2>
         <p>Open a plate, then sit the check. Local notes borrow questions from the nearest bundled topic.</p>
       </div>
     );

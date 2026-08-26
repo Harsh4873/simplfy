@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { CheckPanel } from "./CheckPanel";
 import { ConceptMap } from "./ConceptMap";
 import { IntakeRail } from "./IntakeRail";
@@ -5,11 +6,30 @@ import { Masthead } from "./Masthead";
 import { RecallDeck } from "./RecallDeck";
 import { WorkedExample } from "./WorkedExample";
 import { Canvas } from "./Canvas";
+import { TOOLS } from "./tools";
 import { useStudio } from "./useStudio";
 import { cx } from "../ui/cx";
 
 export function Studio() {
   const api = useStudio();
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement
+      ) {
+        return;
+      }
+      if (event.key === "Escape") {
+        api.setDrawer(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [api]);
 
   return (
     <div className="shell">
@@ -36,10 +56,29 @@ export function Studio() {
           <Canvas topic={api.topic} api={api} />
         </main>
         <aside className={cx("dock", api.drawer === "dock" && "is-open")} aria-label="Check and tools">
-          {api.tool === "check" ? <CheckPanel topic={api.topic} api={api} /> : null}
-          {api.tool === "map" ? <ConceptMap topic={api.topic} api={api} /> : null}
-          {api.tool === "example" ? <WorkedExample topic={api.topic} api={api} /> : null}
-          {api.tool === "recall" ? <RecallDeck api={api} /> : null}
+          <div className="tool-switch" role="tablist" aria-label="Studio tools">
+            {TOOLS.map((tool) => (
+              <button
+                key={tool.id}
+                type="button"
+                role="tab"
+                aria-selected={api.tool === tool.id}
+                className={cx(api.tool === tool.id && "is-active")}
+                onClick={() => {
+                  api.setTool(tool.id);
+                  api.setDrawer("dock");
+                }}
+              >
+                {tool.label}
+              </button>
+            ))}
+          </div>
+          <div className="dock-body">
+            {api.tool === "check" ? <CheckPanel topic={api.topic} api={api} /> : null}
+            {api.tool === "map" ? <ConceptMap topic={api.topic} api={api} /> : null}
+            {api.tool === "example" ? <WorkedExample topic={api.topic} api={api} /> : null}
+            {api.tool === "recall" ? <RecallDeck api={api} /> : null}
+          </div>
         </aside>
       </div>
     </div>
