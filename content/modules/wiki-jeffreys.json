@@ -1,0 +1,158 @@
+{
+  "id": "wiki-jeffreys",
+  "title": "Jeffreys prior as a named invariance recipe",
+  "dek": "π(θ) ∝ √det I(θ). Wikipedia 'uninformative' celebrity that is quite informative on some scales. stats-priors owns elicitation.",
+  "domain": "stats",
+  "aliases": [
+    "Jeffreys prior",
+    "Jeffreys rule",
+    "invariant prior"
+  ],
+  "tags": [
+    "glossary",
+    "Jeffreys",
+    "prior",
+    "information"
+  ],
+  "story": [
+    "Jeffreys' prior on Wikipedia is π(θ) ∝ √det I(θ), famous for invariance under reparameterisation. It is a recipe, not a certificate of ignorance.",
+    "On a Bernoulli π it is Beta(1/2,1/2), which piles mass near 0 and 1 — sometimes exactly where a TB rare-event probability lives. Calling it uninformative is a slogan.",
+    "stats-priors is the elicitation plate. This card is the named recipe so a paper that says 'we used a noninformative prior (Jeffreys)' can be interrogated."
+  ],
+  "deepTitle": "Invariance versus ignorance",
+  "deep": [
+    "Improper Jeffreys priors can make marginal likelihoods/Bayes factors undefined.",
+    "Independence Jeffreys versus full Jeffreys in multiparameter models is a fork.",
+    "Reference priors are a neighbouring more elaborate recipe.",
+    "A lab-informed Beta on a DST error rate can beat Jeffreys on calibration."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic Beta(1/2,1/2)-like pile-up at the edges versus a flatter Beta(1,1). Jeffreys is not 'no information' on the probability scale.",
+    "xLabel": "π (schematic 0–1 mapped to the axis)",
+    "curves": [
+      {
+        "id": "jef",
+        "label": "Jeffreys-like U-shape",
+        "mean": 0.0,
+        "sd": 1.4
+      },
+      {
+        "id": "flat",
+        "label": "uniform on π",
+        "mean": 0.0,
+        "sd": 0.9
+      },
+      {
+        "id": "lab",
+        "label": "lab-informed",
+        "mean": -0.6,
+        "sd": 0.5
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Jeffreys prior — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Jeffreys_prior",
+      "attribution": "English Wikipedia revision 1323462600 (2025-11-21T22:32:21Z). Wikidata Q4068240. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-priors",
+    "wiki-fisher-info",
+    "stats-bayesian",
+    "wiki-bayesian-glossary",
+    "stats-conjugacy"
+  ],
+  "example": {
+    "title": "Jeffreys on a rare-event π, n=8, zero events",
+    "setup": "Posterior piles even more at 0.",
+    "steps": [
+      {
+        "title": "Name the recipe",
+        "body": "Beta(0.5,0.5) update."
+      },
+      {
+        "title": "Ask if edge mass was desired",
+        "body": "Rare events."
+      },
+      {
+        "title": "A weakly informative prior away from 0/1 may calibrate better",
+        "body": "stats-priors."
+      }
+    ],
+    "takeaway": "Jeffreys is invariant. It is not silent about the edges of π."
+  },
+  "check": [
+    {
+      "id": "jef-def",
+      "kind": "conceptual",
+      "prompt": "Jeffreys' prior is:",
+      "choices": [
+        "π(θ)∝1 always",
+        "π(θ)∝√det I(θ), an invariance recipe",
+        "A p-value",
+        "A tree prior only"
+      ],
+      "answer": "π(θ)∝√det I(θ), an invariance recipe",
+      "why": "Recipe.",
+      "whyWrong": {
+        "π(θ)∝1 always": "That's a flat prior on that parameterization.",
+        "A p-value": "No.",
+        "A tree prior only": "One optional use."
+      }
+    },
+    {
+      "id": "jef-ber",
+      "kind": "calculation",
+      "prompt": "For Bernoulli π, Jeffreys is Beta(1/2,1/2), which:",
+      "choices": [
+        "Is uniform on π",
+        "Puts extra mass near 0 and 1 relative to Uniform(0,1)",
+        "Is N(0,1) on π",
+        "Is BH"
+      ],
+      "answer": "Puts extra mass near 0 and 1 relative to Uniform(0,1)",
+      "why": "U-shape.",
+      "whyWrong": {
+        "Is uniform on π": "That's Beta(1,1).",
+        "Is N(0,1) on π": "Wrong support.",
+        "Is BH": "No."
+      }
+    },
+    {
+      "id": "jef-figure",
+      "kind": "figure",
+      "prompt": "The U-shaped curve is labelled Jeffreys-like because:",
+      "choices": [
+        "Jeffreys is always Gaussian",
+        "Bernoulli Jeffreys piles at the edges of π",
+        "Jeffreys is OLS",
+        "U-shape is FDR"
+      ],
+      "answer": "Bernoulli Jeffreys piles at the edges of π",
+      "why": "First legend.",
+      "whyWrong": {
+        "Jeffreys is always Gaussian": "No.",
+        "Jeffreys is OLS": "No.",
+        "U-shape is FDR": "No."
+      },
+      "figureHint": "First curve."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "jef",
+      "label": "Jeffreys rule",
+      "expression": "π(θ) ∝ √det I(θ)",
+      "note": "Invariant under reparameterisation; not automatically 'uninformative' on a given scale."
+    }
+  ]
+}

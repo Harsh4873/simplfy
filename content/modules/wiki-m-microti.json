@@ -1,0 +1,168 @@
+{
+  "id": "wiki-m-microti",
+  "title": "M. microti as a vole-associated MTBC name",
+  "dek": "A Wikipedia wildlife ecotype. Rare in human pulmonary queues. Still able to confuse an MTBC NAAT if you never look at the tree.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium microti",
+    "vole bacillus",
+    "M. microti"
+  ],
+  "tags": [
+    "glossary",
+    "wildlife",
+    "MTBC"
+  ],
+  "story": [
+    "M. microti is Wikipedia's vole-associated MTBC member. Human disease exists and is uncommon. The value of the page is to keep wildlife ecotypes on the roster so a weird tree is not auto-classified as contamination.",
+    "Historically it was used as a vaccine candidate in some countries; that history is not a modern TPT regimen.",
+    "Like other animal-adapted leaves, NAATs may light. Speciation is WGS or a dedicated barcode, not a cartridge brand."
+  ],
+  "deepTitle": "Rare is not impossible",
+  "deep": [
+    "Do not spend the Wikipedia article inventing a vole-to-human transmission model for every case. Ask epidemiology after the name is known.",
+    "Vaccine-history trivia is not WHO TPT.",
+    "Microti can look 'not H37Rv enough' to a fussy mapper. Same hygiene as canettii, different taxon.",
+    "Related wildlife names (mungi, suricattae) may not even have stable Wikipedia pages; WGS literature still names them."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Wildlife MTBC names you should recognise on a tree even if the clinic never sees them twice.",
+    "terms": [
+      {
+        "label": "microti / vole",
+        "weight": 9
+      },
+      {
+        "label": "pinnipedii / seal",
+        "weight": 7
+      },
+      {
+        "label": "mungi / mongoose",
+        "weight": 6
+      },
+      {
+        "label": "orygis / antelope",
+        "weight": 8
+      },
+      {
+        "label": "still MTBC NAAT",
+        "weight": 9
+      },
+      {
+        "label": "not MAC",
+        "weight": 8
+      },
+      {
+        "label": "not TPT",
+        "weight": 7
+      },
+      {
+        "label": "WGS names the leaf",
+        "weight": 10
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium microti — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_microti",
+      "attribution": "English Wikipedia revision 1369711925 (2026-08-16T17:37:56Z). Wikidata Q4752705. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium pinnipedii — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_pinnipedii",
+      "attribution": "English Wikipedia revision 1274002034 (2025-02-05T00:31:05Z). Wikidata Q6947083. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-mtbc-members",
+    "wiki-m-orygis",
+    "wiki-m-bovis",
+    "tb-mtbc",
+    "tb-ntm"
+  ],
+  "example": {
+    "title": "Unexpected wildlife leaf",
+    "setup": "Pulmonary isolate, MTB detected, tree neighbour microti references, no farm story.",
+    "steps": [
+      {
+        "title": "Report the leaf",
+        "body": "Rare zoonoses exist without a tidy exposure sentence."
+      },
+      {
+        "title": "Do not relabel NTM",
+        "body": "Wildlife MTBC is still TB complex."
+      },
+      {
+        "title": "DST with eyes open",
+        "body": "Catalogue transfer from H37Rv may be imperfect; say so."
+      }
+    ],
+    "takeaway": "A vole name on a human genome is a speciation result."
+  },
+  "check": [
+    {
+      "id": "mic-tb",
+      "kind": "conceptual",
+      "prompt": "M. microti human disease is:",
+      "choices": [
+        "Impossible",
+        "Uncommon zoonotic/wildlife MTBC disease, still not NTM",
+        "Always BCG",
+        "Always XDR"
+      ],
+      "answer": "Uncommon zoonotic/wildlife MTBC disease, still not NTM",
+      "why": "Rare ≠ invalid.",
+      "whyWrong": {
+        "Impossible": "Case reports exist.",
+        "Always BCG": "Different object.",
+        "Always XDR": "No."
+      }
+    },
+    {
+      "id": "mic-vax",
+      "kind": "calculation",
+      "prompt": "Historic microti vaccine use implies:",
+      "choices": [
+        "It is the preferred 2024 TPT",
+        "A Wikipedia history note, not a WHO TPT module",
+        "That microti is NTM",
+        "That Xpert cannot detect MTBC"
+      ],
+      "answer": "A Wikipedia history note, not a WHO TPT module",
+      "why": "TPT plates already cite WHO.",
+      "whyWrong": {
+        "It is the preferred 2024 TPT": "False.",
+        "That microti is NTM": "False.",
+        "That Xpert cannot detect MTBC": "False."
+      }
+    },
+    {
+      "id": "mic-figure",
+      "kind": "figure",
+      "prompt": "The constellation's highest-weight clinical instruction is:",
+      "choices": [
+        "mungi / mongoose",
+        "WGS names the leaf",
+        "seal trivia",
+        "TPT doses"
+      ],
+      "answer": "WGS names the leaf",
+      "why": "Largest teaching weight on this card.",
+      "whyWrong": {
+        "mungi / mongoose": "A roster name.",
+        "seal trivia": "pinnipedii.",
+        "TPT doses": "Not on this plate."
+      },
+      "figureHint": "Look at weight 10."
+    }
+  ]
+}

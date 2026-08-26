@@ -1,0 +1,143 @@
+{
+  "id": "wiki-parsimony",
+  "title": "Maximum parsimony as a named fewest-changes criterion",
+  "dek": "Wikipedia parsimony: minimise substitutions on a tree. Not a likelihood, and inconsistent on some long-branch patterns.",
+  "domain": "stats",
+  "aliases": [
+    "maximum parsimony",
+    "parsimony phylogenetics",
+    "Fitch parsimony"
+  ],
+  "tags": [
+    "glossary",
+    "parsimony",
+    "criterion",
+    "phylogeny"
+  ],
+  "story": [
+    "Maximum parsimony on Wikipedia is a criterion: choose the tree (and a mapping of changes) that needs the fewest substitutions. Fitch/Sankoff algorithms compute the score. It is philosophy-adjacent ('simplest history') and statistically fragile.",
+    "Felsenstein long-branch attraction is the celebrity inconsistency: parsimony can prefer the wrong tree with more data. Likelihood with a decent Q is the usual repair (stats-trees).",
+    "In TB, homoplasy from selection or recombination looks like extra changes. Parsimony will still return a number."
+  ],
+  "deepTitle": "Criterion versus probability",
+  "deep": [
+    "Unweighted parsimony treats every change as equal; reality does not.",
+    "Dolce/Dollo variants are special-case costs, still not likelihoods.",
+    "Consistency results exist on some models; do not quote them as a blanket guarantee.",
+    "Do not report parsimony scores as log-likelihoods."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Parsimony minimises a count. Likelihood maximises P(data|tree,Q). Same trees as candidates, different objective.",
+    "reduced": {
+      "label": "Parsimony",
+      "params": [
+        "min # changes"
+      ]
+    },
+    "full": {
+      "label": "Likelihood",
+      "params": [
+        "P(aln|T,Q)",
+        "pruning"
+      ]
+    },
+    "statistic": "different objectives",
+    "reference": "long branches can break parsimony"
+  },
+  "sources": [
+    {
+      "title": "Maximum parsimony — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Maximum_parsimony",
+      "attribution": "English Wikipedia revision 1370195649 (2026-08-19T17:47:41Z). Wikidata Q1805805. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-phylo-tree",
+    "stats-trees",
+    "wiki-neighbor-joining",
+    "stats-molecular-clock"
+  ],
+  "example": {
+    "title": "Two long branches grouped by parsimony",
+    "setup": "Known toy of long-branch attraction.",
+    "steps": [
+      {
+        "title": "Count criterion can group the longs",
+        "body": "Inconsistency."
+      },
+      {
+        "title": "Switch to a likelihood with rates",
+        "body": "stats-trees."
+      },
+      {
+        "title": "Do not add more sites of the same kind and hope",
+        "body": "More data can dig the hole."
+      }
+    ],
+    "takeaway": "Parsimony is a fewest-changes criterion. It is not a probability."
+  },
+  "check": [
+    {
+      "id": "mp-crit",
+      "kind": "conceptual",
+      "prompt": "Maximum parsimony in phylogenetics is:",
+      "choices": [
+        "Felsenstein pruning",
+        "A fewest-substitutions criterion for ranking trees",
+        "A Bayes factor",
+        "An OLS projection"
+      ],
+      "answer": "A fewest-substitutions criterion for ranking trees",
+      "why": "Criterion.",
+      "whyWrong": {
+        "Felsenstein pruning": "Likelihood.",
+        "A Bayes factor": "No.",
+        "An OLS projection": "No."
+      }
+    },
+    {
+      "id": "mp-lba",
+      "kind": "calculation",
+      "prompt": "Long-branch attraction is the worry that parsimony:",
+      "choices": [
+        "Always equals GTR",
+        "Can group long branches incorrectly, sometimes more confidently with more data",
+        "Is immune to recombination",
+        "Is HWE"
+      ],
+      "answer": "Can group long branches incorrectly, sometimes more confidently with more data",
+      "why": "Inconsistency celebrity.",
+      "whyWrong": {
+        "Always equals GTR": "No.",
+        "Is immune to recombination": "No.",
+        "Is HWE": "No."
+      }
+    },
+    {
+      "id": "mp-figure",
+      "kind": "figure",
+      "prompt": "The nested visual's inner box is parsimony because:",
+      "choices": [
+        "It is a fuller probability model",
+        "It is a reduced objective (a count) compared with a likelihood",
+        "It includes Q",
+        "It is a clock"
+      ],
+      "answer": "It is a reduced objective (a count) compared with a likelihood",
+      "why": "Count vs P(data|·).",
+      "whyWrong": {
+        "It is a fuller probability model": "That's the outer likelihood box.",
+        "It includes Q": "Likelihood.",
+        "It is a clock": "No."
+      },
+      "figureHint": "Reduced box."
+    }
+  ]
+}

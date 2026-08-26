@@ -1,0 +1,177 @@
+{
+  "id": "wiki-cramer-rao",
+  "title": "Cramér–Rao as a named variance bound",
+  "dek": "Var(θ̃) ≥ 1/I(θ) for unbiased estimators under regularity. Wikipedia bound. Attainment is exponential-family/MLE territory.",
+  "domain": "stats",
+  "aliases": [
+    "Cramer-Rao bound",
+    "CRLB",
+    "information inequality"
+  ],
+  "tags": [
+    "glossary",
+    "Cramér-Rao",
+    "bound",
+    "unbiased"
+  ],
+  "story": [
+    "The Cramér–Rao bound on Wikipedia is an inequality: no unbiased estimator can beat 1/I(θ) in variance, under interchange-of-derivative regularity. It is a bound, not an estimator.",
+    "MLEs attain it asymptotically in regular exponential families. Biased estimators (James–Stein, smoothing) can beat the bound for MSE — that is the point of shrinkage plates.",
+    "Do not quote CRLB as a confidence interval."
+  ],
+  "deepTitle": "Unbiasedness is the price of admission",
+  "deep": [
+    "If you drop unbiasedness, the bound does not apply (shrinkage).",
+    "If regularity fails (boundary, non-differentiable density), the bound need not hold.",
+    "Multivariate: covariance matrices ordered by I⁻¹.",
+    "TB: an unbiased rare-variant frequency estimator can have huge variance; a Bayes shrinker may have better MSE."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: CRLB as a floor for unbiased variance, versus a shrinkage MSE that is allowed to go under that floor because bias was spent.",
+    "panels": [
+      {
+        "title": "Unbiased var floor",
+        "bars": [
+          {
+            "label": "CRLB",
+            "value": 4
+          },
+          {
+            "label": "MLE~",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "Shrinkage MSE",
+        "bars": [
+          {
+            "label": "CRLB floor",
+            "value": 4
+          },
+          {
+            "label": "JS MSE",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "Not a CI",
+        "bars": [
+          {
+            "label": "bound",
+            "value": 1
+          },
+          {
+            "label": "interval",
+            "value": 8
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Cramér–Rao bound — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Cram%C3%A9r%E2%80%93Rao_bound",
+      "attribution": "English Wikipedia revision 1328181805 (2025-12-18T09:52:39Z). Wikidata Q1138810. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-fisher-info",
+    "stats-fisher-information",
+    "stats-mle",
+    "wiki-james-stein",
+    "wiki-empirical-bayes",
+    "stats-bias-variance"
+  ],
+  "example": {
+    "title": "James–Stein on eight school-like units",
+    "setup": "Someone says shrinkage is illegal because CRLB.",
+    "steps": [
+      {
+        "title": "CRLB assumes unbiasedness",
+        "body": "Stein estimators are biased."
+      },
+      {
+        "title": "MSE can improve",
+        "body": "wiki-james-stein / eight schools."
+      },
+      {
+        "title": "The bound still educates the unbiased class",
+        "body": "Not a veto on Bayes."
+      }
+    ],
+    "takeaway": "Cramér–Rao floors unbiased variance. Bias is a different contract."
+  },
+  "check": [
+    {
+      "id": "cr-def",
+      "kind": "conceptual",
+      "prompt": "Cramér–Rao is:",
+      "choices": [
+        "A p-value",
+        "A lower bound on variance of unbiased estimators under regularity",
+        "A posterior",
+        "An LRT"
+      ],
+      "answer": "A lower bound on variance of unbiased estimators under regularity",
+      "why": "Bound.",
+      "whyWrong": {
+        "A p-value": "No.",
+        "A posterior": "No.",
+        "An LRT": "No."
+      }
+    },
+    {
+      "id": "cr-bias",
+      "kind": "calculation",
+      "prompt": "A biased shrinkage estimator with MSE below 1/I:",
+      "choices": [
+        "Contradicts mathematics",
+        "Does not contradict CRLB, because the bound's unbiasedness assumption was dropped",
+        "Proves I=0",
+        "Proves Wilks failed"
+      ],
+      "answer": "Does not contradict CRLB, because the bound's unbiasedness assumption was dropped",
+      "why": "Panel two.",
+      "whyWrong": {
+        "Contradicts mathematics": "No.",
+        "Proves I=0": "No.",
+        "Proves Wilks failed": "No."
+      }
+    },
+    {
+      "id": "cr-figure",
+      "kind": "figure",
+      "prompt": "Panel three exists to teach:",
+      "choices": [
+        "That CRLB is a 95% CI",
+        "That a variance bound is not an interval estimate",
+        "That JS is a CI",
+        "That MLE is FDR"
+      ],
+      "answer": "That a variance bound is not an interval estimate",
+      "why": "Not a CI panel.",
+      "whyWrong": {
+        "That CRLB is a 95% CI": "Opposite.",
+        "That JS is a CI": "No.",
+        "That MLE is FDR": "No."
+      },
+      "figureHint": "Third panel title."
+    }
+  ]
+}

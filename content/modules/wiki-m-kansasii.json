@@ -1,0 +1,176 @@
+{
+  "id": "wiki-m-kansasii",
+  "title": "M. kansasii as a TB-mimic NTM",
+  "dek": "Photochromogen that can look like pulmonary TB. Wikipedia species node. Not MTBC, not automatically HRZE.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium kansasii",
+    "M. kansasii",
+    "photochromogen TB mimic"
+  ],
+  "tags": [
+    "glossary",
+    "NTM",
+    "kansasii",
+    "mimic"
+  ],
+  "story": [
+    "M. kansasii on Wikipedia is a slow-growing photochromogen NTM famous for fibrocavitary lung disease that mimics TB. Tap water is a reservoir in many telling.",
+    "NAATs for MTBC should be negative. If a smear-positive cavity is 'TB until proven otherwise', proven otherwise is a species name.",
+    "Older regimens borrowed rifampin/INH/EMB from TB; that borrowing is IDSA-era NTM practice, not a reason to file it under tb-first-line. No doses here."
+  ],
+  "deepTitle": "Mimic, not member",
+  "deep": [
+    "Photochromogenicity is a Runyon clue, not a barcode.",
+    "rpoB sequences from kansasii will break MTBC catalogues.",
+    "TST can be positive; IGRA less so — infection-test plates.",
+    "Do not call it 'atypical TB' on a legal report. Name the species."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Cavity plus AFB forks into MTBC versus kansasii-like NTM. The mimic is why speciation exists.",
+    "nodes": [
+      {
+        "id": "cav",
+        "label": "Cavity + AFB",
+        "x": 12,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "naat",
+        "label": "MTBC NAAT",
+        "x": 40,
+        "y": 45,
+        "tone": "decision"
+      },
+      {
+        "id": "tb",
+        "label": "MTBC disease",
+        "x": 70,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "kan",
+        "label": "kansasii / NTM",
+        "x": 70,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cav",
+        "to": "naat"
+      },
+      {
+        "from": "naat",
+        "to": "tb",
+        "label": "detected"
+      },
+      {
+        "from": "naat",
+        "to": "kan",
+        "label": "not detected"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium kansasii — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_kansasii",
+      "attribution": "English Wikipedia revision 1368895368 (2026-08-11T18:05:42Z). Wikidata Q4044720. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ntm-glossary",
+    "wiki-mac",
+    "tb-ntm",
+    "tb-diagnosis",
+    "tb-smear-culture",
+    "wiki-m-abscessus"
+  ],
+  "example": {
+    "title": "Photochromogen, Xpert negative",
+    "setup": "Cavitary disease, yellow pigment after light.",
+    "steps": [
+      {
+        "title": "Believe the fork",
+        "body": "Not MTBC by NAAT."
+      },
+      {
+        "title": "Name kansasii if the barcode says so",
+        "body": "Mimic explained."
+      },
+      {
+        "title": "Do not copy 2HRZE by reflex",
+        "body": "NTM plate/guidance."
+      }
+    ],
+    "takeaway": "Kansasii is a mimic. Mimics still need their own name."
+  },
+  "check": [
+    {
+      "id": "kan-mimic",
+      "kind": "conceptual",
+      "prompt": "M. kansasii is dangerous to TB programmes because it:",
+      "choices": [
+        "Is MTBC lineage 1",
+        "Can mimic cavitary TB while remaining NTM",
+        "Always lights Ultra MTB detected",
+        "Is BCG"
+      ],
+      "answer": "Can mimic cavitary TB while remaining NTM",
+      "why": "Mimic.",
+      "whyWrong": {
+        "Is MTBC lineage 1": "No.",
+        "Always lights Ultra MTB detected": "Should not.",
+        "Is BCG": "No."
+      }
+    },
+    {
+      "id": "kan-naat",
+      "kind": "calculation",
+      "prompt": "Xpert not detected, photochromogen NTM identified. HRZE:",
+      "choices": [
+        "Is mandatory because cavities are TB",
+        "Is the wrong disease label; treat as named NTM per NTM guidance",
+        "Is TPT",
+        "Is an IGRA"
+      ],
+      "answer": "Is the wrong disease label; treat as named NTM per NTM guidance",
+      "why": "Wrong disease.",
+      "whyWrong": {
+        "Is mandatory because cavities are TB": "Cavities have a differential.",
+        "Is TPT": "No.",
+        "Is an IGRA": "No."
+      }
+    },
+    {
+      "id": "kan-figure",
+      "kind": "figure",
+      "prompt": "The 'not detected' edge from NAAT lands on:",
+      "choices": [
+        "MTBC disease",
+        "kansasii / NTM",
+        "The cavity start as a drug",
+        "Photochromogen as RD1"
+      ],
+      "answer": "kansasii / NTM",
+      "why": "Lower end.",
+      "whyWrong": {
+        "MTBC disease": "Detected edge.",
+        "The cavity start as a drug": "No.",
+        "Photochromogen as RD1": "No."
+      },
+      "figureHint": "Lower end node."
+    }
+  ]
+}

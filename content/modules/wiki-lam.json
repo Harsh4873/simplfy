@@ -1,0 +1,186 @@
+{
+  "id": "wiki-lam",
+  "title": "Lipoarabinomannan as a named amphiphile",
+  "dek": "LAM/ManLAM on Wikipedia is an envelope glycolipid. Urine LF-LAM as a diagnostic is tb-lf-lam.",
+  "domain": "tb",
+  "aliases": [
+    "lipoarabinomannan",
+    "ManLAM",
+    "LAM Wikipedia",
+    "LAM antigen"
+  ],
+  "tags": [
+    "glossary",
+    "lipid",
+    "LAM",
+    "envelope"
+  ],
+  "story": [
+    "Lipoarabinomannan on Wikipedia is a phosphatidylinositol-anchored glycolipid in the mycobacterial envelope, mannose-capped (ManLAM) in pathogenic species in the usual telling, and a modulator of innate recognition.",
+    "Urine lateral-flow LAM is a diagnostic that detects fragments of this molecule in advanced HIV. That assay has a clinic plate. This card is the molecule the strip is trying to see.",
+    "Do not confuse envelope LAM with the LF-LAM brand names, or with lipopolysaccharide from Gram-negatives."
+  ],
+  "deepTitle": "Molecule versus strip",
+  "deep": [
+    "PIM/LM/LAM biosynthetic steps are research-layer; INH they are not.",
+    "Immune modulation stories (TLR, mannose receptor) are pointers, not DST.",
+    "LF-LAM sensitivity is a function of burden and CD4, on tb-lf-lam.",
+    "Sputum LAM assays are a different product class if they appear on Wikipedia later."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Envelope molecule in the middle; urine strip as a diagnostic side-door that only fires in the right host context.",
+    "nodes": [
+      {
+        "id": "env",
+        "label": "Envelope",
+        "group": "target",
+        "x": 14,
+        "y": 36,
+        "sub": "PIM/LAM"
+      },
+      {
+        "id": "lam",
+        "label": "LAM",
+        "group": "enzyme",
+        "x": 42,
+        "y": 36,
+        "sub": "this node"
+      },
+      {
+        "id": "inn",
+        "label": "Innate receptors",
+        "group": "target",
+        "x": 72,
+        "y": 18,
+        "sub": "modulation"
+      },
+      {
+        "id": "urine",
+        "label": "Urine LF-LAM",
+        "group": "drug",
+        "x": 72,
+        "y": 70,
+        "sub": "tb-lf-lam"
+      }
+    ],
+    "edges": [
+      {
+        "from": "env",
+        "to": "lam"
+      },
+      {
+        "from": "lam",
+        "to": "inn"
+      },
+      {
+        "from": "lam",
+        "to": "urine",
+        "label": "fragments"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Lipoarabinomannan — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Lipoarabinomannan",
+      "attribution": "English Wikipedia revision 1354379017 (2026-05-16T01:37:06Z). Wikidata Q6556678. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-lf-lam",
+    "tb-cell-envelope",
+    "tb-hiv-synergy",
+    "wiki-mycolic-acid",
+    "wiki-cord-factor",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "LF-LAM negative, CD4 450, cavities",
+    "setup": "Team says 'Wikipedia LAM excludes TB'.",
+    "steps": [
+      {
+        "title": "Strip needs context",
+        "body": "Sensitivity is poor when CD4 is preserved."
+      },
+      {
+        "title": "Molecule still exists in the envelope",
+        "body": "Absence of urine antigen is not absence of Mtb."
+      },
+      {
+        "title": "Use mWRD on sputum",
+        "body": "tb-diagnosis."
+      }
+    ],
+    "takeaway": "LAM is a molecule. LF-LAM is a situational strip."
+  },
+  "check": [
+    {
+      "id": "lam-mol",
+      "kind": "conceptual",
+      "prompt": "LAM in this studio is primarily:",
+      "choices": [
+        "A WHO Group A drug",
+        "An envelope glycolipid; urine LF-LAM is a diagnostic that detects fragments of it",
+        "An rpoB codon",
+        "A BCG strain"
+      ],
+      "answer": "An envelope glycolipid; urine LF-LAM is a diagnostic that detects fragments of it",
+      "why": "Molecule vs assay.",
+      "whyWrong": {
+        "A WHO Group A drug": "No.",
+        "An rpoB codon": "No.",
+        "A BCG strain": "No."
+      }
+    },
+    {
+      "id": "lam-cd4",
+      "kind": "calculation",
+      "prompt": "Urine LF-LAM is most useful as a disease test when:",
+      "choices": [
+        "CD4 is high and the Wikipedia page is open",
+        "Advanced immunosuppression / high burden contexts as on the LF-LAM clinic plate",
+        "TST is 0 mm",
+        "The isolate is M. bovis only"
+      ],
+      "answer": "Advanced immunosuppression / high burden contexts as on the LF-LAM clinic plate",
+      "why": "Hand-off.",
+      "whyWrong": {
+        "CD4 is high and the Wikipedia page is open": "Wrong context.",
+        "TST is 0 mm": "Unrelated.",
+        "The isolate is M. bovis only": "No."
+      }
+    },
+    {
+      "id": "lam-figure",
+      "kind": "figure",
+      "prompt": "The urine node is labelled tb-lf-lam because:",
+      "choices": [
+        "LAM the molecule is the strip",
+        "The diagnostic interpretation lives on the clinic plate",
+        "Urine LAM is an IGRA",
+        "Envelope equals DST"
+      ],
+      "answer": "The diagnostic interpretation lives on the clinic plate",
+      "why": "Side door.",
+      "whyWrong": {
+        "LAM the molecule is the strip": "Molecule ≠ kit.",
+        "Urine LAM is an IGRA": "No.",
+        "Envelope equals DST": "No."
+      },
+      "figureHint": "Lower right node."
+    }
+  ]
+}

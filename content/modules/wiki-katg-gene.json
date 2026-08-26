@@ -1,0 +1,184 @@
+{
+  "id": "wiki-katg-gene",
+  "title": "Catalase–peroxidase as the INH-activating enzyme node",
+  "dek": "Wikipedia catalase page plus KatG identity. Alleles and INH doses stay on tb-katg-inha / tb-isoniazid.",
+  "domain": "tb",
+  "aliases": [
+    "KatG Wikipedia",
+    "catalase peroxidase Mtb",
+    "Rv1908c encyclopedia"
+  ],
+  "tags": [
+    "glossary",
+    "gene",
+    "KatG",
+    "INH"
+  ],
+  "story": [
+    "Catalase on Wikipedia is a peroxide-dismantling enzyme. Mtb's KatG is a catalase–peroxidase that also activates isoniazid — a dual-use protein that textbooks love and DST lives on.",
+    "Simplfy already walks S315T and inhA promoter on dedicated plates. This card is the encyclopedia enzyme name so a catalase search does not invent a new INH monograph.",
+    "Loss of catalase activity is a lab phenotype that sometimes accompanies katG loss-of-function. It is not a WHO dose."
+  ],
+  "deepTitle": "Activation versus target",
+  "deep": [
+    "INH–NAD adduct against InhA is the target story (tb-isoniazid, tb-mycolates).",
+    "KatG S315T is a common compromise allele: enough catalase to live, less INH activation.",
+    "ETH/InhA is a different activation path (EthA) — do not merge because both mention InhA.",
+    "No INH milligrams here."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Prodrug in, KatG activation, InhA block. Wikipedia names catalase; clinic plates name the alleles.",
+    "nodes": [
+      {
+        "id": "inh",
+        "label": "INH prodrug",
+        "group": "drug",
+        "x": 12,
+        "y": 40
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 42,
+        "y": 40,
+        "sub": "this node"
+      },
+      {
+        "id": "add",
+        "label": "INH–NAD",
+        "group": "enzyme",
+        "x": 70,
+        "y": 40
+      },
+      {
+        "id": "inha",
+        "label": "InhA / FAS-II",
+        "group": "target",
+        "x": 92,
+        "y": 40,
+        "sub": "tb-isoniazid"
+      }
+    ],
+    "edges": [
+      {
+        "from": "inh",
+        "to": "katg",
+        "label": "activate"
+      },
+      {
+        "from": "katg",
+        "to": "add"
+      },
+      {
+        "from": "add",
+        "to": "inha",
+        "label": "block"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Catalase — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Catalase",
+      "attribution": "English Wikipedia revision 1369750040 (2026-08-16T22:44:29Z). Wikidata Q12824566. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-katg-inha",
+    "tb-isoniazid",
+    "tb-mycolates",
+    "tb-ethionamide",
+    "tb-etha",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Catalase-negative colony, INH-R",
+    "setup": "Student stops at the Wikipedia catalase article.",
+    "steps": [
+      {
+        "title": "Phenotype is a hint",
+        "body": "KatG loss can drop catalase and INH activation together."
+      },
+      {
+        "title": "Name the allele on the clinic plate",
+        "body": "S315T vs deletion vs other."
+      },
+      {
+        "title": "InhA still exists as a separate path",
+        "body": "ETH/high-level INH stories."
+      }
+    ],
+    "takeaway": "Catalase is the encyclopedia enzyme. katG alleles are the DST object."
+  },
+  "check": [
+    {
+      "id": "katg-enz",
+      "kind": "conceptual",
+      "prompt": "KatG in TB teaching is:",
+      "choices": [
+        "An IGRA antigen",
+        "A catalase–peroxidase that activates INH",
+        "rpoB",
+        "LAM"
+      ],
+      "answer": "A catalase–peroxidase that activates INH",
+      "why": "Enzyme node.",
+      "whyWrong": {
+        "An IGRA antigen": "No.",
+        "rpoB": "RIF.",
+        "LAM": "No."
+      }
+    },
+    {
+      "id": "katg-s315",
+      "kind": "calculation",
+      "prompt": "S315T interpretation belongs on:",
+      "choices": [
+        "This catalase glossary alone",
+        "tb-katg-inha / catalogue, with WHO for whether INH remains usable",
+        "BCG RD1",
+        "QFT tubes"
+      ],
+      "answer": "tb-katg-inha / catalogue, with WHO for whether INH remains usable",
+      "why": "Hand-off.",
+      "whyWrong": {
+        "This catalase glossary alone": "No.",
+        "BCG RD1": "No.",
+        "QFT tubes": "No."
+      }
+    },
+    {
+      "id": "katg-figure",
+      "kind": "figure",
+      "prompt": "InhA / FAS-II is labelled tb-isoniazid because:",
+      "choices": [
+        "KatG is InhA",
+        "The target/drug plate already exists; this card is the activator",
+        "INH is catalase itself",
+        "FAS-II is rpoB"
+      ],
+      "answer": "The target/drug plate already exists; this card is the activator",
+      "why": "Right node.",
+      "whyWrong": {
+        "KatG is InhA": "Different proteins.",
+        "INH is catalase itself": "No.",
+        "FAS-II is rpoB": "No."
+      },
+      "figureHint": "Rightmost node."
+    }
+  ]
+}

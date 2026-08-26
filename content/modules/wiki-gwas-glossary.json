@@ -1,0 +1,161 @@
+{
+  "id": "wiki-gwas-glossary",
+  "title": "GWAS as a Wikipedia history-and-convention node",
+  "dek": "HapMap-era mountain of SNP tests, 5×10⁻⁸ folklore, Manhattan plots. The per-SNP GLM and kinship already live on stats-gwas.",
+  "domain": "stats",
+  "aliases": [
+    "GWAS Wikipedia",
+    "genome-wide association study",
+    "SNP association encyclopedia"
+  ],
+  "tags": [
+    "glossary",
+    "GWAS",
+    "history",
+    "convention"
+  ],
+  "story": [
+    "Wikipedia's GWAS article is a history-and-convention node: common SNPs, array then imputation, a mountain of association tests, Manhattan and Q–Q plots, the 5×10⁻⁸ p-value folklore from ~1 million independent common-SNP tests.",
+    "stats-gwas already says the per-SNP model is a GLM plus structure. stats-population-structure and stats-fdr own the two usual lies (iid tests, one error language). This card is the encyclopedia object students search first.",
+    "Bacterial GWAS is not human GWAS with smaller n. Clonality makes 'independent SNPs' a fiction — the existing plate already growled; this card points there."
+  ],
+  "deepTitle": "Convention versus likelihood",
+  "deep": [
+    "5×10⁻⁸ is not Wilks and not a Bayes factor.",
+    "Genomic inflation λ_GC is a bulk-null check, not a likelihood.",
+    "Replication in a new lineage is a scientific hold-out, not a software option.",
+    "Rare-variant burden tests are a different Wikipedia neighbour."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Encyclopedia GWAS as history/convention, then the statistical objects Simplfy already named.",
+    "layers": [
+      {
+        "title": "Wikipedia GWAS",
+        "nodes": [
+          "history",
+          "5e-8"
+        ]
+      },
+      {
+        "title": "Per SNP",
+        "nodes": [
+          "GLM",
+          "score"
+        ]
+      },
+      {
+        "title": "Structure",
+        "nodes": [
+          "PCs",
+          "kinship"
+        ]
+      },
+      {
+        "title": "Error",
+        "nodes": [
+          "FWER-ish",
+          "FDR"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Genome-wide association study — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Genome-wide_association_study",
+      "attribution": "English Wikipedia revision 1369614805 (2026-08-16T02:00:35Z). Wikidata Q1098876. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-gwas",
+    "wiki-manhattan",
+    "wiki-ld",
+    "wiki-hwe",
+    "stats-population-structure",
+    "stats-fdr",
+    "wiki-qq"
+  ],
+  "example": {
+    "title": "Mtb GWAS, p<5e-8, no kinship",
+    "setup": "Peak sits on a lineage-defining SNP.",
+    "steps": [
+      {
+        "title": "Human convention travelled illegally",
+        "body": "Independent-SNP FWER is a bad costume."
+      },
+      {
+        "title": "Open stats-gwas / population-structure",
+        "body": "Kinship or tree."
+      },
+      {
+        "title": "Lineage tags are not 'the gene'",
+        "body": "LD/clonality."
+      }
+    ],
+    "takeaway": "GWAS is a mountain of tests. Bacterial clonality is not HapMap."
+  },
+  "check": [
+    {
+      "id": "gwas-hist",
+      "kind": "conceptual",
+      "prompt": "This glossary treats Wikipedia GWAS as:",
+      "choices": [
+        "A replacement for stats-gwas' GLM",
+        "A history/convention node (arrays, 5e-8, Manhattan) that must hand off to the GLM/structure plates",
+        "A tree prior",
+        "A DST catalogue"
+      ],
+      "answer": "A history/convention node (arrays, 5e-8, Manhattan) that must hand off to the GLM/structure plates",
+      "why": "History node.",
+      "whyWrong": {
+        "A replacement for stats-gwas' GLM": "Hand-off.",
+        "A tree prior": "No.",
+        "A DST catalogue": "No."
+      }
+    },
+    {
+      "id": "gwas-5e8",
+      "kind": "calculation",
+      "prompt": "5×10⁻⁸ in human common-SNP GWAS is closest to:",
+      "choices": [
+        "BH q=0.05 exactly always",
+        "A FWER-ish convention for a large number of roughly independent tests, not a likelihood identity",
+        "Wilks k=8",
+        "A Poisson offset"
+      ],
+      "answer": "A FWER-ish convention for a large number of roughly independent tests, not a likelihood identity",
+      "why": "Convention.",
+      "whyWrong": {
+        "BH q=0.05 exactly always": "Different contract.",
+        "Wilks k=8": "No.",
+        "A Poisson offset": "No."
+      }
+    },
+    {
+      "id": "gwas-figure",
+      "kind": "figure",
+      "prompt": "PCs/kinship sit on 'structure' because:",
+      "choices": [
+        "They are Manhattan plots",
+        "They are how you stop lineage/population from being the entire peak",
+        "They are 5e-8",
+        "They are Newick only"
+      ],
+      "answer": "They are how you stop lineage/population from being the entire peak",
+      "why": "Third layer.",
+      "whyWrong": {
+        "They are Manhattan plots": "Display.",
+        "They are 5e-8": "Convention.",
+        "They are Newick only": "Trees are a related structure model."
+      },
+      "figureHint": "Structure layer."
+    }
+  ]
+}

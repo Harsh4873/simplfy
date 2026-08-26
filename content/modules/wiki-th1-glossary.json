@@ -1,0 +1,159 @@
+{
+  "id": "wiki-th1-glossary",
+  "title": "Th1 as the helper-cell programme",
+  "dek": "Wikipedia's T helper 1 page is the CD4 programme that talks in IFN-γ. HIV's CD4 loss is the common phenocopy.",
+  "domain": "tb",
+  "aliases": [
+    "Th1",
+    "T helper 1",
+    "type 1 immunity",
+    "CD4 Th1"
+  ],
+  "tags": [
+    "glossary",
+    "T cell",
+    "Th1",
+    "CD4"
+  ],
+  "story": [
+    "Th1 on Wikipedia is a CD4 T-cell polarisation: T-bet, IFN-γ, help for macrophages. TB textbooks treat it as the canonical helpful programme against Mtb.",
+    "HIV depletes CD4 cells and scrambles this help — the common acquired phenocopy of Mendelian IFN-γ defects. That is already a Simplfy HIV plate; this card is the helper-subset name.",
+    "Th2/Th17/Treg exist on neighbouring encyclopedia pages. Do not turn a TB course into a complete T-cell atlas here; just keep Th1 as a graph node that points at IFN-γ, IL-12, and granulomas."
+  ],
+  "deepTitle": "Programme, not a stain that diagnoses TB",
+  "deep": [
+    "Counting Th1 cells in blood is not a WRD.",
+    "BCG and subunit vaccines aim, in different ways, at this programme. Efficacy still comes from trials, not from the Th1 infobox.",
+    "Exhaustion and tissue-resident memory are research-layer words; they do not change DST.",
+    "Anti-TNF and corticosteroids hurt the neighbourhood of this programme by different doors."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Th1 as a named CD4 programme sitting between IL-12 licence and IFN-γ output.",
+    "layers": [
+      {
+        "title": "CD4 T cell",
+        "nodes": [
+          "naive"
+        ]
+      },
+      {
+        "title": "Licence",
+        "nodes": [
+          "IL-12",
+          "T-bet"
+        ]
+      },
+      {
+        "title": "Programme",
+        "nodes": [
+          "Th1"
+        ]
+      },
+      {
+        "title": "Output",
+        "nodes": [
+          "IFN-γ",
+          "macrophage help"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "T helper cell — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/T_helper_cell",
+      "attribution": "English Wikipedia revision 1370482803 (2026-08-21T10:29:43Z). Wikidata Q632518. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ifng-glossary",
+    "wiki-il12-glossary",
+    "tb-host-ifng",
+    "tb-hiv-synergy",
+    "tb-tnf-cd4",
+    "tb-granuloma"
+  ],
+  "example": {
+    "title": "Low CD4, negative TST",
+    "setup": "Someone calls the TST 'proof of no TB' because Th1 should always react.",
+    "steps": [
+      {
+        "title": "Anergy is expected",
+        "body": "The programme that makes the skin test is depleted."
+      },
+      {
+        "title": "Disease tests still run",
+        "body": "Ultra, LAM, culture."
+      },
+      {
+        "title": "Th1 Wikipedia is not a sensitivity table",
+        "body": "See se/sp plates for numbers."
+      }
+    ],
+    "takeaway": "Th1 is a programme you can lose. Losing it blinds infection tests."
+  },
+  "check": [
+    {
+      "id": "th1-job",
+      "kind": "conceptual",
+      "prompt": "Th1 in this studio is:",
+      "choices": [
+        "A mycobacterial species",
+        "A CD4 helper programme whose TB-relevant output is IFN-γ/macrophage help",
+        "A fluoroquinolone",
+        "An acid-fast stain"
+      ],
+      "answer": "A CD4 helper programme whose TB-relevant output is IFN-γ/macrophage help",
+      "why": "Subset name.",
+      "whyWrong": {
+        "A mycobacterial species": "No.",
+        "A fluoroquinolone": "No.",
+        "An acid-fast stain": "No."
+      }
+    },
+    {
+      "id": "th1-hiv",
+      "kind": "calculation",
+      "prompt": "CD4 40 cells/µL makes TST/IGRA:",
+      "choices": [
+        "More specific for cavities",
+        "Liable to false negatives because the helper programme is depleted",
+        "Equivalent to Ultra",
+        "Unnecessary because Th1 counts replace WRDs"
+      ],
+      "answer": "Liable to false negatives because the helper programme is depleted",
+      "why": "Anergy.",
+      "whyWrong": {
+        "More specific for cavities": "Wrong direction.",
+        "Equivalent to Ultra": "Different class.",
+        "Unnecessary because Th1 counts replace WRDs": "No."
+      }
+    },
+    {
+      "id": "th1-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, IFN-γ sits on the:",
+      "choices": [
+        "Licence row",
+        "Output row",
+        "Naive CD4 row only",
+        "T-bet as a drug row"
+      ],
+      "answer": "Output row",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Licence row": "IL-12/T-bet.",
+        "Naive CD4 row only": "Top.",
+        "T-bet as a drug row": "T-bet is a transcription factor."
+      },
+      "figureHint": "Last layer."
+    }
+  ]
+}

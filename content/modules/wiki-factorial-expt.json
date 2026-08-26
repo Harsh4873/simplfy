@@ -1,0 +1,176 @@
+{
+  "id": "wiki-factorial-expt",
+  "title": "Factorial experiment as a named grid",
+  "dek": "Wikipedia factorial: all combinations of factor levels. Interaction geometry stays on stats-factorial.",
+  "domain": "stats",
+  "aliases": [
+    "factorial experiment",
+    "2^k design",
+    "full factorial Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "factorial",
+    "interaction",
+    "design"
+  ],
+  "story": [
+    "A factorial experiment on Wikipedia is a grid: every combination of levels of two or more factors. The point is to estimate interactions rather than one-factor-at-a-time folklore.",
+    "stats-factorial already teaches the interaction contrast. This card is the encyclopedia grid, plus the warning that 'factorial ANOVA' in software is not the same as having designed the grid.",
+    "Fractional factorials alias interactions on purpose. If you did not plan the aliasing, you do not get to discover it in the discussion section."
+  ],
+  "deepTitle": "Grid versus one-at-a-time",
+  "deep": [
+    "2^k is the two-level celebrity. Mixed levels exist.",
+    "Blocking a replicate of a factorial is a DoE composition, not a new religion.",
+    "In TB labs: drug A × pH × inoculum as a grid is how you stop attributing pH to the drug.",
+    "GWAS is not a designed factorial of SNPs."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Two-by-two teaching grid: main effects versus a true interaction. Bars are schematic means, not data.",
+    "panels": [
+      {
+        "title": "A off",
+        "bars": [
+          {
+            "label": "B−",
+            "value": 2
+          },
+          {
+            "label": "B+",
+            "value": 3
+          }
+        ]
+      },
+      {
+        "title": "A on",
+        "bars": [
+          {
+            "label": "B−",
+            "value": 4
+          },
+          {
+            "label": "B+",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "One-at-a-time miss",
+        "bars": [
+          {
+            "label": "see B− only",
+            "value": 2
+          },
+          {
+            "label": "miss +5",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Factorial experiment — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Factorial_experiment",
+      "attribution": "English Wikipedia revision 1369540635 (2026-08-15T16:16:56Z). Wikidata Q4116558. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-factorial",
+    "wiki-doe",
+    "stats-blocking",
+    "wiki-anova",
+    "wiki-latin-square"
+  ],
+  "example": {
+    "title": "INH effect at pH 6.8 only",
+    "setup": "Someone claims no pH interaction because they never ran pH 5.5 × INH.",
+    "steps": [
+      {
+        "title": "You did not build the grid",
+        "body": "Factorial page."
+      },
+      {
+        "title": "Caseum is acidic",
+        "body": "tb-caseum is why the missing cell matters."
+      },
+      {
+        "title": "Do not estimate an interaction you did not sample",
+        "body": "Design."
+      }
+    ],
+    "takeaway": "A factorial is a grid you actually ran, not a software option."
+  },
+  "check": [
+    {
+      "id": "fac-grid",
+      "kind": "conceptual",
+      "prompt": "A factorial experiment is:",
+      "choices": [
+        "Always one-factor-at-a-time",
+        "A design that runs combinations of factor levels so interactions are estimable",
+        "An FDR",
+        "A Newick tree"
+      ],
+      "answer": "A design that runs combinations of factor levels so interactions are estimable",
+      "why": "Grid.",
+      "whyWrong": {
+        "Always one-factor-at-a-time": "Opposite.",
+        "An FDR": "No.",
+        "A Newick tree": "No."
+      }
+    },
+    {
+      "id": "fac-frac",
+      "kind": "calculation",
+      "prompt": "A half-fraction of a 2^k aliases some interactions. If you did not plan that:",
+      "choices": [
+        "Software will unalias them with ANOVA words",
+        "Those effects are entangled; you cannot pretend you estimated them separately",
+        "Wilks unaliases them",
+        "BH unaliases them"
+      ],
+      "answer": "Those effects are entangled; you cannot pretend you estimated them separately",
+      "why": "Aliasing is design, not a p-value.",
+      "whyWrong": {
+        "Software will unalias them with ANOVA words": "No.",
+        "Wilks unaliases them": "No.",
+        "BH unaliases them": "No."
+      }
+    },
+    {
+      "id": "fac-figure",
+      "kind": "figure",
+      "prompt": "Panel two (A on) versus panel one shows:",
+      "choices": [
+        "No interaction (parallel +1)",
+        "A larger B effect when A is on (interaction)",
+        "An FDR q-value",
+        "A Poisson offset"
+      ],
+      "answer": "A larger B effect when A is on (interaction)",
+      "why": "2→3 versus 4→9.",
+      "whyWrong": {
+        "No interaction (parallel +1)": "The jumps differ.",
+        "An FDR q-value": "No.",
+        "A Poisson offset": "No."
+      },
+      "figureHint": "Compare B+ minus B− across panels."
+    }
+  ]
+}

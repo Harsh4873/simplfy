@@ -1,0 +1,174 @@
+{
+  "id": "wiki-diagnosis-glossary",
+  "title": "TB diagnosis as an encyclopedia index",
+  "dek": "Wikipedia's diagnosis-of-tuberculosis page is a menu of test names. WHO mWRD-first grammar stays on tb-diagnosis.",
+  "domain": "tb",
+  "aliases": [
+    "diagnosis of tuberculosis",
+    "TB diagnosis Wikipedia",
+    "TB tests list"
+  ],
+  "tags": [
+    "glossary",
+    "diagnosis",
+    "index",
+    "WRD"
+  ],
+  "story": [
+    "Wikipedia's Diagnosis of tuberculosis article is a list: smear, culture, NAAT, IGRA, imaging, LAM. Useful as an index of names. Dangerous as a sequence, because it will not consistently put a WHO-recommended rapid molecular test first.",
+    "Simplfy's tb-diagnosis plate is the programme spine. This card exists so searches for the encyclopedia title land on that spine via related[].",
+    "Mixing infection tests into a disease-diagnosis list is the usual Wikipedia drift. Keep TST/IGRA on their own nodes."
+  ],
+  "deepTitle": "Index versus algorithm",
+  "deep": [
+    "Pediatric stool WRD and urine LAM are clinic-module objects.",
+    "CAD for CXR is tb-cxr-cad.",
+    "Do not treat a 'list of tests' as Bayesian updating — see stats predictive-value plates for that math.",
+    "Culture remains the DST workhorse even when NAATs front the door."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Encyclopedia index of names, then the WHO-shaped split Simplfy actually uses: disease diagnostics versus infection tests.",
+    "layers": [
+      {
+        "title": "Wikipedia index",
+        "nodes": [
+          "diagnosis page"
+        ]
+      },
+      {
+        "title": "Disease class",
+        "nodes": [
+          "smear",
+          "NAAT",
+          "culture",
+          "LAM"
+        ]
+      },
+      {
+        "title": "Infection class",
+        "nodes": [
+          "TST",
+          "IGRA"
+        ]
+      },
+      {
+        "title": "Simplfy spine",
+        "nodes": [
+          "tb-diagnosis"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Diagnosis of tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Diagnosis_of_tuberculosis",
+      "attribution": "English Wikipedia revision 1360942959 (2026-06-24T16:46:33Z). Wikidata Q4888238. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-xpert-ultra",
+    "tb-smear-culture",
+    "tb-lf-lam",
+    "tb-igra-tst",
+    "wiki-genexpert",
+    "wiki-ziehl-neelsen",
+    "stats-predictive-values"
+  ],
+  "example": {
+    "title": "Lead sentence lists IGRA beside Xpert",
+    "setup": "Student designs a 'TB diagnosis panel' that starts with QFT.",
+    "steps": [
+      {
+        "title": "Split the classes",
+        "body": "Infection versus disease."
+      },
+      {
+        "title": "mWRD first for disease suspicion",
+        "body": "tb-diagnosis."
+      },
+      {
+        "title": "Keep the encyclopedia as an index",
+        "body": "Names, not order."
+      }
+    ],
+    "takeaway": "A list of tests is not an algorithm."
+  },
+  "check": [
+    {
+      "id": "dx-idx",
+      "kind": "conceptual",
+      "prompt": "This plate treats Wikipedia's diagnosis article as:",
+      "choices": [
+        "The WHO algorithm",
+        "An index of test names that must be split into disease versus infection classes",
+        "A DST catalogue",
+        "A TPT dosing table"
+      ],
+      "answer": "An index of test names that must be split into disease versus infection classes",
+      "why": "Index card.",
+      "whyWrong": {
+        "The WHO algorithm": "tb-diagnosis.",
+        "A DST catalogue": "No.",
+        "A TPT dosing table": "No."
+      }
+    },
+    {
+      "id": "dx-first",
+      "kind": "calculation",
+      "prompt": "Cough, cavity, HIV. First test class:",
+      "choices": [
+        "IGRA",
+        "mWRD/NAAT (and appropriate specimens), not an infection test first",
+        "Only TST",
+        "Only Wikipedia list order"
+      ],
+      "answer": "mWRD/NAAT (and appropriate specimens), not an infection test first",
+      "why": "WHO spine.",
+      "whyWrong": {
+        "IGRA": "Wrong class.",
+        "Only TST": "Wrong class.",
+        "Only Wikipedia list order": "May bury the WRD."
+      }
+    },
+    {
+      "id": "dx-figure",
+      "kind": "figure",
+      "prompt": "TST and IGRA sit on which hierarchy row?",
+      "choices": [
+        "Disease class",
+        "Infection class",
+        "Simplfy spine only",
+        "Wikipedia index as a drug"
+      ],
+      "answer": "Infection class",
+      "why": "Third layer.",
+      "whyWrong": {
+        "Disease class": "Smear/NAAT/culture/LAM.",
+        "Simplfy spine only": "Bottom.",
+        "Wikipedia index as a drug": "Top is the page."
+      },
+      "figureHint": "Third layer title."
+    }
+  ]
+}

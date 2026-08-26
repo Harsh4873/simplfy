@@ -1,0 +1,182 @@
+{
+  "id": "wiki-mtb-organism",
+  "title": "M. tuberculosis as a Wikipedia taxon",
+  "dek": "Live sitelink is Wikidata Q130971 (not the stale Q130737 seed). A taxon page is a name, a stain, and a genome pointer — not DST.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium tuberculosis",
+    "Mtb taxon",
+    "Q130971",
+    "Koch bacillus",
+    "acid-fast bacillus Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "taxonomy",
+    "Wikidata",
+    "organism"
+  ],
+  "story": [
+    "The English Wikipedia page Mycobacterium tuberculosis currently sitelinks to Wikidata Q130971. A task seed of Q130737 does not resolve to this taxon on live Wikidata (that QID is a fossil synapsid). The lesson is the same as in a mis-keyed accession: check the sitelink, not the anecdote.",
+    "The taxon page is a glossary: actinobacterium, acid-fast, slow growth, Robert Koch 1882, H37Rv as a common laboratory reference. Those names already have deeper Simplfy plates (organism envelope, H37Rv genome, acid-fast stain). This card exists so the encyclopedia node can sit in the concept map without pretending to be a cell-wall monograph.",
+    "MTBC membership is a different Wikipedia page and a different QID (complex Q5779917). Xpert still answers MTBC, not this taxon. Do not let a species infobox overwrite a cartridge."
+  ],
+  "deepTitle": "Sitelinks, stale QIDs, and what a taxon page will not do",
+  "deep": [
+    "Always prefer the sitelink on the article you actually read. Q-numbers drift in memory; titles plus revision IDs do not.",
+    "Laboratory strain H37Rv is a reference genome, not a clinical median. Wikipedia will mention it; the genome plate is where PE/PPE and ESX live.",
+    "Growth '4–8 weeks on solid media' is a glossary fact. MGIT time-to-positivity is a different object (liquid, automated, not a Wikipedia doubling-time).",
+    "Do not take MIC ranges or critical concentrations from a taxon infobox."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "What the taxon page is allowed to name, versus what it must hand off to existing tb-* plates. Size is teaching weight on this glossary card, not citation count.",
+    "terms": [
+      {
+        "label": "Q130971 sitelink",
+        "weight": 10
+      },
+      {
+        "label": "acid-fast",
+        "weight": 8
+      },
+      {
+        "label": "slow grower",
+        "weight": 7
+      },
+      {
+        "label": "H37Rv pointer",
+        "weight": 8
+      },
+      {
+        "label": "Koch 1882",
+        "weight": 6
+      },
+      {
+        "label": "not DST",
+        "weight": 9
+      },
+      {
+        "label": "not 2HRZE",
+        "weight": 8
+      },
+      {
+        "label": "MTBC ≠ this taxon",
+        "weight": 9
+      },
+      {
+        "label": "stale Q130737",
+        "weight": 7
+      },
+      {
+        "label": "envelope → tb-organism",
+        "weight": 8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis",
+      "attribution": "English Wikipedia revision 1369641830 (2026-08-16T06:04:48Z). Wikidata Q130971. Taxon glossary; live Wikidata Q130971. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-mtbc",
+    "tb-h37rv-genome",
+    "tb-cell-envelope",
+    "wiki-tuberculosis",
+    "wiki-mtbc-members",
+    "wiki-koch",
+    "wiki-acid-fast"
+  ],
+  "example": {
+    "title": "The Q130737 seed",
+    "setup": "A knowledge ticket says 'Wikidata Q130737 = M. tuberculosis'. Live SPARQL returns Moschops. Wikipedia's M. tuberculosis sitelink is Q130971.",
+    "steps": [
+      {
+        "title": "Do not trust a memorised QID",
+        "body": "Resolve the English sitelink on the page you ingested. That is the identifier the revision stamp belongs to."
+      },
+      {
+        "title": "Write the mismatch down",
+        "body": "The ledger should record that the seed Q130737 did not match the taxon, so future ingest does not 'correct' Q130971 back to a synapsid."
+      },
+      {
+        "title": "Keep DST off the taxon card",
+        "body": "Nothing about this identifier fight changes rpoB S450L."
+      }
+    ],
+    "takeaway": "Sitelink beats folklore. Taxon beats neither WHO nor the catalogue."
+  },
+  "check": [
+    {
+      "id": "mtb-qid",
+      "kind": "conceptual",
+      "prompt": "On live English Wikipedia, Mycobacterium tuberculosis sitelinks to which Wikidata item?",
+      "choices": [
+        "Q12204",
+        "Q130737",
+        "Q130971",
+        "Q798309"
+      ],
+      "answer": "Q130971",
+      "why": "Q12204 is the disease, Q130737 is not this taxon, Q798309 is BCG vaccine.",
+      "whyWrong": {
+        "Q12204": "That is tuberculosis-the-disease.",
+        "Q130737": "Stale seed; live Wikidata uses that QID for Moschops.",
+        "Q798309": "BCG vaccine."
+      }
+    },
+    {
+      "id": "mtb-xpert",
+      "kind": "calculation",
+      "prompt": "A cartridge reports MTB detected. Using only the taxon page, you can conclude:",
+      "choices": [
+        "The isolate is M. tuberculosis sensu stricto Q130971",
+        "MTBC nucleic acid is present; this taxon page does not speciate among the complex",
+        "The isolate is BCG",
+        "PZA is susceptible because Wikipedia lists Mtb as PZA-treatable"
+      ],
+      "answer": "MTBC nucleic acid is present; this taxon page does not speciate among the complex",
+      "why": "Same rule as the MTBC clinic plate: NAAT ≠ species.",
+      "whyWrong": {
+        "The isolate is M. tuberculosis sensu stricto Q130971": "Xpert does not output a QID.",
+        "The isolate is BCG": "Not from an MTB-detected call.",
+        "PZA is susceptible because Wikipedia lists Mtb as PZA-treatable": "PZA is a WHO/DST question, and M. bovis is intrinsically R."
+      }
+    },
+    {
+      "id": "mtb-figure",
+      "kind": "figure",
+      "prompt": "On the constellation plate, what does 'stale Q130737' mark?",
+      "choices": [
+        "The official NCBI taxonomy id for Mtb",
+        "A seed identifier that does not currently sitelink to this taxon",
+        "The rpoB RRDR",
+        "The H37Rv accession"
+      ],
+      "answer": "A seed identifier that does not currently sitelink to this taxon",
+      "why": "The plate is teaching identifier hygiene.",
+      "whyWrong": {
+        "The official NCBI taxonomy id for Mtb": "Different database.",
+        "The rpoB RRDR": "DST object.",
+        "The H37Rv accession": "Genome plate."
+      },
+      "figureHint": "Look for the stale-Q term."
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "wiki-phagosome",
+  "title": "Phagosome as the vacuole Mtb argues with",
+  "dek": "Wikipedia's phagosome page is the organelle. ESX-1 membrane damage and arrest of maturation stay on tb-phagosome-arrest.",
+  "domain": "tb",
+  "aliases": [
+    "phagosome",
+    "phagolysosome",
+    "vacuole",
+    "endosome TB"
+  ],
+  "tags": [
+    "glossary",
+    "organelle",
+    "phagosome",
+    "intracellular"
+  ],
+  "story": [
+    "A phagosome on Wikipedia is the vesicle formed around eaten cargo, expected to mature toward a degradative phagolysosome. That default is what Mtb interrupts.",
+    "Simplfy already has a mechanism plate for phagosome arrest. This card is the organelle name so the concept map can point at that mechanism without pasting it.",
+    "ESX-1 / ESAT-6 damage to the phagosomal membrane is a TB-specific plot twist — esx and esat6 plates — not a generic encyclopedia phagocytosis cartoon."
+  ],
+  "deepTitle": "Default path versus bacterial veto",
+  "deep": [
+    "Markers (Rab5, Rab7, LAMP-1) are how cell biologists argue about arrest. They are not clinical tests.",
+    "Cytosolic contact after membrane damage is a research-layer object with STING/type I IFN stories; do not turn it into a DST.",
+    "Drugs that need acidic niches (PZA folklore adjacent) should still be dosed from WHO, with lesion PK on caseum plates.",
+    "Autophagy cross-talk is neighbouring literature, not a cartridge."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Default maturation downward; Mtb veto sideways toward arrest or membrane damage. Those vetoes are other plates.",
+    "nodes": [
+      {
+        "id": "up",
+        "label": "Uptake",
+        "x": 10,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "early",
+        "label": "Early phagosome",
+        "x": 36,
+        "y": 40,
+        "tone": "process"
+      },
+      {
+        "id": "lyso",
+        "label": "Phagolysosome",
+        "x": 68,
+        "y": 18,
+        "tone": "end",
+        "detail": "default"
+      },
+      {
+        "id": "arrest",
+        "label": "Arrested vacuole",
+        "x": 68,
+        "y": 48,
+        "tone": "decision",
+        "detail": "tb-phagosome-arrest"
+      },
+      {
+        "id": "dmg",
+        "label": "Membrane damage",
+        "x": 68,
+        "y": 80,
+        "tone": "end",
+        "detail": "ESX-1"
+      }
+    ],
+    "edges": [
+      {
+        "from": "up",
+        "to": "early"
+      },
+      {
+        "from": "early",
+        "to": "lyso",
+        "label": "default"
+      },
+      {
+        "from": "early",
+        "to": "arrest",
+        "label": "Mtb veto"
+      },
+      {
+        "from": "early",
+        "to": "dmg",
+        "label": "ESX-1"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Phagosome — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Phagosome",
+      "attribution": "English Wikipedia revision 1368887284 (2026-08-11T17:10:37Z). Wikidata Q901955. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-phagosome-arrest",
+    "tb-esx-secretion",
+    "wiki-esat6",
+    "wiki-macrophage",
+    "tb-pathogenesis"
+  ],
+  "example": {
+    "title": "Why 'eaten' is not 'dead'",
+    "setup": "A student reads that macrophages phagocytose Mtb and concludes infection is cleared at the door.",
+    "steps": [
+      {
+        "title": "Name the organelle",
+        "body": "Uptake makes a phagosome, not a grave."
+      },
+      {
+        "title": "Name the veto",
+        "body": "Arrest/damage plates explain survival."
+      },
+      {
+        "title": "Granuloma is downstream",
+        "body": "Failed intracellular killing becomes a tissue programme."
+      }
+    ],
+    "takeaway": "Phagosome is the argument's venue. Mtb often wins the first round."
+  },
+  "check": [
+    {
+      "id": "ph-def",
+      "kind": "conceptual",
+      "prompt": "A phagosome is:",
+      "choices": [
+        "A mycobacterial outer lipid",
+        "The host vacuole around ingested cargo, normally maturing toward degradation",
+        "A NAAT target",
+        "A first-line drug"
+      ],
+      "answer": "The host vacuole around ingested cargo, normally maturing toward degradation",
+      "why": "Organelle.",
+      "whyWrong": {
+        "A mycobacterial outer lipid": "PDIM/LAM etc.",
+        "A NAAT target": "No.",
+        "A first-line drug": "No."
+      }
+    },
+    {
+      "id": "ph-veto",
+      "kind": "calculation",
+      "prompt": "Mtb surviving inside macrophages after uptake is best explained by:",
+      "choices": [
+        "There being no phagosome in lungs",
+        "Arrest of maturation and/or phagosomal membrane damage, not by Wikipedia's default cartoon",
+        "Immediate sterilizing BCG at the door",
+        "RIF in the Wikipedia infobox"
+      ],
+      "answer": "Arrest of maturation and/or phagosomal membrane damage, not by Wikipedia's default cartoon",
+      "why": "Hand-off to mechanism plates.",
+      "whyWrong": {
+        "There being no phagosome in lungs": "False.",
+        "Immediate sterilizing BCG at the door": "False.",
+        "RIF in the Wikipedia infobox": "No."
+      }
+    },
+    {
+      "id": "ph-figure",
+      "kind": "figure",
+      "prompt": "The default end of the flow map is:",
+      "choices": [
+        "Membrane damage",
+        "Phagolysosome",
+        "Uptake",
+        "Arrested vacuole"
+      ],
+      "answer": "Phagolysosome",
+      "why": "Upper end, labelled default.",
+      "whyWrong": {
+        "Membrane damage": "ESX-1 end.",
+        "Uptake": "Start.",
+        "Arrested vacuole": "Veto."
+      },
+      "figureHint": "Upper right end."
+    }
+  ]
+}

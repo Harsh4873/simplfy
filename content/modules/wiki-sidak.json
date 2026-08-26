@@ -1,0 +1,170 @@
+{
+  "id": "wiki-sidak",
+  "title": "Šidák correction as a named independent-FWER cousin",
+  "dek": "1−(1−α)^{1/m} per test. Wikipedia independence recipe. Slightly sharper than Bonferroni when independence is real.",
+  "domain": "stats",
+  "aliases": [
+    "Sidak correction",
+    "Šidák correction",
+    "Sidak adjustment"
+  ],
+  "tags": [
+    "glossary",
+    "Sidak",
+    "FWER",
+    "independence"
+  ],
+  "story": [
+    "Šidák on Wikipedia is the exact FWER recipe if tests are independent: P(all true nulls kept) = (1−α')^m, so α' = 1−(1−α)^{1/m}. For small α/m it is almost Bonferroni.",
+    "LD and shared isolates violate independence. Then Šidák's exactness evaporates and you are back to 'maybe Bonferroni's union bound is the honest conservative thing, or permute'.",
+    "This card exists so a methods sentence that says Šidák is a named choice, not a mysterious SAS checkbox."
+  ],
+  "deepTitle": "Independence is doing the work",
+  "deep": [
+    "For α=0.05, m=100, Bonferroni 0.0005; Šidák ≈ 0.000513. The gain is tiny; the assumption is not.",
+    "Positive dependence usually makes FWER smaller than the independent calculation — but do not bet a paper on that vibe.",
+    "Holm can use Šidák steps too (Holm–Šidák).",
+    "GWAS 5e-8 is not Šidák of 0.05 on 1e6 exactly in every paper; it is a convention."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Tiny gap between Bonferroni and Šidák thresholds versus a large gap if you refuse the independence story (schematic).",
+    "panels": [
+      {
+        "title": "m=100 α=0.05 cut×10^4",
+        "bars": [
+          {
+            "label": "Bonf",
+            "value": 5
+          },
+          {
+            "label": "Sidak",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "Independence true?",
+        "bars": [
+          {
+            "label": "iid tests",
+            "value": 9
+          },
+          {
+            "label": "LD/clonal",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "Then what",
+        "bars": [
+          {
+            "label": "permute",
+            "value": 8
+          },
+          {
+            "label": "pretend iid",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Šidák correction — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/%C5%A0id%C3%A1k_correction",
+      "attribution": "English Wikipedia revision 1332116048 (2026-01-10T00:13:27Z). Wikidata Q17143690. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-bonferroni",
+    "wiki-fwer",
+    "wiki-multiple-comparisons",
+    "stats-multiple-testing",
+    "stats-gwas"
+  ],
+  "example": {
+    "title": "SAS default Šidák on 8,000 correlated genes",
+    "setup": "Team thinks they bought exact FWER.",
+    "steps": [
+      {
+        "title": "Independence was the lemma's fuel",
+        "body": "You do not have it."
+      },
+      {
+        "title": "Bonferroni still bounds FWER without independence",
+        "body": "Union bound."
+      },
+      {
+        "title": "Permutation of a structured null is the adult move",
+        "body": "stats-permutation."
+      }
+    ],
+    "takeaway": "Šidák is an independence FWER recipe. Correlation spends that exactness."
+  },
+  "check": [
+    {
+      "id": "sid-ind",
+      "kind": "conceptual",
+      "prompt": "Šidák's exact FWER control leans on:",
+      "choices": [
+        "Arbitrary dependence",
+        "Independence of the tests (or a specific dependence the formula assumes)",
+        "A prior on π0",
+        "A molecular clock"
+      ],
+      "answer": "Independence of the tests (or a specific dependence the formula assumes)",
+      "why": "Fuel.",
+      "whyWrong": {
+        "Arbitrary dependence": "That's closer to Bonferroni's bound.",
+        "A prior on π0": "Storey.",
+        "A molecular clock": "No."
+      }
+    },
+    {
+      "id": "sid-num",
+      "kind": "calculation",
+      "prompt": "m=2, α=0.05. Šidák α' = 1−√0.95 ≈:",
+      "choices": [
+        "0.025",
+        "0.0253 (slightly above Bonferroni 0.025)",
+        "0.05",
+        "5e-8"
+      ],
+      "answer": "0.0253 (slightly above Bonferroni 0.025)",
+      "why": "1-(1-α)^{1/2}.",
+      "whyWrong": {
+        "0.025": "That's Bonferroni.",
+        "0.05": "Uncorrected.",
+        "5e-8": "GWAS."
+      }
+    },
+    {
+      "id": "sid-figure",
+      "kind": "figure",
+      "prompt": "Panel two's 'LD/clonal' bar is low because:",
+      "choices": [
+        "Independence is then a good description",
+        "Dependence makes the iid Šidák story a poor description of the tests",
+        "Šidák forbids GWAS",
+        "Bonferroni requires LD"
+      ],
+      "answer": "Dependence makes the iid Šidák story a poor description of the tests",
+      "why": "Independence true? panel.",
+      "whyWrong": {
+        "Independence is then a good description": "Opposite.",
+        "Šidák forbids GWAS": "No.",
+        "Bonferroni requires LD": "No."
+      },
+      "figureHint": "Middle panel."
+    }
+  ]
+}

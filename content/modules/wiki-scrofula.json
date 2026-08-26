@@ -1,0 +1,194 @@
+{
+  "id": "wiki-scrofula",
+  "title": "Scrofula as a named lymph-node TB",
+  "dek": "An old word for tuberculous cervical lymphadenitis. Useful as a search alias. Not a separate pathogen and not a king's-touch protocol.",
+  "domain": "tb",
+  "aliases": [
+    "scrofula",
+    "king's evil",
+    "tuberculous cervical lymphadenitis",
+    "scrofulous"
+  ],
+  "tags": [
+    "glossary",
+    "lymph node",
+    "EPTB",
+    "history"
+  ],
+  "story": [
+    "Scrofula is Wikipedia's historical name for tuberculous cervical lymphadenitis ('king's evil' in older English). The organism is still MTBC. The specimen is still a node. The NAAT is still a WRD if you obtain tissue or an aspirate correctly.",
+    "Nontuberculous mycobacteria cause a pediatric lymphadenitis that can mimic the same word. That is why the NTM plate sits in related[] — the English name is older than the speciation.",
+    "Do not treat a Wikipedia etymology as a reason to skip HIV testing, chest imaging, or microbiology. Cervical nodes are a site, not a syndrome that ends the work-up."
+  ],
+  "deepTitle": "Alias, then specimen",
+  "deep": [
+    "BCG lymphadenitis in an infant is a different epidemiologic object that can share the neck.",
+    "Fistulae and scrofuloderma are cutaneous extensions; they are still TB disease.",
+    "Fine-needle aspiration versus excision is a surgical/ID judgement, not an encyclopedia dose.",
+    "RIF status still comes from Ultra/culture/WGS, not from the Old English."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "The word scrofula forks into MTBC node disease, NTM node disease, and BCG adenitis. The word does not choose the fork.",
+    "nodes": [
+      {
+        "id": "neck",
+        "label": "Cervical nodes",
+        "x": 12,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "word",
+        "label": "Called scrofula",
+        "x": 38,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "mtbc",
+        "label": "MTBC EPTB",
+        "x": 68,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "ntm",
+        "label": "NTM adenitis",
+        "x": 68,
+        "y": 48,
+        "tone": "end"
+      },
+      {
+        "id": "bcg",
+        "label": "BCG adenitis",
+        "x": 68,
+        "y": 80,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "neck",
+        "to": "word"
+      },
+      {
+        "from": "word",
+        "to": "mtbc",
+        "label": "speciation"
+      },
+      {
+        "from": "word",
+        "to": "ntm"
+      },
+      {
+        "from": "word",
+        "to": "bcg",
+        "label": "infant + vax"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterial cervical lymphadenitis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterial_cervical_lymphadenitis",
+      "attribution": "English Wikipedia revision 1345547493 (2026-03-26T17:51:34Z). Wikidata Q4678337. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-extrapulmonary",
+    "tb-extrapulmonary-dx",
+    "tb-ntm",
+    "tb-bcg-rd1",
+    "tb-pediatric-dx",
+    "wiki-ntm-glossary"
+  ],
+  "example": {
+    "title": "Toddler, neck mass, BCG last month",
+    "setup": "Team writes 'scrofula, start HRZE'.",
+    "steps": [
+      {
+        "title": "Age and timing",
+        "body": "BCG adenitis is on the differential; the old word does not exclude it."
+      },
+      {
+        "title": "Speciate",
+        "body": "NAAT/culture/histology before a four-drug pulmonary narrative."
+      },
+      {
+        "title": "If MTBC disease, stage the chest",
+        "body": "Node TB can coexist with pulmonary disease."
+      }
+    ],
+    "takeaway": "Scrofula is an alias for a neck. Microbiology still speaks."
+  },
+  "check": [
+    {
+      "id": "scr-alias",
+      "kind": "conceptual",
+      "prompt": "Scrofula in modern use is best treated as:",
+      "choices": [
+        "A distinct mycobacterial species",
+        "A historical alias for tuberculous cervical lymphadenitis, pending speciation",
+        "Proof of RIF-R",
+        "A viral exanthem"
+      ],
+      "answer": "A historical alias for tuberculous cervical lymphadenitis, pending speciation",
+      "why": "Name, then fork.",
+      "whyWrong": {
+        "A distinct mycobacterial species": "Still MTBC when tuberculous.",
+        "Proof of RIF-R": "No.",
+        "A viral exanthem": "No."
+      }
+    },
+    {
+      "id": "scr-ntm",
+      "kind": "calculation",
+      "prompt": "A 3-year-old with unilateral cervical nodes, no pulmonary findings, NTM on culture. The Wikipedia word scrofula:",
+      "choices": [
+        "Forces HRZE",
+        "Does not override NTM therapy logic on the NTM plate",
+        "Proves BCG-osis",
+        "Proves TBM"
+      ],
+      "answer": "Does not override NTM therapy logic on the NTM plate",
+      "why": "The word is older than the split.",
+      "whyWrong": {
+        "Forces HRZE": "Wrong organism class.",
+        "Proves BCG-osis": "Need BCG speciation.",
+        "Proves TBM": "Wrong site."
+      }
+    },
+    {
+      "id": "scr-figure",
+      "kind": "figure",
+      "prompt": "How many clinically distinct ends leave the 'called scrofula' node?",
+      "choices": [
+        "One",
+        "Three (MTBC, NTM, BCG)",
+        "Zero",
+        "Five WHO groups"
+      ],
+      "answer": "Three (MTBC, NTM, BCG)",
+      "why": "Three end nodes.",
+      "whyWrong": {
+        "One": "Look at the forks.",
+        "Zero": "No.",
+        "Five WHO groups": "Drug groups, not this figure."
+      },
+      "figureHint": "Count end tones."
+    }
+  ]
+}

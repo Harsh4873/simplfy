@@ -1,0 +1,164 @@
+{
+  "id": "wiki-m-caprae",
+  "title": "M. caprae as a goat-associated MTBC name",
+  "dek": "A Wikipedia animal-adapted neighbour of M. bovis. Still MTBC. Still not an NTM. Still a speciation problem for NAATs.",
+  "domain": "tb",
+  "aliases": [
+    "Mycobacterium caprae",
+    "goat TB",
+    "M. caprae"
+  ],
+  "tags": [
+    "glossary",
+    "zoonosis",
+    "MTBC"
+  ],
+  "story": [
+    "M. caprae appears on Wikipedia as an animal-adapted MTBC member historically tied to goats and other ungulates, and as a cause of zoonotic human TB in regions that keep those animals.",
+    "The lab trap is identical to bovis: MTBC-positive NAAT, then a human pulmonary prior that assumes Mtb sensu stricto. Caprae is not a subspecies you can ignore in a barcode.",
+    "Do not merge caprae into bovis in a clinical report just because both are 'bovine-ish'. Names exist so surveillance and PZA/intrinsic-resistance logic stay honest."
+  ],
+  "deepTitle": "Neighbour, not synonym",
+  "deep": [
+    "RD patterns sit with the animal-adapted clade (RD9 lost). Confirm with SNPs, not with a single farm history.",
+    "WHO disease treatment is still TB treatment once species and DST are known; the epithet is not a fourth drug.",
+    "Wildlife and livestock names on Wikipedia are epidemiologic hints. They do not replace an interview.",
+    "tb-mtbc remains the barcode plate; this card is the named leaf."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Caprae as a labeled animal-adapted leaf beside bovis — same complex, different name, same NAAT lamp.",
+    "layers": [
+      {
+        "title": "MTBC",
+        "nodes": [
+          "complex"
+        ]
+      },
+      {
+        "title": "Animal-adapted",
+        "nodes": [
+          "bovis",
+          "caprae",
+          "orygis"
+        ]
+      },
+      {
+        "title": "Human specimen",
+        "nodes": [
+          "NAAT+",
+          "WGS name",
+          "DST"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium caprae — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_caprae",
+      "attribution": "English Wikipedia revision 1288117731 (2025-04-30T15:22:03Z). Wikidata Q6946997. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium tuberculosis complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex",
+      "attribution": "English Wikipedia revision 1368846963 (2026-08-11T11:48:07Z). Wikidata Q5779917. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-m-bovis",
+    "wiki-mtbc-members",
+    "wiki-m-orygis",
+    "tb-mtbc",
+    "tb-pnca"
+  ],
+  "example": {
+    "title": "Goat farm, MTB detected",
+    "setup": "Cervical node, RIF not detected, SNP barcode caprae.",
+    "steps": [
+      {
+        "title": "Believe the leaf",
+        "body": "This is MTBC disease with a zoonotic name."
+      },
+      {
+        "title": "Do not write 'atypical mycobacteria'",
+        "body": "Caprae is not MAC."
+      },
+      {
+        "title": "DST next",
+        "body": "Species is not a susceptibility result except where intrinsic rules exist."
+      }
+    ],
+    "takeaway": "Caprae is a roster line, not a smear comment."
+  },
+  "check": [
+    {
+      "id": "cap-ntm",
+      "kind": "conceptual",
+      "prompt": "M. caprae is:",
+      "choices": [
+        "An NTM like M. kansasii",
+        "An animal-adapted MTBC member that can cause human TB",
+        "A BCG strain",
+        "A fungus"
+      ],
+      "answer": "An animal-adapted MTBC member that can cause human TB",
+      "why": "Wikipedia roster plus clinic NAAT logic.",
+      "whyWrong": {
+        "An NTM like M. kansasii": "Wrong complex.",
+        "A BCG strain": "BCG is a bovis derivative.",
+        "A fungus": "No."
+      }
+    },
+    {
+      "id": "cap-rd9",
+      "kind": "calculation",
+      "prompt": "RD9 deleted, not BCG (RD1 present), ungulate exposure. Compatible with:",
+      "choices": [
+        "Mtb L4",
+        "Animal-adapted MTBC such as caprae/bovis pending SNPs",
+        "M. abscessus",
+        "Virus"
+      ],
+      "answer": "Animal-adapted MTBC such as caprae/bovis pending SNPs",
+      "why": "RD9 loss is the clade; SNPs split the leaves.",
+      "whyWrong": {
+        "Mtb L4": "RD9 present.",
+        "M. abscessus": "NTM.",
+        "Virus": "No."
+      }
+    },
+    {
+      "id": "cap-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, what sits between MTBC and the human specimen row?",
+      "choices": [
+        "A viral capsid",
+        "Animal-adapted names including caprae",
+        "Only H37Rv",
+        "Only MAC"
+      ],
+      "answer": "Animal-adapted names including caprae",
+      "why": "Middle layer.",
+      "whyWrong": {
+        "A viral capsid": "No.",
+        "Only H37Rv": "H37Rv is a lab Mtb strain.",
+        "Only MAC": "NTM."
+      },
+      "figureHint": "Second layer."
+    }
+  ]
+}

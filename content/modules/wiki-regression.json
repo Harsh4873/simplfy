@@ -1,0 +1,168 @@
+{
+  "id": "wiki-regression",
+  "title": "Regression analysis as a Wikipedia category node",
+  "dek": "An encyclopedia family: mean maps, residuals, many named children. OLS/GLM plates already own the geometry you actually fit.",
+  "domain": "stats",
+  "aliases": [
+    "regression analysis",
+    "Category:Regression analysis",
+    "regression Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "regression",
+    "category",
+    "mean"
+  ],
+  "story": [
+    "Wikipedia's Regression analysis article (and the category it sits in) is a family name: you are modelling E[Y | X] (or a quantile, or a robust location) as a function of covariates. Named children — OLS, GLM, logistic, Poisson, Cox, mixed models — already have Simplfy plates or sibling glossary cards.",
+    "The encyclopedia will happily mix predictive 'curve fitting' with causal 'effect of X'. This studio splits those: confounding/DAGs and potential outcomes are other plates. A regression category page is not a research design.",
+    "NIST remains definitional authority for least squares as a computational object. Wikipedia is the graph of names."
+  ],
+  "deepTitle": "Family versus child plate",
+  "deep": [
+    "Linearity can mean linear in parameters (OLS) or a linear predictor inside a link (GLM). Category pages blur that.",
+    "Regularisation (ridge/lasso) is a child with a bias–variance plate nearby.",
+    "Do not report a Wikipedia 'regression' as if it specified a likelihood.",
+    "TB-lab examples still live on the child plates (logit for R/S, Poisson for counts)."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Category node, then children Simplfy already treats in depth, then the causal fork the encyclopedia often skips.",
+    "layers": [
+      {
+        "title": "Category",
+        "nodes": [
+          "regression"
+        ]
+      },
+      {
+        "title": "Mean maps",
+        "nodes": [
+          "OLS",
+          "GLM",
+          "quantile"
+        ]
+      },
+      {
+        "title": "Simplfy children",
+        "nodes": [
+          "stats-ols-glm",
+          "stats-logit"
+        ]
+      },
+      {
+        "title": "Not in the mean map",
+        "nodes": [
+          "DAGs",
+          "design"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Regression analysis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Regression_analysis",
+      "attribution": "English Wikipedia revision 1347668389 (2026-04-08T01:36:14Z). Wikidata Q208042. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-ols-glm",
+    "stats-ols-geometry",
+    "stats-glm-link",
+    "stats-logit",
+    "wiki-ols",
+    "wiki-glm",
+    "stats-confounding",
+    "wiki-logistic"
+  ],
+  "example": {
+    "title": "Methods: 'we used regression'",
+    "setup": "A GWAS paper, no GLM, no kinship, no link.",
+    "steps": [
+      {
+        "title": "Family name is underspecified",
+        "body": "Which likelihood, which mean map."
+      },
+      {
+        "title": "Open the child plate you actually ran",
+        "body": "Often a SNP-wise GLM — stats-gwas."
+      },
+      {
+        "title": "If the claim is causal, open DAGs",
+        "body": "Category pages will not save you."
+      }
+    ],
+    "takeaway": "Regression is a family. Write the child."
+  },
+  "check": [
+    {
+      "id": "reg-fam",
+      "kind": "conceptual",
+      "prompt": "Wikipedia regression analysis is used here as:",
+      "choices": [
+        "A complete causal identification strategy",
+        "A family/category node whose children have likelihoods on other plates",
+        "An LRT by itself",
+        "A DST catalogue"
+      ],
+      "answer": "A family/category node whose children have likelihoods on other plates",
+      "why": "Category card.",
+      "whyWrong": {
+        "A complete causal identification strategy": "DAGs/design.",
+        "An LRT by itself": "stats-lrt.",
+        "A DST catalogue": "No."
+      }
+    },
+    {
+      "id": "reg-lin",
+      "kind": "calculation",
+      "prompt": "A Poisson GLM with log link is linear in:",
+      "choices": [
+        "The mean λ on the count scale always",
+        "The linear predictor η = log λ, not necessarily in λ",
+        "The residuals of OLS by definition",
+        "The Wikipedia category title"
+      ],
+      "answer": "The linear predictor η = log λ, not necessarily in λ",
+      "why": "Linearity fork.",
+      "whyWrong": {
+        "The mean λ on the count scale always": "Log is nonlinear on λ.",
+        "The residuals of OLS by definition": "Different child.",
+        "The Wikipedia category title": "No."
+      }
+    },
+    {
+      "id": "reg-figure",
+      "kind": "figure",
+      "prompt": "DAGs sit off the mean-map rows because:",
+      "choices": [
+        "DAGs are OLS",
+        "Identification is not the same object as a mean map",
+        "Wikipedia forbids DAGs",
+        "GLMs are DAGs"
+      ],
+      "answer": "Identification is not the same object as a mean map",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "DAGs are OLS": "No.",
+        "Wikipedia forbids DAGs": "No.",
+        "GLMs are DAGs": "No."
+      },
+      "figureHint": "Last layer."
+    }
+  ]
+}

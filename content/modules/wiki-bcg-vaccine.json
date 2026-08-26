@@ -1,0 +1,176 @@
+{
+  "id": "wiki-bcg-vaccine",
+  "title": "BCG vaccine as an encyclopedia object",
+  "dek": "Calmette and Guérin, daughter strains, childhood meningitis protection. RD1 genetics stay on tb-bcg-rd1; this card is the vaccine node.",
+  "domain": "tb",
+  "aliases": [
+    "BCG vaccine",
+    "Bacillus Calmette-Guerin",
+    "Calmette",
+    "Q798309"
+  ],
+  "tags": [
+    "glossary",
+    "vaccine",
+    "BCG",
+    "history"
+  ],
+  "story": [
+    "Wikipedia's BCG vaccine page (Q798309; the Bacillus Calmette–Guérin title redirects here) is a public-health node: a live M. bovis derivative, given to neonates in many programmes, better at preventing childhood miliary disease and meningitis than adult cavities.",
+    "Daughter strains (Pasteur, Danish, Tokyo, Russia, Moreau) are a Wikipedia graph of extra RD losses. That graph is why a single RD PCR is not a full strain ID — the genetics plate already said so; this card names the strains as encyclopedia objects.",
+    "Efficacy-by-latitude stories, NTM sensitisation, and bladder instillation for urothelial carcinoma all live on the page. None of them is TPT. None of them is a four-drug backbone."
+  ],
+  "deepTitle": "What this node must not steal from WHO",
+  "deep": [
+    "Contraindications in untreated advanced HIV and MSMD are clinical policy. Follow WHO/national EPI sheets, not the talk page.",
+    "BCG-osis is an immunodeficiency until proven otherwise — same sentence as tb-bcg-rd1, linked rather than restated as a protocol.",
+    "New subunit vaccines (M72/AS01E and others) are not BCG. Keep them off this node.",
+    "TST cross-reactivity is why IGRAs exist. That hand-off goes to wiki-igra-glossary and tb-igra-tst."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Encyclopedia vaccine node: live bovis derivative, strain family, clinical jobs it does and does not have.",
+    "layers": [
+      {
+        "title": "Parent",
+        "nodes": [
+          "M. bovis"
+        ]
+      },
+      {
+        "title": "Vaccine node",
+        "nodes": [
+          "BCG Q798309"
+        ]
+      },
+      {
+        "title": "Daughters",
+        "nodes": [
+          "Pasteur",
+          "Danish",
+          "Tokyo",
+          "Russia"
+        ]
+      },
+      {
+        "title": "Jobs",
+        "nodes": [
+          "child miliary",
+          "not adult cavity",
+          "not TPT"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "BCG vaccine — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/BCG_vaccine",
+      "attribution": "English Wikipedia revision 1369632407 (2026-08-16T04:29:45Z). Wikidata Q798309. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-bcg-rd1",
+    "tb-mtbc",
+    "tb-igra-tst",
+    "tb-tpt",
+    "tb-meningitis",
+    "tb-miliary",
+    "wiki-m-bovis",
+    "wiki-mantoux"
+  ],
+  "example": {
+    "title": "Adult cavity after childhood BCG",
+    "setup": "A 34-year-old with a cavity, neonatal BCG scar, IGRA positive, Ultra MTB detected.",
+    "steps": [
+      {
+        "title": "BCG did not fail a promise it did not make",
+        "body": "Adult cavitary protection is the weak job on the encyclopedia node."
+      },
+      {
+        "title": "Scar is not a DST",
+        "body": "Treat the Ultra and the culture."
+      },
+      {
+        "title": "Do not skip TPT debates in contacts because 'everyone is vaccinated'",
+        "body": "TPT is a different Wikipedia-adjacent object and a different WHO module."
+      }
+    ],
+    "takeaway": "BCG is a named vaccine node, not sterilizing immunity."
+  },
+  "check": [
+    {
+      "id": "bcg-job",
+      "kind": "conceptual",
+      "prompt": "BCG's most consistent historic job in programmes is:",
+      "choices": [
+        "Sterilizing adult cavitary pulmonary TB",
+        "Reducing childhood TB meningitis and miliary disease",
+        "Replacing TPT",
+        "Diagnosing RIF resistance"
+      ],
+      "answer": "Reducing childhood TB meningitis and miliary disease",
+      "why": "Encyclopedia efficacy pattern; adult cavities are the weak end.",
+      "whyWrong": {
+        "Sterilizing adult cavitary pulmonary TB": "Variable/poor.",
+        "Replacing TPT": "No.",
+        "Diagnosing RIF resistance": "Xpert job."
+      }
+    },
+    {
+      "id": "bcg-qid",
+      "kind": "calculation",
+      "prompt": "BCG vaccine sitelink Q798309 is a:",
+      "choices": [
+        "Disease QID equal to Q12204",
+        "Vaccine item derived from M. bovis, not the TB disease node",
+        "Mtb sensu stricto Q130971",
+        "MAC QID"
+      ],
+      "answer": "Vaccine item derived from M. bovis, not the TB disease node",
+      "why": "Graph hygiene.",
+      "whyWrong": {
+        "Disease QID equal to Q12204": "Different item.",
+        "Mtb sensu stricto Q130971": "Organism.",
+        "MAC QID": "NTM."
+      }
+    },
+    {
+      "id": "bcg-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, 'not TPT' sits on which row?",
+      "choices": [
+        "Parent M. bovis",
+        "Jobs",
+        "Daughters",
+        "Vaccine node title only"
+      ],
+      "answer": "Jobs",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Parent M. bovis": "Top.",
+        "Daughters": "Strain names.",
+        "Vaccine node title only": "Second layer is the QID."
+      },
+      "figureHint": "Last layer."
+    }
+  ]
+}

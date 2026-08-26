@@ -1,0 +1,193 @@
+{
+  "id": "wiki-iris",
+  "title": "IRIS as a named immune-reconstitution syndrome",
+  "dek": "Wikipedia's IRIS page is the HIV-ART unmasking/paradoxical flare. ART timing stays on tb-hiv-art.",
+  "domain": "tb",
+  "aliases": [
+    "IRIS",
+    "immune reconstitution inflammatory syndrome",
+    "TB-IRIS",
+    "paradoxical TB"
+  ],
+  "tags": [
+    "glossary",
+    "HIV",
+    "IRIS",
+    "ART"
+  ],
+  "story": [
+    "IRIS on Wikipedia is a named flare when a reconstituting immune system notices pathogens it had been ignoring. TB-IRIS is unmasking (disease appearing after ART) or paradoxical (known TB worsening after ART).",
+    "This is not microbiologic failure by default and not a reason to stop TB drugs without a work-up. Simplfy's HIV-ART plate owns timing (when to start ART relative to TB therapy).",
+    "Steroids in some paradoxical TBM/IRIS settings are clinic judgement on the meningitis/HIV plates — not an encyclopedia dose."
+  ],
+  "deepTitle": "Flare versus failure",
+  "deep": [
+    "Culture still matters: true failure and DR-TB hide under 'IRIS' labels.",
+    "CD4 rise and viral drop are epidemiologic hints, not pathognomonic tests.",
+    "Cryptococcus IRIS is a neighbour that can share a ward.",
+    "Do not delay ART forever 'to avoid IRIS' against WHO timing evidence — that argument lives on tb-hiv-art."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "ART reconstitution can unmask or paradoxically inflame TB. Distinguish from microbiologic failure.",
+    "nodes": [
+      {
+        "id": "hiv",
+        "label": "Advanced HIV+TB",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "art",
+        "label": "Start ART",
+        "x": 36,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "flare",
+        "label": "Clinical flare",
+        "x": 62,
+        "y": 45,
+        "tone": "decision"
+      },
+      {
+        "id": "iris",
+        "label": "TB-IRIS",
+        "x": 88,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "fail",
+        "label": "True failure/DR",
+        "x": 88,
+        "y": 75,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "hiv",
+        "to": "art"
+      },
+      {
+        "from": "art",
+        "to": "flare"
+      },
+      {
+        "from": "flare",
+        "to": "iris",
+        "label": "reconstitution"
+      },
+      {
+        "from": "flare",
+        "to": "fail",
+        "label": "still culture/DST"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Immune reconstitution inflammatory syndrome — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Immune_reconstitution_inflammatory_syndrome",
+      "attribution": "English Wikipedia revision 1370188597 (2026-08-19T16:55:55Z). Wikidata Q539986. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-hiv-art",
+    "tb-hiv-synergy",
+    "tb-meningitis",
+    "tb-diagnosis",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Week 4 of ART, new lymphadenopathy on HRZE",
+    "setup": "Team wants to switch to BPaLM for 'failure'.",
+    "steps": [
+      {
+        "title": "Name IRIS as a hypothesis",
+        "body": "Timing fits reconstitution."
+      },
+      {
+        "title": "Still exclude DR and other pathogens",
+        "body": "Culture, Ultra, adherence."
+      },
+      {
+        "title": "ART timing plate for the next patient",
+        "body": "tb-hiv-art, not Wikipedia steroids."
+      }
+    ],
+    "takeaway": "IRIS is a named flare. Failure is a microbiologic sentence."
+  },
+  "check": [
+    {
+      "id": "iris-name",
+      "kind": "conceptual",
+      "prompt": "TB-IRIS is:",
+      "choices": [
+        "Proof that HRZE never works in HIV",
+        "A reconstitution flare (unmasking or paradoxical), not automatically drug-resistant failure",
+        "An NTM species",
+        "A cartridge"
+      ],
+      "answer": "A reconstitution flare (unmasking or paradoxical), not automatically drug-resistant failure",
+      "why": "Named syndrome.",
+      "whyWrong": {
+        "Proof that HRZE never works in HIV": "No.",
+        "An NTM species": "No.",
+        "A cartridge": "No."
+      }
+    },
+    {
+      "id": "iris-dst",
+      "kind": "calculation",
+      "prompt": "Paradoxical flare on DS-TB therapy after ART. You still:",
+      "choices": [
+        "Never culture again",
+        "Consider IRIS while still checking adherence, DR, and alternative diagnoses",
+        "Stop ART forever as policy from Wikipedia",
+        "Switch to viomycin because P2176"
+      ],
+      "answer": "Consider IRIS while still checking adherence, DR, and alternative diagnoses",
+      "why": "Both branches on the figure.",
+      "whyWrong": {
+        "Never culture again": "No.",
+        "Stop ART forever as policy from Wikipedia": "Opposite of WHO timing evidence.",
+        "Switch to viomycin because P2176": "No."
+      }
+    },
+    {
+      "id": "iris-figure",
+      "kind": "figure",
+      "prompt": "The lower end node exists to teach:",
+      "choices": [
+        "That IRIS is the only possibility",
+        "That true failure/DR remains on the differential of a flare",
+        "That ART is optional always",
+        "That HIV is NTM"
+      ],
+      "answer": "That true failure/DR remains on the differential of a flare",
+      "why": "Lower end.",
+      "whyWrong": {
+        "That IRIS is the only possibility": "Opposite of two ends.",
+        "That ART is optional always": "No.",
+        "That HIV is NTM": "No."
+      },
+      "figureHint": "Lower right end."
+    }
+  ]
+}

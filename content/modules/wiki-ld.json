@@ -1,0 +1,187 @@
+{
+  "id": "wiki-ld",
+  "title": "Linkage disequilibrium as named allelic association",
+  "dek": "Wikipedia LD: D, D', r² between loci. In Mtb it is often clonality in costume. Fine-mapping and GWAS peaks depend on it.",
+  "domain": "stats",
+  "aliases": [
+    "linkage disequilibrium",
+    "LD",
+    "r-squared SNPs"
+  ],
+  "tags": [
+    "glossary",
+    "LD",
+    "r2",
+    "haplotype"
+  ],
+  "story": [
+    "Linkage disequilibrium on Wikipedia is association between alleles at different loci, measured with D, D', r². In recombining sexual populations it traces haplotype history. In clonal Mtb it often traces lineage.",
+    "A GWAS peak is an LD neighbourhood. Reporting the smallest-p SNP as causal without that sentence is the decoder-ring error on stats-gwas.",
+    "r²=1 means you cannot statistically split the two sites in this sample. Functional follow-up is then obligatory if you care which nucleotide."
+  ],
+  "deepTitle": "Measure versus biology",
+  "deep": [
+    "D' =1 can still have r²<1 because of allele frequencies.",
+    "Population structure inflates LD measures if you mix lineages and call it one population (stats-population-structure).",
+    "Recombination breakpoints in mixed-ancestry NTM/Mtb mosaics make a single LD map a lie.",
+    "Do not 'correct LD' with Bonferroni as if m independent tests."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Two sites, an r² edge, a peak that cannot split them. Lineage can generate the same edge without a causal pair.",
+    "nodes": [
+      {
+        "id": "s1",
+        "label": "site 1",
+        "group": "target",
+        "x": 14,
+        "y": 36
+      },
+      {
+        "id": "s2",
+        "label": "site 2",
+        "group": "target",
+        "x": 14,
+        "y": 70
+      },
+      {
+        "id": "r2",
+        "label": "r² / D'",
+        "group": "enzyme",
+        "x": 42,
+        "y": 52,
+        "sub": "this node"
+      },
+      {
+        "id": "peak",
+        "label": "GWAS peak",
+        "group": "drug",
+        "x": 72,
+        "y": 24
+      },
+      {
+        "id": "lin",
+        "label": "lineage tag",
+        "group": "drug",
+        "x": 72,
+        "y": 76
+      }
+    ],
+    "edges": [
+      {
+        "from": "s1",
+        "to": "r2"
+      },
+      {
+        "from": "s2",
+        "to": "r2"
+      },
+      {
+        "from": "r2",
+        "to": "peak"
+      },
+      {
+        "from": "r2",
+        "to": "lin",
+        "label": "clonal"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Linkage disequilibrium — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Linkage_disequilibrium",
+      "attribution": "English Wikipedia revision 1364124424 (2026-07-14T17:18:13Z). Wikidata Q2064311. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-gwas",
+    "wiki-gwas-glossary",
+    "wiki-manhattan",
+    "wiki-hwe",
+    "stats-population-structure",
+    "stats-trees"
+  ],
+  "example": {
+    "title": "Two perfect r² SNPs, one in a candidate gene",
+    "setup": "Paper names the gene SNP causal.",
+    "steps": [
+      {
+        "title": "r²=1 is non-identifiability in this sample",
+        "body": "This plate."
+      },
+      {
+        "title": "Lineage check",
+        "body": "Both may tag L2."
+      },
+      {
+        "title": "Function/knockout/more recombination",
+        "body": "Not a smaller p."
+      }
+    ],
+    "takeaway": "LD is allelic association. It hides which site, and sometimes which lineage."
+  },
+  "check": [
+    {
+      "id": "ld-def",
+      "kind": "conceptual",
+      "prompt": "LD is:",
+      "choices": [
+        "A p-value",
+        "Association between alleles at different loci (D, D', r²)",
+        "A phylogenetic clock",
+        "A credible interval"
+      ],
+      "answer": "Association between alleles at different loci (D, D', r²)",
+      "why": "Definition.",
+      "whyWrong": {
+        "A p-value": "No.",
+        "A phylogenetic clock": "No.",
+        "A credible interval": "No."
+      }
+    },
+    {
+      "id": "ld-r2",
+      "kind": "calculation",
+      "prompt": "r²=1 between a lineage marker and a candidate SNP means:",
+      "choices": [
+        "The candidate is causal",
+        "You cannot split them statistically in this sample; lineage confounding remains possible",
+        "FDR is 0",
+        "HWE holds"
+      ],
+      "answer": "You cannot split them statistically in this sample; lineage confounding remains possible",
+      "why": "Non-identifiability.",
+      "whyWrong": {
+        "The candidate is causal": "Decoder ring.",
+        "FDR is 0": "No.",
+        "HWE holds": "Different object."
+      }
+    },
+    {
+      "id": "ld-figure",
+      "kind": "figure",
+      "prompt": "The lineage-tag node exists because:",
+      "choices": [
+        "LD only happens in human HapMap",
+        "Clonal structure can generate the same association edge",
+        "r² is a tree",
+        "Peaks are always recombination"
+      ],
+      "answer": "Clonal structure can generate the same association edge",
+      "why": "Lower right.",
+      "whyWrong": {
+        "LD only happens in human HapMap": "No.",
+        "r² is a tree": "No.",
+        "Peaks are always recombination": "Opposite in Mtb."
+      },
+      "figureHint": "Lower right node."
+    }
+  ]
+}

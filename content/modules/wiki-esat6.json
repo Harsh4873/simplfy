@@ -1,0 +1,193 @@
+{
+  "id": "wiki-esat6",
+  "title": "ESAT-6 as a named RD1 antigen",
+  "dek": "EsxA/ESAT-6 on Wikipedia is the peptide IGRAs use and ESX-1 secretes. Secretion-system mechanics stay on tb-esx-secretion.",
+  "domain": "tb",
+  "aliases": [
+    "ESAT-6",
+    "EsxA",
+    "early secreted antigenic target",
+    "CFP-10 partner"
+  ],
+  "tags": [
+    "glossary",
+    "antigen",
+    "RD1",
+    "ESX-1"
+  ],
+  "story": [
+    "ESAT-6 (EsxA) on Wikipedia is a small secreted protein, partnered with CFP-10 (EsxB), encoded in RD1 and exported by ESX-1. BCG lost this locus — which is why IGRAs can ignore most BCG background.",
+    "The protein is also a virulence actor (membrane interaction stories). Simplfy's ESX secretion plate owns that mechanism. This card is the named antigen students see on IGRA package inserts.",
+    "Do not treat ESAT-6 serology folklore as a WRD. The licensed objects are IGRA/TBST and, separately, the secretion system in pathogenesis."
+  ],
+  "deepTitle": "Antigen versus secretion machine",
+  "deep": [
+    "CFP-10 is the heterodimer partner; many IGRAs use both peptides.",
+    "RD1 deletion is the BCG genetics plate.",
+    "Nontuberculous species that keep ESAT-6 homologs can theoretically trouble specificity — clinic IGRA plate territory.",
+    "Recombinant ESAT-6 in research vaccines is not this glossary's protocol."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "RD1 locus → ESX-1 → ESAT-6/CFP-10 → IGRA peptides. Each arrow is a hand-off to an existing deeper plate.",
+    "nodes": [
+      {
+        "id": "rd1",
+        "label": "RD1",
+        "group": "enzyme",
+        "x": 12,
+        "y": 40,
+        "sub": "absent in BCG"
+      },
+      {
+        "id": "esx",
+        "label": "ESX-1",
+        "group": "target",
+        "x": 40,
+        "y": 40,
+        "sub": "tb-esx-secretion"
+      },
+      {
+        "id": "esat",
+        "label": "ESAT-6",
+        "group": "drug",
+        "x": 68,
+        "y": 22,
+        "sub": "this node"
+      },
+      {
+        "id": "cfp",
+        "label": "CFP-10",
+        "group": "drug",
+        "x": 68,
+        "y": 62
+      },
+      {
+        "id": "igra",
+        "label": "IGRA peptides",
+        "group": "target",
+        "x": 92,
+        "y": 40
+      }
+    ],
+    "edges": [
+      {
+        "from": "rd1",
+        "to": "esx"
+      },
+      {
+        "from": "esx",
+        "to": "esat"
+      },
+      {
+        "from": "esx",
+        "to": "cfp"
+      },
+      {
+        "from": "esat",
+        "to": "igra"
+      },
+      {
+        "from": "cfp",
+        "to": "igra"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "ESAT-6 — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/ESAT-6",
+      "attribution": "English Wikipedia revision 1321383035 (2025-11-10T05:38:21Z). Wikidata Q22228705. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-esx-secretion",
+    "tb-bcg-rd1",
+    "tb-igra-tst",
+    "wiki-igra-glossary",
+    "wiki-bcg-vaccine",
+    "tb-pe-ppe"
+  ],
+  "example": {
+    "title": "Why QFT ignores neonatal BCG",
+    "setup": "Explain without restating the whole IGRA clinic plate.",
+    "steps": [
+      {
+        "title": "Name the antigen",
+        "body": "ESAT-6/CFP-10 are RD1."
+      },
+      {
+        "title": "Name the deletion",
+        "body": "BCG lost RD1."
+      },
+      {
+        "title": "Name the limit",
+        "body": "NTM homologs and anergy still exist — clinic plate."
+      }
+    ],
+    "takeaway": "ESAT-6 is the named peptide. RD1 is why BCG goes quiet on IGRAs."
+  },
+  "check": [
+    {
+      "id": "esat-what",
+      "kind": "conceptual",
+      "prompt": "ESAT-6 is:",
+      "choices": [
+        "A fluoroquinolone",
+        "A small RD1-encoded secreted protein used as an IGRA antigen",
+        "PZA itself",
+        "Löwenstein dye"
+      ],
+      "answer": "A small RD1-encoded secreted protein used as an IGRA antigen",
+      "why": "Antigen node.",
+      "whyWrong": {
+        "A fluoroquinolone": "No.",
+        "PZA itself": "No.",
+        "Löwenstein dye": "No."
+      }
+    },
+    {
+      "id": "esat-bcg",
+      "kind": "calculation",
+      "prompt": "BCG vaccination should usually leave an ESAT-6/CFP-10 IGRA:",
+      "choices": [
+        "Strongly positive because PPD is in BCG",
+        "Negative for that antigen pair, because RD1 is deleted in BCG",
+        "RIF-R",
+        "Trace-positive Ultra"
+      ],
+      "answer": "Negative for that antigen pair, because RD1 is deleted in BCG",
+      "why": "The point of the class.",
+      "whyWrong": {
+        "Strongly positive because PPD is in BCG": "PPD is TST, not this pair.",
+        "RIF-R": "No.",
+        "Trace-positive Ultra": "Different test."
+      }
+    },
+    {
+      "id": "esat-figure",
+      "kind": "figure",
+      "prompt": "On the map, ESX-1 is marked tb-esx-secretion because:",
+      "choices": [
+        "ESAT-6 is the secretion machine",
+        "The machine has its own clinic/mechanism plate; this card is the antigen",
+        "RD1 is a stain",
+        "CFP-10 is rpoB"
+      ],
+      "answer": "The machine has its own clinic/mechanism plate; this card is the antigen",
+      "why": "Hand-off.",
+      "whyWrong": {
+        "ESAT-6 is the secretion machine": "ESX-1 is the machine.",
+        "RD1 is a stain": "No.",
+        "CFP-10 is rpoB": "No."
+      },
+      "figureHint": "ESX-1 node subtitle."
+    }
+  ]
+}

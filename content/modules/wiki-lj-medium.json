@@ -1,0 +1,176 @@
+{
+  "id": "wiki-lj-medium",
+  "title": "Löwenstein–Jensen as a named solid medium",
+  "dek": "Egg-based selective agar with a Wikipedia recipe history. Time-to-positivity and MGIT liquid culture stay on tb-smear-culture.",
+  "domain": "tb",
+  "aliases": [
+    "Lowenstein-Jensen",
+    "LJ slant",
+    "Lowenstein Jensen medium"
+  ],
+  "tags": [
+    "glossary",
+    "culture",
+    "media",
+    "LJ"
+  ],
+  "story": [
+    "Löwenstein–Jensen on Wikipedia is the classic egg-based solid medium: malachite green to hold back contaminants, weeks of waiting, rough buff colonies if Mtb grows.",
+    "Modern labs often lead with liquid MGIT for speed and then use solid media as backup or for morphology. The clinic smear/culture plate owns that algorithm. This card names the slant students still see in photos.",
+    "Colony morphology is a hint, not a species. Canettii is smooth; some NTM are rapid growers on the same shelf."
+  ],
+  "deepTitle": "Medium versus detection time",
+  "deep": [
+    "Middlebrook broths are a different Wikipedia/recipe family.",
+    "PZA testing is not an LJ colony color.",
+    "Contamination on LJ is a biosafety and quality story, not a resistance gene.",
+    "Do not delay WRD waiting for pretty slants."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: calendar time versus information. Not a tender between MGIT vendors.",
+    "panels": [
+      {
+        "title": "Calendar wait (schematic)",
+        "bars": [
+          {
+            "label": "LJ",
+            "value": 8
+          },
+          {
+            "label": "MGIT",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "title": "Morphology hint",
+        "bars": [
+          {
+            "label": "LJ",
+            "value": 7
+          },
+          {
+            "label": "NAAT",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "title": "RIF on day 0",
+        "bars": [
+          {
+            "label": "LJ",
+            "value": 1
+          },
+          {
+            "label": "Ultra",
+            "value": 9
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Löwenstein–Jensen medium — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/L%C3%B6wenstein%E2%80%93Jensen_medium",
+      "attribution": "English Wikipedia revision 1354187026 (2026-05-14T21:15:31Z). Wikidata Q3089292. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-smear-culture",
+    "tb-dst-phenotypic",
+    "tb-diagnosis",
+    "wiki-m-canettii",
+    "tb-ntm"
+  ],
+  "example": {
+    "title": "No growth at day 10 on LJ",
+    "setup": "Team signs out 'not TB'.",
+    "steps": [
+      {
+        "title": "LJ is slow",
+        "body": "Mtb often needs more calendar than a pyogenic plate."
+      },
+      {
+        "title": "Liquid culture and NAATs exist",
+        "body": "tb-smear-culture."
+      },
+      {
+        "title": "NTM timing differs",
+        "body": "Rapid growers would have shown."
+      }
+    ],
+    "takeaway": "LJ is a named slant. It is not a 48-hour blood agar."
+  },
+  "check": [
+    {
+      "id": "lj-what",
+      "kind": "conceptual",
+      "prompt": "Löwenstein–Jensen is:",
+      "choices": [
+        "A cartridge NAAT",
+        "A classic egg-based solid medium for mycobacteria",
+        "An IGRA antigen mix",
+        "A TNF blocker"
+      ],
+      "answer": "A classic egg-based solid medium for mycobacteria",
+      "why": "Medium node.",
+      "whyWrong": {
+        "A cartridge NAAT": "No.",
+        "An IGRA antigen mix": "No.",
+        "A TNF blocker": "No."
+      }
+    },
+    {
+      "id": "lj-time",
+      "kind": "calculation",
+      "prompt": "Compared with Ultra, LJ on day 0 provides:",
+      "choices": [
+        "Faster RIF calls",
+        "No immediate RIF call; colonies take weeks if they come",
+        "Better RD1 coverage",
+        "A CD4 count"
+      ],
+      "answer": "No immediate RIF call; colonies take weeks if they come",
+      "why": "Panel three.",
+      "whyWrong": {
+        "Faster RIF calls": "Opposite.",
+        "Better RD1 coverage": "No.",
+        "A CD4 count": "No."
+      }
+    },
+    {
+      "id": "lj-figure",
+      "kind": "figure",
+      "prompt": "Panel one (calendar wait) is teaching:",
+      "choices": [
+        "That LJ waits less than MGIT",
+        "That LJ is drawn with a taller wait bar than MGIT in this schematic",
+        "That Ultra is LJ",
+        "That morphology equals WGS"
+      ],
+      "answer": "That LJ is drawn with a taller wait bar than MGIT in this schematic",
+      "why": "Taller bar = more calendar wait in panel one.",
+      "whyWrong": {
+        "That LJ waits less than MGIT": "Opposite: LJ is 8, MGIT is 4.",
+        "That Ultra is LJ": "No.",
+        "That morphology equals WGS": "Panel two is only a hint."
+      },
+      "figureHint": "First panel bars."
+    }
+  ]
+}

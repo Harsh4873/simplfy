@@ -1,0 +1,166 @@
+{
+  "id": "wiki-rifamycin-class",
+  "title": "Rifamycin as a named antibiotic class",
+  "dek": "Ansamycin class node: rifampin, rifapentine, rifabutin. Individual drugs and rpoB stay on existing tb-* plates.",
+  "domain": "tb",
+  "aliases": [
+    "rifamycin",
+    "ansamycin TB",
+    "rifampicin class"
+  ],
+  "tags": [
+    "glossary",
+    "class",
+    "rifamycin",
+    "RNAP"
+  ],
+  "story": [
+    "Rifamycin on Wikipedia is the ansamycin class that binds bacterial RNA polymerase. TB programmes meet it as rifampicin/rifampin, rifapentine, and rifabutin — already separate Simplfy drug plates.",
+    "This card exists so 'rifamycin' as a search word does not spawn a fourth dosing article. Class properties (CYP3A induction, orange fluids, RNAP target) are the glossary; doses are WHO.",
+    "Wikidata P2176 on Q12204 lists rifampicin among therapies. That is a class celebrity, not a complete Group A map."
+  ],
+  "deepTitle": "Class versus named drugs",
+  "deep": [
+    "Rifabutin is the ART-interaction fork (tb-rifabutin, tb-hiv-art).",
+    "Rifapentine is the 3HP/HPZM celebrity (tb-rifapentine, tb-hpzm).",
+    "rpoB RRDR is shared class resistance logic (tb-rifampin).",
+    "Do not interchange members because Wikipedia groups them."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Class at the top, named TB members, then the rpoB plate all of them care about.",
+    "layers": [
+      {
+        "title": "Class",
+        "nodes": [
+          "rifamycin"
+        ]
+      },
+      {
+        "title": "TB members",
+        "nodes": [
+          "rifampin",
+          "rifapentine",
+          "rifabutin"
+        ]
+      },
+      {
+        "title": "Target",
+        "nodes": [
+          "RNAP",
+          "rpoB"
+        ]
+      },
+      {
+        "title": "Hand-off",
+        "nodes": [
+          "tb-rifampin"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Rifamycin — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Rifamycin",
+      "attribution": "English Wikipedia revision 1360674180 (2026-06-22T22:48:43Z). Wikidata Q388565. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-rifampin",
+    "tb-rifapentine",
+    "tb-rifabutin",
+    "tb-first-line",
+    "tb-hiv-art",
+    "wiki-mdr-xdr",
+    "wiki-fq-class"
+  ],
+  "example": {
+    "title": "Swap rifampin for rifabutin by class vibe",
+    "setup": "ART interaction ignored because 'same Wikipedia class'.",
+    "steps": [
+      {
+        "title": "Class shares RNAP",
+        "body": "Resistance logic rhymes."
+      },
+      {
+        "title": "Induction and dosing do not",
+        "body": "tb-rifabutin / ART plate."
+      },
+      {
+        "title": "WHO still names the member",
+        "body": "Not the class infobox."
+      }
+    ],
+    "takeaway": "Rifamycin is a class. Members are not synonyms."
+  },
+  "check": [
+    {
+      "id": "rif-class",
+      "kind": "conceptual",
+      "prompt": "A rifamycin, in this glossary, is:",
+      "choices": [
+        "An IGRA antigen",
+        "An ansamycin class acting on RNAP; named TB members have their own plates",
+        "A mycolic acid",
+        "A lineage"
+      ],
+      "answer": "An ansamycin class acting on RNAP; named TB members have their own plates",
+      "why": "Class node.",
+      "whyWrong": {
+        "An IGRA antigen": "No.",
+        "A mycolic acid": "No.",
+        "A lineage": "No."
+      }
+    },
+    {
+      "id": "rif-swap",
+      "kind": "calculation",
+      "prompt": "Because rifampin and rifapentine are both rifamycins:",
+      "choices": [
+        "Their TPT calendars are identical without looking at WHO",
+        "You still use the named-drug and WHO plates; class is not a dose",
+        "rpoB never matters",
+        "They treat MAC only"
+      ],
+      "answer": "You still use the named-drug and WHO plates; class is not a dose",
+      "why": "Class ≠ regimen.",
+      "whyWrong": {
+        "Their TPT calendars are identical without looking at WHO": "3HP vs others differ.",
+        "rpoB never matters": "It does.",
+        "They treat MAC only": "No."
+      }
+    },
+    {
+      "id": "rif-figure",
+      "kind": "figure",
+      "prompt": "Why does rpoB sit under target?",
+      "choices": [
+        "Because it is a rifamycin drug",
+        "Because the class's TB resistance celebrity is RNAP/rpoB",
+        "Because it is PZA",
+        "Because it is RD1"
+      ],
+      "answer": "Because the class's TB resistance celebrity is RNAP/rpoB",
+      "why": "Third layer.",
+      "whyWrong": {
+        "Because it is a rifamycin drug": "It is a gene.",
+        "Because it is PZA": "No.",
+        "Because it is RD1": "No."
+      },
+      "figureHint": "Target layer."
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "id": "wiki-auramine",
+  "title": "Auramine–rhodamine as a fluorochrome AFB method",
+  "dek": "A Wikipedia stain cousin of ZN used for screening. Still not a species, still not a WRD.",
+  "domain": "tb",
+  "aliases": [
+    "auramine",
+    "auramine-rhodamine",
+    "fluorochrome AFB",
+    "Truant stain"
+  ],
+  "tags": [
+    "glossary",
+    "stain",
+    "fluorescence",
+    "microscopy"
+  ],
+  "story": [
+    "Auramine–rhodamine on Wikipedia is a fluorochrome acid-fast method: screening smears under fluorescence is faster than oil-immersion ZN for many labs.",
+    "Programmes often confirm fluorescence hits with ZN. That workflow is local policy, not a law of physics.",
+    "The property is still acid-fastness. All smear caveats (viability, NTM, not DST) transfer."
+  ],
+  "deepTitle": "Throughput, not truth",
+  "deep": [
+    "LED microscopy is a WHO-relevant implementation detail on smear plates.",
+    "Over-decolorizing and quenching are method errors, not new taxa.",
+    "Do not skip Ultra because fluorescence is efficient.",
+    "Environmental AFB still fluoresce."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Teaching bars: screening throughput versus taxonomic information. Not a lab tender.",
+    "panels": [
+      {
+        "title": "Screening speed",
+        "bars": [
+          {
+            "label": "Auramine",
+            "value": 8
+          },
+          {
+            "label": "ZN",
+            "value": 4
+          }
+        ]
+      },
+      {
+        "title": "Species info",
+        "bars": [
+          {
+            "label": "Auramine",
+            "value": 1
+          },
+          {
+            "label": "WGS",
+            "value": 9
+          }
+        ]
+      },
+      {
+        "title": "RIF info",
+        "bars": [
+          {
+            "label": "Auramine",
+            "value": 1
+          },
+          {
+            "label": "Ultra",
+            "value": 9
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Auramine–rhodamine stain — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Auramine%E2%80%93rhodamine_stain",
+      "attribution": "English Wikipedia revision 1310161757 (2025-09-08T01:31:31Z). Wikidata Q4117811. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ziehl-neelsen",
+    "wiki-acid-fast",
+    "tb-smear-culture",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "Fluorescence 2+, no cartridge stock",
+    "setup": "Team treats as RIF-S DS-TB from smear brightness.",
+    "steps": [
+      {
+        "title": "Brightness is not DST",
+        "body": "Need WRD when available, culture always in the algorithm."
+      },
+      {
+        "title": "NTM possible",
+        "body": "Especially if NAAT negative."
+      },
+      {
+        "title": "Keep infection control",
+        "body": "Smear-positive still means airborne precautions until the algorithm says stop."
+      }
+    ],
+    "takeaway": "Auramine is a faster lamp. It is not rpoB."
+  },
+  "check": [
+    {
+      "id": "au-method",
+      "kind": "conceptual",
+      "prompt": "Auramine–rhodamine is:",
+      "choices": [
+        "A fluoroquinolone",
+        "A fluorochrome acid-fast screening stain",
+        "An IGRA tube",
+        "A lineage SNP"
+      ],
+      "answer": "A fluorochrome acid-fast screening stain",
+      "why": "Method cousin.",
+      "whyWrong": {
+        "A fluoroquinolone": "Drug class plate.",
+        "An IGRA tube": "No.",
+        "A lineage SNP": "No."
+      }
+    },
+    {
+      "id": "au-info",
+      "kind": "calculation",
+      "prompt": "Compared with WGS, auramine provides:",
+      "choices": [
+        "More species resolution",
+        "Far less species/DST information; it is a screen",
+        "Full RRDR sequence",
+        "PZA MIC"
+      ],
+      "answer": "Far less species/DST information; it is a screen",
+      "why": "Panel two of the figure.",
+      "whyWrong": {
+        "More species resolution": "Opposite.",
+        "Full RRDR sequence": "No.",
+        "PZA MIC": "No."
+      }
+    },
+    {
+      "id": "au-figure",
+      "kind": "figure",
+      "prompt": "Panel three teaches that auramine versus Ultra is a gap in:",
+      "choices": [
+        "Screening speed",
+        "RIF information",
+        "The color rhodamine as a drug",
+        "BCG efficacy"
+      ],
+      "answer": "RIF information",
+      "why": "Third panel title.",
+      "whyWrong": {
+        "Screening speed": "Panel one.",
+        "The color rhodamine as a drug": "No.",
+        "BCG efficacy": "No."
+      },
+      "figureHint": "Third panel."
+    }
+  ]
+}

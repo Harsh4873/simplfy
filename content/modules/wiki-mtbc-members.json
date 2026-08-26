@@ -1,0 +1,190 @@
+{
+  "id": "wiki-mtbc-members",
+  "title": "MTBC members as an encyclopedia pack",
+  "dek": "Wikipedia lists human- and animal-adapted ecotypes under one complex. The list is a graph. RD barcodes and SNPs still do the naming in the lab.",
+  "domain": "tb",
+  "aliases": [
+    "MTBC members",
+    "M. tuberculosis complex Wikipedia",
+    "Q5779917",
+    "ecotypes"
+  ],
+  "tags": [
+    "glossary",
+    "MTBC",
+    "phylogeny",
+    "Wikidata"
+  ],
+  "story": [
+    "Wikipedia's Mycobacterium tuberculosis complex page (Q5779917) is a membership list: M. tuberculosis, M. africanum, M. bovis, M. caprae, M. microti, M. pinnipedii, M. orygis, M. mungi, M. suricattae, M. canettii at the edge. That list is the right shape for a concept map.",
+    "What the encyclopedia will not do is replace an RD/SNP barcode. Xpert still says MTBC. BCG still deletes RD1. M. bovis still carries intrinsic pncA PZA resistance. Those are existing Simplfy plates; this card is the roster they sit under.",
+    "Animal-adapted names matter because they leak into human NAAT-positive specimens (unpasteurised dairy, BCG instillation, zoonotic orygis). A membership list is how you remember to ask the species question."
+  ],
+  "deepTitle": "Roster versus barcode",
+  "deep": [
+    "M. canettii is the recombination-competent outlier; do not force it through an H37Rv-only DST pipeline without looking at the tree.",
+    "Lineages L1–L9 are a human-adapted overlay, not extra species on the Wikipedia infobox.",
+    "M. pinnipedii and M. mungi are real MTBC members you will almost never see in a pulmonary clinic; they still light some MTBC assays.",
+    "The clinic plate tb-mtbc already teaches RD9/RD1 logic. This page is the labeled pack those deletions partition."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Encyclopedia roster of the complex. Human-adapted names are the usual pulmonary object; animal/vaccine leaves share NAATs and not the PZA story.",
+    "layers": [
+      {
+        "title": "Complex Q5779917",
+        "nodes": [
+          "MTBC"
+        ]
+      },
+      {
+        "title": "Human-adapted",
+        "nodes": [
+          "Mtb",
+          "africanum",
+          "L1–L9"
+        ]
+      },
+      {
+        "title": "Animal-adapted",
+        "nodes": [
+          "bovis",
+          "caprae",
+          "orygis",
+          "microti"
+        ]
+      },
+      {
+        "title": "Edge / vaccine",
+        "nodes": [
+          "canettii",
+          "BCG",
+          "pinnipedii"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium tuberculosis complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex",
+      "attribution": "English Wikipedia revision 1368846963 (2026-08-11T11:48:07Z). Wikidata Q5779917. Membership roster and sitelinks. Speciation logic remains on tb-mtbc. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium bovis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_bovis",
+      "attribution": "English Wikipedia revision 1368885364 (2026-08-11T16:56:07Z). Wikidata Q133447. Membership roster and sitelinks. Speciation logic remains on tb-mtbc. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium africanum — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_africanum",
+      "attribution": "English Wikipedia revision 1288117821 (2025-04-30T15:22:41Z). Wikidata Q2918842. Membership roster and sitelinks. Speciation logic remains on tb-mtbc. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Mycobacterium canettii — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_canettii",
+      "attribution": "English Wikipedia revision 1264700658 (2024-12-23T02:42:49Z). Wikidata Q6946999. Membership roster and sitelinks. Speciation logic remains on tb-mtbc. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-organism",
+    "tb-bcg-rd1",
+    "tb-ntm",
+    "tb-pnca",
+    "wiki-m-bovis",
+    "wiki-m-africanum",
+    "wiki-m-canettii"
+  ],
+  "example": {
+    "title": "Orygis on a membership list",
+    "setup": "A WGS pipeline reports M. orygis from a pulmonary specimen. Wikipedia lists orygis as MTBC. The cartridge was MTB detected, RIF not detected.",
+    "steps": [
+      {
+        "title": "Believe the roster",
+        "body": "Orygis is MTBC, so the NAAT is not a false positive by species."
+      },
+      {
+        "title": "Do not copy Mtb DST priors blindly",
+        "body": "Animal-adapted ecotypes can differ in intrinsic resistances and in how well an H37Rv catalogue transfers."
+      },
+      {
+        "title": "Report the ecotype",
+        "body": "The clinical sentence starts with the name, then RIF, then PZA if pncA says so."
+      }
+    ],
+    "takeaway": "The encyclopedia pack tells you the name is legal. The barcode tells you which name."
+  },
+  "check": [
+    {
+      "id": "mtbc-wiki-xpert",
+      "kind": "conceptual",
+      "prompt": "Wikipedia lists M. bovis inside MTBC. A bovine isolate is therefore:",
+      "choices": [
+        "NTM",
+        "MTBC and able to trigger many MTB NAATs, while remaining a different ecotype from Mtb sensu stricto",
+        "Automatically PZA-S",
+        "Outside the Xpert target by definition"
+      ],
+      "answer": "MTBC and able to trigger many MTB NAATs, while remaining a different ecotype from Mtb sensu stricto",
+      "why": "Membership ≠ M. tuberculosis sensu stricto.",
+      "whyWrong": {
+        "NTM": "NTM are outside MTBC.",
+        "Automatically PZA-S": "M. bovis is intrinsically PZA-R.",
+        "Outside the Xpert target by definition": "Xpert targets MTBC nucleic acid."
+      }
+    },
+    {
+      "id": "mtbc-wiki-count",
+      "kind": "calculation",
+      "prompt": "RD1 deleted, RD9 deleted, pncA BCG/bovis allele. Which Wikipedia roster slot is most consistent?",
+      "choices": [
+        "M. tuberculosis L4",
+        "BCG / M. bovis vaccine derivative",
+        "M. avium",
+        "M. canettii"
+      ],
+      "answer": "BCG / M. bovis vaccine derivative",
+      "why": "RD1 loss is the BCG signature; RD9 loss is animal-adapted; avium is NTM; canettii keeps a different accessory genome.",
+      "whyWrong": {
+        "M. tuberculosis L4": "Keeps RD1 and RD9.",
+        "M. avium": "Not MTBC.",
+        "M. canettii": "Not an RD1-deleted vaccine."
+      }
+    },
+    {
+      "id": "mtbc-wiki-figure",
+      "kind": "figure",
+      "prompt": "On the roster hierarchy, why is BCG on the edge/vaccine row rather than under human-adapted L1–L9?",
+      "choices": [
+        "Because BCG is an NTM",
+        "Because it is an RD1-deleted M. bovis derivative, not a human-adapted Mtb lineage",
+        "Because Xpert cannot detect it",
+        "Because Wikipedia does not mention BCG"
+      ],
+      "answer": "Because it is an RD1-deleted M. bovis derivative, not a human-adapted Mtb lineage",
+      "why": "The figure is an ecotype roster.",
+      "whyWrong": {
+        "Because BCG is an NTM": "BCG is MTBC.",
+        "Because Xpert cannot detect it": "It often can.",
+        "Because Wikipedia does not mention BCG": "It does; this card links that page."
+      },
+      "figureHint": "Bottom layer title."
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "id": "wiki-il12-glossary",
+  "title": "IL-12 as the IFN-γ licensing cytokine",
+  "dek": "Wikipedia's interleukin-12 page is the heterodimer from macrophages. The MSMD gene list stays on tb-host-ifng.",
+  "domain": "tb",
+  "aliases": [
+    "IL-12",
+    "interleukin 12",
+    "IL12B",
+    "IL12RB1"
+  ],
+  "tags": [
+    "glossary",
+    "cytokine",
+    "IL-12",
+    "MSMD"
+  ],
+  "story": [
+    "IL-12 on Wikipedia is a macrophage/dendritic-cell cytokine (p35/p40 heterodimer) that pushes lymphocytes toward IFN-γ. In TB teaching it is the upstream licence for the Th1 loop.",
+    "IL12B and IL12RB1 defects are MSMD genes on the clinic plate. This card is the ligand they concern.",
+    "IL-23 shares p40; that is why some genetic and pharmacologic stories overlap. Do not turn that sentence into a psoriasis-drug protocol here."
+  ],
+  "deepTitle": "Ligand versus receptor versus assay",
+  "deep": [
+    "IGRAs do not measure IL-12. They measure IFN-γ downstream.",
+    "BCG-osis in an infant with IL-12 receptor deficiency is the human knockout of this node.",
+    "Therapeutic IL-12 is not TB standard of care.",
+    "Link to wiki-ifng-glossary and wiki-th1-glossary rather than duplicating STAT1."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "IL-12 as the licence between infected macrophage and IFN-γ. Receptor defects are the MSMD hand-off.",
+    "nodes": [
+      {
+        "id": "mac",
+        "label": "Infected Mϕ",
+        "x": 12,
+        "y": 40,
+        "tone": "start"
+      },
+      {
+        "id": "il12",
+        "label": "IL-12",
+        "x": 38,
+        "y": 40,
+        "tone": "process",
+        "detail": "this node"
+      },
+      {
+        "id": "rec",
+        "label": "IL-12R",
+        "x": 62,
+        "y": 40,
+        "tone": "decision"
+      },
+      {
+        "id": "ifn",
+        "label": "IFN-γ",
+        "x": 88,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "msmd",
+        "label": "MSMD if broken",
+        "x": 88,
+        "y": 70,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "mac",
+        "to": "il12"
+      },
+      {
+        "from": "il12",
+        "to": "rec"
+      },
+      {
+        "from": "rec",
+        "to": "ifn"
+      },
+      {
+        "from": "rec",
+        "to": "msmd",
+        "label": "defect"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Interleukin 12 — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Interleukin_12",
+      "attribution": "English Wikipedia revision 1360692070 (2026-06-23T01:06:59Z). Wikidata Q2409681. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-host-ifng",
+    "wiki-ifng-glossary",
+    "wiki-th1-glossary",
+    "tb-bcg-rd1",
+    "tb-igra-tst"
+  ],
+  "example": {
+    "title": "Infant, disseminated BCG, IL12RB1",
+    "setup": "Team wants to 'boost IL-12' from Wikipedia.",
+    "steps": [
+      {
+        "title": "This is MSMD clinic",
+        "body": "Open tb-host-ifng; stop improvising cytokines."
+      },
+      {
+        "title": "IGRAs may fail",
+        "body": "The axis that makes IFN-γ is broken."
+      },
+      {
+        "title": "TB/NTM prevention is specialist",
+        "body": "Not an encyclopedia infusion protocol."
+      }
+    ],
+    "takeaway": "IL-12 is the licence. Broken licences are Mendelian, not DIY."
+  },
+  "check": [
+    {
+      "id": "il12-job",
+      "kind": "conceptual",
+      "prompt": "IL-12's TB-teaching job is to:",
+      "choices": [
+        "Inhibit mycolic acids",
+        "License lymphocytes to make IFN-γ after macrophage infection",
+        "Bind rpoB",
+        "Replace Ultra"
+      ],
+      "answer": "License lymphocytes to make IFN-γ after macrophage infection",
+      "why": "Upstream cytokine.",
+      "whyWrong": {
+        "Inhibit mycolic acids": "INH/ETH territory.",
+        "Bind rpoB": "RIF.",
+        "Replace Ultra": "No."
+      }
+    },
+    {
+      "id": "il12-igra",
+      "kind": "calculation",
+      "prompt": "An IL-12 receptor defect makes a negative IGRA:",
+      "choices": [
+        "Proof there was never infection",
+        "Possibly anergic along the same axis the assay reads",
+        "Proof of RIF-S",
+        "A reason to skip BCG-osis work-up"
+      ],
+      "answer": "Possibly anergic along the same axis the assay reads",
+      "why": "Assay depends on IFN-γ output.",
+      "whyWrong": {
+        "Proof there was never infection": "Cannot say.",
+        "Proof of RIF-S": "No.",
+        "A reason to skip BCG-osis work-up": "Opposite."
+      }
+    },
+    {
+      "id": "il12-figure",
+      "kind": "figure",
+      "prompt": "The flow map's defect arrow lands on:",
+      "choices": [
+        "Infected Mϕ",
+        "MSMD if broken",
+        "IL-12 the ligand as a stain",
+        "IFN-γ as a NAAT"
+      ],
+      "answer": "MSMD if broken",
+      "why": "Lower end node.",
+      "whyWrong": {
+        "Infected Mϕ": "Start.",
+        "IL-12 the ligand as a stain": "No.",
+        "IFN-γ as a NAAT": "No."
+      },
+      "figureHint": "Lower right end."
+    }
+  ]
+}

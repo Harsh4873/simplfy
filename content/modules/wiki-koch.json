@@ -1,0 +1,185 @@
+{
+  "id": "wiki-koch",
+  "title": "Robert Koch as the named discoverer node",
+  "dek": "1882 bacillus, tuberculin misadventure, postulates. History card. The organism plate owns the biology.",
+  "domain": "tb",
+  "aliases": [
+    "Robert Koch",
+    "Koch bacillus",
+    "24 March 1882"
+  ],
+  "tags": [
+    "glossary",
+    "history",
+    "Koch",
+    "discoverer"
+  ],
+  "story": [
+    "Robert Koch on Wikipedia is the discoverer node: 24 March 1882, acid-fast rods, later tuberculin as a failed therapeutic that became a skin-test ancestor.",
+    "World TB Day sits on that calendar. Calendar ≠ protocol.",
+    "Koch's postulates get their own neighbouring card because they are a method slogan still misapplied to LTBI and to NAATs."
+  ],
+  "deepTitle": "Hero, then hygiene",
+  "deep": [
+    "Nobel-era TB science also includes a lot of sanatorium air that is not DST.",
+    "Tuberculin the failed drug versus tuberculin the PPD ancestor is why Mantoux exists.",
+    "Do not cite Koch as a dosing authority.",
+    "H37Rv is a 20th-century laboratory descendant story, not Koch's original guinea pig."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Discoverer node into three later objects: organism biology, postulates slogan, tuberculin/TST.",
+    "nodes": [
+      {
+        "id": "rk",
+        "label": "Robert Koch",
+        "x": 12,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "bac",
+        "label": "Bacillus 1882",
+        "x": 40,
+        "y": 20,
+        "tone": "process"
+      },
+      {
+        "id": "pos",
+        "label": "Postulates",
+        "x": 40,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "org",
+        "label": "tb-organism",
+        "x": 72,
+        "y": 20,
+        "tone": "end"
+      },
+      {
+        "id": "tu",
+        "label": "Tuberculin/TST",
+        "x": 72,
+        "y": 70,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "rk",
+        "to": "bac"
+      },
+      {
+        "from": "rk",
+        "to": "pos"
+      },
+      {
+        "from": "bac",
+        "to": "org"
+      },
+      {
+        "from": "pos",
+        "to": "tu",
+        "label": "via tuberculin"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Robert Koch — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Robert_Koch",
+      "attribution": "English Wikipedia revision 1364980616 (2026-07-19T17:04:19Z). Wikidata Q37193. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-koch-postulates",
+    "wiki-mtb-organism",
+    "tb-organism",
+    "wiki-mantoux",
+    "wiki-tuberculosis"
+  ],
+  "example": {
+    "title": "World TB Day slide deck",
+    "setup": "Only Koch's portrait, no WRD, no DST.",
+    "steps": [
+      {
+        "title": "History is allowed",
+        "body": "This node."
+      },
+      {
+        "title": "Then open diagnosis/treatment plates",
+        "body": "The actual jobs."
+      },
+      {
+        "title": "Tuberculin story → Mantoux, not HRZE",
+        "body": "Failed therapy became a test."
+      }
+    ],
+    "takeaway": "Koch is a discoverer node. He is not the 2024 manual."
+  },
+  "check": [
+    {
+      "id": "koch-job",
+      "kind": "conceptual",
+      "prompt": "This plate treats Robert Koch as:",
+      "choices": [
+        "A current WHO dosing author",
+        "A discoverer/history node pointing at organism, postulates, and tuberculin",
+        "An NTM species",
+        "A rifamycin"
+      ],
+      "answer": "A discoverer/history node pointing at organism, postulates, and tuberculin",
+      "why": "History.",
+      "whyWrong": {
+        "A current WHO dosing author": "No.",
+        "An NTM species": "No.",
+        "A rifamycin": "No."
+      }
+    },
+    {
+      "id": "koch-tub",
+      "kind": "calculation",
+      "prompt": "Koch's tuberculin as therapy failed and later became:",
+      "choices": [
+        "BPaLM",
+        "An ancestor of skin-test reagents (PPD/Mantoux lineage of ideas)",
+        "Ultra",
+        "BDQ"
+      ],
+      "answer": "An ancestor of skin-test reagents (PPD/Mantoux lineage of ideas)",
+      "why": "Failed drug → test.",
+      "whyWrong": {
+        "BPaLM": "No.",
+        "Ultra": "No.",
+        "BDQ": "No."
+      }
+    },
+    {
+      "id": "koch-figure",
+      "kind": "figure",
+      "prompt": "The flow map hands the 1882 bacillus to:",
+      "choices": [
+        "Tuberculin/TST directly only",
+        "tb-organism",
+        "Postulates as a stain",
+        "World TB Day as DST"
+      ],
+      "answer": "tb-organism",
+      "why": "Upper end.",
+      "whyWrong": {
+        "Tuberculin/TST directly only": "That's the other end.",
+        "Postulates as a stain": "No.",
+        "World TB Day as DST": "No."
+      },
+      "figureHint": "Upper right end."
+    }
+  ]
+}

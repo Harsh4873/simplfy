@@ -1,0 +1,157 @@
+{
+  "id": "wiki-mycolic-acid",
+  "title": "Mycolic acid as a Wikipedia lipid class",
+  "dek": "α-alkyl β-hydroxy long-chain fatty acids. Encyclopedia lipid node. FAS-II/InhA chemistry stays on tb-mycolates and tb-isoniazid.",
+  "domain": "tb",
+  "aliases": [
+    "mycolic acid",
+    "mycolate Wikipedia",
+    "α-alkyl-β-hydroxy"
+  ],
+  "tags": [
+    "glossary",
+    "lipid",
+    "cell wall",
+    "mycolate"
+  ],
+  "story": [
+    "Mycolic acids on Wikipedia are a lipid class: very long α-branched, β-hydroxy fatty acids that define the mycobacterial (and related) outer envelope. The page will mention C60–C90 in Mtb and acid-fastness as a consequence.",
+    "Simplfy already has a mycolate biosynthesis plate and INH/ETH targeting InhA. This card is the dictionary class those pathways assemble.",
+    "Corynebacteria and Nocardia make shorter mycolates. That is why acid-fastness is a family resemblance, not a TB barcode."
+  ],
+  "deepTitle": "Class versus drug target",
+  "deep": [
+    "TDM (cord factor) is a mycolate glycoconjugate — neighbouring plate.",
+    "Covalent attachment to arabinogalactan is the envelope sandwich (tb-cell-envelope).",
+    "Do not take INH doses from a lipid page.",
+    "Mass-spec mycolate profiling is research/ID niche, not a WRD."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Lipid class sitting in the envelope stack. Drug names are pointers, not doses.",
+    "layers": [
+      {
+        "id": "tdm",
+        "label": "Extractable mycolate lipids (TDM, etc.)",
+        "detail": "wiki-cord-factor",
+        "tone": "lipid"
+      },
+      {
+        "id": "myco",
+        "label": "Covalently bound mycolates",
+        "detail": "this class",
+        "tone": "wall"
+      },
+      {
+        "id": "ag",
+        "label": "Arabinogalactan",
+        "detail": "EMB / EmbCAB",
+        "tone": "membrane"
+      },
+      {
+        "id": "fas",
+        "label": "FAS-II assembly",
+        "detail": "InhA / INH hand-off",
+        "tone": "core"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycolic acid — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycolic_acid",
+      "attribution": "English Wikipedia revision 1323817994 (2025-11-23T22:18:35Z). Wikidata Q414506. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mycolates",
+    "tb-cell-envelope",
+    "tb-isoniazid",
+    "tb-organism",
+    "wiki-cord-factor",
+    "wiki-acid-fast",
+    "wiki-lam"
+  ],
+  "example": {
+    "title": "Infobox carbon length",
+    "setup": "Student copies C60–C90 as a DST cut-off.",
+    "steps": [
+      {
+        "title": "That is chemistry trivia",
+        "body": "Useful for identity of the class."
+      },
+      {
+        "title": "DST is MIC/catalogue",
+        "body": "Different plates."
+      },
+      {
+        "title": "INH still hits InhA after KatG",
+        "body": "tb-isoniazid / tb-katg-inha."
+      }
+    ],
+    "takeaway": "Mycolic acid is a lipid class. It is not a critical concentration."
+  },
+  "check": [
+    {
+      "id": "myco-class",
+      "kind": "conceptual",
+      "prompt": "Mycolic acids are:",
+      "choices": [
+        "IGRA peptides",
+        "A class of long-chain envelope lipids that help make mycobacteria acid-fast",
+        "rpoB mutations",
+        "TNF blockers"
+      ],
+      "answer": "A class of long-chain envelope lipids that help make mycobacteria acid-fast",
+      "why": "Lipid class.",
+      "whyWrong": {
+        "IGRA peptides": "ESAT-6/CFP-10.",
+        "rpoB mutations": "RIF.",
+        "TNF blockers": "No."
+      }
+    },
+    {
+      "id": "myco-inh",
+      "kind": "calculation",
+      "prompt": "INH's useful connection to this class is:",
+      "choices": [
+        "INH is a mycolic acid itself",
+        "INH (via KatG) blocks FAS-II mycolate elongation at InhA",
+        "INH stains mycolates pink",
+        "INH deletes RD1"
+      ],
+      "answer": "INH (via KatG) blocks FAS-II mycolate elongation at InhA",
+      "why": "Hand-off to INH plates.",
+      "whyWrong": {
+        "INH is a mycolic acid itself": "No.",
+        "INH stains mycolates pink": "No.",
+        "INH deletes RD1": "No."
+      }
+    },
+    {
+      "id": "myco-figure",
+      "kind": "figure",
+      "prompt": "Which layer is labelled as this lipid class covalently bound?",
+      "choices": [
+        "Extractable mycolate lipids",
+        "Covalently bound mycolates",
+        "Arabinogalactan",
+        "FAS-II assembly"
+      ],
+      "answer": "Covalently bound mycolates",
+      "why": "Second layer.",
+      "whyWrong": {
+        "Extractable mycolate lipids": "Top, TDM etc.",
+        "Arabinogalactan": "EMB.",
+        "FAS-II assembly": "Biosynthesis."
+      },
+      "figureHint": "Second layer."
+    }
+  ]
+}

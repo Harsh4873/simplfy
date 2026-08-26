@@ -1,0 +1,156 @@
+{
+  "id": "wiki-gibbs",
+  "title": "Gibbs sampling as named full-conditional MCMC",
+  "dek": "Wikipedia Gibbs: sample each coordinate from its conditional. A special MH with acceptance 1. Still needs diagnostics.",
+  "domain": "stats",
+  "aliases": [
+    "Gibbs sampling",
+    "Gibbs sampler",
+    "full conditional MCMC"
+  ],
+  "tags": [
+    "glossary",
+    "Gibbs",
+    "MCMC",
+    "conditional"
+  ],
+  "story": [
+    "Gibbs sampling on Wikipedia updates one parameter (or block) at a time from its full conditional given the rest. When those conditionals are conjugate, it is easy to code and easy to trust too much.",
+    "It is Metropolis–Hastings with a perfect proposal, so you always accept. Slow mixing when parameters are highly correlated is the remaining sin (banana posteriors, uncentered hierarchies).",
+    "stats-conjugacy and stats-mcmc are the hand-offs. Eight schools is the hierarchical celebrity."
+  ],
+  "deepTitle": "Conditionals versus geometry",
+  "deep": [
+    "Reparameterise hierarchical variances (non-centered) when Gibbs mixes like glue.",
+    "Blocked Gibbs updates a vector together when coordinates fight.",
+    "Data augmentation Gibbs (probit) is a trick, not a new likelihood.",
+    "Do not skip R̂ because 'it's Gibbs'."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Coordinate-wise conditionals stacked. Correlation across layers is why mixing can still fail.",
+    "layers": [
+      {
+        "id": "y",
+        "label": "data y",
+        "detail": "observed",
+        "tone": "space"
+      },
+      {
+        "id": "th",
+        "label": "θ | rest",
+        "detail": "full conditional",
+        "tone": "wall"
+      },
+      {
+        "id": "tau",
+        "label": "τ | rest",
+        "detail": "often conjugate",
+        "tone": "membrane"
+      },
+      {
+        "id": "mix",
+        "label": "mixing still not free",
+        "detail": "stats-mcmc",
+        "tone": "core"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Gibbs sampling — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Gibbs_sampling",
+      "attribution": "English Wikipedia revision 1365160142 (2026-07-20T17:08:49Z). Wikidata Q1191905. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-mh",
+    "stats-mcmc",
+    "stats-conjugacy",
+    "stats-hierarchical",
+    "stats-eight-schools",
+    "wiki-bayesian-glossary"
+  ],
+  "example": {
+    "title": "Gibbs on eight schools, centered parameterization, R̂=1.3",
+    "setup": "Pretty histograms anyway.",
+    "steps": [
+      {
+        "title": "Kernel is Gibbs, mixing is not automatic",
+        "body": "This plate."
+      },
+      {
+        "title": "Non-center the hierarchy",
+        "body": "stats-eight-schools / hierarchical."
+      },
+      {
+        "title": "Do not publish the histograms yet",
+        "body": "stats-mcmc."
+      }
+    ],
+    "takeaway": "Gibbs samples conditionals. Geometry can still refuse to mix."
+  },
+  "check": [
+    {
+      "id": "gi-def",
+      "kind": "conceptual",
+      "prompt": "Gibbs sampling updates:",
+      "choices": [
+        "All parameters by a random-walk always",
+        "Coordinates (or blocks) from full conditionals",
+        "p-values",
+        "Newick strings"
+      ],
+      "answer": "Coordinates (or blocks) from full conditionals",
+      "why": "Definition.",
+      "whyWrong": {
+        "All parameters by a random-walk always": "That's a flavour of MH.",
+        "p-values": "No.",
+        "Newick strings": "No."
+      }
+    },
+    {
+      "id": "gi-acc",
+      "kind": "calculation",
+      "prompt": "Gibbs acceptance probability is:",
+      "choices": [
+        "min(1,p(θ')/p(θ)) generally",
+        "1, because the proposal is the exact conditional",
+        "0 always",
+        "α/m"
+      ],
+      "answer": "1, because the proposal is the exact conditional",
+      "why": "Special MH.",
+      "whyWrong": {
+        "min(1,p(θ')/p(θ)) generally": "Random-walk Metropolis.",
+        "0 always": "No.",
+        "α/m": "Bonferroni."
+      }
+    },
+    {
+      "id": "gi-figure",
+      "kind": "figure",
+      "prompt": "The bottom layer exists because:",
+      "choices": [
+        "Conjugacy guarantees ESS=n",
+        "Coordinate-wise Gibbs can still mix poorly; diagnostics remain on stats-mcmc",
+        "Gibbs is an LRT",
+        "Conditionals are p-values"
+      ],
+      "answer": "Coordinate-wise Gibbs can still mix poorly; diagnostics remain on stats-mcmc",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Conjugacy guarantees ESS=n": "No.",
+        "Gibbs is an LRT": "No.",
+        "Conditionals are p-values": "No."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "wiki-pvalue",
+  "title": "p-value as a named tail probability under a null",
+  "dek": "Wikipedia p-value: P(as or more extreme | H0). Not P(H0|data), not a posterior, not an effect size.",
+  "domain": "stats",
+  "aliases": [
+    "p-value",
+    "p value Wikipedia",
+    "tail probability"
+  ],
+  "tags": [
+    "glossary",
+    "p-value",
+    "null",
+    "tail"
+  ],
+  "story": [
+    "A p-value on Wikipedia is a tail probability under a specified null and a specified discrepancy: the chance of seeing a statistic this large or larger if H0 were true. It is not the probability that H0 is true.",
+    "stats-lrt, Wald/score, and GWAS all emit p-values. This card is the encyclopedia object so a methods section that treats p<0.05 as a posterior odds can be sent here first.",
+    "ASA-style warnings are deserved: a p-value does not measure effect size, does not survive silent multiple testing, and does not replace a design."
+  ],
+  "deepTitle": "Null, discrepancy, tail",
+  "deep": [
+    "Change the discrepancy (two-sided vs one-sided, Wald vs LRT) and the p-value changes.",
+    "Very large n makes tiny p for tiny effects — scientific importance is extra.",
+    "Optional stopping without a plan wrecks the null sampling distribution.",
+    "q-values are not p-values (stats-fdr)."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "A null sampling density of a statistic, with a tail. The number p is that tail's probability, not a posterior mass on H0.",
+    "xLabel": "statistic under H0 (schematic)",
+    "curves": [
+      {
+        "id": "null",
+        "label": "null sampling law",
+        "mean": 0.0,
+        "sd": 1.0
+      },
+      {
+        "id": "alt",
+        "label": "a possible H1 law",
+        "mean": 2.2,
+        "sd": 1.0
+      },
+      {
+        "id": "post",
+        "label": "NOT a posterior on H0",
+        "mean": -1.6,
+        "sd": 0.8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "P-value — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/P-value",
+      "attribution": "English Wikipedia revision 1364624459 (2026-07-17T16:22:58Z). Wikidata Q253255. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-type-errors",
+    "wiki-neyman-pearson",
+    "stats-lrt",
+    "wiki-wilks",
+    "stats-fdr",
+    "wiki-bayes-factor"
+  ],
+  "example": {
+    "title": "p=0.04, 'so P(no association)=0.04'",
+    "setup": "Per-SNP logistic.",
+    "steps": [
+      {
+        "title": "That inverted the conditional",
+        "body": "p is under H0, not of H0."
+      },
+      {
+        "title": "If they want P(H0|data), they need a prior and a BF/posterior",
+        "body": "Bayesian plates."
+      },
+      {
+        "title": "If they ran 1e5 tests, even the tail story needs a family contract",
+        "body": "FDR/FWER."
+      }
+    ],
+    "takeaway": "A p-value is a null tail. It is not P(H0|data)."
+  },
+  "check": [
+    {
+      "id": "p-def",
+      "kind": "conceptual",
+      "prompt": "A p-value is:",
+      "choices": [
+        "P(H0 is true | data)",
+        "P(statistic as or more extreme than observed | H0), for a named discrepancy",
+        "An odds ratio",
+        "A q-value by definition"
+      ],
+      "answer": "P(statistic as or more extreme than observed | H0), for a named discrepancy",
+      "why": "Tail under H0.",
+      "whyWrong": {
+        "P(H0 is true | data)": "The inversion error.",
+        "An odds ratio": "No.",
+        "A q-value by definition": "Different object."
+      }
+    },
+    {
+      "id": "p-n",
+      "kind": "calculation",
+      "prompt": "n→∞, tiny true effect, p→0. This means:",
+      "choices": [
+        "The effect is large",
+        "The null became implausible as a sampling story; importance still needs an effect-size sentence",
+        "FDR is 0",
+        "HWE failed"
+      ],
+      "answer": "The null became implausible as a sampling story; importance still needs an effect-size sentence",
+      "why": "Large-n trap.",
+      "whyWrong": {
+        "The effect is large": "Not necessarily.",
+        "FDR is 0": "No.",
+        "HWE failed": "No."
+      }
+    },
+    {
+      "id": "p-figure",
+      "kind": "figure",
+      "prompt": "The curve labelled NOT a posterior exists to:",
+      "choices": [
+        "Define p as a posterior",
+        "Block the inversion error on the figure",
+        "Show a tree",
+        "Show BH"
+      ],
+      "answer": "Block the inversion error on the figure",
+      "why": "Third legend.",
+      "whyWrong": {
+        "Define p as a posterior": "Opposite.",
+        "Show a tree": "No.",
+        "Show BH": "No."
+      },
+      "figureHint": "Third curve label."
+    }
+  ]
+}

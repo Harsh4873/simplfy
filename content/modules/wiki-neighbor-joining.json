@@ -1,0 +1,191 @@
+{
+  "id": "wiki-neighbor-joining",
+  "title": "Neighbour joining as a named distance algorithm",
+  "dek": "Wikipedia NJ: a fast agglomerative tree from a distance matrix. Not a likelihood, not automatically consistent under the wrong distance.",
+  "domain": "stats",
+  "aliases": [
+    "neighbor joining",
+    "neighbour-joining",
+    "NJ tree"
+  ],
+  "tags": [
+    "glossary",
+    "NJ",
+    "distance",
+    "algorithm"
+  ],
+  "story": [
+    "Neighbour joining on Wikipedia is an algorithm: start from pairwise distances, iteratively join neighbours to minimise a balanced length criterion. It is fast and used as a first look or as a starting tree for likelihood search.",
+    "It is not Felsenstein pruning. If the distance is Hamming on a recombining alignment, NJ will still return a tree — confidently wrong in geometry.",
+    "stats-trees owns the likelihood. This card names the algorithm so a methods line 'we built an NJ tree' is not dressed as a model."
+  ],
+  "deepTitle": "Distance in, tree out",
+  "deep": [
+    "Additive distances (tree-like) make NJ consistent; long-branch attraction still exists in other methods.",
+    "UPGMA assumes a clock; NJ does not. That is why NJ replaced UPGMA in many TB snapshots.",
+    "Bootstrap of NJ is a bootstrap of a distance algorithm, not of a likelihood.",
+    "Do not report NJ branch lengths as years."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Distance matrix in, NJ out, optional likelihood start. The arrow to 'truth' is not included.",
+    "nodes": [
+      {
+        "id": "aln",
+        "label": "Alignment",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "d",
+        "label": "Distances",
+        "x": 36,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "nj",
+        "label": "NJ algorithm",
+        "x": 62,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "pic",
+        "label": "Tree picture",
+        "x": 88,
+        "y": 20,
+        "tone": "end"
+      },
+      {
+        "id": "ml",
+        "label": "ML start",
+        "x": 88,
+        "y": 75,
+        "tone": "end",
+        "detail": "stats-trees"
+      }
+    ],
+    "edges": [
+      {
+        "from": "aln",
+        "to": "d"
+      },
+      {
+        "from": "d",
+        "to": "nj"
+      },
+      {
+        "from": "nj",
+        "to": "pic"
+      },
+      {
+        "from": "nj",
+        "to": "ml"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Neighbor joining — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Neighbor_joining",
+      "attribution": "English Wikipedia revision 1365090982 (2026-07-20T05:24:02Z). Wikidata Q1935806. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "UPGMA — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/UPGMA",
+      "attribution": "English Wikipedia revision 1340420088 (2026-02-25T16:34:44Z). Wikidata Q1779497. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-phylo-tree",
+    "stats-trees",
+    "wiki-parsimony",
+    "wiki-newick",
+    "stats-bootstrap"
+  ],
+  "example": {
+    "title": "SNP Hamming NJ of mixed-lineage plus recombinant",
+    "setup": "Beautiful unique tree.",
+    "steps": [
+      {
+        "title": "Distances assumed additive tree-likeness",
+        "body": "Recombination breaks that."
+      },
+      {
+        "title": "Use as a look, not as a likelihood",
+        "body": "This plate."
+      },
+      {
+        "title": "If you need a model, open stats-trees or a network/ARG",
+        "body": "Honesty."
+      }
+    ],
+    "takeaway": "NJ is a distance algorithm. It will draw a tree even when a tree is the wrong object."
+  },
+  "check": [
+    {
+      "id": "nj-alg",
+      "kind": "conceptual",
+      "prompt": "Neighbour joining is:",
+      "choices": [
+        "A substitution likelihood",
+        "A fast agglomerative algorithm from pairwise distances",
+        "A Bayes factor",
+        "An FDR"
+      ],
+      "answer": "A fast agglomerative algorithm from pairwise distances",
+      "why": "Algorithm.",
+      "whyWrong": {
+        "A substitution likelihood": "stats-trees.",
+        "A Bayes factor": "No.",
+        "An FDR": "No."
+      }
+    },
+    {
+      "id": "nj-clock",
+      "kind": "calculation",
+      "prompt": "Relative to UPGMA, NJ:",
+      "choices": [
+        "Requires a molecular clock",
+        "Does not assume a clock, which is why it is often preferred for first-look TB trees",
+        "Is BH",
+        "Is HWE"
+      ],
+      "answer": "Does not assume a clock, which is why it is often preferred for first-look TB trees",
+      "why": "Clock fork.",
+      "whyWrong": {
+        "Requires a molecular clock": "That's UPGMA.",
+        "Is BH": "No.",
+        "Is HWE": "No."
+      }
+    },
+    {
+      "id": "nj-figure",
+      "kind": "figure",
+      "prompt": "The 'ML start' end node teaches:",
+      "choices": [
+        "That NJ is the likelihood",
+        "That NJ is often a starting tree for a likelihood search, not the model itself",
+        "That distances are posteriors",
+        "That alignment is FDR"
+      ],
+      "answer": "That NJ is often a starting tree for a likelihood search, not the model itself",
+      "why": "Lower end.",
+      "whyWrong": {
+        "That NJ is the likelihood": "Opposite.",
+        "That distances are posteriors": "No.",
+        "That alignment is FDR": "No."
+      },
+      "figureHint": "Lower right."
+    }
+  ]
+}

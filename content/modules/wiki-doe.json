@@ -1,0 +1,166 @@
+{
+  "id": "wiki-doe",
+  "title": "Design of experiments as a Wikipedia planning node",
+  "dek": "Encyclopedia DoE: randomise, block, factorialize. Simplfy already has randomization, blocking, and factorial plates — this is the category glue.",
+  "domain": "stats",
+  "aliases": [
+    "design of experiments",
+    "experimental design Wikipedia",
+    "DoE"
+  ],
+  "tags": [
+    "glossary",
+    "design",
+    "randomization",
+    "DoE"
+  ],
+  "story": [
+    "Design of experiments on Wikipedia is a planning category: how you assign treatments, block nuisance factors, and structure factorial grids so that the likelihood you intended is the one you can actually fit.",
+    "stats-randomization, stats-blocking, and stats-factorial already teach those verbs. This card is the encyclopedia umbrella they sit under, plus a reminder that observational TB genomics is usually not a designed experiment.",
+    "NIST's handbook chapters on design are definitional authority. Wikipedia supplies names (CRD, RCBD, Latin square, split-plot)."
+  ],
+  "deepTitle": "Design versus analysis slogan",
+  "deep": [
+    "You cannot ANOVA your way out of confounding that the design never broke (stats-confounding).",
+    "Split-plots and repeated measures have two error strata; 'just OLS' is a trap.",
+    "Lab plate layouts (inoculum batch, incubator shelf) are blocks whether you named them or not.",
+    "Latin squares get a sibling glossary card."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "DoE umbrella, named classical plans, Simplfy verb plates, and the observational fork TB genomics usually lives on.",
+    "layers": [
+      {
+        "title": "Umbrella",
+        "nodes": [
+          "DoE"
+        ]
+      },
+      {
+        "title": "Classical plans",
+        "nodes": [
+          "CRD",
+          "RCBD",
+          "factorial"
+        ]
+      },
+      {
+        "title": "Simplfy verbs",
+        "nodes": [
+          "randomize",
+          "block"
+        ]
+      },
+      {
+        "title": "Often not DoE",
+        "nodes": [
+          "WGS convenience"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Design of experiments — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Design_of_experiments",
+      "attribution": "English Wikipedia revision 1363887197 (2026-07-13T02:41:04Z). Wikidata Q2334061. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-randomization",
+    "stats-blocking",
+    "stats-factorial",
+    "wiki-factorial-expt",
+    "wiki-latin-square",
+    "wiki-anova",
+    "stats-confounding"
+  ],
+  "example": {
+    "title": "Incubator shelf as an unblocked factor",
+    "setup": "MIC experiment, treatment randomised, all high-dose plates on the warm shelf.",
+    "steps": [
+      {
+        "title": "You randomised the named factor",
+        "body": "Good."
+      },
+      {
+        "title": "You confounded dose with shelf",
+        "body": "Blocking/design plates."
+      },
+      {
+        "title": "Analysis cannot fully rescue a broken design",
+        "body": "DoE node."
+      }
+    ],
+    "takeaway": "DoE is planning. Analysis is not a time machine."
+  },
+  "check": [
+    {
+      "id": "doe-umb",
+      "kind": "conceptual",
+      "prompt": "This plate treats DoE as:",
+      "choices": [
+        "A substitute for randomization",
+        "A planning category whose verbs already have Simplfy plates",
+        "An FDR procedure",
+        "A substitution model"
+      ],
+      "answer": "A planning category whose verbs already have Simplfy plates",
+      "why": "Umbrella.",
+      "whyWrong": {
+        "A substitute for randomization": "Randomization is a verb inside DoE.",
+        "An FDR procedure": "No.",
+        "A substitution model": "Phylo."
+      }
+    },
+    {
+      "id": "doe-obs",
+      "kind": "calculation",
+      "prompt": "A convenience sample of RR-TB genomes is:",
+      "choices": [
+        "A randomised block design",
+        "Usually not a designed experiment; confounding plates apply",
+        "A Latin square automatically",
+        "A CRD because n is large"
+      ],
+      "answer": "Usually not a designed experiment; confounding plates apply",
+      "why": "Bottom hierarchy row.",
+      "whyWrong": {
+        "A randomised block design": "No assignment.",
+        "A Latin square automatically": "No.",
+        "A CRD because n is large": "n does not create randomization."
+      }
+    },
+    {
+      "id": "doe-figure",
+      "kind": "figure",
+      "prompt": "WGS convenience sits on 'often not DoE' because:",
+      "choices": [
+        "Genomes randomise treatments",
+        "Observational sampling is not a treatment assignment plan",
+        "Blocking is illegal in labs",
+        "CRD is GWAS"
+      ],
+      "answer": "Observational sampling is not a treatment assignment plan",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "Genomes randomise treatments": "No.",
+        "Blocking is illegal in labs": "Opposite.",
+        "CRD is GWAS": "No."
+      },
+      "figureHint": "Last layer."
+    }
+  ]
+}

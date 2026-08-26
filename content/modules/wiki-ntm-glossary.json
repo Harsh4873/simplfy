@@ -1,0 +1,168 @@
+{
+  "id": "wiki-ntm-glossary",
+  "title": "Nontuberculous mycobacteria as a Wikipedia remainder class",
+  "dek": "Everything in Mycobacterium that is not MTBC and not M. leprae, in the usual teaching cut. Speciation and MAC therapy stay on tb-ntm.",
+  "domain": "tb",
+  "aliases": [
+    "NTM",
+    "nontuberculous mycobacteria",
+    "MOTT",
+    "atypical mycobacteria"
+  ],
+  "tags": [
+    "glossary",
+    "NTM",
+    "differential",
+    "species"
+  ],
+  "story": [
+    "Nontuberculous mycobacteria on Wikipedia are the remainder class: mycobacteria that are not MTBC and not leprosy bacilli. Older names (MOTT, atypical) still pollute search.",
+    "Simplfy's tb-ntm plate is how a TB lab avoids reporting MAC as pan-susceptible TB. This card is the encyclopedia remainder so related[] can hold both the class and celebrity species (MAC, kansasii, abscessus).",
+    "Environmental reservoirs and opportunistic lung disease in bronchiectasis/COPD are the Wikipedia epidemiology. They are not a reason to skip a TB work-up when the syndrome is TB-like."
+  ],
+  "deepTitle": "Remainder class versus celebrity species",
+  "deep": [
+    "Rapid versus slow grower is a Runyon-ish teaching split still on encyclopedia pages; WGS names species better.",
+    "ATS/IDSA NTM treatment is not WHO TB Groups. Do not BPaLM a kansasii without looking.",
+    "False MTBC NAAT is uncommon but mis-speciated MGIT bottles are not.",
+    "M. leprae is not NTM in this teaching cut — own node."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Genus, then the teaching cut, then celebrity NTM leaves that get their own glossary plates.",
+    "layers": [
+      {
+        "title": "Genus",
+        "nodes": [
+          "Mycobacterium"
+        ]
+      },
+      {
+        "title": "Teaching cut",
+        "nodes": [
+          "MTBC",
+          "leprae",
+          "NTM"
+        ]
+      },
+      {
+        "title": "NTM celebrities",
+        "nodes": [
+          "MAC",
+          "kansasii",
+          "abscessus"
+        ]
+      },
+      {
+        "title": "Hand-off",
+        "nodes": [
+          "tb-ntm"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Nontuberculous mycobacteria — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Nontuberculous_mycobacteria",
+      "attribution": "English Wikipedia revision 1338987151 (2026-02-18T09:54:31Z). Wikidata Q1881705. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-ntm",
+    "tb-mtbc",
+    "wiki-mac",
+    "wiki-m-kansasii",
+    "wiki-m-abscessus",
+    "wiki-m-leprae",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "MGIT positive, Xpert negative",
+    "setup": "Someone files 'failed Xpert, treat as DS-TB'.",
+    "steps": [
+      {
+        "title": "Remainder class is the prior",
+        "body": "NTM in a bottle will not light MTBC NAAT."
+      },
+      {
+        "title": "Speciate",
+        "body": "tb-ntm."
+      },
+      {
+        "title": "Do not copy HRZE",
+        "body": "Wrong disease."
+      }
+    ],
+    "takeaway": "NTM is the remainder class. It is not shy TB."
+  },
+  "check": [
+    {
+      "id": "ntm-cut",
+      "kind": "conceptual",
+      "prompt": "In this studio, NTM means:",
+      "choices": [
+        "MDR-TB",
+        "Mycobacteria outside MTBC and (in this teaching cut) outside M. leprae",
+        "Only M. tuberculosis L4",
+        "Viruses"
+      ],
+      "answer": "Mycobacteria outside MTBC and (in this teaching cut) outside M. leprae",
+      "why": "Remainder class.",
+      "whyWrong": {
+        "MDR-TB": "Resistance of MTBC.",
+        "Only M. tuberculosis L4": "Opposite.",
+        "Viruses": "No."
+      }
+    },
+    {
+      "id": "ntm-xpert",
+      "kind": "calculation",
+      "prompt": "Xpert MTB not detected, MGIT AFB positive. Next:",
+      "choices": [
+        "Force 2HRZE",
+        "Speciate as possible NTM; do not invent MTBC from the bottle alone",
+        "Call it BCG",
+        "Call it Ultra trace"
+      ],
+      "answer": "Speciate as possible NTM; do not invent MTBC from the bottle alone",
+      "why": "Classic fork.",
+      "whyWrong": {
+        "Force 2HRZE": "Wrong.",
+        "Call it BCG": "BCG is MTBC and often NAAT+.",
+        "Call it Ultra trace": "Different assay result."
+      }
+    },
+    {
+      "id": "ntm-figure",
+      "kind": "figure",
+      "prompt": "MAC, kansasii, abscessus sit as:",
+      "choices": [
+        "MTBC lineages",
+        "NTM celebrity leaves under the remainder class",
+        "Rifamycins",
+        "IGRAs"
+      ],
+      "answer": "NTM celebrity leaves under the remainder class",
+      "why": "Third layer.",
+      "whyWrong": {
+        "MTBC lineages": "Wrong cut.",
+        "Rifamycins": "No.",
+        "IGRAs": "No."
+      },
+      "figureHint": "NTM celebrities layer."
+    }
+  ]
+}

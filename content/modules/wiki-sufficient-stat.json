@@ -1,0 +1,181 @@
+{
+  "id": "wiki-sufficient-stat",
+  "title": "Sufficient statistic as a named data compression",
+  "dek": "T(y) is sufficient if the conditional law of the data given T does not depend on θ. Wikipedia definition. Exponential families make T obvious.",
+  "domain": "stats",
+  "aliases": [
+    "sufficient statistic",
+    "sufficiency",
+    "factorization theorem"
+  ],
+  "tags": [
+    "glossary",
+    "sufficiency",
+    "factorization",
+    "T(y)"
+  ],
+  "story": [
+    "A statistic T(y) is sufficient for θ if, once you know T, the leftover details of y carry no further information about θ. Fisher's factorization theorem is the working test: f(y|θ)=g(T(y),θ)h(y).",
+    "Exponential families hand you T for free. That is why the expfam plates keep saying 'the list of counts disappeared except as a sum'.",
+    "Ancillarity and completeness are neighbouring encyclopedia words this studio will not turn into a qualifying exam. We need the compression slogan for GLMs and for 'why the MLE depends on y only through …'."
+  ],
+  "deepTitle": "Compression versus throwing away the design",
+  "deep": [
+    "Sufficiency is relative to a model. If the model is wrong, T may be insufficient for the truth.",
+    "The whole sample is always sufficient; the point is reduction.",
+    "In a Cox model, the partial likelihood uses risk-set structure, not a single Poisson T.",
+    "Do not confuse sufficient statistics with p-values."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Data in, T extracted, likelihood depends on y only through T. The leftover h(y) does not see θ.",
+    "nodes": [
+      {
+        "id": "y",
+        "label": "y",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "t",
+        "label": "T(y)",
+        "x": 40,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "g",
+        "label": "g(T,θ)",
+        "x": 68,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "h",
+        "label": "h(y) no θ",
+        "x": 68,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "y",
+        "to": "t"
+      },
+      {
+        "from": "t",
+        "to": "g",
+        "label": "carries θ"
+      },
+      {
+        "from": "y",
+        "to": "h",
+        "label": "factor"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Sufficient statistic — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sufficient_statistic",
+      "attribution": "English Wikipedia revision 1366488036 (2026-07-28T08:29:22Z). Wikidata Q1099110. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-expfam-glossary",
+    "stats-exponential-family",
+    "stats-likelihood",
+    "stats-mle",
+    "wiki-fisher-info"
+  ],
+  "example": {
+    "title": "Bernoulli DST, keep all 0/1 sequences in the MLE formula",
+    "setup": "Student writes a product that never sums.",
+    "steps": [
+      {
+        "title": "Factor",
+        "body": "ℓ(π) depends on y only through ∑yᵢ."
+      },
+      {
+        "title": "T = number of resistant isolates (in the iid model)",
+        "body": "Compression."
+      },
+      {
+        "title": "If isolates are related, iid Bernoulli was the wrong model",
+        "body": "Trees/dependence plates."
+      }
+    ],
+    "takeaway": "Sufficiency is compression relative to a model."
+  },
+  "check": [
+    {
+      "id": "suf-def",
+      "kind": "conceptual",
+      "prompt": "T is sufficient for θ when:",
+      "choices": [
+        "T is a p-value",
+        "The conditional distribution of the data given T does not depend on θ",
+        "T is the prior",
+        "T is a q-value"
+      ],
+      "answer": "The conditional distribution of the data given T does not depend on θ",
+      "why": "Definition.",
+      "whyWrong": {
+        "T is a p-value": "No.",
+        "T is the prior": "No.",
+        "T is a q-value": "No."
+      }
+    },
+    {
+      "id": "suf-ber",
+      "kind": "calculation",
+      "prompt": "iid Bernoulli, n=5. A sufficient T is:",
+      "choices": [
+        "the full ordered 5-tuple only",
+        "∑ yᵢ (or ȳ), by factorization",
+        "the p-value of a z-test",
+        "the first observation only always"
+      ],
+      "answer": "∑ yᵢ (or ȳ), by factorization",
+      "why": "Binomial count.",
+      "whyWrong": {
+        "the full ordered 5-tuple only": "It's sufficient but not reduced.",
+        "the p-value of a z-test": "No.",
+        "the first observation only always": "Loses the rest."
+      }
+    },
+    {
+      "id": "suf-figure",
+      "kind": "figure",
+      "prompt": "h(y) is labelled 'no θ' because:",
+      "choices": [
+        "h carries all the information",
+        "Factorization puts θ only in g(T,θ)",
+        "T is independent of y",
+        "Sufficiency is Bayesian only"
+      ],
+      "answer": "Factorization puts θ only in g(T,θ)",
+      "why": "Lower end.",
+      "whyWrong": {
+        "h carries all the information": "Opposite.",
+        "T is independent of y": "T is a function of y.",
+        "Sufficiency is Bayesian only": "It's a sampling-model idea."
+      },
+      "figureHint": "Lower end node."
+    }
+  ]
+}

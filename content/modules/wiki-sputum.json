@@ -1,0 +1,192 @@
+{
+  "id": "wiki-sputum",
+  "title": "Sputum as a named specimen, not a diagnosis",
+  "dek": "Wikipedia's sputum page is mucus from the lower airway. Quality, induction, and smear/NAAT logic stay on clinic plates.",
+  "domain": "tb",
+  "aliases": [
+    "sputum",
+    "expectoration",
+    "phlegm TB"
+  ],
+  "tags": [
+    "glossary",
+    "specimen",
+    "sputum",
+    "lab"
+  ],
+  "story": [
+    "Sputum on Wikipedia is a specimen type: lower-airway secretions, not saliva. TB laboratories live and die on that distinction.",
+    "Induced sputum, gastric aspirate, stool as a pediatric WRD specimen — those are clinic-module objects. This card is the named thing people cough.",
+    "A beautiful Wikipedia diagram of a mucopurulent sample does not grade smear or call RIF."
+  ],
+  "deepTitle": "Specimen versus test",
+  "deep": [
+    "Saliva-labelled 'sputum' is a quality-control fail.",
+    "Blood-streaked sputum is still sputum (hemoptysis card).",
+    "Volume folklore is less important than getting a real lower-airway sample and a WRD.",
+    "Infection-control plates own how you collect it."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Specimen first, then test class. Saliva is a failed start, not a negative TB test.",
+    "nodes": [
+      {
+        "id": "cough",
+        "label": "Cough",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "sp",
+        "label": "True sputum",
+        "x": 36,
+        "y": 22,
+        "tone": "process"
+      },
+      {
+        "id": "sal",
+        "label": "Saliva",
+        "x": 36,
+        "y": 72,
+        "tone": "decision",
+        "detail": "QC fail"
+      },
+      {
+        "id": "wrd",
+        "label": "mWRD / smear",
+        "x": 68,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "re",
+        "label": "Recollect / induce",
+        "x": 68,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "cough",
+        "to": "sp"
+      },
+      {
+        "from": "cough",
+        "to": "sal"
+      },
+      {
+        "from": "sp",
+        "to": "wrd"
+      },
+      {
+        "from": "sal",
+        "to": "re"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Sputum — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sputum",
+      "attribution": "English Wikipedia revision 1369399831 (2026-08-14T19:14:16Z). Wikidata Q259346. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-smear-culture",
+    "tb-diagnosis",
+    "tb-xpert-ultra",
+    "tb-pediatric-dx",
+    "tb-infection-control",
+    "wiki-hemoptysis"
+  ],
+  "example": {
+    "title": "Saliva in a sterile cup, Ultra negative",
+    "setup": "Team writes 'TB excluded'.",
+    "steps": [
+      {
+        "title": "Name the specimen fail",
+        "body": "Not sputum."
+      },
+      {
+        "title": "Recollect or induce or change site",
+        "body": "Pediatric/EPTB plates if needed."
+      },
+      {
+        "title": "Negative on saliva is not a case definition",
+        "body": "Quality first."
+      }
+    ],
+    "takeaway": "Sputum is a specimen. Saliva is a different liquid."
+  },
+  "check": [
+    {
+      "id": "sp-spec",
+      "kind": "conceptual",
+      "prompt": "Sputum, on this plate, is:",
+      "choices": [
+        "A diagnosis of TB",
+        "A lower-airway specimen type that tests may be applied to",
+        "An IGRA antigen",
+        "A lineage"
+      ],
+      "answer": "A lower-airway specimen type that tests may be applied to",
+      "why": "Specimen node.",
+      "whyWrong": {
+        "A diagnosis of TB": "No.",
+        "An IGRA antigen": "No.",
+        "A lineage": "No."
+      }
+    },
+    {
+      "id": "sp-sal",
+      "kind": "calculation",
+      "prompt": "Saliva labelled sputum with MTB not detected:",
+      "choices": [
+        "Excludes TBM and cavities forever",
+        "Does not exclude disease; it may be the wrong specimen",
+        "Proves RIF-S",
+        "Proves BCG"
+      ],
+      "answer": "Does not exclude disease; it may be the wrong specimen",
+      "why": "QC.",
+      "whyWrong": {
+        "Excludes TBM and cavities forever": "No.",
+        "Proves RIF-S": "No.",
+        "Proves BCG": "No."
+      }
+    },
+    {
+      "id": "sp-figure",
+      "kind": "figure",
+      "prompt": "The saliva node is labelled QC fail because:",
+      "choices": [
+        "Saliva is the preferred WRD specimen",
+        "It is not lower-airway sputum, so a negative test is uninterpretable as exclusion",
+        "Saliva sequences rpoB better",
+        "QC means DST"
+      ],
+      "answer": "It is not lower-airway sputum, so a negative test is uninterpretable as exclusion",
+      "why": "Lower branch.",
+      "whyWrong": {
+        "Saliva is the preferred WRD specimen": "Opposite.",
+        "Saliva sequences rpoB better": "No.",
+        "QC means DST": "No."
+      },
+      "figureHint": "Lower decision node."
+    }
+  ]
+}

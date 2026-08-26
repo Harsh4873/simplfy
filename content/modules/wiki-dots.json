@@ -1,0 +1,168 @@
+{
+  "id": "wiki-dots",
+  "title": "DOTS as a named public-health slogan",
+  "dek": "Wikipedia's directly observed treatment, short-course is a 1990s programme brand. It is not a 2024 regimen table.",
+  "domain": "tb",
+  "aliases": [
+    "DOTS",
+    "directly observed treatment",
+    "directly observed therapy",
+    "Stop TB slogan"
+  ],
+  "tags": [
+    "glossary",
+    "DOT",
+    "programme",
+    "history"
+  ],
+  "story": [
+    "DOTS on Wikipedia is the branded WHO strategy of the 1990s: smear microscopy, standardised short-course, directly observed doses, political commitment, recording systems.",
+    "Observation of doses still exists as adherence support. The brand is not BPaLM, not Ultra-first diagnosis, not the End TB strategy's full later stack.",
+    "This card stops students from treating a historic slogan as current clinical protocol."
+  ],
+  "deepTitle": "Brand versus current modules",
+  "deep": [
+    "Video DOT and community support are modern adherence tools; they are not 'the five elements of DOTS' copied into a 2026 thesis methods section as if nothing changed.",
+    "Short-course then meant HRZE-era DS-TB, not HPZM or BPaLM.",
+    "Infection-control and WRDs have their own plates.",
+    "No political-commitment checkbox replaces DST."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Historic brand on top, what it emphasised, what later plates own now.",
+    "layers": [
+      {
+        "title": "1990s brand",
+        "nodes": [
+          "DOTS"
+        ]
+      },
+      {
+        "title": "Then",
+        "nodes": [
+          "smear",
+          "short-course",
+          "observe"
+        ]
+      },
+      {
+        "title": "Now (other plates)",
+        "nodes": [
+          "mWRD",
+          "HPZM/BPaLM",
+          "support"
+        ]
+      },
+      {
+        "title": "Unchanged need",
+        "nodes": [
+          "adherence",
+          "recording"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Directly observed treatment, short-course — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Directly_observed_treatment,_short-course",
+      "attribution": "English Wikipedia revision 1365018686 (2026-07-19T20:34:38Z). Wikidata Q2339584. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-hrze",
+    "tb-infection-control",
+    "tb-diagnosis",
+    "tb-bpalm",
+    "tb-hpzm",
+    "wiki-tuberculosis"
+  ],
+  "example": {
+    "title": "Methods section: 'we used DOTS'",
+    "setup": "A 2026 DR-TB cohort paper, no other details.",
+    "steps": [
+      {
+        "title": "Brand is underspecified",
+        "body": "Which regimen, which observation, which diagnostic."
+      },
+      {
+        "title": "Name the actual backbone",
+        "body": "BPaLM vs 9-month vs other."
+      },
+      {
+        "title": "Keep DOT as adherence, not as DST",
+        "body": "Observation does not invent susceptibility."
+      }
+    ],
+    "takeaway": "DOTS is a historic slogan. Write the regimen you used."
+  },
+  "check": [
+    {
+      "id": "dots-brand",
+      "kind": "conceptual",
+      "prompt": "DOTS in this studio is:",
+      "choices": [
+        "The 2024 BPaLM table",
+        "A 1990s WHO programme brand, not a current regimen specification",
+        "An IGRA",
+        "A lineage"
+      ],
+      "answer": "A 1990s WHO programme brand, not a current regimen specification",
+      "why": "Slogan node.",
+      "whyWrong": {
+        "The 2024 BPaLM table": "Different plate.",
+        "An IGRA": "No.",
+        "A lineage": "No."
+      }
+    },
+    {
+      "id": "dots-obs",
+      "kind": "calculation",
+      "prompt": "Direct observation of a wrong regimen:",
+      "choices": [
+        "Fixes RIF-R",
+        "Does not convert an incorrect backbone into DST-appropriate therapy",
+        "Replaces Ultra",
+        "Defines XDR"
+      ],
+      "answer": "Does not convert an incorrect backbone into DST-appropriate therapy",
+      "why": "Adherence ≠ susceptibility.",
+      "whyWrong": {
+        "Fixes RIF-R": "No.",
+        "Replaces Ultra": "No.",
+        "Defines XDR": "No."
+      }
+    },
+    {
+      "id": "dots-figure",
+      "kind": "figure",
+      "prompt": "mWRD and HPZM/BPaLM sit on 'now' to teach:",
+      "choices": [
+        "That DOTS already included Ultra and BPaLM",
+        "That later diagnostic and regimen plates superseded the 1990s brand's contents",
+        "That smear is illegal",
+        "That observation is obsolete always"
+      ],
+      "answer": "That later diagnostic and regimen plates superseded the 1990s brand's contents",
+      "why": "Third layer.",
+      "whyWrong": {
+        "That DOTS already included Ultra and BPaLM": "Anachronism.",
+        "That smear is illegal": "No.",
+        "That observation is obsolete always": "Bottom row still has adherence."
+      },
+      "figureHint": "Now layer."
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "id": "wiki-ghon",
+  "title": "Ghon focus and Ranke complex",
+  "dek": "Named primary-infection radiology. Calcification is a history of negotiation, not a sterility certificate.",
+  "domain": "tb",
+  "aliases": [
+    "Ghon complex",
+    "Ghon focus",
+    "Ranke complex",
+    "primary complex"
+  ],
+  "tags": [
+    "glossary",
+    "radiology",
+    "primary TB",
+    "calcification"
+  ],
+  "story": [
+    "Wikipedia still teaches the Ghon focus (primary lung lesion) and Ghon/Ranke complex (focus plus hilar node). These are 20th-century anatomic names that show up on CXR teaching files.",
+    "Simplfy's granuloma and pathogenesis plates already said calcification is not proof of sterility. This card exists so the eponym searches land on that sentence.",
+    "Primary progressive disease, miliary seeding, and later post-primary cavitation are different chapters. The Ghon name belongs to the primary complex, not to every upper-lobe cavity."
+  ],
+  "deepTitle": "Eponym versus lesion PK",
+  "deep": [
+    "A calcified Ranke complex in an IGRA-positive adult is compatible with remote infection. It does not choose TPT by itself.",
+    "Children may show a visible primary complex while still needing a disease work-up — see pediatric diagnosis.",
+    "Do not call every granuloma on CT a Ghon focus. The eponym is a primary-infection pattern.",
+    "Caseum and drug gradients remain on tb-caseum / tb-granuloma."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Primary complex as named layers: peripheral focus, draining node. Calcium is a later paint, not a microbiologic assay.",
+    "layers": [
+      {
+        "id": "par",
+        "label": "Parenchymal Ghon focus",
+        "detail": "primary implant",
+        "tone": "wall"
+      },
+      {
+        "id": "lym",
+        "label": "Lymphatic drain",
+        "detail": "toward hilum",
+        "tone": "membrane"
+      },
+      {
+        "id": "node",
+        "label": "Hilar node",
+        "detail": "completes the complex",
+        "tone": "core"
+      },
+      {
+        "id": "ca",
+        "label": "Later calcification",
+        "detail": "history, not sterility",
+        "tone": "lipid"
+      }
+    ],
+    "annotation": "Ranke complex = healed/calcified primary complex in many teaching uses."
+  },
+  "sources": [
+    {
+      "title": "Ghon's complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ghon%27s_complex",
+      "attribution": "English Wikipedia revision 1348569669 (2026-04-13T08:47:52Z). Wikidata Q2086658. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Ghon focus — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ghon_focus",
+      "attribution": "English Wikipedia revision 1165132360 (2023-07-13T05:50:04Z). Wikidata Q548165. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "tb-caseum",
+    "tb-pediatric-dx",
+    "tb-cxr-cad",
+    "wiki-latent-tb",
+    "wiki-caseation"
+  ],
+  "example": {
+    "title": "Calcified complex, new cavity",
+    "setup": "Old Ranke complex on CXR, new apical cavity, Ultra positive.",
+    "steps": [
+      {
+        "title": "The eponym is the old story",
+        "body": "Remote primary infection can predate post-primary disease."
+      },
+      {
+        "title": "The cavity is today's disease",
+        "body": "Do not file as 'just old Ghon'."
+      },
+      {
+        "title": "IGRA adds little here",
+        "body": "Disease diagnostics already fired."
+      }
+    ],
+    "takeaway": "Ghon names the primary complex. Cavities name today."
+  },
+  "check": [
+    {
+      "id": "ghon-sterile",
+      "kind": "conceptual",
+      "prompt": "A calcified Ghon/Ranke complex proves:",
+      "choices": [
+        "Microbiologic sterility of the host",
+        "A radiographic history of a primary complex, not sterility",
+        "XDR-TB",
+        "That BCG failed this year"
+      ],
+      "answer": "A radiographic history of a primary complex, not sterility",
+      "why": "Same punchline as the granuloma plate.",
+      "whyWrong": {
+        "Microbiologic sterility of the host": "Forbidden inference.",
+        "XDR-TB": "No.",
+        "That BCG failed this year": "No."
+      }
+    },
+    {
+      "id": "ghon-cavity",
+      "kind": "calculation",
+      "prompt": "Upper-lobe cavity plus an old calcified node. The cavity is:",
+      "choices": [
+        "By definition still a Ghon focus",
+        "A different, often post-primary, lesion; do not merge it into the eponym",
+        "Impossible if Ranke is seen",
+        "Always NTM"
+      ],
+      "answer": "A different, often post-primary, lesion; do not merge it into the eponym",
+      "why": "Eponym scope.",
+      "whyWrong": {
+        "By definition still a Ghon focus": "Ghon is primary focus.",
+        "Impossible if Ranke is seen": "Both can exist across time.",
+        "Always NTM": "No."
+      }
+    },
+    {
+      "id": "ghon-figure",
+      "kind": "figure",
+      "prompt": "Which layer is explicitly 'history, not sterility'?",
+      "choices": [
+        "Parenchymal Ghon focus",
+        "Lymphatic drain",
+        "Later calcification",
+        "Hilar node"
+      ],
+      "answer": "Later calcification",
+      "why": "Bottom layer detail.",
+      "whyWrong": {
+        "Parenchymal Ghon focus": "The implant.",
+        "Lymphatic drain": "Anatomy.",
+        "Hilar node": "Completes complex."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ]
+}

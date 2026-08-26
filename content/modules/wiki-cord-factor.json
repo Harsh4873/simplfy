@@ -1,0 +1,165 @@
+{
+  "id": "wiki-cord-factor",
+  "title": "Cord factor (TDM) as a named glycolipid",
+  "dek": "Trehalose dimycolate. Wikipedia virulence-lipid node. Envelope context stays on tb-cell-envelope / tb-mycolates.",
+  "domain": "tb",
+  "aliases": [
+    "cord factor",
+    "trehalose dimycolate",
+    "TDM",
+    "serpentine cords"
+  ],
+  "tags": [
+    "glossary",
+    "lipid",
+    "virulence",
+    "TDM"
+  ],
+  "story": [
+    "Cord factor on Wikipedia is trehalose dimycolate (TDM): a surface glycolipid associated with serpentine cording in culture and with granuloma/virulence folklore in older literature.",
+    "Cording is a lab-morphology hint, not a DST and not a proof of Mtb sensu stricto (other mycobacteria can cord).",
+    "Modern envelope teaching treats TDM as one extractable outer lipid among PDIM, SL-1, LAM. Do not let a 1950s 'the virulence factor' headline erase that list."
+  ],
+  "deepTitle": "Folklore versus envelope list",
+  "deep": [
+    "PDIM has its own Simplfy plate for virulence and detergent resistance.",
+    "Granuloma induction stories in animal models are not human dosing rules.",
+    "Detergent-cord assays are not WRDs.",
+    "INH-stressed cells may look morphologically odd; that is not a TDM assay."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "TDM as one named outer lipid, not the whole virulence encyclopedia.",
+    "terms": [
+      {
+        "label": "TDM / cord factor",
+        "weight": 10
+      },
+      {
+        "label": "serpentine cords",
+        "weight": 8
+      },
+      {
+        "label": "PDIM neighbour",
+        "weight": 8
+      },
+      {
+        "label": "LAM neighbour",
+        "weight": 7
+      },
+      {
+        "label": "≠ species",
+        "weight": 9
+      },
+      {
+        "label": "≠ DST",
+        "weight": 9
+      },
+      {
+        "label": "extractable outer lipid",
+        "weight": 8
+      },
+      {
+        "label": "hand-off envelope",
+        "weight": 7
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Cord factor — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Cord_factor",
+      "attribution": "English Wikipedia revision 1315998116 (2025-10-09T22:08:56Z). Wikidata Q5169879. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-mycolates",
+    "tb-cell-envelope",
+    "tb-pdim",
+    "wiki-mycolic-acid",
+    "wiki-lam",
+    "tb-organism"
+  ],
+  "example": {
+    "title": "Cording seen, called 'virulent Mtb'",
+    "setup": "Liquid culture cords; team skips speciation.",
+    "steps": [
+      {
+        "title": "Cording is morphology",
+        "body": "Several mycobacteria can do it."
+      },
+      {
+        "title": "NAAT/WGS still required",
+        "body": "Especially if the story is odd."
+      },
+      {
+        "title": "TDM Wikipedia is etymology",
+        "body": "Not a virulence score for the chart."
+      }
+    ],
+    "takeaway": "Cord factor names a glycolipid. Cords do not name a species."
+  },
+  "check": [
+    {
+      "id": "tdm-what",
+      "kind": "conceptual",
+      "prompt": "Cord factor is:",
+      "choices": [
+        "rpoB",
+        "Trehalose dimycolate, a named outer glycolipid",
+        "IFN-γ",
+        "Löwenstein egg"
+      ],
+      "answer": "Trehalose dimycolate, a named outer glycolipid",
+      "why": "Lipid node.",
+      "whyWrong": {
+        "rpoB": "RIF target.",
+        "IFN-γ": "Cytokine.",
+        "Löwenstein egg": "Medium."
+      }
+    },
+    {
+      "id": "tdm-cord",
+      "kind": "calculation",
+      "prompt": "Serpentine cording in broth:",
+      "choices": [
+        "Proves M. tuberculosis L4 and RIF-S",
+        "Is a morphology hint compatible with several mycobacteria, not a DST",
+        "Replaces Ultra",
+        "Measures PZA"
+      ],
+      "answer": "Is a morphology hint compatible with several mycobacteria, not a DST",
+      "why": "Hint ≠ barcode.",
+      "whyWrong": {
+        "Proves M. tuberculosis L4 and RIF-S": "No.",
+        "Replaces Ultra": "No.",
+        "Measures PZA": "No."
+      }
+    },
+    {
+      "id": "tdm-figure",
+      "kind": "figure",
+      "prompt": "Why does PDIM appear on the constellation?",
+      "choices": [
+        "Because TDM is PDIM",
+        "To mark a neighbouring outer-lipid virulence object already plated as tb-pdim",
+        "Because PDIM is an IGRA",
+        "Because Wikipedia merged them"
+      ],
+      "answer": "To mark a neighbouring outer-lipid virulence object already plated as tb-pdim",
+      "why": "Neighbour, not synonym.",
+      "whyWrong": {
+        "Because TDM is PDIM": "Different lipids.",
+        "Because PDIM is an IGRA": "No.",
+        "Because Wikipedia merged them": "This studio does not."
+      },
+      "figureHint": "PDIM neighbour term."
+    }
+  ]
+}

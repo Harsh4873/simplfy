@@ -1,0 +1,151 @@
+{
+  "id": "wiki-anova",
+  "title": "ANOVA as a named partition of squares",
+  "dek": "Wikipedia ANOVA is SS_between / SS_within. It is an LRT/F-test costume in Gaussian linear models, not a separate religion.",
+  "domain": "stats",
+  "aliases": [
+    "analysis of variance",
+    "ANOVA Wikipedia",
+    "F test groups"
+  ],
+  "tags": [
+    "glossary",
+    "ANOVA",
+    "F-test",
+    "design"
+  ],
+  "story": [
+    "ANOVA on Wikipedia is the partition of total sums of squares into between-group and within-group pieces, referred to an F. In a Gaussian linear model this is the same nesting as an LRT (up to the usual σ² story).",
+    "stats-lrt is the likelihood language. wiki-doe and stats-factorial own design. This card is the encyclopedia name people search after a lab meeting says 'just run ANOVA'.",
+    "Non-Gaussian outcomes (binary DST, counts) do not become Gaussian because you typed aov()."
+  ],
+  "deepTitle": "Squares versus likelihood",
+  "deep": [
+    "One-way, two-way, repeated measures are design statements. The software word ANOVA does not tell you the design.",
+    "Type I/II/III SS fights are order-of-entry fights in unbalanced data — not a Wikipedia religious war you should import unexamined.",
+    "Kruskal–Wallis is a rank cousin, not 'nonparametric ANOVA' with the same null.",
+    "TB example: MIC by lineage as a factor is an ANOVA only if you believe the Gaussian linear model."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "ANOVA's reduced model is intercept-only (or additive); the full model adds factors. The F is a Gaussian costume of a nested comparison.",
+    "reduced": {
+      "label": "Reduced",
+      "params": [
+        "grand mean"
+      ]
+    },
+    "full": {
+      "label": "Full",
+      "params": [
+        "group means",
+        "or factor grid"
+      ]
+    },
+    "statistic": "F ≈ nested Gaussian LRT costume",
+    "reference": "F_{ν1,ν2} under spherical Gaussian"
+  },
+  "sources": [
+    {
+      "title": "Analysis of variance — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Analysis_of_variance",
+      "attribution": "English Wikipedia revision 1369229092 (2026-08-13T17:37:20Z). Wikidata Q42297. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-lrt",
+    "wiki-doe",
+    "stats-factorial",
+    "stats-ols-geometry",
+    "wiki-ols",
+    "wiki-neyman-pearson"
+  ],
+  "example": {
+    "title": "Binary R/S by lineage, 'ANOVA p'",
+    "setup": "Someone aov()'d 0/1.",
+    "steps": [
+      {
+        "title": "Squares assume a linear Gaussian world",
+        "body": "0/1 is Bernoulli."
+      },
+      {
+        "title": "Use a GLM/LRT",
+        "body": "stats-logit / stats-lrt."
+      },
+      {
+        "title": "If you insist on ANOVA, you are using a linear probability model",
+        "body": "Say so and sandwich."
+      }
+    ],
+    "takeaway": "ANOVA names a partition of squares. It does not license Gaussianity."
+  },
+  "check": [
+    {
+      "id": "anova-ss",
+      "kind": "conceptual",
+      "prompt": "ANOVA, as used here, is:",
+      "choices": [
+        "A Bayesian prior",
+        "A partition of sums of squares / F-test costume in Gaussian linear models",
+        "A phylogenetic clock",
+        "FDR itself"
+      ],
+      "answer": "A partition of sums of squares / F-test costume in Gaussian linear models",
+      "why": "Squares node.",
+      "whyWrong": {
+        "A Bayesian prior": "No.",
+        "A phylogenetic clock": "No.",
+        "FDR itself": "No."
+      }
+    },
+    {
+      "id": "anova-bin",
+      "kind": "calculation",
+      "prompt": "For a Bernoulli DST outcome, a default ANOVA F is:",
+      "choices": [
+        "The uniformly most powerful test always",
+        "A misspecified Gaussian analysis; prefer a Bernoulli GLM/LRT",
+        "Identical to BH FDR",
+        "A Newick string"
+      ],
+      "answer": "A misspecified Gaussian analysis; prefer a Bernoulli GLM/LRT",
+      "why": "Wrong random component.",
+      "whyWrong": {
+        "The uniformly most powerful test always": "No.",
+        "Identical to BH FDR": "No.",
+        "A Newick string": "No."
+      }
+    },
+    {
+      "id": "anova-figure",
+      "kind": "figure",
+      "prompt": "The nested-models plate is used because:",
+      "choices": [
+        "ANOVA is non-nested by definition",
+        "Group-mean models nest the grand-mean model, so F is a nested comparison in costume",
+        "F is a posterior",
+        "Squares are trees"
+      ],
+      "answer": "Group-mean models nest the grand-mean model, so F is a nested comparison in costume",
+      "why": "Same geometry as LRT.",
+      "whyWrong": {
+        "ANOVA is non-nested by definition": "Opposite.",
+        "F is a posterior": "No.",
+        "Squares are trees": "No."
+      },
+      "figureHint": "Reduced vs full boxes."
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "wiki-fisher-info",
+  "title": "Fisher information as a named curvature",
+  "dek": "I(θ)=E[−ℓ̈]. Wikipedia information node. Delta method and MLE variance already have Simplfy plates.",
+  "domain": "stats",
+  "aliases": [
+    "Fisher information Wikipedia",
+    "expected information",
+    "information matrix"
+  ],
+  "tags": [
+    "glossary",
+    "Fisher information",
+    "curvature",
+    "variance"
+  ],
+  "story": [
+    "Fisher information on Wikipedia is expected curvature of the log-likelihood, or equivalently the variance of the score. It is the object that turns a regular MLE into an approximate Normal with variance I(θ)⁻¹/n in iid models.",
+    "stats-fisher-information already does the TB-lab version. stats-delta-method pushes it through g(θ). This card is the encyclopedia name.",
+    "Observed information −ℓ̈(θ̂) is a cousin you actually compute; expected information is the expectation. Score tests use I at the null; Wald often uses I at the MLE."
+  ],
+  "deepTitle": "Expected versus observed versus sandwich",
+  "deep": [
+    "Misspecification: I is the wrong curvature; sandwich uses meat and bread (stats-sandwich).",
+    "Singular I means the parameter is locally unidentified — not a software NaN mystery.",
+    "Jeffreys prior ∝ √det I is wiki-jeffreys.",
+    "Cramér–Rao uses I as a bound (wiki-cramer-rao)."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "More information, tighter sampling law of the MLE (schematic). Information is curvature, not a p-value.",
+    "xLabel": "θ̂ (schematic)",
+    "curves": [
+      {
+        "id": "low",
+        "label": "low I, wide MLE",
+        "mean": 0.0,
+        "sd": 1.2
+      },
+      {
+        "id": "mid",
+        "label": "moderate I",
+        "mean": 0.0,
+        "sd": 0.7
+      },
+      {
+        "id": "high",
+        "label": "high I, tight MLE",
+        "mean": 0.0,
+        "sd": 0.35
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Fisher information — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fisher_information",
+      "attribution": "English Wikipedia revision 1368103738 (2026-08-07T01:40:44Z). Wikidata Q1420659. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-fisher-information",
+    "stats-delta-method",
+    "stats-mle",
+    "wiki-cramer-rao",
+    "wiki-jeffreys",
+    "wiki-score-test"
+  ],
+  "example": {
+    "title": "Bernoulli π near 0, n=40",
+    "setup": "Information I=n/(π(1−π)) is large? Wait, for π tiny, π(1−π)≈π, I≈n/π which is large per unit π, but the count is Poisson-like rare.",
+    "steps": [
+      {
+        "title": "Write I(π)=n/(π(1−π))",
+        "body": "Bernoulli."
+      },
+      {
+        "title": "Rare events: few 1s, the effective information for log-odds can still be small",
+        "body": "Separation territory."
+      },
+      {
+        "title": "Do not quote 1/I as a CI on the probability scale without looking at zeros",
+        "body": "stats-logit."
+      }
+    ],
+    "takeaway": "Fisher information is curvature. Rare events can still be weakly identified on the scale you care about."
+  },
+  "check": [
+    {
+      "id": "fi-def",
+      "kind": "conceptual",
+      "prompt": "Fisher information is:",
+      "choices": [
+        "A p-value",
+        "Expected curvature of ℓ (variance of the score)",
+        "A Newick tree",
+        "A q-value"
+      ],
+      "answer": "Expected curvature of ℓ (variance of the score)",
+      "why": "Definition.",
+      "whyWrong": {
+        "A p-value": "No.",
+        "A Newick tree": "No.",
+        "A q-value": "No."
+      }
+    },
+    {
+      "id": "fi-ber",
+      "kind": "calculation",
+      "prompt": "iid Bernoulli n=100, π=0.5. I(π) total is:",
+      "choices": [
+        "100 / (0.5×0.5) = 400",
+        "100",
+        "0.5",
+        "1/400"
+      ],
+      "answer": "100 / (0.5×0.5) = 400",
+      "why": "I₁=1/(π(1−π))=4, times n.",
+      "whyWrong": {
+        "100": "That's n.",
+        "0.5": "That's π.",
+        "1/400": "That's a variance scale, not I."
+      }
+    },
+    {
+      "id": "fi-figure",
+      "kind": "figure",
+      "prompt": "Tighter curves at higher I teach:",
+      "choices": [
+        "Information is a prior",
+        "More curvature, less sampling variance of the MLE in regular models",
+        "I is FDR",
+        "Wide always means better"
+      ],
+      "answer": "More curvature, less sampling variance of the MLE in regular models",
+      "why": "Three nested widths.",
+      "whyWrong": {
+        "Information is a prior": "Jeffreys uses I, I is not a prior.",
+        "I is FDR": "No.",
+        "Wide always means better": "Opposite."
+      },
+      "figureHint": "Legend from low I to high I."
+    }
+  ]
+}

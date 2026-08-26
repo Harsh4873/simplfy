@@ -1,0 +1,165 @@
+{
+  "id": "wiki-glm",
+  "title": "GLM as a named three-piece machine",
+  "dek": "Wikipedia GLM: random component, linear predictor, link. Canonical links and IRLS already have Simplfy plates.",
+  "domain": "stats",
+  "aliases": [
+    "generalized linear model",
+    "GLM Wikipedia",
+    "Nelder Wedderburn"
+  ],
+  "tags": [
+    "glossary",
+    "GLM",
+    "link",
+    "exponential family"
+  ],
+  "story": [
+    "Wikipedia's Generalized linear model page is the three-piece slogan: an exponential-family random part, η = Xβ, and a link g(μ) = η. Nelder & Wedderburn 1972 is the citation, not the ingested text.",
+    "stats-glm-link already insists the linear predictor is not the mean. stats-exponential-family already owns A(η). stats-iwls is the algorithm. This card is the encyclopedia assembly drawing.",
+    "Quasi-likelihood is a cousin that keeps the mean–variance map without a full density — own plate. Do not smuggle it in as 'still a GLM' without saying so."
+  ],
+  "deepTitle": "Assembly drawing versus working parts",
+  "deep": [
+    "Canonical link is a convenience, not a moral law (probit exists).",
+    "Offsets belong in η, frozen coefficient 1.",
+    "Binary, count, and positive continuous outcomes are different random components.",
+    "TB DST Bernoulli GLMs are the usual worked example on child plates."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Three pieces stacked. Each piece already has a deeper Simplfy plate.",
+    "layers": [
+      {
+        "id": "rand",
+        "label": "Random component",
+        "detail": "expfam / stats-exponential-family",
+        "tone": "core"
+      },
+      {
+        "id": "link",
+        "label": "Link g(μ)=η",
+        "detail": "stats-glm-link",
+        "tone": "membrane"
+      },
+      {
+        "id": "lin",
+        "label": "Linear predictor Xβ",
+        "detail": "design matrix",
+        "tone": "wall"
+      },
+      {
+        "id": "alg",
+        "label": "IRLS / IWLS",
+        "detail": "stats-iwls",
+        "tone": "lipid"
+      }
+    ],
+    "annotation": "Quasi-likelihood drops the full density and keeps V(μ)."
+  },
+  "sources": [
+    {
+      "title": "Generalized linear model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Generalized_linear_model",
+      "attribution": "English Wikipedia revision 1371060672 (2026-08-24T10:27:17Z). Wikidata Q1501882. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-glm-link",
+    "stats-ols-glm",
+    "stats-exponential-family",
+    "stats-iwls",
+    "stats-quasi-likelihood",
+    "wiki-logistic",
+    "wiki-poisson-reg",
+    "wiki-expfam-glossary"
+  ],
+  "example": {
+    "title": "Software says 'GLM', identity link, Bernoulli",
+    "setup": "μ̂ wanders outside [0,1].",
+    "steps": [
+      {
+        "title": "Random component was Bernoulli-ish",
+        "body": "Mean must live in (0,1)."
+      },
+      {
+        "title": "Identity link did not respect that",
+        "body": "stats-glm-link."
+      },
+      {
+        "title": "Logit or probit is the usual repair",
+        "body": "wiki-logistic / stats-logit."
+      }
+    ],
+    "takeaway": "A GLM is three pieces. The link has to match the mean's legal range."
+  },
+  "check": [
+    {
+      "id": "glm-three",
+      "kind": "conceptual",
+      "prompt": "A GLM, on the encyclopedia assembly, has:",
+      "choices": [
+        "Only a neural net",
+        "A random component, a linear predictor, and a link",
+        "Only a prior",
+        "Only a tree"
+      ],
+      "answer": "A random component, a linear predictor, and a link",
+      "why": "Three pieces.",
+      "whyWrong": {
+        "Only a neural net": "No.",
+        "Only a prior": "No.",
+        "Only a tree": "No."
+      }
+    },
+    {
+      "id": "glm-canon",
+      "kind": "calculation",
+      "prompt": "Canonical logit for Bernoulli is canonical because:",
+      "choices": [
+        "It maximises AUC by law",
+        "η equals the exponential-family natural parameter log(π/(1−π))",
+        "OLS requires it",
+        "Wilks forbids probit"
+      ],
+      "answer": "η equals the exponential-family natural parameter log(π/(1−π))",
+      "why": "Definition of canonical.",
+      "whyWrong": {
+        "It maximises AUC by law": "No.",
+        "OLS requires it": "No.",
+        "Wilks forbids probit": "Probit is a legal GLM."
+      }
+    },
+    {
+      "id": "glm-figure",
+      "kind": "figure",
+      "prompt": "The IRLS layer is present because:",
+      "choices": [
+        "GLMs are always OLS closed form",
+        "Fitting is an algorithm with its own plate (stats-iwls)",
+        "Links are optional always",
+        "Random components are priors"
+      ],
+      "answer": "Fitting is an algorithm with its own plate (stats-iwls)",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "GLMs are always OLS closed form": "Only Gaussian identity.",
+        "Links are optional always": "You always pick one.",
+        "Random components are priors": "No."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ]
+}

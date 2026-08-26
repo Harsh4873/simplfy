@@ -1,0 +1,152 @@
+{
+  "id": "wiki-score-test",
+  "title": "Score test as a named slope-at-the-null test",
+  "dek": "Wikipedia score/Lagrange-multiplier test: use the reduced model's slope. Complementary to stats-wald-score.",
+  "domain": "stats",
+  "aliases": [
+    "score test",
+    "Lagrange multiplier test",
+    "Rao score"
+  ],
+  "tags": [
+    "glossary",
+    "score",
+    "testing",
+    "GLM"
+  ],
+  "story": [
+    "The score test on Wikipedia uses the gradient of the log-likelihood at the restricted estimate, scaled by Fisher information. You fit only the reduced model. That is why GWAS likes score tests: one null GLM, many SNPs.",
+    "stats-wald-score already compares the trinity. This card is the encyclopedia score node, with the TB-lab reminder that rare events and separation make Wald explode while score stays defined.",
+    "Under Wilks regularity the three tests are first-order equivalent. Finite samples they are not the same object."
+  ],
+  "deepTitle": "Null fit, many tests",
+  "deep": [
+    "Score statistic Sᵀ I⁻¹ S at θ̃₀.",
+    "Robust/sandwich scores exist when I is the wrong curvature (stats-sandwich).",
+    "Boundary issues still apply; a score at σ²=0 is not automatically χ²_1.",
+    "Do not mix a score p-value with a Bayes factor in one caption."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Score looks only at the reduced-model slope. Wald looks at the full-model estimate. LRT looks at both peaks. Three costumes, one nested question.",
+    "reduced": {
+      "label": "Fit M0 only",
+      "params": [
+        "score at θ̃₀",
+        "I(θ̃₀)"
+      ]
+    },
+    "full": {
+      "label": "Wald needs M1",
+      "params": [
+        "θ̂₁",
+        "I(θ̂₁)"
+      ]
+    },
+    "statistic": "score: slope-at-null",
+    "reference": "χ²_k under same regularity as Wilks"
+  },
+  "sources": [
+    {
+      "title": "Score test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Score_test",
+      "attribution": "English Wikipedia revision 1349317918 (2026-04-16T19:40:02Z). Wikidata Q4456449. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-wald-score",
+    "stats-lrt",
+    "wiki-wald-test",
+    "wiki-wilks",
+    "stats-gwas",
+    "stats-fisher-information"
+  ],
+  "example": {
+    "title": "200,000 SNP score tests, one null logistic",
+    "setup": "Why not Wald per SNP?",
+    "steps": [
+      {
+        "title": "Score reuses one fit",
+        "body": "Speed."
+      },
+      {
+        "title": "Rare alleles + separation blow up Wald",
+        "body": "stats-gwas."
+      },
+      {
+        "title": "Still correct for the mountain of tests",
+        "body": "FDR plates."
+      }
+    ],
+    "takeaway": "Score tests fit the null and ask whether the slope is already implausible."
+  },
+  "check": [
+    {
+      "id": "sc-null",
+      "kind": "conceptual",
+      "prompt": "A score test is distinctive because it:",
+      "choices": [
+        "Never uses a likelihood",
+        "Can be formed from the reduced-model score without fitting the full model",
+        "Is a posterior odds",
+        "Is a tree bootstrap"
+      ],
+      "answer": "Can be formed from the reduced-model score without fitting the full model",
+      "why": "Null-only fit.",
+      "whyWrong": {
+        "Never uses a likelihood": "It uses the score of ℓ.",
+        "Is a posterior odds": "No.",
+        "Is a tree bootstrap": "No."
+      }
+    },
+    {
+      "id": "sc-gwas",
+      "kind": "calculation",
+      "prompt": "GWAS prefers score tests primarily because:",
+      "choices": [
+        "They automatically fix population structure",
+        "They are cheap (one null fit) and stabler than Wald at sparse SNPs, not because they skip multiple-testing",
+        "They are Bayes factors",
+        "They equal Bonferroni"
+      ],
+      "answer": "They are cheap (one null fit) and stabler than Wald at sparse SNPs, not because they skip multiple-testing",
+      "why": "Speed + stability.",
+      "whyWrong": {
+        "They automatically fix population structure": "Need PCs/kinship.",
+        "They are Bayes factors": "No.",
+        "They equal Bonferroni": "No."
+      }
+    },
+    {
+      "id": "sc-figure",
+      "kind": "figure",
+      "prompt": "The reduced box says 'fit M0 only' because:",
+      "choices": [
+        "Score requires the full MLE",
+        "The score statistic is evaluated at the restricted estimate",
+        "Wald is the reduced box",
+        "IRLS is a tree"
+      ],
+      "answer": "The score statistic is evaluated at the restricted estimate",
+      "why": "Inner box.",
+      "whyWrong": {
+        "Score requires the full MLE": "That's closer to Wald/LRT.",
+        "Wald is the reduced box": "Wald is the full box here.",
+        "IRLS is a tree": "No."
+      },
+      "figureHint": "Reduced box params."
+    }
+  ]
+}

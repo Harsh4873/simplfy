@@ -1,0 +1,164 @@
+{
+  "id": "wiki-acid-fast",
+  "title": "Acid-fastness as a physical chemistry word",
+  "dek": "Retention of dye after acid-alcohol. Wikipedia's property card. Mycolate envelope chemistry stays on tb-organism / tb-cell-envelope.",
+  "domain": "tb",
+  "aliases": [
+    "acid-fast",
+    "acid-fastness",
+    "AFB property"
+  ],
+  "tags": [
+    "glossary",
+    "stain",
+    "mycolate",
+    "property"
+  ],
+  "story": [
+    "Acid-fastness on Wikipedia is a staining property, not a phylogeny: some organisms retain carbol fuchsin (or fluorochrome) after acid-alcohol because of a lipid-rich envelope.",
+    "Mycobacteria are the celebrity examples. Nocardia and some others can play too. That is why AFB ≠ Mtb on a smear.",
+    "The envelope chemistry that makes the property true in Mtb is already a Simplfy layered plate. This card is the word used in every methods sentence."
+  ],
+  "deepTitle": "Property versus taxon",
+  "deep": [
+    "Losing acid-fastness in some NTM or after some treatments is a stain comment, not a species change.",
+    "Auramine is a different dye with the same property idea.",
+    "Do not speciate from 'strong' versus 'weak' acid-fastness alone.",
+    "Cell-wall drug targets (INH, EMB) sit on the chemistry plates, not here."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "What the property does and does not buy you.",
+    "terms": [
+      {
+        "label": "dye retention",
+        "weight": 10
+      },
+      {
+        "label": "mycolate-rich envelope",
+        "weight": 9
+      },
+      {
+        "label": "mycobacteria celebrity",
+        "weight": 8
+      },
+      {
+        "label": "Nocardia too",
+        "weight": 7
+      },
+      {
+        "label": "≠ species",
+        "weight": 10
+      },
+      {
+        "label": "≠ viability",
+        "weight": 9
+      },
+      {
+        "label": "≠ RIF",
+        "weight": 8
+      },
+      {
+        "label": "hand-off envelope",
+        "weight": 8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Acid-fastness — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Acid-fastness",
+      "attribution": "English Wikipedia revision 1342083793 (2026-03-06T22:03:26Z). Wikidata Q3278217. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-ziehl-neelsen",
+    "tb-organism",
+    "tb-cell-envelope",
+    "tb-smear-culture",
+    "tb-mycolates",
+    "wiki-auramine"
+  ],
+  "example": {
+    "title": "AFB-positive, Xpert negative",
+    "setup": "Someone says Wikipedia acid-fastness proves the Xpert failed.",
+    "steps": [
+      {
+        "title": "Property is broad",
+        "body": "Other AFB exist; also rare false-negative NAAT."
+      },
+      {
+        "title": "Reconcile with culture/NTM tools",
+        "body": "tb-ntm."
+      },
+      {
+        "title": "Do not 'believe the stain' as a taxon",
+        "body": "Property ≠ Q130971."
+      }
+    ],
+    "takeaway": "Acid-fast is a property. Taxa need more."
+  },
+  "check": [
+    {
+      "id": "af-prop",
+      "kind": "conceptual",
+      "prompt": "Acid-fastness is:",
+      "choices": [
+        "A Wikidata disease QID",
+        "A staining property of lipid-rich envelopes, not a species name",
+        "Proof of RIF-R",
+        "An IGRA antigen"
+      ],
+      "answer": "A staining property of lipid-rich envelopes, not a species name",
+      "why": "Property card.",
+      "whyWrong": {
+        "A Wikidata disease QID": "No.",
+        "Proof of RIF-R": "No.",
+        "An IGRA antigen": "No."
+      }
+    },
+    {
+      "id": "af-nocardia",
+      "kind": "calculation",
+      "prompt": "Partially acid-fast branching filaments more likely suggest:",
+      "choices": [
+        "Always Mtb L2",
+        "Consider Nocardia/other AFB, not automatic MTBC",
+        "PZA-S M. bovis",
+        "Viral TB"
+      ],
+      "answer": "Consider Nocardia/other AFB, not automatic MTBC",
+      "why": "Property shared.",
+      "whyWrong": {
+        "Always Mtb L2": "No.",
+        "PZA-S M. bovis": "Nonsense.",
+        "Viral TB": "No."
+      }
+    },
+    {
+      "id": "af-figure",
+      "kind": "figure",
+      "prompt": "The constellation's '≠ species' term is teaching:",
+      "choices": [
+        "That AFB on smear names Q130971",
+        "That the property does not speciate",
+        "That Nocardia cannot stain",
+        "That RIF is a stain"
+      ],
+      "answer": "That the property does not speciate",
+      "why": "High-weight warning.",
+      "whyWrong": {
+        "That AFB on smear names Q130971": "Opposite.",
+        "That Nocardia cannot stain": "It can.",
+        "That RIF is a stain": "No."
+      },
+      "figureHint": "≠ species weight."
+    }
+  ]
+}

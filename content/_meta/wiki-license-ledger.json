@@ -1,0 +1,93 @@
+{
+  "title": "Wikipedia-wave plate license ledger",
+  "note": "Original Simplfy teaching notes. Wikipedia/Wikidata used as a glossary and related-graph, not as clinical protocol or as NIST-grade statistical definitional authority. Clinical regimen and dose grammar remain WHO then CDC. Stats definitions remain NIST e-Handbook and original Simplfy notes, then Wikipedia. No OpenStax. No PubMed abstracts as lesson text. No WHO logos. No copyrighted textbooks. Commons images were not hotlinked; visual specs are original SVG-style plate kinds already in the studio.",
+  "user_agent": "SimplfyStudio/1.0 (https://github.com/Harsh4873/simplfy; educational CC-BY-SA teaching plates; contact via GitHub issues)",
+  "ingest": {
+    "wikipedia_rest": "https://en.wikipedia.org/api/rest_v1/",
+    "mediawiki_query": "https://en.wikipedia.org/w/api.php (info|revisions|pageprops, redirects=1)",
+    "wikidata_sparql": "https://query.wikidata.org/sparql"
+  },
+  "wikidata_seeds": {
+    "Q12204": {
+      "label": "tuberculosis (disease)",
+      "enwiki": "https://en.wikipedia.org/wiki/Tuberculosis",
+      "note": "Live sitelink confirmed. P2176 drug-or-therapy edges on the snapshot included isoniazid, rifampicin, pyrazinamide, ethambutol, ethionamide, cycloserine, capreomycin, 4-aminosalicylic acid, and viomycin — a lagging historic list, not WHO Group A."
+    },
+    "Q130971": {
+      "label": "Mycobacterium tuberculosis (taxon)",
+      "enwiki": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis",
+      "note": "Live English sitelink for the organism page."
+    },
+    "Q130737_seed_mismatch": {
+      "requested": "Q130737 as M. tuberculosis",
+      "live": "On the ingest date, Wikidata Q130737 resolved to Moschops (a fossil synapsid), not M. tuberculosis. Plates record the live sitelink Q130971 instead of forcing the stale seed."
+    },
+    "Q5779917": {
+      "label": "Mycobacterium tuberculosis complex",
+      "enwiki": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex"
+    },
+    "other_sitelinks_used": [
+      "Q133447 M. bovis",
+      "Q798309 BCG vaccine",
+      "Q4254929 latent tuberculosis",
+      "Q1129338 granuloma",
+      "Q6046438 interferon-γ release assays",
+      "Q5531060 GeneXpert MTB/RIF"
+    ]
+  },
+  "stamps": [
+    {
+      "class": "English Wikipedia article revisions (see each plate's sources for lastrevid + timestamp)",
+      "license": "CC BY-SA 4.0",
+      "use": "Glossary names, membership lists, eponyms, and graph neighbours. Lesson story/deep/example/check/visual-spec prose is original Simplfy exposition, not article HTML. ShareAlike applies to Wikipedia-derived glossary facts reused on these cards."
+    },
+    {
+      "class": "Wikidata sitelinks and P2176 therapy edges",
+      "license": "CC0 (Wikidata statements) + CC BY-SA 4.0 (linked Wikipedia pages)",
+      "use": "Related-graph fuel and a teaching example of curator lag (viomycin present, bedaquiline absent on Q12204 P2176)."
+    },
+    {
+      "class": "WHO TB Knowledge Sharing Platform / IRIS modules",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "use": "Clinical truth pointer only. Doses and regimen grammar are not taken from Wikipedia when WHO speaks. Not a dump of guideline tables or logos."
+    },
+    {
+      "class": "CDC Core Curriculum on Tuberculosis",
+      "license": "U.S. Government work, public domain",
+      "use": "U.S. practice overlay pointer where plates mention CDC."
+    },
+    {
+      "class": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "license": "U.S. public domain",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "use": "Definitional authority for stats-domain wiki-* cards. Wikipedia remains glossary."
+    },
+    {
+      "class": "Simplfy original teaching notes",
+      "license": "Original teaching notes; Wikipedia-derived glossary under CC BY-SA 4.0",
+      "use": "All story, deep, example, check, and visual-spec prose unless a source stamp says otherwise."
+    }
+  ],
+  "skipped": [
+    {
+      "name": "Existing tb-*.json and stats-*.json",
+      "reason": "File ownership: those plates were not modified. New ids only, wiki- prefix."
+    },
+    {
+      "name": "Named first- and second-line drug monographs already present as tb-* plates",
+      "reason": "Id collision / duplicate monograph policy. Class-level and leftover P2176 (viomycin) cards were added instead."
+    },
+    {
+      "name": "OpenStax textbooks",
+      "reason": "Not used."
+    },
+    {
+      "name": "PubMed abstracts as lesson text",
+      "reason": "Not used."
+    },
+    {
+      "name": "Wikimedia Commons raster/SVG hotlinks",
+      "reason": "Prefer existing visual kinds over hotlinked images even when FILE is CC BY/BY-SA/CC0."
+    }
+  ]
+}

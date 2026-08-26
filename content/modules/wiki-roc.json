@@ -1,0 +1,206 @@
+{
+  "id": "wiki-roc",
+  "title": "ROC curve as a named Se–Sp display",
+  "dek": "Wikipedia ROC: TPR vs FPR as a threshold moves. AUC is a concordance summary, not a likelihood and not a PPV.",
+  "domain": "stats",
+  "aliases": [
+    "ROC curve",
+    "receiver operating characteristic",
+    "AUC Wikipedia"
+  ],
+  "tags": [
+    "glossary",
+    "ROC",
+    "AUC",
+    "threshold"
+  ],
+  "story": [
+    "A ROC curve on Wikipedia plots sensitivity against 1−specificity as you slide a threshold on a score. AUC is the probability a random diseased case scores above a random non-case (plus ties handling).",
+    "stats-se-sp and stats-predictive-values own the point-threshold world and prevalence. This card is the encyclopedia curve so AUC is not reported as 'accuracy' or as PPV.",
+    "Class imbalance does not change AUC's concordance meaning, but it does change whether AUC is the decision-relevant number (calibration, PPV, utility do)."
+  ],
+  "deepTitle": "Thresholds, prevalence, calibration",
+  "deep": [
+    "Youden's J picks a threshold by Se+Sp−1, ignoring prevalence and costs.",
+    "Precision–recall curves are the imbalanced-data neighbour.",
+    "AUC comparisons need a variance (DeLong or bootstrap), not two naked numbers.",
+    "A well-separated ROC can still be poorly calibrated."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Score in, threshold slides, Se and 1−Sp trace the curve. PPV still needs prevalence — a different plate.",
+    "nodes": [
+      {
+        "id": "sc",
+        "label": "Score",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "th",
+        "label": "Threshold t",
+        "x": 36,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "se",
+        "label": "Se(t)",
+        "x": 62,
+        "y": 22,
+        "tone": "process"
+      },
+      {
+        "id": "fpr",
+        "label": "1−Sp(t)",
+        "x": 62,
+        "y": 72,
+        "tone": "process"
+      },
+      {
+        "id": "auc",
+        "label": "AUC summary",
+        "x": 88,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "ppv",
+        "label": "PPV needs prev",
+        "x": 88,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "sc",
+        "to": "th"
+      },
+      {
+        "from": "th",
+        "to": "se"
+      },
+      {
+        "from": "th",
+        "to": "fpr"
+      },
+      {
+        "from": "se",
+        "to": "auc"
+      },
+      {
+        "from": "fpr",
+        "to": "auc"
+      },
+      {
+        "from": "th",
+        "to": "ppv",
+        "label": "not AUC"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Receiver operating characteristic — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Receiver_operating_characteristic",
+      "attribution": "English Wikipedia revision 1368054900 (2026-08-06T19:21:47Z). Wikidata Q327120. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-se-sp",
+    "stats-predictive-values",
+    "wiki-logistic",
+    "tb-predictive-values",
+    "wiki-pvalue"
+  ],
+  "example": {
+    "title": "AUC=0.91 for IGRA to 'diagnose TB'",
+    "setup": "Prevalence 1% clinic.",
+    "steps": [
+      {
+        "title": "AUC is concordance of a score",
+        "body": "Not a case definition."
+      },
+      {
+        "title": "IGRA is still an infection-class test",
+        "body": "tb-igra-tst."
+      },
+      {
+        "title": "PPV uses prevalence",
+        "body": "stats-predictive-values."
+      }
+    ],
+    "takeaway": "ROC/AUC summarise ranking. They do not replace prevalence or test class."
+  },
+  "check": [
+    {
+      "id": "roc-def",
+      "kind": "conceptual",
+      "prompt": "A ROC curve plots:",
+      "choices": [
+        "PPV vs prevalence",
+        "Sensitivity against 1−specificity as a threshold moves",
+        "β against SE",
+        "q against m"
+      ],
+      "answer": "Sensitivity against 1−specificity as a threshold moves",
+      "why": "Display.",
+      "whyWrong": {
+        "PPV vs prevalence": "Different plot.",
+        "β against SE": "No.",
+        "q against m": "No."
+      }
+    },
+    {
+      "id": "roc-auc",
+      "kind": "calculation",
+      "prompt": "AUC=0.5 means:",
+      "choices": [
+        "Perfect separation",
+        "Ranking no better than chance (concordance 1/2), not that PPV=0.5",
+        "p=0.5",
+        "OR=0.5"
+      ],
+      "answer": "Ranking no better than chance (concordance 1/2), not that PPV=0.5",
+      "why": "Chance ranking.",
+      "whyWrong": {
+        "Perfect separation": "AUC=1.",
+        "p=0.5": "No.",
+        "OR=0.5": "No."
+      }
+    },
+    {
+      "id": "roc-figure",
+      "kind": "figure",
+      "prompt": "PPV needs prev is a separate end node because:",
+      "choices": [
+        "AUC includes prevalence",
+        "Concordance summaries do not ingest prevalence; PPV does",
+        "ROC is a tree",
+        "Se is PPV"
+      ],
+      "answer": "Concordance summaries do not ingest prevalence; PPV does",
+      "why": "Lower end.",
+      "whyWrong": {
+        "AUC includes prevalence": "Opposite.",
+        "ROC is a tree": "No.",
+        "Se is PPV": "No."
+      },
+      "figureHint": "Lower right."
+    }
+  ]
+}

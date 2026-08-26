@@ -1,0 +1,178 @@
+{
+  "id": "wiki-tuberculosis",
+  "title": "Tuberculosis as a Wikipedia disease node",
+  "dek": "Q12204 is a disease graph: cause, site, test-class, and drug-therapy edges. It is not a regimen, a DST, or a lesion PK model.",
+  "domain": "tb",
+  "aliases": [
+    "tuberculosis",
+    "TB disease",
+    "phthisis",
+    "Q12204",
+    "consumption"
+  ],
+  "tags": [
+    "glossary",
+    "Wikidata",
+    "disease",
+    "graph"
+  ],
+  "story": [
+    "English Wikipedia's Tuberculosis article (Wikidata Q12204) is a disease node: an airborne mycobacterial disease with pulmonary and extrapulmonary forms, an infection-versus-disease split, and a cloud of historic names (phthisis, consumption). That is useful as a glossary. It is not where a lab should learn 2HRZE, BPaLM, or a critical concentration.",
+    "The sitelinks and Wikidata edges are the pedagogical object. Q12204 points at Mycobacterium tuberculosis as a cause, at IGRA/TST as infection tests, at GeneXpert-class NAATs as disease diagnostics, and at a P2176 drug-or-therapy list that is historically incomplete (isoniazid, rifampicin, PZA, EMB, PAS, ethionamide, cycloserine, capreomycin, viomycin — not bedaquiline, pretomanid, or linezolid on the snapshot used here).",
+    "Simplfy already has clinic plates for diagnosis, first-line, DR definitions, and TPT. This card exists to pin the encyclopedia graph onto those ids: Wikipedia names the node; WHO names the regimen; WGS names the allele."
+  ],
+  "deepTitle": "How to read a disease page without turning it into a protocol",
+  "deep": [
+    "Wikidata P2176 (drug or therapy used for treatment) is a sparse, curator-lagging edge. Absence of bedaquiline on that list is not evidence against BPaLM. Presence of viomycin is not a licence to build a 2024 backbone around a barely used peptide.",
+    "Incidence and mortality numbers on a Wikipedia infobox are time-stamped journalism, not a surveillance extract. Cite WHO Global TB Report when a number has to move a programme.",
+    "The infection/disease split on the page maps onto TST/IGRA versus mWRD/culture. Do not let the article's lead sentence collapse those test classes.",
+    "Historic synonyms (phthisis) still appear in 19th-century autopsy series and in OCR of sanatorium ledgers. They are aliases, not ICD codes."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Q12204 sits above infection-versus-disease, then above test class, then above the lab objects Simplfy already treats as plates. Wikipedia is the top glossary row.",
+    "layers": [
+      {
+        "title": "Wikidata disease",
+        "nodes": [
+          "Q12204 TB"
+        ]
+      },
+      {
+        "title": "State",
+        "nodes": [
+          "Infection",
+          "Disease",
+          "Treated"
+        ]
+      },
+      {
+        "title": "Test class",
+        "nodes": [
+          "TST/IGRA",
+          "mWRD",
+          "Culture"
+        ]
+      },
+      {
+        "title": "Simplfy plates",
+        "nodes": [
+          "tb-tpt",
+          "tb-xpert-ultra",
+          "tb-hrze"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tuberculosis",
+      "attribution": "English Wikipedia revision 1371037921 (2026-08-24T06:14:59Z). Wikidata Q12204. Disease-node glossary and Wikidata sitelink Q12204. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB knowledge modules (IRIS / Knowledge Sharing Platform)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Clinical regimen and dose grammar follow WHO, then CDC. Wikipedia is a glossary and graph, not a protocol.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. government work, public domain. Used as a U.S. practice overlay where it diverges from WHO.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-diagnosis",
+    "tb-pathogenesis",
+    "tb-first-line",
+    "tb-igra-tst",
+    "wiki-mtb-organism",
+    "wiki-mtbc-members",
+    "wiki-latent-tb"
+  ],
+  "example": {
+    "title": "A P2176 list is not Group A",
+    "setup": "A student pastes Wikidata's drug-therapy edge for tuberculosis and asks why bedaquiline is missing and viomycin is present.",
+    "steps": [
+      {
+        "title": "Name the edge",
+        "body": "P2176 is 'drug or therapy used for treatment' as curated on Wikidata. It is not WHO's Group A/B/C ranking and not a national essential-medicines list."
+      },
+      {
+        "title": "Do not invert absence",
+        "body": "Bedaquiline, pretomanid, and linezolid are first-class DR-TB drugs in WHO modules. Their absence on a Wikidata snapshot is lag, not evidence."
+      },
+      {
+        "title": "Do not invert presence",
+        "body": "Viomycin is a historic peptide cousin of capreomycin. Seeing it on Q12204 does not put it on a 2024 all-oral backbone."
+      }
+    ],
+    "takeaway": "Wikipedia/Wikidata name the disease node. WHO names the backbone."
+  },
+  "check": [
+    {
+      "id": "q12204-protocol",
+      "kind": "conceptual",
+      "prompt": "What is Wikipedia's Tuberculosis article (Q12204) licensed to teach in this studio?",
+      "choices": [
+        "The current WHO BPaLM composition and doses",
+        "A glossary and graph of the disease node, not regimen grammar",
+        "Critical concentrations for BDQ on MGIT",
+        "That IGRA-positive means culture-positive pulmonary TB"
+      ],
+      "answer": "A glossary and graph of the disease node, not regimen grammar",
+      "why": "The plate's contract: encyclopedia for names, WHO/CDC for protocol.",
+      "whyWrong": {
+        "The current WHO BPaLM composition and doses": "That lives on the BPaLM clinic plate, sourced to WHO.",
+        "Critical concentrations for BDQ on MGIT": "Phenotypic DST plate, not Wikipedia.",
+        "That IGRA-positive means culture-positive pulmonary TB": "Wrong test class."
+      }
+    },
+    {
+      "id": "q12204-p2176",
+      "kind": "calculation",
+      "prompt": "Wikidata P2176 for Q12204 lists isoniazid and viomycin but not bedaquiline. The correct reading is:",
+      "choices": [
+        "Viomycin is Group A and BDQ is obsolete",
+        "P2176 is an incomplete historic therapy edge; WHO Group A still centres BDQ/Pa/LZD for eligible DR-TB",
+        "Wikipedia supersedes WHO when they disagree",
+        "Q12204 is a species, not a disease"
+      ],
+      "answer": "P2176 is an incomplete historic therapy edge; WHO Group A still centres BDQ/Pa/LZD for eligible DR-TB",
+      "why": "Count the edge as a graph, not as a formulary.",
+      "whyWrong": {
+        "Viomycin is Group A and BDQ is obsolete": "Opposite of WHO ranking.",
+        "Wikipedia supersedes WHO when they disagree": "The studio ranking is WHO then CDC then Wikipedia.",
+        "Q12204 is a species, not a disease": "Q12204 is the disease; Q130971 is the organism."
+      }
+    },
+    {
+      "id": "q12204-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy plate, which row is the encyclopedia object rather than a Simplfy clinic plate?",
+      "choices": [
+        "The bottom row labelled Simplfy plates",
+        "The top row labelled Wikidata disease / Q12204 TB",
+        "The mWRD cell, which is a WHO cartridge",
+        "The 2HRZE cell implied by tb-hrze"
+      ],
+      "answer": "The top row labelled Wikidata disease / Q12204 TB",
+      "why": "The figure is a stack: glossary node, then states, then tests, then existing plates.",
+      "whyWrong": {
+        "The bottom row labelled Simplfy plates": "Those are already-written clinic plates.",
+        "The mWRD cell, which is a WHO cartridge": "That is a test class, not the disease QID.",
+        "The 2HRZE cell implied by tb-hrze": "Regimen, not the Wikipedia node."
+      },
+      "figureHint": "Read the first layer title."
+    }
+  ]
+}

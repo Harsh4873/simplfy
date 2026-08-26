@@ -1,0 +1,186 @@
+{
+  "id": "wiki-mh",
+  "title": "Metropolis–Hastings as a named MCMC kernel",
+  "dek": "Wikipedia MH: propose, accept with min(1, ratio). Diagnostics stay on stats-mcmc. Not a posterior by itself.",
+  "domain": "stats",
+  "aliases": [
+    "Metropolis-Hastings",
+    "MH algorithm",
+    "Metropolis algorithm"
+  ],
+  "tags": [
+    "glossary",
+    "MCMC",
+    "Metropolis",
+    "kernel"
+  ],
+  "story": [
+    "Metropolis–Hastings on Wikipedia is a kernel: from θ, propose θ', accept with probability min(1, [p(θ')q(θ|θ')] / [p(θ)q(θ'|θ)]). The chain's stationary law is the target posterior if you ran it forever and the kernel connects the space.",
+    "stats-mcmc already owns ESS, R̂, and divergences. This card is the named kernel so 'we used MCMC' can mean MH versus Gibbs versus HMC.",
+    "A pretty trace plot is not a proof of stationarity."
+  ],
+  "deepTitle": "Proposal is the art",
+  "deep": [
+    "Random-walk MH on a badly scaled posterior crawls. Reparameterise.",
+    "Gibbs is MH with proposals that are exact full conditionals (acceptance 1).",
+    "HMC uses gradients (wiki-hmc if present; stats-mcmc otherwise).",
+    "Do not thin as a substitute for running longer without a storage reason."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Kernel loop. Stationarity is a theorem about the infinite run; diagnostics are stats-mcmc.",
+    "nodes": [
+      {
+        "id": "th",
+        "label": "θ now",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "pr",
+        "label": "propose θ'",
+        "x": 36,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "a",
+        "label": "accept ratio",
+        "x": 62,
+        "y": 45,
+        "tone": "decision"
+      },
+      {
+        "id": "yes",
+        "label": "move",
+        "x": 88,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "no",
+        "label": "stay",
+        "x": 88,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "th",
+        "to": "pr"
+      },
+      {
+        "from": "pr",
+        "to": "a"
+      },
+      {
+        "from": "a",
+        "to": "yes",
+        "label": "U<α"
+      },
+      {
+        "from": "a",
+        "to": "no",
+        "label": "else"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Metropolis–Hastings algorithm — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm",
+      "attribution": "English Wikipedia revision 1351697575 (2026-04-29T15:46:34Z). Wikidata Q910810. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-mcmc",
+    "wiki-bayesian-glossary",
+    "stats-bayesian",
+    "wiki-gibbs",
+    "stats-eight-schools"
+  ],
+  "example": {
+    "title": "Acceptance rate 2%, 500 draws, 'posterior ready'",
+    "setup": "Random-walk MH on 40 correlated logit coefficients.",
+    "steps": [
+      {
+        "title": "Kernel is crawling",
+        "body": "Tune proposal or reparameterise."
+      },
+      {
+        "title": "500 is not a posterior sample of a 40-d target",
+        "body": "ESS on stats-mcmc."
+      },
+      {
+        "title": "Do not interpret a stuck chain as a point mass",
+        "body": "Identification maybe, mixing maybe."
+      }
+    ],
+    "takeaway": "MH is a kernel. A short stuck run is not a posterior."
+  },
+  "check": [
+    {
+      "id": "mh-ker",
+      "kind": "conceptual",
+      "prompt": "Metropolis–Hastings is:",
+      "choices": [
+        "A closed-form posterior",
+        "A Markov kernel that leaves a target density invariant under conditions",
+        "An LRT",
+        "A Manhattan plot"
+      ],
+      "answer": "A Markov kernel that leaves a target density invariant under conditions",
+      "why": "Kernel.",
+      "whyWrong": {
+        "A closed-form posterior": "Conjugacy plate.",
+        "An LRT": "No.",
+        "A Manhattan plot": "No."
+      }
+    },
+    {
+      "id": "mh-acc",
+      "kind": "calculation",
+      "prompt": "If q is symmetric, the MH ratio reduces to:",
+      "choices": [
+        "always 1",
+        "min(1, p(θ')/p(θ)), the Metropolis case",
+        "a p-value",
+        "BH k̂"
+      ],
+      "answer": "min(1, p(θ')/p(θ)), the Metropolis case",
+      "why": "Symmetric proposal.",
+      "whyWrong": {
+        "always 1": "Only if p(θ')≥p(θ) always, false.",
+        "a p-value": "No.",
+        "BH k̂": "No."
+      }
+    },
+    {
+      "id": "mh-figure",
+      "kind": "figure",
+      "prompt": "The stay node exists because:",
+      "choices": [
+        "MH always moves",
+        "Rejections are part of the kernel, not wasted bugs",
+        "Stay means the posterior is H0",
+        "Stay is FDR"
+      ],
+      "answer": "Rejections are part of the kernel, not wasted bugs",
+      "why": "Lower end.",
+      "whyWrong": {
+        "MH always moves": "Opposite.",
+        "Stay means the posterior is H0": "No.",
+        "Stay is FDR": "No."
+      },
+      "figureHint": "Lower right."
+    }
+  ]
+}

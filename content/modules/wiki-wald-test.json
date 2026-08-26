@@ -1,0 +1,157 @@
+{
+  "id": "wiki-wald-test",
+  "title": "Wald test as a named estimate-over-SE test",
+  "dek": "Wikipedia Wald: (θ̂−θ0)/SE. Easy, and fragile under transformation and separation. Complementary to stats-wald-score.",
+  "domain": "stats",
+  "aliases": [
+    "Wald test",
+    "Wald statistic",
+    "estimate over SE"
+  ],
+  "tags": [
+    "glossary",
+    "Wald",
+    "SE",
+    "testing"
+  ],
+  "story": [
+    "The Wald test on Wikipedia is the celebrity intern test: take the MLE, divide by a standard error, refer to Normal or χ². It only needs the full model.",
+    "It is not invariant to reparameterisation in finite samples (delta-method cousins). It explodes when SEs are nonsense (complete separation in logit). stats-wald-score already said so; this is the encyclopedia name.",
+    "Reporting 'Wald p' from a sandwich SE is a different costume than using Fisher information — say which curvature you used."
+  ],
+  "deepTitle": "Fragility as the lesson",
+  "deep": [
+    "Near a boundary, Wald's quadratic approximation of ℓ is a lie.",
+    "Profile CIs and LRTs are often more trustworthy for nonlinear parameters (transmission probabilities, ICs50).",
+    "stats-delta-method is how Wald on g(θ) is built.",
+    "Do not treat a huge Wald z on a Firth-needed logit as a discovery."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Wald pretends the MLE is Normal with variance from curvature. Separation/skew makes that cartoon fail while a score/LRT may still be finite.",
+    "xLabel": "θ̂ (schematic)",
+    "curves": [
+      {
+        "id": "ok",
+        "label": "regular Wald world",
+        "mean": 0.2,
+        "sd": 0.5
+      },
+      {
+        "id": "skew",
+        "label": "skewed MLE",
+        "mean": 0.9,
+        "sd": 0.8
+      },
+      {
+        "id": "sep",
+        "label": "separation / huge SE",
+        "mean": 2.2,
+        "sd": 1.6
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Wald test — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Wald_test",
+      "attribution": "English Wikipedia revision 1349317839 (2026-04-16T19:39:27Z). Wikidata Q748664. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-wald-score",
+    "wiki-score-test",
+    "stats-lrt",
+    "stats-delta-method",
+    "stats-logit",
+    "wiki-wilks"
+  ],
+  "example": {
+    "title": "Logit with 8 events, 12 covariates, Wald z=30",
+    "setup": "Software did not warn loudly enough.",
+    "steps": [
+      {
+        "title": "Separation territory",
+        "body": "stats-logit."
+      },
+      {
+        "title": "Do not believe the z",
+        "body": "This plate."
+      },
+      {
+        "title": "Use Firth, exact, or drop the kitchen sink",
+        "body": "Then LRT/score."
+      }
+    ],
+    "takeaway": "Wald is estimate-over-SE. When the SE is fantasy, so is z."
+  },
+  "check": [
+    {
+      "id": "wald-def",
+      "kind": "conceptual",
+      "prompt": "A Wald test uses:",
+      "choices": [
+        "Only the null model fit",
+        "The full-model estimate and an SE/curvature, referred to Normal/χ²",
+        "A posterior odds only",
+        "A bootstrap of sites only"
+      ],
+      "answer": "The full-model estimate and an SE/curvature, referred to Normal/χ²",
+      "why": "Full-model celebrity.",
+      "whyWrong": {
+        "Only the null model fit": "Score.",
+        "A posterior odds only": "BF.",
+        "A bootstrap of sites only": "Phylo."
+      }
+    },
+    {
+      "id": "wald-inv",
+      "kind": "calculation",
+      "prompt": "Testing π=0.5 versus logit(π)=0 with Wald on each scale:",
+      "choices": [
+        "Always gives identical p in finite samples",
+        "Need not agree; Wald is not invariant to reparameterisation in finite samples",
+        "Always agrees with BH",
+        "Always agrees with Newick"
+      ],
+      "answer": "Need not agree; Wald is not invariant to reparameterisation in finite samples",
+      "why": "Classic Wald trap.",
+      "whyWrong": {
+        "Always gives identical p in finite samples": "Asymptotically maybe; finite no.",
+        "Always agrees with BH": "No.",
+        "Always agrees with Newick": "No."
+      }
+    },
+    {
+      "id": "wald-figure",
+      "kind": "figure",
+      "prompt": "The 'separation / huge SE' curve is the warning that:",
+      "choices": [
+        "Wald is most accurate then",
+        "The Normal-MLE cartoon failed",
+        "Score cannot be computed",
+        "LRT requires a prior"
+      ],
+      "answer": "The Normal-MLE cartoon failed",
+      "why": "Widest right-hand curve.",
+      "whyWrong": {
+        "Wald is most accurate then": "Opposite.",
+        "Score cannot be computed": "Score often still exists.",
+        "LRT requires a prior": "No."
+      },
+      "figureHint": "Third curve."
+    }
+  ]
+}

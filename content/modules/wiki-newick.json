@@ -1,0 +1,155 @@
+{
+  "id": "wiki-newick",
+  "title": "Newick as a named tree string format",
+  "dek": "Parentheses, commas, branch lengths, semicolons. Wikipedia format card. Not a substitution model.",
+  "domain": "stats",
+  "aliases": [
+    "Newick format",
+    "Newick string",
+    "New Hampshire tree format"
+  ],
+  "tags": [
+    "glossary",
+    "Newick",
+    "format",
+    "tree"
+  ],
+  "story": [
+    "Newick on Wikipedia is a file format: nested parentheses for topology, optional :lengths, a trailing semicolon. It is how software passes a tree, not how evolution happens.",
+    "A Newick string can encode a wrong tree as easily as a right one. Likelihood, bootstrap, and clock claims live elsewhere.",
+    "This card exists because pipelines fail on a missing semicolon more often than on Wilks."
+  ],
+  "deepTitle": "Syntax versus science",
+  "deep": [
+    "Quoted labels versus illegal characters are parser fights.",
+    "Internal node labels and posterior probabilities get stuffed into names — a convention, not a standard posterior.",
+    "Nexus is a neighbouring container format.",
+    "Do not paste a Newick into a paper as 'the model'."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "String syntax stacked above the scientific objects it does not specify.",
+    "layers": [
+      {
+        "id": "syn",
+        "label": "(A:0.1,B:0.2);",
+        "detail": "syntax",
+        "tone": "lipid"
+      },
+      {
+        "id": "top",
+        "label": "Topology",
+        "detail": "still a hypothesis",
+        "tone": "wall"
+      },
+      {
+        "id": "len",
+        "label": "Lengths",
+        "detail": "substitutions or time?",
+        "tone": "membrane"
+      },
+      {
+        "id": "mod",
+        "label": "Substitution model",
+        "detail": "not in the string",
+        "tone": "core"
+      }
+    ],
+    "annotation": "A pretty string is not Q, not a clock, not a bootstrap."
+  },
+  "sources": [
+    {
+      "title": "Newick format — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Newick_format",
+      "attribution": "English Wikipedia revision 1305686249 (2025-08-13T14:03:57Z). Wikidata Q3339116. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "wiki-phylo-tree",
+    "stats-trees",
+    "wiki-neighbor-joining",
+    "stats-molecular-clock"
+  ],
+  "example": {
+    "title": "Pipeline emits Newick, methods say GTR+Γ",
+    "setup": "The string has no model.",
+    "steps": [
+      {
+        "title": "Newick carried topology/lengths",
+        "body": "Format."
+      },
+      {
+        "title": "GTR+Γ lived in the inference software settings",
+        "body": "Must be logged elsewhere."
+      },
+      {
+        "title": "If lengths are in substitutions, a clock is still extra",
+        "body": "stats-molecular-clock."
+      }
+    ],
+    "takeaway": "Newick is a string format. It does not name Q."
+  },
+  "check": [
+    {
+      "id": "nw-fmt",
+      "kind": "conceptual",
+      "prompt": "Newick is:",
+      "choices": [
+        "A substitution model",
+        "A parenthesis string format for trees",
+        "A GWAS",
+        "An LRT"
+      ],
+      "answer": "A parenthesis string format for trees",
+      "why": "Format.",
+      "whyWrong": {
+        "A substitution model": "Q is extra.",
+        "A GWAS": "No.",
+        "An LRT": "No."
+      }
+    },
+    {
+      "id": "nw-miss",
+      "kind": "calculation",
+      "prompt": "A Newick with no :lengths:",
+      "choices": [
+        "Proves a molecular clock",
+        "Can still encode topology (cladogram-like); lengths were omitted, not estimated by the format",
+        "Is invalid always",
+        "Equals BH"
+      ],
+      "answer": "Can still encode topology (cladogram-like); lengths were omitted, not estimated by the format",
+      "why": "Flavour.",
+      "whyWrong": {
+        "Proves a molecular clock": "Opposite of information.",
+        "Is invalid always": "Allowed.",
+        "Equals BH": "No."
+      }
+    },
+    {
+      "id": "nw-figure",
+      "kind": "figure",
+      "prompt": "The core layer 'not in the string' is:",
+      "choices": [
+        "The Newick syntax",
+        "The substitution model Q",
+        "The semicolon",
+        "The comma"
+      ],
+      "answer": "The substitution model Q",
+      "why": "Bottom layer.",
+      "whyWrong": {
+        "The Newick syntax": "Top.",
+        "The semicolon": "Syntax.",
+        "The comma": "Syntax."
+      },
+      "figureHint": "Bottom layer."
+    }
+  ]
+}

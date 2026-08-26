@@ -1,0 +1,194 @@
+{
+  "id": "wiki-bh-procedure",
+  "title": "Benjamini–Hochberg as a named FDR recipe",
+  "dek": "Sort p, reject through the last k with p_(k)≤(k/m)α. Wikipedia algorithm. q-values and π0 stay on stats-fdr.",
+  "domain": "stats",
+  "aliases": [
+    "Benjamini-Hochberg",
+    "BH procedure",
+    "BH FDR"
+  ],
+  "tags": [
+    "glossary",
+    "BH",
+    "FDR",
+    "algorithm"
+  ],
+  "story": [
+    "The Benjamini–Hochberg procedure on Wikipedia is an algorithm: sort p-values, find the largest k with p_(k) ≤ (k/m) α, reject those k. Under independence (and some PRDS dependence) this controls FDR at α.",
+    "stats-fdr already explains q-values and Storey π0. This card is the named 1995 recipe so 'we used FDR' can be made precise.",
+    "BH is conservative when π0 ≪ 1. That is a feature of the bound, not a bug in your RNA-seq."
+  ],
+  "deepTitle": "Algorithm versus estimate",
+  "deep": [
+    "The BH threshold is data-dependent: more small p-values licence a looser cut. That shocks Bonferroni users.",
+    "Positive dependence (PRDS) is the usual defence; one isolate driving every gene is not that defence.",
+    "BY (Benjamini–Yekutieli) pays extra for arbitrary dependence.",
+    "Do not call BH a FWER method."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "BH as a procedure, not a posterior. q-values are a reporting layer on stats-fdr.",
+    "nodes": [
+      {
+        "id": "p",
+        "label": "p_(1)…p_(m)",
+        "x": 10,
+        "y": 45,
+        "tone": "start"
+      },
+      {
+        "id": "sort",
+        "label": "sort",
+        "x": 32,
+        "y": 45,
+        "tone": "process"
+      },
+      {
+        "id": "k",
+        "label": "max k: p_(k)≤kα/m",
+        "x": 58,
+        "y": 45,
+        "tone": "decision"
+      },
+      {
+        "id": "rej",
+        "label": "reject 1…k",
+        "x": 86,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "q",
+        "label": "q-values layer",
+        "x": 86,
+        "y": 75,
+        "tone": "end",
+        "detail": "stats-fdr"
+      }
+    ],
+    "edges": [
+      {
+        "from": "p",
+        "to": "sort"
+      },
+      {
+        "from": "sort",
+        "to": "k"
+      },
+      {
+        "from": "k",
+        "to": "rej"
+      },
+      {
+        "from": "k",
+        "to": "q",
+        "label": "report"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "False discovery rate — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/False_discovery_rate",
+      "attribution": "English Wikipedia revision 1337411999 (2026-02-09T08:31:00Z). Wikidata Q5432696. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-fdr",
+    "wiki-multiple-comparisons",
+    "wiki-bonferroni",
+    "stats-gwas",
+    "stats-multiple-testing"
+  ],
+  "example": {
+    "title": "m=5, p=0.01, 0.04, 0.03, 0.20, 0.50, α=0.05",
+    "setup": "Walk BH.",
+    "steps": [
+      {
+        "title": "Sort: 0.01, 0.03, 0.04, 0.20, 0.50",
+        "body": "k/m α = 0.01, 0.02, 0.03, 0.04, 0.05."
+      },
+      {
+        "title": "0.01≤0.01, 0.03>0.02, 0.04>0.03… wait 0.03 vs 0.02 fails. Largest k with inequality: k=1 only? Recheck: p(2)=0.03 vs 0.02 — no. So k̂=1.",
+        "body": "Tiny list."
+      },
+      {
+        "title": "If the second p had been 0.018, k would grow",
+        "body": "Data-dependent threshold."
+      }
+    ],
+    "takeaway": "BH is a sorted-p algorithm. It is not Bonferroni with better branding."
+  },
+  "check": [
+    {
+      "id": "bh-alg",
+      "kind": "conceptual",
+      "prompt": "BH controls FDR by:",
+      "choices": [
+        "Dividing α by m only",
+        "A sorted-p stepping-up rule p_(k)≤(k/m)α",
+        "A kinship PCA",
+        "A Newick bootstrap"
+      ],
+      "answer": "A sorted-p stepping-up rule p_(k)≤(k/m)α",
+      "why": "Algorithm.",
+      "whyWrong": {
+        "Dividing α by m only": "Bonferroni.",
+        "A kinship PCA": "No.",
+        "A Newick bootstrap": "No."
+      }
+    },
+    {
+      "id": "bh-k",
+      "kind": "calculation",
+      "prompt": "m=10, α=0.1, sorted p with p_(3)=0.028 ≤ 0.03, p_(4)=0.05 > 0.04. k̂ is:",
+      "choices": [
+        "10",
+        "3",
+        "4",
+        "1 always"
+      ],
+      "answer": "3",
+      "why": "Largest k satisfying the inequality is 3.",
+      "whyWrong": {
+        "10": "No.",
+        "4": "p_(4) fails.",
+        "1 always": "Bonferroni-ish fear."
+      }
+    },
+    {
+      "id": "bh-figure",
+      "kind": "figure",
+      "prompt": "q-values sit on a side end node because:",
+      "choices": [
+        "They are the BH algorithm itself",
+        "They are a reporting/estimation layer taught on stats-fdr",
+        "They are Bonferroni",
+        "They are priors"
+      ],
+      "answer": "They are a reporting/estimation layer taught on stats-fdr",
+      "why": "Lower end.",
+      "whyWrong": {
+        "They are the BH algorithm itself": "BH is the k rule.",
+        "They are Bonferroni": "No.",
+        "They are priors": "No."
+      },
+      "figureHint": "Lower right."
+    }
+  ],
+  "formulas": [
+    {
+      "id": "bh",
+      "label": "BH rule",
+      "expression": "k̂ = max{k : p_{(k)} ≤ (k/m) α}",
+      "note": "Reject p_{(1)}…p_{(k̂)}; 0 if no such k."
+    }
+  ]
+}

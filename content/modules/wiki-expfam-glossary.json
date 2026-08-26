@@ -1,0 +1,170 @@
+{
+  "id": "wiki-expfam-glossary",
+  "title": "Exponential family as a Wikipedia density class",
+  "dek": "Encyclopedia class: T(y) and A(η). The GLM hook and TB-lab examples already live on stats-exponential-family.",
+  "domain": "stats",
+  "aliases": [
+    "exponential family Wikipedia",
+    "natural exponential family",
+    "canonical parameter class"
+  ],
+  "tags": [
+    "glossary",
+    "exponential family",
+    "sufficiency",
+    "class"
+  ],
+  "story": [
+    "Exponential family on Wikipedia is a density class whose log is linear in a finite sufficient statistic. Bernoulli, Poisson, Gaussian-with-known-variance, gamma, multinomial sit inside (or in a dispersion extension).",
+    "stats-exponential-family already does mean = A', variance = A'', and the GLM hook. This card is the encyclopedia class name and the graph of cousins (quasi-likelihood, mixtures that leave the class).",
+    "NIST remains definitional authority if a talk page fights about the 'regular' versus 'curved' exponential family. Curved families (e.g. some N(θ,θ²) stories) are a footnote, not a TB DST likelihood."
+  ],
+  "deepTitle": "Class membership as a checklist",
+  "deep": [
+    "Finite T(y) is the punchline: if your model needs the whole residual list as sufficient, you left.",
+    "Mixtures and random effects generally leave the one-parameter exponential family in the mixing weight.",
+    "Canonical links exist because η is the natural parameter.",
+    "Do not call a Cox partial likelihood a full exponential-family density without extra care."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Class members and the exit door. Size is TB-notebook frequency, matching the existing expfam plate's teaching weights without copying its prose.",
+    "terms": [
+      {
+        "label": "Bernoulli",
+        "weight": 10
+      },
+      {
+        "label": "Poisson",
+        "weight": 9
+      },
+      {
+        "label": "Gaussian",
+        "weight": 8
+      },
+      {
+        "label": "T(y) finite",
+        "weight": 10
+      },
+      {
+        "label": "A(η)",
+        "weight": 8
+      },
+      {
+        "label": "mixture exit",
+        "weight": 7
+      },
+      {
+        "label": "quasi cousin",
+        "weight": 6
+      },
+      {
+        "label": "canonical η",
+        "weight": 8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Exponential family — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Exponential_family",
+      "attribution": "English Wikipedia revision 1353354621 (2026-05-09T19:51:17Z). Wikidata Q1188504. Glossary and graph only. Lesson text is original Simplfy teaching notes, not a paste of article HTML. Licensed CC BY-SA 4.0.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain definitional authority. Wikipedia is glossary; likelihoods, figures, and TB-lab examples are original Simplfy notes.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "Simplfy original teaching notes",
+      "attribution": "Story, deep, example, checks, and visual specs are original exposition written for this studio.",
+      "license": "Original teaching notes; Wikipedia-derived glossary facts under CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "stats-exponential-family",
+    "wiki-sufficient-stat",
+    "wiki-glm",
+    "stats-glm-link",
+    "stats-quasi-likelihood",
+    "wiki-negbin"
+  ],
+  "example": {
+    "title": "Heteroresistance mixture weight",
+    "setup": "Someone writes 'Bernoulli exponential family' for a two-compartment resistant/susceptible mixture.",
+    "steps": [
+      {
+        "title": "Single Bernoulli is expfam",
+        "body": "A mixture weight generally is not one-parameter expfam."
+      },
+      {
+        "title": "Sufficient statistic is no longer a single count",
+        "body": "Existing expfam plate's exit door."
+      },
+      {
+        "title": "Boundary issues appear",
+        "body": "wiki-wilks."
+      }
+    ],
+    "takeaway": "Exponential family is a class. Mixtures often leave it."
+  },
+  "check": [
+    {
+      "id": "ef-class",
+      "kind": "conceptual",
+      "prompt": "An exponential family, on this glossary card, is:",
+      "choices": [
+        "Any Bayesian model",
+        "A density class linear in a finite T(y) with log-partition A",
+        "A phylogenetic clock",
+        "An FDR"
+      ],
+      "answer": "A density class linear in a finite T(y) with log-partition A",
+      "why": "Class.",
+      "whyWrong": {
+        "Any Bayesian model": "Priors are extra.",
+        "A phylogenetic clock": "No.",
+        "An FDR": "No."
+      }
+    },
+    {
+      "id": "ef-poi",
+      "kind": "calculation",
+      "prompt": "iid Poisson, T=∑yᵢ. The MLE λ̂ is:",
+      "choices": [
+        "the max yᵢ",
+        "T/n = ȳ",
+        "n",
+        "the prior mean"
+      ],
+      "answer": "T/n = ȳ",
+      "why": "Sufficiency punchline.",
+      "whyWrong": {
+        "the max yᵢ": "Not sufficient.",
+        "n": "Sample size.",
+        "the prior mean": "Not required."
+      }
+    },
+    {
+      "id": "ef-figure",
+      "kind": "figure",
+      "prompt": "'mixture exit' is on the constellation because:",
+      "choices": [
+        "Mixtures are the canonical Poisson link",
+        "Finite mixtures often leave the one-parameter exponential family",
+        "T(y) is undefined for counts",
+        "A(η) forbids GLMs"
+      ],
+      "answer": "Finite mixtures often leave the one-parameter exponential family",
+      "why": "Exit door.",
+      "whyWrong": {
+        "Mixtures are the canonical Poisson link": "No.",
+        "T(y) is undefined for counts": "T=y for Poisson.",
+        "A(η) forbids GLMs": "Opposite."
+      },
+      "figureHint": "mixture exit term."
+    }
+  ]
+}
