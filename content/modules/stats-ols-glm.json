@@ -1,0 +1,147 @@
+{
+  "id": "stats-ols-glm",
+  "title": "OLS and generalized linear models",
+  "dek": "OLS is MLE for Gaussian errors with identity link. GLMs keep a linear predictor and change the mean–variance marriage.",
+  "domain": "stats",
+  "aliases": [
+    "OLS",
+    "linear regression",
+    "GLM",
+    "logistic regression",
+    "Poisson regression",
+    "exponential family",
+    "link function"
+  ],
+  "tags": ["regression", "exponential family", "deviance", "design matrix"],
+  "story": [
+    "Ordinary least squares models E[Y] = Xβ and estimates β by minimizing ‖Y − Xβ‖². If ε ~ N(0, σ² I), that minimizer is the MLE, θ̂ = (XᵀX)⁻¹ XᵀY when X has full rank, and the residual sum of squares over σ² is a χ² story.",
+    "A GLM keeps a linear predictor η = Xβ but lets the mean μ = E[Y] live in a different relationship to η: g(μ) = η for a link g, and lets Var(Y) follow a variance function V(μ) from an exponential family (Gaussian, Bernoulli/binomial, Poisson, gamma, …).",
+    "Logistic regression is a Bernoulli GLM with logit link. Poisson regression is a count GLM, often with log link and offset log(exposure). Once you can write those two, most “machine learning classifiers” in a TB paper are GLMs in a hoodie."
+  ],
+  "deepTitle": "Exponential family, IRLS, and what OLS assumptions were actually doing",
+  "deep": [
+    "Exponential family density: f(y | θ, φ) = exp{(yθ − b(θ))/a(φ) + c(y, φ)}. Then μ = b′(θ), Var(Y) = b″(θ) a(φ). The canonical link sets η = θ, which is why logit is canonical for Bernoulli and log is canonical for Poisson.",
+    "Fisher scoring / IRLS: iterate a weighted least-squares problem with working response z = η + (y − μ) g′(μ) and weights 1 / (V(μ) g′(μ)²). OLS is the first and last iteration of that procedure in the Gaussian identity case.",
+    "Misspecification of V(μ) still leaves consistent β̂ for the mean parameters under a correct mean model (quasi-likelihood), with sandwich SEs. Overdispersed TB cluster counts are the textbook case for quasi-Poisson or a negative binomial, or for a hierarchical Poisson.",
+    "The LRT in GLMs is a difference in deviance. Wald uses β̂ / se(β̂). Do not mix a robust SE with a model-based LRT and call them the same test."
+  ],
+  "formulas": [
+    {
+      "id": "ols",
+      "label": "OLS / Gaussian MLE",
+      "expression": "Y = Xβ + ε,   β̂ = (XᵀX)⁻¹ Xᵀ Y",
+      "note": "Identity link, constant variance. Unique if X has full column rank."
+    },
+    {
+      "id": "glm",
+      "label": "GLM",
+      "expression": "g(μ) = Xβ,   Var(Y) = φ V(μ)",
+      "note": "Mean through a link; variance tied to the mean by the family."
+    }
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "Plate notation for a GLM: covariates X are observed, β is a parameter, the linear predictor η is deterministic, and Y is observed with a mean tied to η by the link. The family (Gaussian, Bernoulli, Poisson) lives in the arrow from η to Y — that is the variance function.",
+    "plates": [
+      { "id": "n", "label": "i = 1…n", "x": 18, "y": 22, "w": 64, "h": 58 }
+    ],
+    "nodes": [
+      { "id": "beta", "label": "β", "x": 8, "y": 48, "shape": "param" },
+      { "id": "x", "label": "xᵢ", "x": 32, "y": 36, "shape": "obs" },
+      { "id": "eta", "label": "ηᵢ", "x": 50, "y": 48, "shape": "det" },
+      { "id": "y", "label": "yᵢ", "x": 70, "y": 48, "shape": "obs" }
+    ],
+    "edges": [
+      { "from": "beta", "to": "eta" },
+      { "from": "x", "to": "eta" },
+      { "from": "eta", "to": "y" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "OpenStax Introductory Statistics — linear regression and inference",
+      "url": "https://openstax.org/books/introductory-statistics/pages/12-introduction",
+      "attribution": "OLS intuition aligned with OpenStax CC BY; GLM exponential-family treatment is original teaching notes.",
+      "license": "CC BY 4.0 / original notes"
+    },
+    {
+      "title": "Generalized linear model — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Generalized_linear_model",
+      "attribution": "Family/link definitions adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["stats-foundations", "stats-lrt", "stats-hierarchical", "stats-bayesian"],
+  "example": {
+    "title": "Logit of smear-positive disease",
+    "setup": "n = 400 TB cases. Y = 1 if smear-positive. Covariates: cavity (0/1), days of cough, HIV. Fit logit π = β₀ + β_cav + β_days + β_hiv. Nested comparison: drop cavity.",
+    "steps": [
+      {
+        "title": "Mean model",
+        "body": "π = logit⁻¹(Xβ). Variance is π(1−π) if the Bernoulli model is true; there is no extra σ² to estimate in the strict binomial family (φ = 1)."
+      },
+      {
+        "title": "What β_cav is",
+        "body": "On the log-odds scale: the adjusted log odds ratio for cavitation. Exponentiate only if you want an odds ratio, and do not call it a risk ratio unless π is small.",
+        "expression": "OR_cav = exp(β_cav)"
+      },
+      {
+        "title": "Nested test",
+        "body": "The LRT for cavity is 2(ℓ_full − ℓ_reduced) vs χ²_1. A Wald p-value on β_cav / se uses a different finite-sample object. With sparse HIV×cavity cells, they can disagree; look at the 2×2 counts."
+      }
+    ],
+    "takeaway": "Name the link, the variance, and the scale of the coefficient before quoting exp(β)."
+  },
+  "check": [
+    {
+      "id": "glm-ols",
+      "kind": "conceptual",
+      "prompt": "OLS is a GLM in which:",
+      "choices": [
+        "The link is logit and V(μ) = μ",
+        "The link is identity and V(μ) is constant (Gaussian)",
+        "There is no linear predictor",
+        "The outcome must be binary"
+      ],
+      "answer": "The link is identity and V(μ) is constant (Gaussian)",
+      "why": "That is the Gaussian identity GLM. Logit+Bernoulli is logistic regression; log+μ variance is Poisson.",
+      "whyWrong": {
+        "The link is logit and V(μ) = μ": "A confused mix of logistic and Poisson.",
+        "There is no linear predictor": "OLS is the linear predictor.",
+        "The outcome must be binary": "OLS is the continuous case."
+      }
+    },
+    {
+      "id": "glm-var",
+      "kind": "calculation",
+      "prompt": "In a Bernoulli GLM, if π̂ = 0.2, what is the model-based Var(Yᵢ)?",
+      "choices": ["0.2", "0.16", "1", "0.04"],
+      "answer": "0.16",
+      "why": "V(μ) = μ(1−μ) = 0.2 × 0.8 = 0.16. Not π, not π².",
+      "whyWrong": {
+        "0.2": "That is the mean, not the Bernoulli variance.",
+        "1": "Gaussian φ confusion.",
+        "0.04": "That is π², not π(1−π)."
+      }
+    },
+    {
+      "id": "glm-figure",
+      "kind": "figure",
+      "prompt": "On the GLM plate, ηᵢ is drawn as a diamond (deterministic). What does that mark?",
+      "figureHint": "β is a parameter circle, xᵢ and yᵢ are observed, ηᵢ sits between them.",
+      "choices": [
+        "That ηᵢ is an extra unknown parameter with its own prior",
+        "That ηᵢ = xᵢᵀβ is a function of parameters and covariates, not a new source of randomness",
+        "That ηᵢ is the only observed node",
+        "That OLS forbids a linear predictor"
+      ],
+      "answer": "That ηᵢ = xᵢᵀβ is a function of parameters and covariates, not a new source of randomness",
+      "why": "Plate notation: filled/observed, empty/parameter, diamond/deterministic. The randomness is in y | η, through the family.",
+      "whyWrong": {
+        "That ηᵢ is an extra unknown parameter with its own prior": "That would be another empty circle, perhaps a random effect — the hierarchical plate.",
+        "That ηᵢ is the only observed node": "x and y are the observed nodes.",
+        "That OLS forbids a linear predictor": "OLS is the identity-link Gaussian case of this plate."
+      }
+    }
+  ]
+}

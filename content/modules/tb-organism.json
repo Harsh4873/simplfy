@@ -1,0 +1,131 @@
+{
+  "id": "tb-organism",
+  "title": "M. tuberculosis as an organism",
+  "dek": "A slow, acid-fast, lipid-armored actinobacterium whose cell envelope is the point of most first-line drugs and of the stain that still defines the genus in the clinic.",
+  "domain": "tb",
+  "aliases": [
+    "mycobacterium tuberculosis",
+    "Mtb",
+    "MTBC",
+    "acid-fast",
+    "mycolic acid",
+    "H37Rv"
+  ],
+  "tags": ["cell wall", "MTBC", "physiology", "acid-fast bacillus"],
+  "story": [
+    "Mycobacterium tuberculosis is a member of the M. tuberculosis complex (MTBC): human-adapted Mtb lineages, M. africanum, and animal-adapted species such as M. bovis. It is an obligate pathogen in practice, with no environmental reservoir that matters for control, and a doubling time of ~18–24 hours in rich medium — slow enough that solid culture takes weeks.",
+    "The cell envelope is not a Gram-positive wall with extra grease. From the inside out: plasma membrane, peptidoglycan, arabinogalactan, a mycolic-acid monolayer covalently attached to AG, then a spectrum of extractable outer lipids (PDIM, SL-1, TDM) and mannose-capped lipoarabinomannan. That architecture is why the organism is acid-fast: carbol fuchsin survives acid-alcohol where ordinary bacteria destain.",
+    "The reference genome H37Rv (4.4 Mb, ~4,000 genes, GC-rich) is a laboratory strain, not a clinical median. PE/PPE families, the ESX type VII secretion systems, and a lipid-heavy metabolome dominate what makes Mtb genetically and immunologically unlike E. coli."
+  ],
+  "deepTitle": "Envelope chemistry that a genomics lab still has to respect",
+  "deep": [
+    "Mycolic acids in Mtb are C60–C90 α-alkyl, β-hydroxy fatty acids. The FAS-I system makes meromycolate precursors; FAS-II elongates them. InhA (enoyl-ACP reductase of FAS-II) is the INH/ETH target. EmbCAB arabinosyltransferases build AG and are the ethambutol target. The covalent AG–mycolate link is why disrupting either layer is cidal or at least bacteriostatic in replicating cells.",
+    "Acid-fastness is a physical chemistry test, not a phylogeny. Nocardia can be partially acid-fast. Dead Mtb can still stain. Smear grade (IUATLD/WHO 0 to 3+) is a density statement, not a viability statement.",
+    "MTBC lineages (L1–L9 in current human-adapted schemes, with L2/Beijing and L4 abundant in many genomic datasets) differ in mutation rate, PDIM regulation, and sometimes in the prior on resistance. Lineage is a covariate, not a DST result.",
+    "M. bovis BCG is intrinsically pyrazinamide-resistant (pncA polymorphism). That single fact has misled more than one person looking at a “TB” genome from a bladder-cancer BCG patient."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Schematic outer-in section of the Mtb envelope. First-line drugs mostly point at this sandwich: INH at FAS-II mycolates, EMB at arabinogalactan, PZA in a cytoplasm that still cares about envelope stress, RIF at RNAP inside.",
+    "layers": [
+      { "id": "lipids", "label": "Outer lipids (PDIM, TDM, SL-1)", "detail": "extractable; virulence, detergent resistance", "tone": "lipid" },
+      { "id": "myco", "label": "Mycolic acids", "detail": "FAS-II / InhA; INH target path", "tone": "wall" },
+      { "id": "ag", "label": "Arabinogalactan", "detail": "EmbCAB; ethambutol", "tone": "wall" },
+      { "id": "pg", "label": "Peptidoglycan", "detail": "D-amino acids; β-lactams if the β-lactamase is blocked", "tone": "membrane" },
+      { "id": "pm", "label": "Plasma membrane + LAM", "detail": "PIM/LAM; membrane energetics", "tone": "membrane" },
+      { "id": "cyto", "label": "Cytoplasm (RNAP, ribosome, PncA)", "detail": "RIF, LZD, PZA activation", "tone": "core" }
+    ],
+    "annotation": "Acid-fast stain: fuchsin retained in the mycolate-rich outer layers after acid-alcohol."
+  },
+  "sources": [
+    {
+      "title": "Tuberculosis — NCBI Bookshelf / CDC Yellow Book chapter material on the organism",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK441916/",
+      "attribution": "Clinical organism facts cross-checked against NCBI Bookshelf open chapters.",
+      "license": "Public domain / NCBI Bookshelf terms"
+    },
+    {
+      "title": "Mycobacterium tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis",
+      "attribution": "Adapted background on complex membership and physiology.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-pathogenesis", "tb-first-line", "tb-rifampin", "tb-wgs-dst"],
+  "example": {
+    "title": "Why BCG is a PZA-resistant “TB” genome",
+    "setup": "A urine isolate from an oncology patient is NAAT-positive for MTBC. The genome is M. bovis BCG. pncA carries the characteristic BCG polymorphism. The lab is asked whether this is pyrazinamide-resistant TB.",
+    "steps": [
+      {
+        "title": "Species, not just MTBC",
+        "body": "Xpert and many NAATs answer “MTBC present.” They do not distinguish Mtb from BCG. Phylogenetic SNPs or RD deletion patterns (RD1 absent in BCG) do."
+      },
+      {
+        "title": "PZA is already lost",
+        "body": "M. bovis (including BCG) is intrinsically PZA-resistant because of pncA. Reporting “pncA mutant, PZA-R” as if it were acquired MDR-TB is a category error."
+      },
+      {
+        "title": "Clinical frame",
+        "body": "This is likely BCG infection or colonization after instillation, not airborne DS-TB. Relabel the problem before building a four-drug backbone."
+      }
+    ],
+    "takeaway": "Organism identity is part of DST. MTBC ≠ M. tuberculosis sensu stricto."
+  },
+  "check": [
+    {
+      "id": "org-acidfast",
+      "kind": "conceptual",
+      "prompt": "What does acid-fast staining physically depend on in Mtb?",
+      "choices": [
+        "A Gram-negative outer membrane with LPS",
+        "Mycolic-acid-rich envelope that retains carbol fuchsin after acid-alcohol",
+        "Endospore cortex",
+        "Capsule of hyaluronic acid"
+      ],
+      "answer": "Mycolic-acid-rich envelope that retains carbol fuchsin after acid-alcohol",
+      "why": "Ziehl–Neelsen and fluorochrome stains exploit the lipid-rich envelope. Mtb is not Gram-negative in the LPS sense and does not spore.",
+      "whyWrong": {
+        "A Gram-negative outer membrane with LPS": "Mycobacteria have an outer lipid layer, but it is mycolates, not LPS.",
+        "Endospore cortex": "Mtb does not form spores.",
+        "Capsule of hyaluronic acid": "Not the basis of acid-fastness."
+      }
+    },
+    {
+      "id": "org-inh",
+      "kind": "calculation",
+      "prompt": "INH, after KatG activation, primarily interrupts which layer’s biosynthesis?",
+      "choices": [
+        "Peptidoglycan cross-linking (PBP target)",
+        "FAS-II mycolic acid elongation (InhA)",
+        "Arabinogalactan polymerization (EmbB only)",
+        "Ribosomal 23S peptidyl transferase"
+      ],
+      "answer": "FAS-II mycolic acid elongation (InhA)",
+      "why": "The INH adduct NAD blocks InhA. EmbB is ethambutol. 23S is linezolid. PBPs are β-lactams.",
+      "whyWrong": {
+        "Peptidoglycan cross-linking (PBP target)": "That is the β-lactam story, and Mtb has BlaC.",
+        "Arabinogalactan polymerization (EmbB only)": "Ethambutol’s primary target.",
+        "Ribosomal 23S peptidyl transferase": "Linezolid."
+      }
+    },
+    {
+      "id": "org-figure",
+      "kind": "figure",
+      "prompt": "In the envelope plate, which layer is the ethambutol target?",
+      "figureHint": "Read the labels from outer lipids down to cytoplasm.",
+      "choices": [
+        "Outer lipids (PDIM, TDM)",
+        "Arabinogalactan",
+        "Cytoplasm (RNAP)",
+        "Plasma membrane only"
+      ],
+      "answer": "Arabinogalactan",
+      "why": "EmbCAB arabinosyltransferases build AG. RIF is cytoplasmic RNAP. PDIM is not an EMB target.",
+      "whyWrong": {
+        "Outer lipids (PDIM, TDM)": "Virulence lipids; not where EMB binds.",
+        "Cytoplasm (RNAP)": "Rifampin.",
+        "Plasma membrane only": "Too vague, and EMB is an AG story."
+      }
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "id": "tb-diagnosis",
+  "title": "Diagnosing TB disease",
+  "dek": "Smear is speed and transmission risk. Culture is still the microbiologic reference. NAAT is the modern first test. IGRA does not diagnose disease.",
+  "domain": "tb",
+  "aliases": [
+    "GeneXpert",
+    "Xpert",
+    "smear microscopy",
+    "MGIT",
+    "IGRA",
+    "QuantiFERON",
+    "NAAT",
+    "diagnosis"
+  ],
+  "tags": ["Xpert", "culture", "smear", "IGRA", "DST"],
+  "story": [
+    "Three questions are easy to conflate: is MTBC present, is it metabolically viable, and is it resistant. Smear answers “are there acid-fast bodies in this sputum?” quickly and cheaply, and a high grade predicts transmission — but it is insensitive in children, HIV, and extrapulmonary disease, and it does not identify species.",
+    "Nucleic-acid amplification (Xpert MTB/RIF Ultra and cousins) is the WHO-preferred initial diagnostic in most settings: it identifies MTBC DNA and interrogates rpoB RRDR in the same cartridge. Culture (MGIT liquid, Löwenstein–Jensen solid) remains the reference for viability and the substrate for phenotypic DST and for recovery when NAAT is negative and suspicion is high.",
+    "IGRAs and the tuberculin skin test detect T-cell memory. They help decide LTBI treatment after disease has been excluded. They do not rule in pulmonary TB and they do not rule it out."
+  ],
+  "deepTitle": "How the tests actually fail",
+  "deep": [
+    "Xpert sensitivity drops with paucibacillary disease. Ultra improved limit of detection by adding IS6110/IS1081 targets and melt analysis, at the cost of more “trace” calls that need context (especially in people previously treated, where DNA may linger).",
+    "Culture contamination and time-to-positivity are data, not nuisances. Rapid MGIT positivity correlates with burden. Negative culture after a clearly positive Xpert can be prior treatment, dead bacilli, or a lab problem — not a paradox to ignore.",
+    "Phenotypic DST depends on critical concentrations that are historical. Borderline rpoB mutations and some inhA promoter alleles are the canonical places where genotype and a single critical concentration disagree. MIC or a catalogue-aware WGS call is the resolution, not shouting at the MGIT.",
+    "For RR/MDR, follow-on tests (Xpert XDR, targeted NGS, WGS, phenotypic second-line DST) are how you learn about FQ, BDQ, LZD, and the injectables. A RIF-resistant Xpert is the start of a DST algorithm, not the end."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "A working diagnostic spine: NAAT first for MTBC + rifampin window, culture for viability and full DST, immune tests only after disease is off the table.",
+    "nodes": [
+      { "id": "spec", "label": "Specimen", "x": 8, "y": 48, "tone": "start" },
+      { "id": "xpert", "label": "Xpert / NAAT", "x": 30, "y": 28, "tone": "decision", "detail": "MTBC + RRDR" },
+      { "id": "smear", "label": "Smear", "x": 30, "y": 72, "tone": "process", "detail": "burden / infection control" },
+      { "id": "rifS", "label": "RIF-S algorithm", "x": 55, "y": 14, "tone": "end" },
+      { "id": "rifR", "label": "RR-TB algorithm", "x": 55, "y": 42, "tone": "end" },
+      { "id": "cult", "label": "Culture ± pDST / WGS", "x": 78, "y": 72, "tone": "process" },
+      { "id": "igra", "label": "IGRA/TST if disease excluded", "x": 78, "y": 28, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "spec", "to": "xpert" },
+      { "from": "spec", "to": "smear" },
+      { "from": "xpert", "to": "rifS", "label": "RIF not detected" },
+      { "from": "xpert", "to": "rifR", "label": "RIF detected" },
+      { "from": "smear", "to": "cult" },
+      { "from": "xpert", "to": "cult", "label": "discordant / follow-on DST" },
+      { "from": "rifS", "to": "igra", "label": "if not disease" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook on tuberculosis, Module 3: Diagnosis",
+      "url": "https://www.who.int/publications/i/item/9789240030589",
+      "attribution": "WHO open diagnostic guidance.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Interferon-gamma release assay — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Interferon_gamma_release_assay",
+      "attribution": "IGRA mechanism adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": ["tb-rifampin", "tb-wgs-dst", "tb-pathogenesis", "tb-resistance"],
+  "example": {
+    "title": "Trace Ultra in a previously treated patient",
+    "setup": "A man treated two years ago for DS-TB presents with chronic cough. Chest radiograph is scarred. Xpert Ultra on sputum is “MTB detected, trace; RIF indeterminate.” Smear is negative.",
+    "steps": [
+      {
+        "title": "What trace is",
+        "body": "Ultra’s trace call is the lowest positivity band, often IS-element driven. It can be true paucibacillary disease or residual DNA. RIF is indeterminate because the RRDR probes did not have enough template."
+      },
+      {
+        "title": "Do not skip viability",
+        "body": "Culture (and a second specimen) is how you distinguish relic DNA from replicating bacilli. Repeat NAAT on a new specimen is reasonable; treating trace alone in a previously treated adult is not automatic."
+      },
+      {
+        "title": "Indeterminate RIF is not RIF-S",
+        "body": "You do not have a rifampin result. If culture grows, do DST. If a targeted NGS or WGS assay is available on the specimen, use it. Do not write “RIF susceptible” in the chart."
+      }
+    ],
+    "takeaway": "Trace plus indeterminate RIF is a specimen problem, not a DST result."
+  },
+  "check": [
+    {
+      "id": "dx-igra",
+      "kind": "conceptual",
+      "prompt": "A positive IGRA in a patient with cavitary pneumonia demonstrates:",
+      "choices": [
+        "Culture-confirmed pulmonary TB",
+        "T-cell sensitization to Mtb antigens, which does not by itself diagnose active disease",
+        "Rifampin susceptibility",
+        "That smear will be positive"
+      ],
+      "answer": "T-cell sensitization to Mtb antigens, which does not by itself diagnose active disease",
+      "why": "IGRA is not a disease test. Cavities need a microbiologic or NAAT diagnosis.",
+      "whyWrong": {
+        "Culture-confirmed pulmonary TB": "IGRA is not culture.",
+        "Rifampin susceptibility": "No DST information.",
+        "That smear will be positive": "Unrelated assay."
+      }
+    },
+    {
+      "id": "dx-xpert",
+      "kind": "calculation",
+      "prompt": "Xpert MTB/RIF reports “MTB detected; RIF resistance detected.” What has been interrogated?",
+      "choices": [
+        "The whole rpoB gene plus inhA and katG",
+        "MTBC DNA plus the rpoB RRDR window used as a rifampin surrogate",
+        "Phenotypic MIC on MGIT",
+        "All WHO high-confidence mutations for BDQ and LZD"
+      ],
+      "answer": "MTBC DNA plus the rpoB RRDR window used as a rifampin surrogate",
+      "why": "Cartridge PCR plus five RRDR probes. It is not WGS and not phenotypic DST.",
+      "whyWrong": {
+        "The whole rpoB gene plus inhA and katG": "Classic Xpert does not read katG/inhA (those are other assays).",
+        "Phenotypic MIC on MGIT": "Different modality.",
+        "All WHO high-confidence mutations for BDQ and LZD": "Needs targeted NGS, WGS, or other assays."
+      }
+    },
+    {
+      "id": "dx-figure",
+      "kind": "figure",
+      "prompt": "On the diagnostic spine, why does an arrow run from Xpert to culture labeled “discordant / follow-on DST”?",
+      "figureHint": "Culture sits on the right, fed by smear and by Xpert.",
+      "choices": [
+        "Because culture is obsolete once Xpert exists",
+        "Because NAAT does not prove viability and cannot grade the rest of the formulary",
+        "Because IGRA must be reflexed on every Xpert",
+        "Because smear-negative specimens cannot be cultured"
+      ],
+      "answer": "Because NAAT does not prove viability and cannot grade the rest of the formulary",
+      "why": "Follow-on phenotypic DST and WGS still live on cultured (or sometimes direct) material. Xpert is the front door, not the pharmacy.",
+      "whyWrong": {
+        "Because culture is obsolete once Xpert exists": "Opposite of the arrow’s meaning.",
+        "Because IGRA must be reflexed on every Xpert": "IGRA is for disease-excluded LTBI questions.",
+        "Because smear-negative specimens cannot be cultured": "They can, and should when suspicion is high."
+      }
+    }
+  ]
+}

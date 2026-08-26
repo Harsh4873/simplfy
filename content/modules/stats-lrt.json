@@ -1,0 +1,145 @@
+{
+  "id": "stats-lrt",
+  "title": "Likelihood ratio test",
+  "dek": "Ask whether extra parameters earn their keep by comparing nested maxima of the same likelihood.",
+  "domain": "stats",
+  "aliases": [
+    "LRT",
+    "likelihood ratio",
+    "likelihood-ratio test",
+    "Wilks theorem",
+    "nested models",
+    "deviance test"
+  ],
+  "tags": ["likelihood", "model comparison", "chi-square", "GLM", "inference"],
+  "story": [
+    "A likelihood ratio test is not a generic model bake-off. It asks a sharper question: if a simpler model is a restricted version of a fuller one, does the extra freedom move the maximized log-likelihood enough to be implausible under the restriction?",
+    "Write the reduced model as a subset of the full parameter space — usually by setting some coordinates to 0, or by tying parameters together. Fit both by maximum likelihood. The evidence against the restriction is twice the gap between those two peaks.",
+    "Under regularity, that gap is referred to a χ² distribution whose degrees of freedom equal the number of restrictions. If the gap is large relative to that reference, the reduced model is not an adequate special case of the full one."
+  ],
+  "deepTitle": "The actual test",
+  "deep": [
+    "Let ℓ(θ) be the log-likelihood. Suppose Θ₀ ⊂ Θ₁, with dim(Θ₁) − dim(Θ₀) = k. The Wilks statistic is Λ = 2(ℓ(θ̂₁) − ℓ(θ̂₀)). Under H₀: θ ∈ Θ₀, and standard regularity (identifiable interior point, interchange of derivative and integral, non-singular information), Λ →d χ²_k.",
+    "The same comparison is the difference in residual deviance for GLMs: D₀ − D₁, which is exactly Λ when both models are estimated by ML in an exponential family. Wald and score tests are first-order equivalent to the LRT, but they are not the same finite-sample object: Wald uses only the full-model curvature, score uses only the reduced-model slope.",
+    "Regularity fails on the boundary. Testing a variance component at 0, a mixture weight at 0, or a parameter on the edge of the simplex does not give a plain χ². The null distribution becomes a mixture of chi-squares, and p-values computed as χ²_k are anti-conservative. Phylogenetic and random-effect models in TB genomics hit this issue constantly.",
+    "Non-nested models (different mean structures that are not restrictions of each other) are outside Wilks. Use Vuong, AIC/BIC as estimates of predictive risk, or a encompassing model — but do not report an LRT p-value."
+  ],
+  "formulas": [
+    {
+      "id": "wilks",
+      "label": "Wilks statistic",
+      "expression": "Λ = 2 ( ℓ(θ̂₁) − ℓ(θ̂₀) )",
+      "note": "Twice the log-likelihood gap between the unrestricted and restricted maxima."
+    },
+    {
+      "id": "null",
+      "label": "Reference under H₀",
+      "expression": "Λ →d χ²_k ,   k = dim(Θ₁) − dim(Θ₀)",
+      "note": "Holds when the true parameter is interior and the information matrix is invertible."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "The reduced model is a subset of the full parameter space. Wilks’ statistic is twice the vertical gap between the two maximized log-likelihoods, referred to χ² with degrees of freedom equal to the number of restrictions.",
+    "reduced": { "label": "Reduced M₀", "params": ["β₀", "β_tx"] },
+    "full": { "label": "Full M₁", "params": ["β₀", "β_tx", "β_lin", "β_int"] },
+    "statistic": "Λ = 2(ℓ₁ − ℓ₀)",
+    "reference": "χ²_{Δp} under H₀"
+  },
+  "sources": [
+    {
+      "title": "OpenStax Introductory Statistics — The Likelihood Ratio family of ideas, via nested model comparison in GLMs",
+      "url": "https://openstax.org/books/introductory-statistics/pages/1-introduction",
+      "attribution": "Teaching notes original to Simplfy; statistical framing aligned with OpenStax CC BY and standard GLM texts.",
+      "license": "CC BY 4.0 / original notes"
+    },
+    {
+      "title": "Wilks, S. S. (1938). The large-sample distribution of the likelihood ratio for testing composite hypotheses.",
+      "attribution": "Classic regularity result; cited, not reproduced.",
+      "license": "Citation only"
+    }
+  ],
+  "related": ["stats-foundations", "stats-ols-glm", "stats-bayesian", "stats-hierarchical"],
+  "example": {
+    "title": "Lineage as an extra term in a Bernoulli GLM",
+    "setup": "n = 240 RR-TB isolates. Outcome: 1 if phenotypic moxifloxacin MIC > critical concentration. Reduced model: logit π = β₀ + β_fq (presence of a gyrA QRDR mutation). Full model adds lineage (L2 vs other) and the mutation×lineage interaction. Maximized log-likelihoods: ℓ₀ = −98.4 (2 parameters), ℓ₁ = −93.1 (4 parameters).",
+    "steps": [
+      {
+        "title": "Confirm nesting",
+        "body": "Setting β_lin = 0 and β_int = 0 inside the full linear predictor recovers the reduced model exactly. The LRT is licensed. If the reduced model used a different link, or dropped the main mutation term while keeping the interaction, nesting would fail."
+      },
+      {
+        "title": "Compute Λ",
+        "body": "The gap in log-likelihood is −93.1 − (−98.4) = 5.3. Double it.",
+        "expression": "Λ = 2 × 5.3 = 10.6"
+      },
+      {
+        "title": "Choose the reference",
+        "body": "Two extra parameters, both interior (log-odds), so k = 2. Compare 10.6 to χ²_2. The 0.95 quantile of χ²_2 is 5.99; 10.6 sits near the 0.005 tail (p ≈ 0.005).",
+        "expression": "Λ = 10.6  ≳  χ²_{2, 0.95} = 5.99"
+      },
+      {
+        "title": "Say what was tested",
+        "body": "Rejecting H₀ means lineage (and/or its interaction with gyrA) improves the Bernoulli likelihood enough that a two-parameter restriction is implausible. It does not by itself prove a biological interaction — look at the coefficient, the counts per lineage, and possible confounding by treatment history."
+      }
+    ],
+    "takeaway": "Nesting, twice the log-likelihood gap, χ² with Δp degrees of freedom — and a sentence about the scientific restriction, not just a star."
+  },
+  "check": [
+    {
+      "id": "lrt-nested",
+      "kind": "conceptual",
+      "prompt": "When is a likelihood ratio test the right comparison between two models?",
+      "choices": [
+        "Whenever AIC is smaller for the fuller model",
+        "When the reduced model is a parameter restriction of the fuller model",
+        "When both models are linear in the parameters",
+        "When the sample size exceeds 30"
+      ],
+      "answer": "When the reduced model is a parameter restriction of the fuller model",
+      "why": "Wilks’ theorem is a statement about nested parameter spaces. AIC can be computed for non-nested models; linearity and n > 30 are neither necessary nor sufficient.",
+      "whyWrong": {
+        "Whenever AIC is smaller for the fuller model": "AIC is a predictive criterion, not a nested-model test, and it can be used when models are not nested.",
+        "When both models are linear in the parameters": "LRTs are used constantly in nonlinear and GLM settings. Nesting, not linearity, is the requirement.",
+        "When the sample size exceeds 30": "The χ² reference is an asymptotic statement. n = 30 does not license comparing non-nested models."
+      }
+    },
+    {
+      "id": "lrt-calc",
+      "kind": "calculation",
+      "prompt": "A reduced GLM has maximized log-likelihood −120.4 with 3 parameters. The full model has −116.1 with 5 parameters. What is Λ, and what is the usual H₀ reference?",
+      "choices": [
+        "Λ = 4.3, referred to χ²_5",
+        "Λ = 8.6, referred to χ²_2",
+        "Λ = 8.6, referred to χ²_8",
+        "Λ = 236.5, referred to N(0,1)"
+      ],
+      "answer": "Λ = 8.6, referred to χ²_2",
+      "why": "Λ = 2(−116.1 − (−120.4)) = 2(4.3) = 8.6. Degrees of freedom are the number of extra parameters, 5 − 3 = 2, not the total parameter count.",
+      "whyWrong": {
+        "Λ = 4.3, referred to χ²_5": "You forgot to double the log-likelihood gap, and the df are the difference in dimension, not the full model’s parameter count.",
+        "Λ = 8.6, referred to χ²_8": "The statistic is right; the df are not a sum of parameter counts.",
+        "Λ = 236.5, referred to N(0,1)": "That is not how a likelihood ratio is formed."
+      }
+    },
+    {
+      "id": "lrt-figure",
+      "kind": "figure",
+      "prompt": "On the nested-model plate, what does the inner region represent?",
+      "figureHint": "Look at the nested boxes labeled reduced and full.",
+      "choices": [
+        "The sampling distribution of the MLE under the alternative",
+        "The set of parameter values allowed by the reduced model",
+        "The rejection region of the χ² test",
+        "The posterior support of a Bayesian model"
+      ],
+      "answer": "The set of parameter values allowed by the reduced model",
+      "why": "Nesting is a statement about parameter spaces: Θ₀ sits inside Θ₁. The χ² curve is the reference for the scalar statistic Λ, not the inner box itself.",
+      "whyWrong": {
+        "The sampling distribution of the MLE under the alternative": "That would be a density on the estimate, not a subset of parameter space.",
+        "The rejection region of the χ² test": "Rejection lives on the Λ axis, to the right of a χ² quantile.",
+        "The posterior support of a Bayesian model": "The plate is frequentist geometry. A posterior would need a prior measure."
+      }
+    }
+  ]
+}

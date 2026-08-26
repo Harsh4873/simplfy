@@ -1,0 +1,139 @@
+{
+  "id": "stats-bayesian",
+  "title": "Bayesian updating",
+  "dek": "Posterior ∝ likelihood × prior. The likelihood is the same object the MLE used. The prior is the extra scientific statement you have to defend.",
+  "domain": "stats",
+  "aliases": [
+    "Bayes",
+    "Bayesian",
+    "posterior",
+    "prior",
+    "credible interval",
+    "MCMC",
+    "Bayes theorem"
+  ],
+  "tags": ["inference", "prior", "posterior", "hierarchical"],
+  "story": [
+    "Bayes’ theorem on parameters is p(θ | y) = f(y | θ) p(θ) / m(y), where m(y) = ∫ f(y | θ) p(θ) dθ. Everything that was a likelihood in the frequentist plate is still here. The new claim is that θ is a random variable with a prior you are willing to write down.",
+    "A posterior mean is a different estimator than an MLE. With a lot of data and a prior that is not insane, they meet. With sparse DST errors, rare mutations, or a new drug, they do not, and that is the point of being Bayesian rather than the embarrassment.",
+    "A 95% credible interval is a region with posterior probability 0.95. It is not a 95% confidence interval, which is a statement about long-run coverage of a procedure. You can prefer either; you cannot rename one as the other in a paper."
+  ],
+  "deepTitle": "Priors, conjugacy, and the computation you actually run",
+  "deep": [
+    "Conjugate example: Y ~ Binomial(n, π), π ~ Beta(a, b). Posterior is Beta(a + y, b + n − y). The MLE y/n is the posterior mode as a,b → 1 (uniform) in this parameterization, and the posterior mean (a+y)/(a+b+n) shrinks toward the prior mean a/(a+b).",
+    "Nonconjugate models (most GLMs, most phylogenetics) need MCMC, variational inference, or Laplace/INLA. Diagnostics (R̂, ESS, divergences in HMC) are part of the result. A pretty density plot from an unconverged chain is not a posterior.",
+    "Prior elicitation in a genomics lab is often hierarchical rather than a single Beta: mutation-specific effects shrunk toward a drug-specific mean, drug means shrunk toward a class. That is the next plate. A “flat prior on the probability scale” can be surprisingly informative on the logit scale, and vice versa.",
+    "Model comparison: Bayes factors are ratios of marginal likelihoods. They are not LRTs. WAIC/LOO are predictive criteria closer in spirit to AIC. Mixing a Bayes factor with a p-value in one sentence is a category error."
+  ],
+  "formulas": [
+    {
+      "id": "bayes",
+      "label": "Bayes on parameters",
+      "expression": "p(θ | y) ∝ f(y | θ) p(θ)",
+      "note": "Normalize by the marginal m(y) if you need a density rather than a score."
+    },
+    {
+      "id": "beta",
+      "label": "Beta–Binomial conjugate",
+      "expression": "π | y ~ Beta(a + y, b + n − y)",
+      "note": "The likelihood updates the two Beta counts as if they were extra successes and failures."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "A weakly informative prior, a likelihood peaked by data, and the posterior compromise. With n large the posterior follows the likelihood; with n small it does not — that is a feature.",
+    "xLabel": "π  (e.g. FQ-R among RR-TB)",
+    "curves": [
+      { "id": "prior", "label": "Prior p(π)", "mean": 0.25, "sd": 0.18 },
+      { "id": "lik", "label": "Likelihood (n modest)", "mean": 0.62, "sd": 0.1 },
+      { "id": "post", "label": "Posterior p(π | y)", "mean": 0.52, "sd": 0.09 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bayes’ theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayes%27_theorem",
+      "attribution": "Definition adapted under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — probability rules, extended here to parameter inference",
+      "url": "https://openstax.org/books/introductory-statistics/pages/3-introduction",
+      "attribution": "Original teaching notes on conjugate updating; OpenStax for probability hygiene.",
+      "license": "CC BY 4.0 / original notes"
+    }
+  ],
+  "related": ["stats-foundations", "stats-hierarchical", "stats-lrt", "tb-wgs-dst"],
+  "example": {
+    "title": "Beta–Binomial for a rare BDQ allele",
+    "setup": "In a new survey, y = 1 isolate with an atpE mutation among n = 80 BDQ-naïve RR-TB genomes. Prior from a previous lab: π ~ Beta(2, 98), mean 2%. Update.",
+    "steps": [
+      {
+        "title": "Posterior",
+        "body": "π | y ~ Beta(2+1, 98+79) = Beta(3, 177). Posterior mean 3/180 = 1.67%. MLE is 1/80 = 1.25%. The prior still has a vote because events are rare.",
+        "expression": "E[π | y] = 3/180 ≈ 0.0167"
+      },
+      {
+        "title": "Interval",
+        "body": "A 95% equal-tail credible interval from Beta(3,177) is a statement about posterior probability, not about 95% coverage of a procedure. Quote it as such."
+      },
+      {
+        "title": "Sensitivity",
+        "body": "If a skeptic uses Beta(1,1), the posterior mean becomes 2/82 ≈ 2.4%. If they use a prior mean of 10% with the same prior strength, the answer moves. Report that sensitivity when n_events = 1."
+      }
+    ],
+    "takeaway": "With one event, the prior is part of the result. Hide it and you are doing theatre."
+  },
+  "check": [
+    {
+      "id": "bayes-def",
+      "kind": "conceptual",
+      "prompt": "A posterior density p(θ | y) requires:",
+      "choices": [
+        "Only a likelihood; the prior is optional decoration",
+        "A likelihood and a prior (and a dominating measure), normalized by the marginal",
+        "That θ̂ be unbiased",
+        "That n > 30"
+      ],
+      "answer": "A likelihood and a prior (and a dominating measure), normalized by the marginal",
+      "why": "No prior, no posterior. Unbiasedness and n > 30 are frequentist side quests.",
+      "whyWrong": {
+        "Only a likelihood; the prior is optional decoration": "That is MLE culture.",
+        "That θ̂ be unbiased": "Bayesian estimators have other justifications (calibration, Bayes risk).",
+        "That n > 30": "Small n is often why you wanted a prior."
+      }
+    },
+    {
+      "id": "bayes-calc",
+      "kind": "calculation",
+      "prompt": "π ~ Beta(1,1), then y = 4 successes in n = 10 Bernoulli trials. Posterior mean?",
+      "choices": ["0.4", "0.5", "0.417", "1"],
+      "answer": "0.417",
+      "why": "Beta(1,1) → Beta(5, 7). Mean = 5/(5+7) = 5/12 ≈ 0.417. The MLE is 0.4; the uniform prior adds one imaginary success and one failure in this parameterization.",
+      "whyWrong": {
+        "0.4": "That is the MLE y/n, not the Beta(5,7) mean.",
+        "0.5": "That is the prior mean, pre-data.",
+        "1": "That would be a degenerate posterior."
+      }
+    },
+    {
+      "id": "bayes-figure",
+      "kind": "figure",
+      "prompt": "On the updating plate, the posterior curve sits between prior and likelihood. What scientific claim is that geometry making?",
+      "figureHint": "Three densities on π.",
+      "choices": [
+        "That Bayes ignores the data",
+        "That the posterior is a compromise whose location depends on prior weight versus data weight",
+        "That credible intervals have exact 95% frequentist coverage by construction",
+        "That the prior must always be narrower than the likelihood"
+      ],
+      "answer": "That the posterior is a compromise whose location depends on prior weight versus data weight",
+      "why": "With a modest n the prior still pulls. That is visible in the plate as a posterior mean between the two peaks.",
+      "whyWrong": {
+        "That Bayes ignores the data": "The likelihood peak is clearly informing the posterior.",
+        "That credible intervals have exact 95% frequentist coverage by construction": "They do not claim that.",
+        "That the prior must always be narrower than the likelihood": "Often the opposite in the weakly informative regime."
+      }
+    }
+  ]
+}
