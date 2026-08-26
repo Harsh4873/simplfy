@@ -10,6 +10,9 @@ export const vis = {
   mono: "IBM Plex Mono, ui-monospace, monospace",
 } as const;
 
+/** Cream fills that used to paint the whole canvas column. Keep them off the stage. */
+export const CREAM_STAGE = ["#efeee9", "#fafaf7"] as const;
+
 export function gaussian(x: number, mean: number, sd: number): number {
   const z = (x - mean) / sd;
   return Math.exp(-0.5 * z * z);

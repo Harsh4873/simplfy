@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { relatedFromText } from "../library/fieldNote";
+import { relatedForLibraryItem } from "../library/fieldNote";
 import type { StudioApi, Topic } from "./useStudio";
 
 export function WorkedExample({ topic, api }: { topic: Topic | null; api: StudioApi }) {
@@ -8,7 +8,7 @@ export function WorkedExample({ topic, api }: { topic: Topic | null; api: Studio
     topic?.source === "catalog"
       ? topic.module
       : topic
-        ? relatedFromText(`${topic.item.name} ${topic.item.text}`, api.modules)[0]
+        ? relatedForLibraryItem(topic.item, api.modules)[0]
         : null;
 
   useEffect(() => {

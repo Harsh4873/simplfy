@@ -1,5 +1,6 @@
 import type { StudyModule } from "../catalog/types";
 import { searchCatalog } from "../catalog/search";
+import type { LibraryItem } from "./db";
 
 const STOP = new Set([
   "the",
@@ -66,6 +67,23 @@ export function relatedFromText(text: string, modules: StudyModule[]): StudyModu
     .filter((hit) => hit.kind === "module")
     .slice(0, 5)
     .map((hit) => hit.module);
+}
+
+export function relatedForLibraryItem(item: LibraryItem, modules: StudyModule[]): StudyModule[] {
+  if (item.brief?.links.length) {
+    const byId = new Map(modules.map((module) => [module.id, module]));
+    const out: StudyModule[] = [];
+    const seen = new Set<string>();
+    for (const link of item.brief.links) {
+      if (seen.has(link.moduleId)) continue;
+      const module = byId.get(link.moduleId);
+      if (!module) continue;
+      seen.add(module.id);
+      out.push(module);
+    }
+    return out;
+  }
+  return relatedFromText(`${item.name} ${item.brief?.stripped ?? item.text}`, modules);
 }
 
 export function firstLineTitle(text: string, fallback: string): string {

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { relatedFromText, extractTerms } from "../library/fieldNote";
-import type { StudyModule, VisualSpec } from "../catalog/types";
+import type { StudyModule } from "../catalog/types";
 import { VisualPlate } from "../visuals/VisualPlate";
 import { vis } from "../visuals/theme";
+import { FieldNoteDoc } from "./FieldNoteDoc";
 import type { StudioApi, Topic } from "./useStudio";
 
 function formulas(module: StudyModule) {
@@ -44,65 +44,6 @@ function WaitingPlate() {
         NO PLATE
       </text>
     </svg>
-  );
-}
-
-function FieldNoteCanvas({
-  item,
-  modules,
-  onOpen,
-}: {
-  item: StudioApi["library"][number];
-  modules: StudyModule[];
-  onOpen: (module: StudyModule) => void;
-}) {
-  const related = relatedFromText(`${item.name} ${item.text}`, modules);
-  const terms = extractTerms(item.text);
-  const spec: VisualSpec = {
-    kind: "constellation",
-    caption:
-      item.parseNote ??
-      "Terms pulled from the filed text. This is a local plate — the studio will not invent a textbook chapter from a paste.",
-    terms: terms.length ? terms : [{ label: item.name, weight: 2 }],
-  };
-  return (
-    <>
-      <header className="stage-head">
-        <p className="kicker">
-          <span className="domain library">Local</span> Field note · Fig. L
-        </p>
-        <h1>{item.name}</h1>
-        <p className="dek">
-          Stored in this browser only. Related bundled plates are suggestions from the words on the page, not a claim that the note is those topics.
-        </p>
-      </header>
-      <VisualPlate spec={spec} kicker="Fig. L  ·  extracted terms" />
-      {item.text ? (
-        <div className="story">
-          {item.text
-            .split(/\n{2,}/)
-            .filter(Boolean)
-            .slice(0, 6)
-            .map((para) => (
-              <p key={para.slice(0, 40)}>{para.slice(0, 1200)}</p>
-            ))}
-        </div>
-      ) : (
-        <p className="dek">No extractable text. The blob is still in the library.</p>
-      )}
-      {related.length ? (
-        <div className="related">
-          <p className="kicker">Nearby plates</p>
-          <div className="chips">
-            {related.map((module) => (
-              <button key={module.id} type="button" className="chip" onClick={() => onOpen(module)}>
-                {module.title}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
-    </>
   );
 }
 
@@ -188,7 +129,7 @@ export function Canvas({ topic, api }: { topic: Topic | null; api: StudioApi }) 
       {topic.source === "catalog" ? (
         <ModuleCanvas module={topic.module} fig={figNo(api.modules, topic.module.id)} />
       ) : (
-        <FieldNoteCanvas item={topic.item} modules={api.modules} onOpen={api.openModule} />
+        <FieldNoteDoc item={topic.item} modules={api.modules} onOpen={api.openModule} />
       )}
     </article>
   );

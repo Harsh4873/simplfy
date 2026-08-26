@@ -1,3 +1,5 @@
+import type { LabBrief } from "../md/types";
+
 export type LibraryKind = "file" | "note";
 
 export type LibraryItem = {
@@ -10,6 +12,7 @@ export type LibraryItem = {
   createdAt: number;
   parseNote?: string;
   blob?: Blob;
+  brief?: LabBrief;
 };
 
 export type RecallCard = {

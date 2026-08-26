@@ -1,6 +1,6 @@
 import { relatedModules } from "../catalog/search";
 import type { StudyModule } from "../catalog/types";
-import { relatedFromText } from "../library/fieldNote";
+import { relatedForLibraryItem } from "../library/fieldNote";
 import type { StudioApi, Topic } from "./useStudio";
 
 export function ConceptMap({
@@ -20,7 +20,7 @@ export function ConceptMap({
     );
   }
 
-  const center: StudyModule | null = topic.source === "catalog" ? topic.module : relatedFromText(`${topic.item.name} ${topic.item.text}`, api.modules)[0] ?? null;
+  const center: StudyModule | null = topic.source === "catalog" ? topic.module : relatedForLibraryItem(topic.item, api.modules)[0] ?? null;
   const nodes = center ? relatedModules(center, api.byId) : [];
 
   if (!center) {
