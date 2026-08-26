@@ -1,0 +1,212 @@
+{
+  "id": "tb-pericarditis",
+  "title": "TB pericarditis and steroids",
+  "dek": "Effusive pericardial TB is extra-pulmonary disease with tamponade risk. Adjuvant steroids are a WHO-conditional, HIV-stratified decision — not a copy-paste from TBM.",
+  "domain": "tb",
+  "aliases": [
+    "TB pericarditis",
+    "pericardial tuberculosis",
+    "tamponade TB",
+    "IMPII steroids"
+  ],
+  "tags": [
+    "pericarditis",
+    "steroids",
+    "EPTB",
+    "HIV",
+    "tamponade"
+  ],
+  "story": [
+    "Tuberculous pericarditis presents as effusion, tamponade, or constriction. Diagnosis is a pericardial fluid WRD/culture/biopsy problem plus the pulmonary workup you must not skip. Treat as TB disease with a full regimen; TPT has no role once disease is present.",
+    "Adjunctive corticosteroids: TBM has a clearer mortality rationale. Pericarditis evidence (including IMPI) is mixed and HIV-stratified — steroids may reduce constriction in some HIV-negative patients and have not been a free lunch in HIV-positive pericarditis. Follow the current WHO extra-pulmonary overlay, not a TBM protocol copied onto the pericardium.",
+    "Tamponade is drainage, not a molecular DST delay. Constriction is surgery in selected chronic cases. Rifamycins still induce the steroid you just started — dose accordingly."
+  ],
+  "deepTitle": "Fluid is not sputum",
+  "deep": [
+    "Ultra on pericardial fluid: useful when positive; negative does not exclude.",
+    "Adenosine deaminase in fluid is an adjunct, not a WRD.",
+    "Do not withhold pericardiocentesis for a “better specimen tomorrow” if the blood pressure is disappearing.",
+    "Pregnancy plus tamponade is two emergencies."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Pericardial TB: treat disease, drain tamponade, consider steroids as a separate HIV-stratified decision from TBM.",
+    "nodes": [
+      {
+        "id": "eff",
+        "label": "Effusion",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "tamp",
+        "label": "Tamponade?",
+        "x": 28,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "drain",
+        "label": "Drain now",
+        "x": 48,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "dx",
+        "label": "WRD / culture",
+        "x": 48,
+        "y": 72,
+        "tone": "process"
+      },
+      {
+        "id": "rx",
+        "label": "Full TB Rx",
+        "x": 70,
+        "y": 72,
+        "tone": "process"
+      },
+      {
+        "id": "st",
+        "label": "Steroids?",
+        "x": 88,
+        "y": 48,
+        "tone": "decision",
+        "detail": "≠ TBM copy"
+      }
+    ],
+    "edges": [
+      {
+        "from": "eff",
+        "to": "tamp"
+      },
+      {
+        "from": "tamp",
+        "to": "drain",
+        "label": "yes"
+      },
+      {
+        "from": "tamp",
+        "to": "dx",
+        "label": "no/after"
+      },
+      {
+        "from": "dx",
+        "to": "rx"
+      },
+      {
+        "from": "rx",
+        "to": "st"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO extra-pulmonary TB / steroid adjuncts (paraphrase)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — extra-pulmonary TB",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Pericarditis",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Pericarditis"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Steroids are not a TBM paste onto pericardium.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-extrapulmonary-dx",
+    "tb-meningitis",
+    "tb-hiv-synergy",
+    "tb-hrze",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "HIV+, large effusion, TBM-dose dexamethasone started automatically",
+    "setup": "CD4 90, pericardial TB likely, no neurologic signs. Team copies TBM steroid taper.",
+    "steps": [
+      {
+        "title": "Treat the TB",
+        "body": "HRZE or the correct DR regimen. That is not optional."
+      },
+      {
+        "title": "Steroids are a pericarditis-specific, HIV-stratified call",
+        "body": "IMPI-era caution in HIV+; do not autopilot TBM doses."
+      },
+      {
+        "title": "Watch IRIS and glucose",
+        "body": "ART timing still follows pulmonary/TBM rules by site of disease."
+      }
+    ],
+    "takeaway": "Pericardial TB is EPTB with a drainage clock; steroids are not TBM-identical."
+  },
+  "check": [
+    {
+      "id": "peri-tpt",
+      "kind": "conceptual",
+      "prompt": "TB pericarditis is treated as:",
+      "choices": [
+        "LTBI",
+        "TB disease with a full regimen",
+        "Watchful waiting if IGRA+",
+        "INH only"
+      ],
+      "answer": "TB disease with a full regimen",
+      "why": "Effusion is disease.",
+      "whyWrong": {
+        "LTBI": "No.",
+        "Watchful waiting if IGRA+": "IGRA does not diagnose EPTB.",
+        "INH only": "Monotherapy."
+      }
+    },
+    {
+      "id": "peri-steroid",
+      "kind": "calculation",
+      "prompt": "Copying TBM steroid protocols onto HIV-positive pericardial TB is:",
+      "choices": [
+        "WHO-mandatory identical",
+        "Not automatic — evidence is mixed and HIV-stratified",
+        "Forbidden because steroids always kill",
+        "Required to activate INH"
+      ],
+      "answer": "Not automatic — evidence is mixed and HIV-stratified",
+      "why": "TBM mortality data do not transplant cleanly.",
+      "whyWrong": {
+        "WHO-mandatory identical": "Over-copy.",
+        "Forbidden because steroids always kill": "TBM still uses them.",
+        "Required to activate INH": "KatG activates INH."
+      }
+    },
+    {
+      "id": "peri-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, “Drain now” hangs off:",
+      "choices": [
+        "Steroids first",
+        "Tamponade? yes",
+        "IGRA+",
+        "Lineage 2"
+      ],
+      "answer": "Tamponade? yes",
+      "why": "Hemodynamics before DST.",
+      "whyWrong": {
+        "Steroids first": "Later decision.",
+        "IGRA+": "No.",
+        "Lineage 2": "No."
+      },
+      "figureHint": "Upper branch."
+    }
+  ]
+}

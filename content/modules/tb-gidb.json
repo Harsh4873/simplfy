@@ -1,0 +1,169 @@
+{
+  "id": "tb-gidb",
+  "title": "gidB and streptomycin",
+  "dek": "gidB (rv3919c) methylates 16S. Loss-of-function is a common low-level SM resistance route, often phylogenetic or mixed with rpsL. It is not an amikacin call by itself.",
+  "domain": "tb",
+  "aliases": [
+    "gidB",
+    "rv3919c",
+    "streptomycin gidB",
+    "16S methyltransferase Mtb"
+  ],
+  "tags": [
+    "gidB",
+    "streptomycin",
+    "rpsL",
+    "aminoglycoside",
+    "catalogue"
+  ],
+  "story": [
+    "Streptomycin resistance in MTBC is classically rpsL (K43R, K88R) for high-level, rrs for some alleles, and gidB loss-of-function for low-level. GidB is a 7-methylguanosine methyltransferase acting on 16S rRNA. Frameshifts and nonsense in gidB raise SM MIC modestly. Many are lineage-associated or arise repeatedly because the gene is dispensable in vitro.",
+    "WHO catalogue grading of gidB is a cautionary tale: not every indel is a high-confidence SM-R for therapy, and SM is already a historical drug. Do not import a gidB frameshift into an amikacin decision. AMK cares about rrs 1401 and friends; eis promoter is KAN-biased.",
+    "If a genome is rpsL K43R, you do not need gidB to explain SM-R. If only gidB is hit, write low-level SM and keep AMK reasoning separate."
+  ],
+  "deepTitle": "Phylogenetic noise",
+  "deep": [
+    "Some lineages carry gidB polymorphisms that older pipelines over-called.",
+    "Heteroresistant rpsL plus gidB WT is still high-level SM-R in the subpopulation.",
+    "SM in retreatment “Category II” is retired. This plate exists so you do not resurrect it from a BAM.",
+    "tlyA is the capreomycin methyltransferase story, not gidB."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "Split the aminoglycoside genome: rpsL/gidB for SM, rrs 1401 for AMK, eis/whiB7 for KAN, tlyA for CAP.",
+    "rows": [
+      {
+        "gene": "rpsL",
+        "drug": "SM",
+        "canonical": "K43R / K88R",
+        "note": "high-level"
+      },
+      {
+        "gene": "gidB",
+        "drug": "SM",
+        "canonical": "LoF / some missense",
+        "note": "low-level; lineage noise"
+      },
+      {
+        "gene": "rrs",
+        "drug": "AMK (also SM)",
+        "canonical": "a1401g",
+        "note": "cross-R injectables"
+      },
+      {
+        "gene": "eis",
+        "drug": "KAN",
+        "canonical": "promoter-up",
+        "note": "whiB7-linked"
+      },
+      {
+        "gene": "tlyA",
+        "drug": "CAP",
+        "canonical": "LoF",
+        "note": "not gidB"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — SM/gidB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "GidB — UniProt P9WG09",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WG09/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Do not map gidB onto amikacin.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-streptomycin",
+    "tb-eis-rrs",
+    "tb-amikacin",
+    "tb-who-catalogue",
+    "tb-capreomycin"
+  ],
+  "example": {
+    "title": "gidB frameshift, AMK “R” on auto-report",
+    "setup": "Pipeline flags gidB as “aminoglycoside resistance.” Clinic withholds AMK from a salvage recipe that needed it.",
+    "steps": [
+      {
+        "title": "Read the gene",
+        "body": "gidB is SM-tilted. Check rrs 1401 for AMK."
+      },
+      {
+        "title": "Check the catalogue version",
+        "body": "Grade, don’t regex."
+      },
+      {
+        "title": "SM is probably irrelevant anyway",
+        "body": "If you are here, you are in salvage. Name AMK correctly."
+      }
+    ],
+    "takeaway": "gidB explains streptomycin, not the whole injectable class."
+  },
+  "check": [
+    {
+      "id": "gid-drug",
+      "kind": "conceptual",
+      "prompt": "gidB loss-of-function is primarily a:",
+      "choices": [
+        "Bedaquiline mechanism",
+        "Low-level streptomycin mechanism",
+        "Linezolid mechanism",
+        "PZA mechanism"
+      ],
+      "answer": "Low-level streptomycin mechanism",
+      "why": "rpsL is high-level SM. AMK is rrs.",
+      "whyWrong": {
+        "Bedaquiline mechanism": "atpE/rv0678.",
+        "Linezolid mechanism": "rplC/rrl.",
+        "PZA mechanism": "pncA."
+      }
+    },
+    {
+      "id": "gid-amk",
+      "kind": "calculation",
+      "prompt": "An isolate with only a gidB frameshift (rrs WT, eis WT) should be treated as:",
+      "choices": [
+        "Amikacin-resistant by identity",
+        "Not AMK-R on gidB alone; SM low-level possible",
+        "XDR by 2021 definition",
+        "FQ-resistant"
+      ],
+      "answer": "Not AMK-R on gidB alone; SM low-level possible",
+      "why": "Split the injectables.",
+      "whyWrong": {
+        "Amikacin-resistant by identity": "Wrong gene.",
+        "XDR by 2021 definition": "Needs FQ + BDQ/LZD.",
+        "FQ-resistant": "gyr."
+      }
+    },
+    {
+      "id": "gid-figure",
+      "kind": "figure",
+      "prompt": "On the grid, tlyA is paired with:",
+      "choices": [
+        "SM",
+        "CAP",
+        "BDQ",
+        "INH"
+      ],
+      "answer": "CAP",
+      "why": "Capreomycin methylation is tlyA, not gidB.",
+      "whyWrong": {
+        "SM": "rpsL/gidB.",
+        "BDQ": "atpE.",
+        "INH": "katG."
+      },
+      "figureHint": "Last row."
+    }
+  ]
+}

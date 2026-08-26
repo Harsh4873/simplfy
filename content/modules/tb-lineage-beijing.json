@@ -1,0 +1,171 @@
+{
+  "id": "tb-lineage-beijing",
+  "title": "Lineage 2/Beijing as a covariate",
+  "dek": "L2 is over-represented in many MDR datasets. That is epidemiology plus maybe mutation supply — not a licence to call BDQ-R from a spoligotype.",
+  "domain": "tb",
+  "aliases": [
+    "Beijing genotype",
+    "lineage 2 Mtb",
+    "East-Asian lineage",
+    "W-Beijing"
+  ],
+  "tags": [
+    "lineage",
+    "L2",
+    "Beijing",
+    "MDR epidemiology",
+    "barcode"
+  ],
+  "story": [
+    "Coll’s SNP barcode (and later expansions) assigns MTBC to lineages L1–L7, with L8/L9 rare. Lineage 2 (East-Asian, including Beijing families) is a successful human-adapted clade. It is over-represented among MDR/RR isolates in Eastern Europe, Central and East Asia, and some southern African outbreaks. That is transmission of already-resistant clones plus possibly a slightly higher mutation rate — both are hypotheses you test, not a DST rule.",
+    "Modern Beijing sublineages carried successful rpoB S450L plus compensatory rpoC alleles across continents. Ancient Beijing and non-Beijing L2 are not the same object. A “Beijing” label from old spoligotyping is coarser than a barcode.",
+    "PE/PPE content, PDIM/PGL, and DosR regulon nuances differ by lineage. None of that lets you skip katG. Lineage is a prior for interpretation (some fbi or pncA SNPs are phylogenetic) and a clustering covariate, not a drug."
+  ],
+  "deepTitle": "How to write lineage on a gDST report",
+  "deep": [
+    "Put lineage next to the SNP distance, not next to the BDQ call.",
+    "L4.3/LAM, L2.2.1, L1.1.1 each have known phylogenetic mutations that naive catalogues once graded as resistance. Version your catalogue.",
+    "Outbreak naming (W, GC1237, KZN) is local history. Map it to a barcode before comparing papers.",
+    "M. africanum L5/L6 is not “less TB.” It is human-adapted West African TB with a different RD pattern."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Lineage is nested phylogeny. Beijing is a family inside L2. MDR enrichment is an epidemiological layer, not a resistance gene.",
+    "layers": [
+      {
+        "title": "Species-complex",
+        "nodes": [
+          "MTBC"
+        ]
+      },
+      {
+        "title": "Human-adapted",
+        "nodes": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5/L6",
+          "L7"
+        ]
+      },
+      {
+        "title": "L2 families",
+        "nodes": [
+          "modern Beijing",
+          "ancient Beijing",
+          "non-Beijing L2"
+        ]
+      },
+      {
+        "title": "Not a DST",
+        "nodes": [
+          "barcode ≠ BDQ",
+          "compensate rpoC separately"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Lineage as covariate teaching, not a dump of Coll tables.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "WHO mutation catalogue — phylogenetic variants",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Mycobacterium tuberculosis",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-h37rv-genome",
+    "tb-rpoc-compensatory",
+    "tb-who-catalogue",
+    "tb-wgs-dst"
+  ],
+  "example": {
+    "title": "Beijing plus silent rpoB",
+    "setup": "L2.2.1 isolate, rpoB WT RRDR, phenotypic RIF-R. Someone says “Beijing explains discordant DST.”",
+    "steps": [
+      {
+        "title": "Lineage does not confer RR",
+        "body": "Look outside RRDR (N-terminal, disputed alleles) and at heteroresistance."
+      },
+      {
+        "title": "Compensatory alleles need a driver",
+        "body": "rpoC compensatory mutations usually ride with RRDR R. Isolated rpoC is not the RIF call."
+      },
+      {
+        "title": "Write the barcode",
+        "body": "L2.2.1 is epidemiology for the cluster, not a mechanism."
+      }
+    ],
+    "takeaway": "Beijing is a clade, not a resistance gene."
+  },
+  "check": [
+    {
+      "id": "l2-dst",
+      "kind": "conceptual",
+      "prompt": "A Beijing/L2 call on a report should change:",
+      "choices": [
+        "The BDQ grade by itself",
+        "Epidemiologic clustering and phylogenetic-SNP interpretation",
+        "The definition of XDR",
+        "PZA critical concentration universally"
+      ],
+      "answer": "Epidemiologic clustering and phylogenetic-SNP interpretation",
+      "why": "Some catalogue rows are lineage SNPs. The drug grade still needs a resistance variant.",
+      "whyWrong": {
+        "The BDQ grade by itself": "Need rv0678/atpE/pepQ etc.",
+        "The definition of XDR": "2021 drug classes, not lineage.",
+        "PZA critical concentration universally": "pncA and species, not Beijing per se."
+      }
+    },
+    {
+      "id": "l2-barcode",
+      "kind": "calculation",
+      "prompt": "Coll-style barcodes typically assign L1–L7 using on the order of:",
+      "choices": [
+        "2 IS6110 bands",
+        "tens of canonical SNPs, not a single Beijing spacer",
+        "the entire PE/PPE proteome",
+        "one rpoB codon"
+      ],
+      "answer": "tens of canonical SNPs, not a single Beijing spacer",
+      "why": "Spoligotype “Beijing” is coarser. SNP barcodes are the current lab grammar.",
+      "whyWrong": {
+        "2 IS6110 bands": "RFLP era.",
+        "the entire PE/PPE proteome": "Masked, not the barcode.",
+        "one rpoB codon": "Resistance, not lineage."
+      }
+    },
+    {
+      "id": "l2-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, modern Beijing sits:",
+      "choices": [
+        "Beside MTBC as a sister complex",
+        "Inside L2, under human-adapted lineages",
+        "Inside XDR definitions",
+        "As a first-line drug"
+      ],
+      "answer": "Inside L2, under human-adapted lineages",
+      "why": "Nested phylogeny is the point of the plate.",
+      "whyWrong": {
+        "Beside MTBC as a sister complex": "Beijing is MTBC L2.",
+        "Inside XDR definitions": "Drugs, not clades.",
+        "As a first-line drug": "No."
+      },
+      "figureHint": "Third layer."
+    }
+  ]
+}

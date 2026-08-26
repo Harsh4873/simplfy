@@ -1,0 +1,153 @@
+{
+  "id": "tb-rpoc-compensatory",
+  "title": "Compensatory rpoC (and rpoA/B)",
+  "dek": "rpoB S450L is common partly because RNAP can be re-tuned. rpoC (and rpoA, secondary rpoB) compensatory mutations restore fitness. They are phylogeny and epidemiology, not a second RRDR.",
+  "domain": "tb",
+  "aliases": [
+    "rpoC compensatory",
+    "RNAP fitness",
+    "rpoB S450L compensation",
+    "rpoA mutation"
+  ],
+  "tags": [
+    "rpoC",
+    "fitness",
+    "compensation",
+    "RR-TB",
+    "epidemiology"
+  ],
+  "story": [
+    "Rifampin-resistant RNAP is often slower. Secondary substitutions in rpoC (β′), rpoA (α), or additional rpoB sites can restore transcription speed and competitive fitness. That is why S450L lineages succeed globally while some other RRDR alleles remain epidemiologic dead ends.",
+    "Compensatory mutations are not an alternative rifampin-resistance mechanism for Xpert. They usually travel with a primary RRDR (or I491F) allele. Seeing rpoC V483G without a primary rpoB R mutation is a reason to look harder, not to invent RR from rpoC alone.",
+    "For clustering, rpoC changes are under selection and can collapse or split trees if you treat them as neutral SNPs. Some transmission pipelines mask DR genes including compensatory RNAP sites. Say so."
+  ],
+  "deepTitle": "What a report should not claim",
+  "deep": [
+    "“rpoC mutant, therefore RIF-R” is a category error.",
+    "“S450L plus rpoC compensatory, therefore hypertransmissible” is a hypothesis, not a DST column. Fitness in a mouse is not a contact-investigation protocol.",
+    "Numbering: rpoC compensatory residues have their own maps (V483, E1092, …). Do not apply RRDR coordinates to rpoC.",
+    "Mixed rpoC AF can indicate clonal adaptation after RR emerged — a timeline clue in serial isolates."
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Primary RR is the rpoB restriction that makes RNAP RIF-R. Compensatory rpoC/A parameters restore fitness inside that restricted model. They are extra parameters, not a different drug target.",
+    "reduced": {
+      "label": "Primary RR",
+      "params": [
+        "rpoB S450L"
+      ]
+    },
+    "full": {
+      "label": "RR + compensated",
+      "params": [
+        "rpoB S450L",
+        "rpoC V483G",
+        "± rpoA"
+      ]
+    },
+    "statistic": "fitness ↑  without changing the RIF target story",
+    "reference": "rpoC ≠ Xpert target"
+  },
+  "sources": [
+    {
+      "title": "WHO catalogue context: rpoB primary vs compensatory RNAP",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "RpoC DNA-directed RNA polymerase β′ — UniProt P9WGY5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WGY5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Compensation is fitness, not a second RRDR.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-rifampin",
+    "tb-resistance",
+    "tb-wgs-dst",
+    "tb-who-catalogue",
+    "tb-dr-definitions"
+  ],
+  "example": {
+    "title": "rpoC only on a RIF-S Xpert",
+    "setup": "Xpert RIF not detected. WGS: rpoC N698S, rpoB WT including codon 491. Phenotypic RIF S.",
+    "steps": [
+      {
+        "title": "Do not call RR",
+        "body": "No primary rpoB R allele. rpoC is not the cartridge target and not sufficient."
+      },
+      {
+        "title": "Check if N698S is even compensatory-class",
+        "body": "Many rpoC SNPs are lineage or noise. Catalogue/literature, not vibes."
+      },
+      {
+        "title": "Treat as DS pending the phenotype you already have",
+        "body": "This was a parser looking for any RNAP change."
+      }
+    ],
+    "takeaway": "Compensatory RNAP alleles ride with primary RR; they do not replace it."
+  },
+  "check": [
+    {
+      "id": "rpoC-not",
+      "kind": "conceptual",
+      "prompt": "An isolated rpoC substitution without a primary rpoB resistance allele is:",
+      "choices": [
+        "Sufficient to diagnose RR-TB for BPaLM",
+        "Not a stand-alone rifampin-resistance call",
+        "Equivalent to S450L",
+        "A PZA mutation"
+      ],
+      "answer": "Not a stand-alone rifampin-resistance call",
+      "why": "Compensation ≠ causation of RR.",
+      "whyWrong": {
+        "Sufficient to diagnose RR-TB for BPaLM": "Overcall.",
+        "Equivalent to S450L": "No.",
+        "A PZA mutation": "No."
+      }
+    },
+    {
+      "id": "rpoC-fit",
+      "kind": "calculation",
+      "prompt": "S450L plus a known rpoC compensatory allele in a large cluster suggests:",
+      "choices": [
+        "That Xpert cannot detect S450L",
+        "A fitness-restored RR clone that can transmit; still report RIF-R from rpoB, not from rpoC",
+        "That the strain is DS",
+        "That compensatory mutations reverse rifampin resistance"
+      ],
+      "answer": "A fitness-restored RR clone that can transmit; still report RIF-R from rpoB, not from rpoC",
+      "why": "Epidemiology of successful RR, not a new DST gene.",
+      "whyWrong": {
+        "That Xpert cannot detect S450L": "Xpert usually does.",
+        "That the strain is DS": "S450L is RR.",
+        "That compensatory mutations reverse rifampin resistance": "They restore fitness, not susceptibility."
+      }
+    },
+    {
+      "id": "rpoC-figure",
+      "kind": "figure",
+      "prompt": "On the nested-models plate, the inner box is:",
+      "choices": [
+        "rpoC alone as the RIF target",
+        "The primary rpoB RR restriction, with rpoC as extra fitness parameters in the full box",
+        "pncA",
+        "CAD"
+      ],
+      "answer": "The primary rpoB RR restriction, with rpoC as extra fitness parameters in the full box",
+      "why": "Caption: extra parameters, not a different drug target.",
+      "whyWrong": {
+        "rpoC alone as the RIF target": "Opposite lesson.",
+        "pncA": "No.",
+        "CAD": "No."
+      },
+      "figureHint": "Inner box label: Primary RR."
+    }
+  ]
+}

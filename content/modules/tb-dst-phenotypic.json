@@ -1,0 +1,159 @@
+{
+  "id": "tb-dst-phenotypic",
+  "title": "Phenotypic DST and critical concentrations",
+  "dek": "A critical concentration is a cut-point on an MIC distribution, not a cosmic constant. Borderline alleles are where MGIT S/R becomes an argument rather than a measurement.",
+  "domain": "tb",
+  "aliases": [
+    "critical concentration",
+    "MGIT DST",
+    "MIC tuberculosis",
+    "proportion method",
+    "epidemiological cutoff"
+  ],
+  "tags": [
+    "pDST",
+    "MIC",
+    "critical concentration",
+    "MGIT",
+    "ECOFF"
+  ],
+  "story": [
+    "Phenotypic DST asks whether an isolate grows at a WHO-specified critical concentration (CC) of drug in a specified medium (MGIT, 7H10, 7H11, LJ). It is not the same as a clinical breakpoint derived from PK/PD plus outcome, though TB is slowly moving that way for some drugs (moxifloxacin, bedaquiline).",
+    "When the MIC distribution of wild-type and resistant populations overlap — ethambutol historically, some rpoB borderline alleles, some Rv0678 modest shifts — a single CC is a coin flip dressed as a column. MIC plus a catalogue grade is more honest.",
+    "PZA DST is pH-fragile. Pyrazinamide CCs assume acidified media; a failed pH control is a false-R factory. Never “confirm” a messy PZA MGIT by shouting at pncA; use both."
+  ],
+  "deepTitle": "ECOFFs, CCs, and catalogues",
+  "deep": [
+    "Epidemiological cut-off (ECOFF) marks the upper edge of the apparent wild-type MIC distribution. Clinical breakpoints add PK/PD. TB CCs have historically mixed those ideas.",
+    "CRyPTIC and WHO CC revisions exist because 20-year-old numbers were wrong for some drugs. Your SOP year matters in a methods section.",
+    "Direct DST from smear-positive sputum trades speed for contamination and mix. Indirect DST from a MGIT subculture can lose a minority.",
+    "For BDQ and LZD, MIC methods are preferred over a single poorly powered CC if you have them. Catalogue + MIC is the adult conversation."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Wild-type and resistant MIC densities. A CC (dashed, schematic at 0.5 on this axis) cleanly splits some drugs (RIF S450L) and slices through others (borderline rpoB, EMB).",
+    "xLabel": "log MIC (schematic)",
+    "curves": [
+      {
+        "id": "wt",
+        "label": "wild-type",
+        "mean": -0.4,
+        "sd": 0.35
+      },
+      {
+        "id": "r",
+        "label": "high-level R",
+        "mean": 1.6,
+        "sd": 0.4
+      },
+      {
+        "id": "b",
+        "label": "borderline",
+        "mean": 0.45,
+        "sd": 0.28
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO technical report on critical concentrations / pDST",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "CC as a cut-point on overlapping densities.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-smear-culture",
+    "tb-wgs-dst",
+    "tb-who-catalogue",
+    "tb-resistance",
+    "tb-first-line"
+  ],
+  "example": {
+    "title": "rpoB H445D, MGIT RIF-S, rifabutin pending",
+    "setup": "Borderline-ish RRDR allele. MGIT RIF at CC reports S. Ultra called RIF-R. MIC is 1 dilution above modal WT.",
+    "steps": [
+      {
+        "title": "Do not call the MGIT the referee of nature",
+        "body": "This is the overlap zone the density plate is about."
+      },
+      {
+        "title": "Catalogue plus MIC",
+        "body": "WHO grades many 445 alleles as associated with RIF-R, sometimes with rifabutin spared. Report the allele and the MIC."
+      },
+      {
+        "title": "Clinically this is not 2HRZE on autopilot",
+        "body": "RR algorithms exist for disputed mutations. Local expert/NTP SOP, not a tweet."
+      }
+    ],
+    "takeaway": "A CC is a policy cut on a distribution."
+  },
+  "check": [
+    {
+      "id": "pdst-cc",
+      "kind": "conceptual",
+      "prompt": "A WHO critical concentration is:",
+      "choices": [
+        "The Cmax in plasma for every patient",
+        "A specified concentration used to dichotomise growth as S/R in a specified method",
+        "Always identical to the ECOFF and to the PK/PD breakpoint",
+        "A gene name"
+      ],
+      "answer": "A specified concentration used to dichotomise growth as S/R in a specified method",
+      "why": "Method-dependent cut-point, not a cosmic MIC.",
+      "whyWrong": {
+        "The Cmax in plasma for every patient": "PK, not CC.",
+        "Always identical to the ECOFF and to the PK/PD breakpoint": "They can differ.",
+        "A gene name": "No."
+      }
+    },
+    {
+      "id": "pdst-overlap",
+      "kind": "calculation",
+      "prompt": "If WT MIC 95th percentile is 0.25 and a borderline mutant MIC sits at 0.5, a CC of 0.5 will:",
+      "choices": [
+        "Always call the mutant R with infinite likelihood",
+        "Slice near the overlap, so S/R labels become unstable across labs and methods",
+        "Convert the mutant into S450L",
+        "Measure PZA pH"
+      ],
+      "answer": "Slice near the overlap, so S/R labels become unstable across labs and methods",
+      "why": "That is why MIC and catalogue grades exist.",
+      "whyWrong": {
+        "Always call the mutant R with infinite likelihood": "It is on the cut.",
+        "Convert the mutant into S450L": "No.",
+        "Measure PZA pH": "Different drug."
+      }
+    },
+    {
+      "id": "pdst-figure",
+      "kind": "figure",
+      "prompt": "On the MIC density plate, which curve is the reason a single CC can look arbitrary?",
+      "choices": [
+        "wild-type only",
+        "high-level R only",
+        "borderline sitting under the CC",
+        "none of the curves"
+      ],
+      "answer": "borderline sitting under the CC",
+      "why": "The middle curve overlaps the cut.",
+      "whyWrong": {
+        "wild-type only": "Cleanly left if the CC is well placed.",
+        "high-level R only": "Cleanly right for S450L-class.",
+        "none of the curves": "The borderline curve is the lesson."
+      },
+      "figureHint": "Three curves: WT, high-level R, borderline."
+    }
+  ]
+}

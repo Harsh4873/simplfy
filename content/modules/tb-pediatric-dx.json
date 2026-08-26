@@ -1,0 +1,173 @@
+{
+  "id": "tb-pediatric-dx",
+  "title": "Pediatric TB specimens",
+  "dek": "Children are paucibacillary, swallow sputum, and rarely cavity. Stool and nasopharyngeal WRDs exist because gastric aspirates do not scale.",
+  "domain": "tb",
+  "aliases": [
+    "gastric aspirate",
+    "stool Xpert",
+    "induced sputum children",
+    "pediatric TB diagnosis",
+    "NPA TB"
+  ],
+  "tags": [
+    "pediatric",
+    "stool",
+    "gastric aspirate",
+    "paucibacillary",
+    "WRD"
+  ],
+  "story": [
+    "Childhood TB is a diagnostic insult: low bacillary load, often no cavity, often no productive cough. Expectation of a 3+ smear is how programmes miss kids. Clinical scores plus mWRDs plus (when you can) culture are the spine; IGRA/TST can support infection but do not prove disease.",
+    "Specimen menu: induced sputum, nasopharyngeal aspirate, gastric aspirate (swallowed overnight sputum), stool for Xpert Ultra (WHO-endorsed), lymph-node FNA, CSF in meningitis. Stool is not a joke specimen — it is a logistics solution that detects swallowed MTBC DNA/bacilli.",
+    "A negative WRD never rules out pediatric TB. Treat on clinical grounds when the alternative is watching miliary disease bloom. That is WHO, not cowboy medicine — document the algorithm."
+  ],
+  "deepTitle": "What Ultra trace means in a toddler",
+  "deep": [
+    "Unlike a previously treated adult lung, a treatment-naive child with trace Ultra is a much higher-stakes true-positive prior. Context is the whole assay.",
+    "Gastric aspirate pH and delay kill culture. WRDs are more forgiving of dead bacilli, which is a feature and a bug.",
+    "Household-source investigation is part of diagnosis: the child’s “lab” is often the adult’s sputum.",
+    "LF-LAM has a pediatric/HIV story but is not a universal child screen."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Specimen choices when the child cannot spit. Sensitivity is generally stool/NPA/induced sputum in the WRD era; culture remains the viability backstop. Clinical diagnosis sits above a negative lab.",
+    "layers": [
+      {
+        "title": "Clinical algorithm",
+        "nodes": [
+          "contact",
+          "symptoms",
+          "CXR",
+          "HIV"
+        ]
+      },
+      {
+        "title": "mWRD specimens",
+        "nodes": [
+          "stool",
+          "NPA",
+          "induced sputa",
+          "gastric"
+        ]
+      },
+      {
+        "title": "Other sites",
+        "nodes": [
+          "FNA node",
+          "CSF",
+          "urine LAM"
+        ]
+      },
+      {
+        "title": "Backstop",
+        "nodes": [
+          "culture",
+          "treat anyway"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook Module 3 / childhood TB diagnosis",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum — TB in children",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Stool WRD as swallowed sputum, not a new disease.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-xpert-ultra",
+    "tb-pediatric-tx",
+    "tb-smear-culture",
+    "tb-lf-lam"
+  ],
+  "example": {
+    "title": "Stool Ultra positive, gastric culture negative",
+    "setup": "18-month-old contact of a 3+ index. Stool Ultra MTB detected, RIF not detected. Gastric aspirate culture negative. CXR: hilar adenopathy.",
+    "steps": [
+      {
+        "title": "Do not discard the WRD",
+        "body": "Culture miss on gastric samples is common. Clinical plus NAAT is a disease diagnosis."
+      },
+      {
+        "title": "RIF-not-detected is a window, not a full DST",
+        "body": "If the source is RR-TB, the child’s RIF result still needs a second thought and better sampling."
+      },
+      {
+        "title": "Treat as DS-TB unless the source says otherwise",
+        "body": "Pediatric regimens (including SHINE 4-month for non-severe) follow disease severity, not the stool brand name."
+      }
+    ],
+    "takeaway": "Kids need a specimen strategy, not adult smear expectations."
+  },
+  "check": [
+    {
+      "id": "pd-stool",
+      "kind": "conceptual",
+      "prompt": "Stool as an Xpert Ultra specimen in children works because:",
+      "choices": [
+        "Mtb primarily infects the colon",
+        "Children swallow respiratory secretions; WRDs can detect MTBC DNA/bacilli in stool",
+        "Stool replaces CSF in meningitis",
+        "Stool grades bedaquiline"
+      ],
+      "answer": "Children swallow respiratory secretions; WRDs can detect MTBC DNA/bacilli in stool",
+      "why": "Logistics plus swallowed sputum, not a GI-tropism claim.",
+      "whyWrong": {
+        "Mtb primarily infects the colon": "False.",
+        "Stool replaces CSF in meningitis": "No.",
+        "Stool grades bedaquiline": "No."
+      }
+    },
+    {
+      "id": "pd-neg",
+      "kind": "calculation",
+      "prompt": "A toddler with miliary CXR, known smear-positive mother, and two negative NPAs should:",
+      "choices": [
+        "Be declared not TB because WRDs are 100% sensitive in children",
+        "Continue the pediatric disease algorithm, including possible empiric treatment — negative WRD does not rule out",
+        "Start BPaLM automatically",
+        "Be followed with IGRA only"
+      ],
+      "answer": "Continue the pediatric disease algorithm, including possible empiric treatment — negative WRD does not rule out",
+      "why": "Sensitivity is the known hole.",
+      "whyWrong": {
+        "Be declared not TB because WRDs are 100% sensitive in children": "They are not.",
+        "Start BPaLM automatically": "No DST indication.",
+        "Be followed with IGRA only": "Disease vs infection."
+      }
+    },
+    {
+      "id": "pd-figure",
+      "kind": "figure",
+      "prompt": "On the pediatric specimen hierarchy, what does the bottom node “treat anyway” mean?",
+      "choices": [
+        "That labs are optional forever",
+        "That a negative microbiologic battery does not veto a high-probability clinical pediatric TB diagnosis",
+        "That smear 3+ is required",
+        "That stool is culture"
+      ],
+      "answer": "That a negative microbiologic battery does not veto a high-probability clinical pediatric TB diagnosis",
+      "why": "Backstop layer of the plate.",
+      "whyWrong": {
+        "That labs are optional forever": "You still try.",
+        "That smear 3+ is required": "Opposite of pediatric reality.",
+        "That stool is culture": "No."
+      },
+      "figureHint": "Bottom layer: culture | treat anyway."
+    }
+  ]
+}

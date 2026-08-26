@@ -1,0 +1,186 @@
+{
+  "id": "tb-clofazimine",
+  "title": "Clofazimine",
+  "dek": "A riminophenazine half-leprosy, half-TB. Membrane/redox activity, very long half-life, skin pigmentation, QTc, and Rv0678 cross-talk with BDQ. The C in many 9-month and BDLLfxC recipes.",
+  "domain": "tb",
+  "aliases": [
+    "CFZ",
+    "clofazimine",
+    "Lamprene",
+    "riminophenazine",
+    "C in BDLLfxC"
+  ],
+  "tags": [
+    "clofazimine",
+    "QTc",
+    "pigmentation",
+    "efflux",
+    "Group B"
+  ],
+  "story": [
+    "Clofazimine is a fat-soluble riminophenazine that accumulates in macrophages and fat for months. Mechanism is messy (redox cycling, membrane effects) compared with RpoB. WHO uses it in the 2022 9-month oral, in BDLLfxC (dropped if FQ-S), and in some modified 9-month mixes. It is Group B, not Group A.",
+    "Rv0678 LOF raises CFZ MIC along with BDQ — recount both if the regulator falls. Intrinsic CFZ MICs already sit near CCs; humility applies.",
+    "Patients need to hear about pink-brown skin and body-fluid discoloration before week 8, not at the wedding. QTc stacks with BDQ/FQ/DLM. GI crystalline deposition is a rare surgical surprise."
+  ],
+  "deepTitle": "Half-life as a double agent",
+  "deep": [
+    "Still on board after “completion” — useful and selecting.",
+    "Not a TPT drug. Not DS first-line.",
+    "PubChem CID 2794. ChEMBL770.",
+    "Leprosy dosing lore does not automatically transfer to TB mg/kg; use TB tables."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Clofazimine is pharmacology you can see: colour, ECG, fat depot, and a pump shared with BDQ. Not a gyrase, not a RNAP.",
+    "terms": [
+      {
+        "label": "riminophenazine",
+        "weight": 4
+      },
+      {
+        "label": "fat depot",
+        "weight": 5
+      },
+      {
+        "label": "skin colour",
+        "weight": 5
+      },
+      {
+        "label": "QTc",
+        "weight": 4
+      },
+      {
+        "label": "Rv0678 cross",
+        "weight": 5
+      },
+      {
+        "label": "BDLLfxC C",
+        "weight": 3
+      },
+      {
+        "label": "9-month C",
+        "weight": 3
+      },
+      {
+        "label": "Group B",
+        "weight": 4
+      },
+      {
+        "label": "not TPT",
+        "weight": 3
+      },
+      {
+        "label": "long t½",
+        "weight": 4
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — clofazimine in 6/9-month DR regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Clofazimine — PubChem CID 2794",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/2794"
+    },
+    {
+      "title": "Clofazimine — CHEMBL770",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL770/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Visible pharmacology plus BDQ pump overlap.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-rv0678",
+    "tb-bedaquiline",
+    "tb-9month-drtb",
+    "tb-bdllfxc",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "FQ-S on BDLLfxC, still on CFZ at month 2",
+    "setup": "gyrA WT returned at week 3; SOP said drop CFZ; nobody did.",
+    "steps": [
+      {
+        "title": "Prune",
+        "body": "FQ-S BDLLfxC → BDLLfx. Extra CFZ is extra QTc and extra colour without the trial’s reason."
+      },
+      {
+        "title": "If Rv0678 is already wobbling, CFZ may be dead anyway",
+        "body": "Check the regulator before arguing to keep C “for strength.”"
+      },
+      {
+        "title": "Counsel the colour that already started",
+        "body": "It fades slowly. Honesty is adherence."
+      }
+    ],
+    "takeaway": "CFZ is a long-lived Group B dye with a BDQ-linked pump."
+  },
+  "check": [
+    {
+      "id": "cfz-group",
+      "kind": "conceptual",
+      "prompt": "Clofazimine in current WHO DR-TB ranking is:",
+      "choices": [
+        "Group A equal to BDQ/LZD/FQ",
+        "A Group B companion in several 6- and 9-month recipes",
+        "First-line DS with INH",
+        "An IGRA mitogen"
+      ],
+      "answer": "A Group B companion in several 6- and 9-month recipes",
+      "why": "Not Group A.",
+      "whyWrong": {
+        "Group A equal to BDQ/LZD/FQ": "Over-rank.",
+        "First-line DS with INH": "No.",
+        "An IGRA mitogen": "No."
+      }
+    },
+    {
+      "id": "cfz-cross",
+      "kind": "calculation",
+      "prompt": "Rv0678 LOF should make you reconsider counting which pair?",
+      "choices": [
+        "INH and EMB only",
+        "BDQ and often CFZ",
+        "PZA and AMK only",
+        "BCG and TST"
+      ],
+      "answer": "BDQ and often CFZ",
+      "why": "Shared efflux.",
+      "whyWrong": {
+        "INH and EMB only": "Wrong genes.",
+        "PZA and AMK only": "pncA/rrs.",
+        "BCG and TST": "No."
+      }
+    },
+    {
+      "id": "cfz-figure",
+      "kind": "figure",
+      "prompt": "On the CFZ constellation, “skin colour” is high-weight because:",
+      "choices": [
+        "It is the mechanism of gyrase inhibition",
+        "Pigmentation is an expected, adherence-relevant effect of a fat-soluble riminophenazine",
+        "It proves DS-TB",
+        "It replaces ECG"
+      ],
+      "answer": "Pigmentation is an expected, adherence-relevant effect of a fat-soluble riminophenazine",
+      "why": "Counsel before week 8.",
+      "whyWrong": {
+        "It is the mechanism of gyrase inhibition": "No.",
+        "It proves DS-TB": "No.",
+        "It replaces ECG": "QTc is a separate star."
+      },
+      "figureHint": "High-weight term skin colour."
+    }
+  ]
+}

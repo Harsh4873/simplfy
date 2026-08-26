@@ -1,0 +1,198 @@
+{
+  "id": "tb-hiv-art",
+  "title": "HIV, ART timing, and TB",
+  "dek": "Start ART within two weeks of TB therapy for most people with HIV, regardless of CD4. Meningitis is the exception: wait 4–8 weeks. Rifamycin induction is the other clock.",
+  "domain": "tb",
+  "aliases": [
+    "ART timing TB",
+    "TB IRIS",
+    "dolutegravir rifampin",
+    "early ART",
+    "TBM ART delay"
+  ],
+  "tags": [
+    "HIV",
+    "ART",
+    "IRIS",
+    "rifampin",
+    "meningitis"
+  ],
+  "story": [
+    "WHO: ART should start as soon as possible within two weeks of DS-TB treatment initiation, regardless of CD4, in people without meningitis. The old “wait until CD4 > x” delay killed people with advanced HIV. For DR-TB, ART within eight weeks is the written strong recommendation; many clinicians still aim earlier when the CNS is quiet.",
+    "TB meningitis (and cryptococcal meningitis) is the IRIS exception: earlier ART increased adverse events without a mortality win. Delay ART at least 4 weeks and start by 8 weeks, with steroids on board for TBM.",
+    "Rifampin induces UGT/CYP and halves dolutegravir exposure unless DTG is given twice daily. Protease inhibitors and rifampin are a mess; rifabutin overlays exist in CDC-land. Rifapentine still induces. Bedaquiline is CYP3A4-sensitive — rifamycins and BDQ are not co-travelers in BPaLM (you already dropped RIF)."
+  ],
+  "deepTitle": "IRIS is immunology, not failure of the TB drugs",
+  "deep": [
+    "Paradoxical IRIS: known TB, worsening after ART. Unmasking IRIS: occult TB appears after ART. Steroids for severe TBM-IRIS; do not automatically switch to MDR therapy because a lymph node grew.",
+    "Cotrimoxazole prophylaxis remains part of advanced HIV care alongside TB therapy.",
+    "LF-LAM plus mWRD before ART in advanced HIV is how you avoid unmasking surprises — screen, don’t just start.",
+    "CD4 20 vs 400 no longer changes the two-week pulmonary ART rule; it still changes diagnostic yield and IRIS risk."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "ART clocks: two weeks for pulmonary/disseminated TB; 4–8 weeks for TBM. Rifamycin–DTG twice-daily is the pharmacologic patch, not a reason to withhold ART.",
+    "nodes": [
+      {
+        "id": "tbhiv",
+        "label": "TB + HIV",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "cns",
+        "label": "Meningitis?",
+        "x": 30,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "early",
+        "label": "ART ≤2 w",
+        "x": 55,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "delay",
+        "label": "ART 4–8 w",
+        "x": 55,
+        "y": 72,
+        "tone": "end",
+        "detail": "+ steroids"
+      },
+      {
+        "id": "dtg",
+        "label": "DTG BID if RIF",
+        "x": 80,
+        "y": 22,
+        "tone": "process"
+      }
+    ],
+    "edges": [
+      {
+        "from": "tbhiv",
+        "to": "cns"
+      },
+      {
+        "from": "cns",
+        "to": "early",
+        "label": "no"
+      },
+      {
+        "from": "cns",
+        "to": "delay",
+        "label": "TBM"
+      },
+      {
+        "from": "early",
+        "to": "dtg"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: ART within two weeks; TBM exception 4–8 weeks",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — TB/HIV",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Two clocks: IRIS/CNS and rifamycin induction.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-hiv-synergy",
+    "tb-hrze",
+    "tb-bpalm",
+    "tb-meningitis",
+    "tb-rifampin",
+    "tb-qtc-monitoring",
+    "tb-rifabutin"
+  ],
+  "example": {
+    "title": "CD4 18, pulmonary TB, DTG once daily + RIF",
+    "setup": "New DS-TB, HIV newly diagnosed, CD4 18, started 2HRZE, DTG/3TC/TDF once daily.",
+    "steps": [
+      {
+        "title": "ART timing is already right-ish",
+        "body": "Start ART now, not after a month of watching CD4. No meningitis."
+      },
+      {
+        "title": "DTG must be BID with rifampin",
+        "body": "Once-daily DTG is under-dosed on RIF. This is a chart error, not a “wait and see.”"
+      },
+      {
+        "title": "Watch IRIS, do not stop RIF for it by default",
+        "body": "Fever and node enlargement at week 3 of ART can be IRIS. Culture/NAAT to exclude a second pathogen or missed RR."
+      }
+    ],
+    "takeaway": "Two-week ART plus a rifamycin–ART patch. Meningitis is the only routine delay."
+  },
+  "check": [
+    {
+      "id": "art-2w",
+      "kind": "conceptual",
+      "prompt": "For pulmonary TB in a person with HIV and no meningitis, WHO says start ART:",
+      "choices": [
+        "Only after CD4 exceeds 350",
+        "As soon as possible within two weeks of TB treatment, regardless of CD4",
+        "After 6 months of HRZE",
+        "Never if CD4 < 50"
+      ],
+      "answer": "As soon as possible within two weeks of TB treatment, regardless of CD4",
+      "why": "The CD4-stratified delay is outdated for pulmonary TB.",
+      "whyWrong": {
+        "Only after CD4 exceeds 350": "Obsolete.",
+        "After 6 months of HRZE": "Too late.",
+        "Never if CD4 < 50": "Opposite of the evidence."
+      }
+    },
+    {
+      "id": "art-tbm",
+      "kind": "calculation",
+      "prompt": "HIV-associated TBM: ART should be delayed:",
+      "choices": [
+        "0 days always",
+        "At least 4 weeks, initiated by 8 weeks, with adjunctive steroids",
+        "2 years",
+        "Until IGRA converts"
+      ],
+      "answer": "At least 4 weeks, initiated by 8 weeks, with adjunctive steroids",
+      "why": "IRIS in a closed skull is the reason.",
+      "whyWrong": {
+        "0 days always": "The exception exists.",
+        "2 years": "Too long.",
+        "Until IGRA converts": "Irrelevant."
+      }
+    },
+    {
+      "id": "art-figure",
+      "kind": "figure",
+      "prompt": "On the ART-timing map, DTG BID is attached to which path?",
+      "choices": [
+        "The TBM delay path only",
+        "The early ART path when rifampin is used",
+        "BPaLM only",
+        "3HP only"
+      ],
+      "answer": "The early ART path when rifampin is used",
+      "why": "Induction patch, not a meningitis patch.",
+      "whyWrong": {
+        "The TBM delay path only": "Wrong edge.",
+        "BPaLM only": "BPaLM has no rifampin.",
+        "3HP only": "Different plate."
+      },
+      "figureHint": "Edge from ART ≤2 w to DTG BID if RIF."
+    }
+  ]
+}

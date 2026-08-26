@@ -1,0 +1,165 @@
+{
+  "id": "tb-kanamycin",
+  "title": "Kanamycin (historical injectable)",
+  "dek": "Kanamycin is a retired preferred DR-TB drug. eis promoter-up is its genomic signature. Ototoxicity did not retire when the guideline did; do not resurrect KM because a 2012 paper said XDR.",
+  "domain": "tb",
+  "aliases": [
+    "kanamycin TB",
+    "KM injectable",
+    "amikacin vs kanamycin",
+    "eis kanamycin"
+  ],
+  "tags": [
+    "kanamycin",
+    "injectable",
+    "historical",
+    "eis",
+    "ototoxicity"
+  ],
+  "story": [
+    "Kanamycin was a Group 2 injectable in the MDR era that defined old XDR (MDR + FQ + injectable). WHO removed injectables from preferred regimens because they maim hearing and kidneys without enough outcome gain once BDQ/LZD/FQ orals exist. KM is now salvage/Group C-adjacent history.",
+    "Resistance: eis promoter-up (low-level KM, often AMK-S), rrs 1401 (high-level KM+AMK±CAP), rare other rrs. WhiB7 overexpression phenocopies eis-up. Do not treat KM as interchangeable with AMK on a report.",
+    "If a programme still has KM vials, the ethical default is to prefer AMK only when an injectable is truly last-line, and to prefer not injecting. Audiometry is not optional nostalgia."
+  ],
+  "deepTitle": "Old XDR papers",
+  "deep": [
+    "A 2015 “XDR” isolate that is FQ-R + KM-R + BDQ-S + LZD-S is pre-XDR in 2021 language, not 2021-XDR.",
+    "Capreomycin is not a kinder KM.",
+    "Streptomycin is not KM. gidB does not answer this plate.",
+    "Never pair two injectables."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic KM MIC: WT, eis promoter-up (modest right shift), rrs 1401 (large shift). AMK does not always follow the eis curve.",
+    "xLabel": "kanamycin MIC (schematic log scale)",
+    "curves": [
+      {
+        "id": "wt",
+        "label": "WT",
+        "mean": 1.0,
+        "sd": 0.25
+      },
+      {
+        "id": "eis",
+        "label": "eis promoter-up",
+        "mean": 2.2,
+        "sd": 0.35
+      },
+      {
+        "id": "rrs",
+        "label": "rrs 1401",
+        "mean": 4.0,
+        "sd": 0.4
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — injectables not preferred",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Kanamycin — PubChem CID 6032",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6032"
+    },
+    {
+      "title": "Kanamycin",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Kanamycin_A"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Historical injectable; eis ≠ rrs.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-amikacin",
+    "tb-whib7",
+    "tb-eis-rrs",
+    "tb-dr-definitions",
+    "tb-capreomycin",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "2014 XDR label, 2026 clinic",
+    "setup": "Transfer document: “XDR-TB (KM+OFL).” No BDQ/LZD history. Genome: gyrA D94G, eis -14, rrs WT, rv0678 WT, rplC WT.",
+    "steps": [
+      {
+        "title": "Translate the era",
+        "body": "FQ-R + KM-R = old XDR = 2021 pre-XDR if BDQ/LZD naive."
+      },
+      {
+        "title": "BPaL, not KM",
+        "body": "eis-up is not a reason to inject."
+      },
+      {
+        "title": "Audiometry if anyone already injected",
+        "body": "The harm may already be done."
+      }
+    ],
+    "takeaway": "Kanamycin is history plus ototoxicity. eis-up is not 2021-XDR."
+  },
+  "check": [
+    {
+      "id": "km-role",
+      "kind": "conceptual",
+      "prompt": "In 2024–2025 WHO preferred RR therapy, kanamycin is:",
+      "choices": [
+        "Group A core",
+        "Not preferred; historical/salvage injectable",
+        "TPT of choice",
+        "A rifamycin"
+      ],
+      "answer": "Not preferred; historical/salvage injectable",
+      "why": "Orals displaced it.",
+      "whyWrong": {
+        "Group A core": "FQ/BDQ/LZD.",
+        "TPT of choice": "3HP/3HR/6H/6Lfx.",
+        "A rifamycin": "No."
+      }
+    },
+    {
+      "id": "km-eis",
+      "kind": "calculation",
+      "prompt": "eis promoter-up without rrs 1401 usually means:",
+      "choices": [
+        "High-level AMK-R guaranteed",
+        "Low-level KM-R; AMK often still active",
+        "Pa-R",
+        "RIF-R"
+      ],
+      "answer": "Low-level KM-R; AMK often still active",
+      "why": "Split KM from AMK.",
+      "whyWrong": {
+        "High-level AMK-R guaranteed": "That’s rrs 1401.",
+        "Pa-R": "ddn/fbi.",
+        "RIF-R": "rpoB."
+      }
+    },
+    {
+      "id": "km-figure",
+      "kind": "figure",
+      "prompt": "On the MIC densities, rrs 1401 is the:",
+      "choices": [
+        "Leftmost WT curve",
+        "Rightmost large shift",
+        "eis curve only",
+        "A QTc axis"
+      ],
+      "answer": "Rightmost large shift",
+      "why": "High-level injectable R.",
+      "whyWrong": {
+        "Leftmost WT curve": "WT.",
+        "eis curve only": "Modest shift.",
+        "A QTc axis": "Wrong plate."
+      },
+      "figureHint": "Rightmost curve."
+    }
+  ]
+}

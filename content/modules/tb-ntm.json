@@ -1,0 +1,213 @@
+{
+  "id": "tb-ntm",
+  "title": "NTM versus MTBC",
+  "dek": "A bottle full of acid-fast bacilli is not a TB case. MAC, M. abscessus, and M. kansasii share the stain and not the catalogue, not HRZE, and usually not Xpert.",
+  "domain": "tb",
+  "aliases": [
+    "nontuberculous mycobacteria",
+    "MAC vs TB",
+    "M. avium complex",
+    "M. abscessus",
+    "NTM mis-speciation"
+  ],
+  "tags": [
+    "NTM",
+    "MAC",
+    "speciation",
+    "Xpert",
+    "catalogue"
+  ],
+  "story": [
+    "Nontuberculous mycobacteria (NTM) are environmental and opportunistic. They are acid-fast. They are not MTBC. Xpert and most TB NAATs are designed not to call them — when they do, it is news. A MGIT bottle that is AFB-positive and Xpert-negative is an NTM until proven otherwise, not “smear-positive TB with a failed cartridge.”",
+    "M. avium complex, M. abscessus complex, and M. kansasii dominate pulmonary NTM in many clinics. Their DST grammar (macrolides, amikacin, cefoxitin) is not the WHO TB mutation catalogue. Running TBProfiler on an abscessus assembly is a category error.",
+    "M. bovis BCG is MTBC, not NTM. M. canettii is MTBC-adjacent. M. leprae is a different disease. Speciation belongs on the same line as rpoB when the specimen is mycobacterial at all."
+  ],
+  "deepTitle": "How labs actually mix them up",
+  "deep": [
+    "Mixed MTBC+NTM cultures: the NAAT sees TB, the bottle overgrows MAC, pDST looks insane.",
+    "Some in-house 16S assays call “Mycobacterium spp.” and stop. That is not a TB diagnosis.",
+    "M. kansasii can cross-react in older probes. Modern WRDs and WGS trees close the case.",
+    "Infection-control: NTM from a dirty ice machine is not a TB outbreak. Do not line-list it as RR-TB."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "AFB-positive is a stain. Speciation splits MTBC (catalogue, HRZE/BPaLM) from NTM (different drugs) and from mixed bottles.",
+    "nodes": [
+      {
+        "id": "afb",
+        "label": "AFB+",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "wrd",
+        "label": "mWRD",
+        "x": 28,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "mtbc",
+        "label": "MTBC path",
+        "x": 52,
+        "y": 22,
+        "tone": "end",
+        "detail": "catalogue"
+      },
+      {
+        "id": "seq",
+        "label": "Speciate bottle",
+        "x": 52,
+        "y": 72,
+        "tone": "process"
+      },
+      {
+        "id": "ntm",
+        "label": "NTM path",
+        "x": 78,
+        "y": 72,
+        "tone": "end"
+      },
+      {
+        "id": "mix",
+        "label": "Mixed?",
+        "x": 78,
+        "y": 48,
+        "tone": "decision"
+      }
+    ],
+    "edges": [
+      {
+        "from": "afb",
+        "to": "wrd"
+      },
+      {
+        "from": "wrd",
+        "to": "mtbc",
+        "label": "MTBC"
+      },
+      {
+        "from": "wrd",
+        "to": "seq",
+        "label": "neg / discordant"
+      },
+      {
+        "from": "seq",
+        "to": "ntm"
+      },
+      {
+        "from": "seq",
+        "to": "mix"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 3 — WRDs do not replace speciation",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC NTM vs TB clinical overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Nontuberculous mycobacteria",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Nontuberculous_mycobacteria"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Speciation as a catalogue precondition.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-smear-culture",
+    "tb-xpert-ultra",
+    "tb-organism",
+    "tb-wgs-dst"
+  ],
+  "example": {
+    "title": "MAC bottle reported as pan-S TB",
+    "setup": "MGIT positive, in-house AFB smear 3+, “TB pDST pan-susceptible,” Xpert never run.",
+    "steps": [
+      {
+        "title": "Run a WRD or a tree",
+        "body": "MAC will not have a meaningful rpoB RRDR TB call."
+      },
+      {
+        "title": "Do not start HRZE from a stain",
+        "body": "MAC therapy is macrolide-based when indicated, not HRZE."
+      },
+      {
+        "title": "Audit the LIS map",
+        "body": "Bottles defaulting to “TB DST” is a software bug with clinical teeth."
+      }
+    ],
+    "takeaway": "The catalogue is an MTBC object. Speciate first."
+  },
+  "check": [
+    {
+      "id": "ntm-xpert",
+      "kind": "conceptual",
+      "prompt": "An AFB-positive MGIT with a negative Xpert is most often:",
+      "choices": [
+        "Proven DS-TB",
+        "NTM or dead MTBC DNA-negative culture — speciate, do not assume HRZE",
+        "Automatic RR-TB",
+        "An IGRA result"
+      ],
+      "answer": "NTM or dead MTBC DNA-negative culture — speciate, do not assume HRZE",
+      "why": "Stain ≠ species. WRD-negative growth is a speciation problem.",
+      "whyWrong": {
+        "Proven DS-TB": "No NAAT, no species.",
+        "Automatic RR-TB": "No.",
+        "An IGRA result": "Host assay."
+      }
+    },
+    {
+      "id": "ntm-cat",
+      "kind": "calculation",
+      "prompt": "WHO TB mutation catalogue rows apply to:",
+      "choices": [
+        "M. abscessus by default",
+        "MTBC genomes (and specified complex members), not MAC/abscessus",
+        "All acid-fast genera",
+        "E. coli"
+      ],
+      "answer": "MTBC genomes (and specified complex members), not MAC/abscessus",
+      "why": "Different species, different drugs, different catalogues.",
+      "whyWrong": {
+        "M. abscessus by default": "Category error.",
+        "All acid-fast genera": "No.",
+        "E. coli": "No."
+      }
+    },
+    {
+      "id": "ntm-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, the NTM path leaves the WRD when:",
+      "choices": [
+        "rpoB is S450L",
+        "The WRD is negative or discordant with the bottle",
+        "IGRA is positive",
+        "CAD score is high"
+      ],
+      "answer": "The WRD is negative or discordant with the bottle",
+      "why": "That is the speciation fork.",
+      "whyWrong": {
+        "rpoB is S450L": "MTBC RR.",
+        "IGRA is positive": "Infection, not species.",
+        "CAD score is high": "Radiology."
+      },
+      "figureHint": "Lower branch."
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": "tb-pediatric-tx",
+  "title": "Treating TB in children",
+  "dek": "Higher mg/kg, child-friendly FDCs, SHINE for non-severe DS, adult-type regimens when they have adult-type disease, and Pa-sparing DR constructs under 14.",
+  "domain": "tb",
+  "aliases": [
+    "pediatric TB treatment",
+    "child FDC",
+    "BDQ children",
+    "delamanid children",
+    "mg/kg TB"
+  ],
+  "tags": [
+    "pediatric",
+    "dosing",
+    "SHINE",
+    "DR-TB",
+    "FDC"
+  ],
+  "story": [
+    "Children are not small adults in the intensive-care sense, but a 16-year-old with a cavity is pharmacologically closer to Study 31 than to a 9-month-old with a Ghon focus. WHO child dosing uses higher mg/kg than adult caps (INH ~10 mg/kg, RIF ~15 mg/kg, PZA ~35 mg/kg, EMB ~20 mg/kg — weight bands, not napkin maths).",
+    "DS non-severe: SHINE 4-month. DS severe pulmonary: 6-month HRZ(E). TBM/osteoarticular: longer, sometimes intensified. RR/MDR under 14: BPaLM evidence is thin; 2025 BDLLfxC and all-oral BDQ/DLM-based regimens are the designed path. TPT: 3HR is the child-friendly short course; 3HP exists down to certain ages with dispersible RPT when available.",
+    "Always treat the child’s disease using the source case’s DST when the child’s own NAAT is negative. That single habit outperforms a dozen negative gastric aspirates."
+  ],
+  "deepTitle": "Formulations beat fractions",
+  "deep": [
+    "Dispersible FDCs exist so you do not quarter adult 600 mg RIF tablets into a 6 kg infant.",
+    "Ethambutol optic neuropathy monitoring is impractical in toddlers — still use EMB when the algorithm says so, at correct mg/kg.",
+    "BDQ and DLM have pediatric weight-band tables. Off-label crushing without PK is how you get mystery failures.",
+    "IRIS in children with HIV exists. ART timing follows the same two-week / TBM 4–8 week logic."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Child TB treatment forks on severity, site, and DST — with source-case genotype filling empty pediatric NAATs.",
+    "layers": [
+      {
+        "title": "DS non-severe",
+        "nodes": [
+          "SHINE 4-mo"
+        ]
+      },
+      {
+        "title": "DS severe / adult-type",
+        "nodes": [
+          "6-mo HRZ(E)",
+          "HPMZ if ≥12"
+        ]
+      },
+      {
+        "title": "TBM / bone",
+        "nodes": [
+          "longer",
+          "steroids TBM"
+        ]
+      },
+      {
+        "title": "RR <14",
+        "nodes": [
+          "BDLLfxC",
+          "not routine BPaLM"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — pediatric dosing, SHINE, DR-TB in children",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — TB in children",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Source-case DST as pediatric DST.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-shine",
+    "tb-pediatric-dx",
+    "tb-hrze",
+    "tb-bpalm",
+    "tb-tpt"
+  ],
+  "example": {
+    "title": "Infant of an RR, FQ-S mother",
+    "setup": "4-month-old, miliary picture, stool Ultra not detected, mother on BPaLM with gyrA WT.",
+    "steps": [
+      {
+        "title": "Treat as RR-TB",
+        "body": "The infant’s negative stool does not make this DS. Source DST is the result."
+      },
+      {
+        "title": "Not adult BPaLM by default",
+        "body": "Age <14: BDLLfxC-class or NTP pediatric DR protocol with BDQ/DLM weight bands."
+      },
+      {
+        "title": "TBM check",
+        "body": "Miliary infants have CNS disease until you look. LP, steroids if TBM."
+      }
+    ],
+    "takeaway": "Pediatric TB therapy is severity + source DST + weight bands."
+  },
+  "check": [
+    {
+      "id": "ptx-mg",
+      "kind": "conceptual",
+      "prompt": "Compared with adult capped doses, WHO pediatric INH/RIF mg/kg bands are:",
+      "choices": [
+        "Much lower because children are fragile",
+        "Higher mg/kg (child-specific bands), not adult 5/10 mg/kg caps scaled by eye",
+        "Identical to BPaLM adult dosing",
+        "Zero because BCG is sufficient treatment"
+      ],
+      "answer": "Higher mg/kg (child-specific bands), not adult 5/10 mg/kg caps scaled by eye",
+      "why": "Use FDC weight-band tables.",
+      "whyWrong": {
+        "Much lower because children are fragile": "Opposite direction.",
+        "Identical to BPaLM adult dosing": "No.",
+        "Zero because BCG is sufficient treatment": "BCG is not treatment."
+      }
+    },
+    {
+      "id": "ptx-src",
+      "kind": "calculation",
+      "prompt": "Child NAAT-negative, source rpoB S450L. Treat the child as:",
+      "choices": [
+        "DS-TB SHINE",
+        "RR-TB using a pediatric DR construct, not HRZE",
+        "3HP only",
+        "No treatment because Ultra was negative"
+      ],
+      "answer": "RR-TB using a pediatric DR construct, not HRZE",
+      "why": "Source genotype is the child’s DST when specimens fail.",
+      "whyWrong": {
+        "DS-TB SHINE": "Ignores RR source.",
+        "3HP only": "TPT, and DS drugs.",
+        "No treatment because Ultra was negative": "Pediatric miss."
+      }
+    },
+    {
+      "id": "ptx-figure",
+      "kind": "figure",
+      "prompt": "On the pediatric treatment hierarchy, BPaLM is listed how for RR <14?",
+      "choices": [
+        "As the default first row",
+        "As “not routine BPaLM,” with BDLLfxC as the named 6-month alternative",
+        "As TPT",
+        "As smear microscopy"
+      ],
+      "answer": "As “not routine BPaLM,” with BDLLfxC as the named 6-month alternative",
+      "why": "Bottom layer of the plate.",
+      "whyWrong": {
+        "As the default first row": "That row is SHINE.",
+        "As TPT": "No.",
+        "As smear microscopy": "No."
+      },
+      "figureHint": "Bottom layer: RR <14."
+    }
+  ]
+}

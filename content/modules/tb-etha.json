@@ -1,0 +1,204 @@
+{
+  "id": "tb-etha",
+  "title": "ethA and ethionamide activation",
+  "dek": "Ethionamide is a prodrug. EthA (Baeyer–Villiger monooxygenase) activates it onto InhA. ethA LoF is ETH-R with INH often spared; inhA promoter-up hits both.",
+  "domain": "tb",
+  "aliases": [
+    "ethA",
+    "etaA",
+    "ethionamide activator",
+    "Rv3854c"
+  ],
+  "tags": [
+    "ethA",
+    "ethionamide",
+    "prodrug",
+    "inhA",
+    "ETH"
+  ],
+  "story": [
+    "Ethionamide (and prothionamide) require EthA activation. Loss-of-function in ethA is a common ETH-R route that need not raise INH MIC. That is the mirror image of katG S315T (INH-R, ETH often spared). Shared-target inhA promoter-up raises both.",
+    "ethA is a long, indel-friendly gene, more pncA than rpoB. Catalogue confidence varies by variant class. Some ethA mutations are phylogenetic. mshA and ndh appear in older literature as adjunct ETH/INH paths — footnotes, not first-line LPA targets.",
+    "WHO 2025 pregnancy and many 9-month recipes already replace ETH with linezolid for a stretch. The gene still matters when someone reaches for ETH salvage or interprets an LPA ETH lane."
+  ],
+  "deepTitle": "LPAs and the missing gene",
+  "deep": [
+    "MTBDRplus sees inhA promoter, not ethA coding. An ETH-R / INH-S isolate with WT inhA promoter is an ethA sequencing request.",
+    "Do not call ETH-R from katG S315T.",
+    "High-dose INH does not fix ethA LoF.",
+    "Prothionamide is the same activation idea with a different tablet."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "ETH via EthA onto InhA; INH via KatG onto InhA. Promoter-up inhA is the shared-target cross-R. ethA LoF is ETH-only.",
+    "nodes": [
+      {
+        "id": "eth",
+        "label": "ETH",
+        "group": "drug",
+        "x": 10,
+        "y": 28
+      },
+      {
+        "id": "etha",
+        "label": "EthA",
+        "group": "enzyme",
+        "x": 32,
+        "y": 28
+      },
+      {
+        "id": "inh",
+        "label": "INH",
+        "group": "drug",
+        "x": 10,
+        "y": 72
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 32,
+        "y": 72
+      },
+      {
+        "id": "inha",
+        "label": "InhA",
+        "group": "target",
+        "x": 62,
+        "y": 50
+      },
+      {
+        "id": "prom",
+        "label": "inhA promoter-up",
+        "group": "enzyme",
+        "x": 88,
+        "y": 50,
+        "sub": "both drugs"
+      }
+    ],
+    "edges": [
+      {
+        "from": "eth",
+        "to": "etha"
+      },
+      {
+        "from": "etha",
+        "to": "inha"
+      },
+      {
+        "from": "inh",
+        "to": "katg"
+      },
+      {
+        "from": "katg",
+        "to": "inha"
+      },
+      {
+        "from": "prom",
+        "to": "inha"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — ETH/ethA",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "EthA — UniProt P9WPP1",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WPP1/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Mirror image of katG: activator LoF is drug-specific.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-ethionamide",
+    "tb-katg-inha",
+    "tb-isoniazid",
+    "tb-mycolates",
+    "tb-who-catalogue"
+  ],
+  "example": {
+    "title": "LPA INH-S / ETH-R",
+    "setup": "MTBDRplus: katG WT, inhA promoter WT, ETH phenotypic R.",
+    "steps": [
+      {
+        "title": "Sequence ethA",
+        "body": "The LPA never looked there."
+      },
+      {
+        "title": "INH may still be active",
+        "body": "Do not drop INH from a Hr-TB thought because ETH failed."
+      },
+      {
+        "title": "Check the 9-month recipe",
+        "body": "2025 already prefers LZD instead of Eto in pregnancy anyway."
+      }
+    ],
+    "takeaway": "ethA LoF is ETH’s katG. inhA promoter is the shared cliff."
+  },
+  "check": [
+    {
+      "id": "etha-spec",
+      "kind": "conceptual",
+      "prompt": "ethA loss-of-function typically yields:",
+      "choices": [
+        "INH-R with ETH spared",
+        "ETH-R with INH often susceptible",
+        "RR-TB",
+        "BDQ-R"
+      ],
+      "answer": "ETH-R with INH often susceptible",
+      "why": "Mirror of katG S315T.",
+      "whyWrong": {
+        "INH-R with ETH spared": "That’s katG S315T.",
+        "RR-TB": "rpoB.",
+        "BDQ-R": "atpE/rv0678."
+      }
+    },
+    {
+      "id": "etha-lpa",
+      "kind": "calculation",
+      "prompt": "MTBDRplus ETH inference from inhA promoter WT and katG WT:",
+      "choices": [
+        "Proves ethA WT",
+        "Does not interrogate ethA; ETH-R can still be ethA LoF",
+        "Proves PZA-S",
+        "Proves FQ-R"
+      ],
+      "answer": "Does not interrogate ethA; ETH-R can still be ethA LoF",
+      "why": "LPAs are probe panels, not whole-gene ETH DST.",
+      "whyWrong": {
+        "Proves ethA WT": "Not covered.",
+        "Proves PZA-S": "pncA.",
+        "Proves FQ-R": "gyr."
+      }
+    },
+    {
+      "id": "etha-figure",
+      "kind": "figure",
+      "prompt": "On the map, the node that creates INH+ETH cross-R is:",
+      "choices": [
+        "EthA",
+        "KatG",
+        "inhA promoter-up",
+        "rpoB"
+      ],
+      "answer": "inhA promoter-up",
+      "why": "Shared target overexpression.",
+      "whyWrong": {
+        "EthA": "ETH-specific activation.",
+        "KatG": "INH-specific activation.",
+        "rpoB": "RIF."
+      },
+      "figureHint": "Right-side promoter node."
+    }
+  ]
+}

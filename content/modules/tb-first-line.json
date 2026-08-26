@@ -25,7 +25,8 @@
     "INH and PZA both require bacterial enzymes. Loss-of-function is an easy resistance route: missense in katG, and a long tail of pncA coding and promoter mutations scattered across the gene (no tidy RRDR). That is why pncA needs whole-gene interrogation, not a five-probe cartridge.",
     "EmbB Met306 variants are the common ethambutol story, but ethambutol DST has always been fiddly; WGS catalogues are more honest if you report confidence grades.",
     "Rifapentine is a longer-half-life rifamycin used in LTBI (3HP) and in the 4-month HPMZ DS-TB regimen. CYP3A4 induction still happens. Moxifloxacin in HPMZ is a first-line drug in that regimen and a second-line drug in RR-TB — the same molecule, different neighbors.",
-    "HIV, pregnancy, and extensive disease still force regimen thinking beyond a mnemonic. PZA is often used in TB meningitis; EMB’s optic neuropathy is the monitoring tax."
+    "HIV, pregnancy, and extensive disease still force regimen thinking beyond a mnemonic. PZA is often used in TB meningitis; EMB’s optic neuropathy is the monitoring tax.",
+    "WHO writes the 4-month regimen as 2HPMZ/2HPM (PZA for two months). CDC/IDSA 2025 uses the same skeleton as 2HPZM/2HPM. Letter order differs; the drugs do not. Do not confuse the P (rifapentine) with pretomanid."
   ],
   "visual": {
     "kind": "mechanism-map",
@@ -65,7 +66,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-rifampin", "tb-second-line", "tb-resistance", "tb-organism"],
+  "related": ["tb-rifampin", "tb-isoniazid", "tb-pyrazinamide", "tb-ethambutol", "tb-hrze", "tb-hpzm"],
   "example": {
     "title": "Low-level INH resistance and ethionamide",
     "setup": "WGS: inhA c-15t promoter mutation, katG wild type. Phenotypic INH MIC is 0.25 µg/mL (above the 0.1 critical concentration, below high-level). The team wants to know about ethionamide.",

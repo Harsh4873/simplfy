@@ -1,0 +1,180 @@
+{
+  "id": "tb-xpert-ultra",
+  "title": "Xpert Ultra and molecular WRDs",
+  "dek": "WHO-recommended rapid diagnostics are the front door: MTBC DNA plus an rpoB window. Ultra added IS6110/IS1081 and melt — and the trace call that needs a brain.",
+  "domain": "tb",
+  "aliases": [
+    "Xpert Ultra",
+    "GeneXpert",
+    "mWRD",
+    "TrueNat",
+    "TB-LAMP",
+    "WHO rapid diagnostic"
+  ],
+  "tags": [
+    "Xpert",
+    "Ultra",
+    "WRD",
+    "NAAT",
+    "rpoB"
+  ],
+  "story": [
+    "WHO’s diagnostic spine starts with a WHO-recommended rapid molecular diagnostic (mWRD) on an appropriate specimen — not smear-first, not IGRA-first. Xpert MTB/RIF Ultra is the most widely deployed: it detects MTBC DNA and interrogates the rpoB RRDR as a rifampin surrogate in the same cartridge.",
+    "Ultra lowered the limit of detection versus classic Xpert by adding multi-copy IS6110 and IS1081 targets and melt analysis. The cost is the “trace” semi-quantitative band: true paucibacillary disease, or lingering DNA, especially in previously treated lungs. Trace often makes RIF indeterminate because the RRDR probes starved for template.",
+    "Cousins: Truenat MTB/RIF, TB-LAMP (no RIF), line-probe assays, and targeted NGS as follow-on WRDs. A WRD is defined by WHO evaluation, not by the marketing word “PCR.” None of them is WGS, and none grades BDQ/LZD/Pa by itself."
+  ],
+  "deepTitle": "Failure modes a lab should recite",
+  "deep": [
+    "Silent RRDR SNPs can drop a probe and look RIF-R. Disputed/borderline rpoB alleles can look RIF-R on cartridge and fussy on MGIT. I491F is outside the window and looks RIF-S on Xpert.",
+    "Heteroresistance below the probe’s mixing threshold looks RIF-S. That is not a reason to skip culture.",
+    "Stool as a pediatric WRD specimen is a 2020s WHO recommendation: you are detecting swallowed DNA/bacilli, not inventing a new disease site.",
+    "False MTB-not-detected in a high-suspicion HIV or pediatric case is an expected sensitivity miss. Repeat, change specimen, culture, LAM — do not stop."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "What Ultra actually looks at: multi-copy IS elements for detection sensitivity, plus the rpoB RRDR for rifampin. Trace can light IS without a callable RRDR.",
+    "gene": "Ultra targets (schematic)",
+    "start": 0,
+    "end": 100,
+    "unit": "assay window (schematic)",
+    "regions": [
+      {
+        "start": 8,
+        "end": 28,
+        "label": "IS6110"
+      },
+      {
+        "start": 32,
+        "end": 48,
+        "label": "IS1081"
+      },
+      {
+        "start": 58,
+        "end": 88,
+        "label": "rpoB RRDR"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 18,
+        "label": "trace",
+        "note": "IS-driven, RIF often indeterminate"
+      },
+      {
+        "pos": 73,
+        "label": "S450L",
+        "note": "probe dropout → RIF-R"
+      },
+      {
+        "pos": 95,
+        "label": "I491F",
+        "note": "outside cartridge window"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook Module 3: Diagnosis (mWRDs, Ultra)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum — NAAT",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Trace/indeterminate teaching for Ultra.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-rifampin",
+    "tb-tngs",
+    "tb-pediatric-dx",
+    "tb-dr-definitions",
+    "tb-xpert-xdr",
+    "tb-is6110",
+    "tb-truenat"
+  ],
+  "example": {
+    "title": "Trace, RIF indeterminate, prior TB",
+    "setup": "Treated two years ago, chronic cough, scarred CXR, Ultra trace / RIF indeterminate, smear negative.",
+    "steps": [
+      {
+        "title": "Name the missing result",
+        "body": "You do not have a rifampin call. Do not write RIF-S."
+      },
+      {
+        "title": "Viability",
+        "body": "Culture and a fresh specimen. Trace in retreatment is the relic-DNA trap."
+      },
+      {
+        "title": "If disease is likely, treat as TB with unknown RIF pending",
+        "body": "Clinical judgement plus follow-on tNGS/WGS if available — not “trace equals colonisation” by slogan."
+      }
+    ],
+    "takeaway": "Ultra is a windowed NAAT. Trace is a band, not a DST."
+  },
+  "check": [
+    {
+      "id": "xu-wrd",
+      "kind": "conceptual",
+      "prompt": "WHO’s preferred initial diagnostic test for TB disease in most settings is:",
+      "choices": [
+        "IGRA",
+        "A WHO-recommended rapid molecular diagnostic on an appropriate specimen",
+        "TST",
+        "Chest radiograph alone as microbiologic proof"
+      ],
+      "answer": "A WHO-recommended rapid molecular diagnostic on an appropriate specimen",
+      "why": "Smear is adjunctive; IGRA is not a disease test.",
+      "whyWrong": {
+        "IGRA": "Infection, not disease.",
+        "TST": "Same.",
+        "Chest radiograph alone as microbiologic proof": "Radiology is not culture."
+      }
+    },
+    {
+      "id": "xu-trace",
+      "kind": "calculation",
+      "prompt": "Ultra “trace” with RIF indeterminate most nearly means:",
+      "choices": [
+        "High-burden RR-TB is proven",
+        "Lowest positivity band, often IS-element driven; RRDR may lack template so RIF is uncalled",
+        "Phenotypic MIC on MGIT is 0",
+        "BDQ resistance is detected"
+      ],
+      "answer": "Lowest positivity band, often IS-element driven; RRDR may lack template so RIF is uncalled",
+      "why": "Indeterminate is not susceptible.",
+      "whyWrong": {
+        "High-burden RR-TB is proven": "Trace is the opposite of high.",
+        "Phenotypic MIC on MGIT is 0": "No phenotype yet.",
+        "BDQ resistance is detected": "Wrong assay."
+      }
+    },
+    {
+      "id": "xu-figure",
+      "kind": "figure",
+      "prompt": "On the Ultra track, why is I491F drawn to the right of the RRDR box?",
+      "choices": [
+        "Because Ultra’s rpoB beacons do not tile codon 491",
+        "Because I491F is an IS6110 insertion",
+        "Because trace is defined at codon 491",
+        "Because I491F is a host SNP"
+      ],
+      "answer": "Because Ultra’s rpoB beacons do not tile codon 491",
+      "why": "Same lesson as the rifampin plate, now in cartridge geometry.",
+      "whyWrong": {
+        "Because I491F is an IS6110 insertion": "It is an rpoB missense.",
+        "Because trace is defined at codon 491": "Trace is an IS/LOD band.",
+        "Because I491F is a host SNP": "Bacterial gene."
+      },
+      "figureHint": "RRDR box ends before the I491F mark."
+    }
+  ]
+}

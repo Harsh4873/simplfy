@@ -1,0 +1,220 @@
+{
+  "id": "tb-smear-culture",
+  "title": "Smear, culture, and what each proves",
+  "dek": "Smear is density and infection-control speed. Culture is viability and the substrate for phenotypic DST. Neither is a complete DST panel.",
+  "domain": "tb",
+  "aliases": [
+    "Ziehl-Neelsen",
+    "auramine",
+    "MGIT",
+    "Lowenstein-Jensen",
+    "smear microscopy",
+    "time to positivity"
+  ],
+  "tags": [
+    "smear",
+    "culture",
+    "MGIT",
+    "viability",
+    "DST"
+  ],
+  "story": [
+    "Acid-fast smear (Ziehl–Neelsen or auramine fluorochrome) answers: are there acid-fast bodies in this specimen, and roughly how many (IUATLD/WHO 0 to 3+)? It is fast, cheap, and a transmission-risk proxy. It does not name MTBC versus NTM, does not prove viability, and does not grade rifampin.",
+    "Culture remains the microbiologic reference for viability. Liquid MGIT grows faster than Löwenstein–Jensen; time-to-positivity is a crude burden biomarker. Contamination is data. A negative culture after a blazing Xpert can be dead bacilli, prior treatment, or a lab problem — write the differential, do not ignore it.",
+    "Phenotypic DST is performed on cultured growth (or, in some protocols, direct). It is still required as a residual against catalogues, and it is the only path when the genome is silent. It is slow, critical-concentration-dependent, and not the first test WHO wants you to wait for before treating."
+  ],
+  "deepTitle": "How to not over-read the bottle",
+  "deep": [
+    "Fluorochrome smear is more sensitive than ZN in most programmes; confirmation practice varies. Smear-negative never meant “not infectious,” only “less so.”",
+    "MGIT TTP of 3 days versus 18 days is a different N. Do not average them in a paper without a model.",
+    "Mixed NTM+Mtb cultures happen. A bottle that “looks AFB positive” after a negative NAAT is an NTM until speciation.",
+    "Storage, decontamination (NaOH), and transport kill bacilli. Pediatric gastric aspirates are a race against neutrophil and acid."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Smear for speed and density; culture for viability and pDST; speciation whenever the bottle and the NAAT disagree.",
+    "nodes": [
+      {
+        "id": "spec",
+        "label": "Specimen",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "smear",
+        "label": "Smear AFB",
+        "x": 30,
+        "y": 22,
+        "tone": "process",
+        "detail": "density"
+      },
+      {
+        "id": "cult",
+        "label": "Culture",
+        "x": 30,
+        "y": 72,
+        "tone": "process",
+        "detail": "viability"
+      },
+      {
+        "id": "ic",
+        "label": "Infection control",
+        "x": 55,
+        "y": 22,
+        "tone": "end"
+      },
+      {
+        "id": "id",
+        "label": "Speciation",
+        "x": 55,
+        "y": 52,
+        "tone": "decision"
+      },
+      {
+        "id": "pdst",
+        "label": "pDST / MIC",
+        "x": 78,
+        "y": 72,
+        "tone": "end"
+      },
+      {
+        "id": "ntm",
+        "label": "NTM path",
+        "x": 78,
+        "y": 42,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "spec",
+        "to": "smear"
+      },
+      {
+        "from": "spec",
+        "to": "cult"
+      },
+      {
+        "from": "smear",
+        "to": "ic"
+      },
+      {
+        "from": "cult",
+        "to": "id"
+      },
+      {
+        "from": "id",
+        "to": "pdst",
+        "label": "MTBC"
+      },
+      {
+        "from": "id",
+        "to": "ntm",
+        "label": "not TB"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook Module 3: Diagnosis",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum — laboratory diagnosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Smear vs culture as different propositions.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-dst-phenotypic",
+    "tb-xpert-ultra",
+    "tb-transmission",
+    "tb-pediatric-dx"
+  ],
+  "example": {
+    "title": "Xpert high, culture negative",
+    "setup": "Retreatment patient, Ultra “MTB high, RIF not detected,” smear scanty, MGIT negative at 42 days.",
+    "steps": [
+      {
+        "title": "DNA is not CFU",
+        "body": "High NAAT can be leftover nucleic acid, especially after recent treatment, or a culture kill during decontamination."
+      },
+      {
+        "title": "Repeat a specimen, not a superstition",
+        "body": "New sputum, consider non-sputum sites, check decontamination logs."
+      },
+      {
+        "title": "Do not write RIF-S as a phenotype",
+        "body": "You have a NAAT RIF window on possibly dead bacilli. Clinical disease status is a different question."
+      }
+    ],
+    "takeaway": "Smear density ≠ viability ≠ DST completeness."
+  },
+  "check": [
+    {
+      "id": "sc-smear",
+      "kind": "conceptual",
+      "prompt": "A 3+ auramine smear primarily reports:",
+      "choices": [
+        "Species-level M. tuberculosis identification",
+        "High density of acid-fast bodies and, in pulmonary specimens, higher transmission risk",
+        "Rifampin MIC",
+        "That culture will be negative"
+      ],
+      "answer": "High density of acid-fast bodies and, in pulmonary specimens, higher transmission risk",
+      "why": "Smear is not speciation and not DST.",
+      "whyWrong": {
+        "Species-level M. tuberculosis identification": "NTM also stain.",
+        "Rifampin MIC": "No.",
+        "That culture will be negative": "Opposite prior."
+      }
+    },
+    {
+      "id": "sc-ttp",
+      "kind": "calculation",
+      "prompt": "MGIT flags positive at day 4 versus day 20, same specimen type. The day-4 bottle is best read as:",
+      "choices": [
+        "Lower burden",
+        "Higher viable burden (shorter TTP), all else equal",
+        "Proof of NTM",
+        "Proof of RIF-R"
+      ],
+      "answer": "Higher viable burden (shorter TTP), all else equal",
+      "why": "Time-to-positivity is a crude N estimator, confounded by decontamination and mix.",
+      "whyWrong": {
+        "Lower burden": "Longer TTP is the low-burden pattern.",
+        "Proof of NTM": "Speciate.",
+        "Proof of RIF-R": "No."
+      }
+    },
+    {
+      "id": "sc-figure",
+      "kind": "figure",
+      "prompt": "On the smear/culture map, why does speciation sit between culture and pDST?",
+      "choices": [
+        "Because NTM growth should not be run as TB DST or filed as TB",
+        "Because smear already speciated the isolate",
+        "Because Xpert is culture",
+        "Because IGRA speciates"
+      ],
+      "answer": "Because NTM growth should not be run as TB DST or filed as TB",
+      "why": "The NTM path is a labelled end node.",
+      "whyWrong": {
+        "Because smear already speciated the isolate": "Smear does not speciate.",
+        "Because Xpert is culture": "No.",
+        "Because IGRA speciates": "No."
+      },
+      "figureHint": "Decision node on the right of culture."
+    }
+  ]
+}

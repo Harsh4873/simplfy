@@ -1,0 +1,166 @@
+{
+  "id": "tb-embcab",
+  "title": "embCAB and ethambutol",
+  "dek": "EmbB codon 306 is the famous residue; ethambutol DST is historically noisy. Catalogue-grade the allele. Do not let a lineage synonymous embB SNP flip the column.",
+  "domain": "tb",
+  "aliases": [
+    "embB M306V",
+    "embC",
+    "ethambutol resistance",
+    "arabinosyltransferase",
+    "embCAB operon"
+  ],
+  "tags": [
+    "embB",
+    "EMB",
+    "arabinogalactan",
+    "DST noise",
+    "catalogue"
+  ],
+  "story": [
+    "Ethambutol inhibits arabinosyltransferases of the embCAB operon, clinically dominated by EmbB. The codon 306 cluster (M306V/I/L) is the canonical resistance-associated set; other EmbB and EmbC/A changes exist and are graded with more humility.",
+    "Phenotypic EMB DST has always been a noisy CC on overlapping MIC densities. Genotype–phenotype discordance is therefore expected more often than for RIF S450L. A genomics lab that reports “EMB-R” from any embB missense versus H37Rv is doing phylogeny, not DST.",
+    "EMB is a companion that protects against resistance while INH/RIF/PZA work. Losing EMB is not losing the sterilizing core — but it is losing a guardrail, and in some 9-month DR recipes EMB is still counted. Grade it; do not over-count it."
+  ],
+  "deepTitle": "Operon and decoys",
+  "deep": [
+    "embC-embA-embB are co-transcribed. Intergenic embC-embA mutations appear in some catalogues.",
+    "Optic neuropathy is the monitoring tax, not a resistance mechanism.",
+    "Lineage-informative embB SNPs must be subtracted using the catalogue’s not-associated list.",
+    "If M306V is present and MGIT says S, believe that you are in the noisy CC zone; do not delete M306V from next week’s prior."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "embB hotspot at codon 306, with the rest of EmbB as a longer, quieter tail. This is not pncA-level scatter, and it is not rpoB-level certainty.",
+    "gene": "embB",
+    "start": 250,
+    "end": 500,
+    "unit": "codon (Mtb)",
+    "regions": [
+      {
+        "start": 296,
+        "end": 316,
+        "label": "codon 306 cluster"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 306,
+        "label": "M306V/I",
+        "note": "canonical EMB-R"
+      },
+      {
+        "pos": 406,
+        "label": "G406",
+        "note": "also seen; grade it"
+      },
+      {
+        "pos": 497,
+        "label": "C-term",
+        "note": "lineage decoys live too"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — EMB / embB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "EmbB — UniProt P9WNL5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WNL5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Noisy pDST plus a real hotspot at 306.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-ethambutol",
+    "tb-cell-envelope",
+    "tb-who-catalogue",
+    "tb-resistance",
+    "tb-first-line"
+  ],
+  "example": {
+    "title": "embB synonymous flag",
+    "setup": "A pipeline reports EMB-R because embB differs from H37Rv. The variant is synonymous and lineage-associated. M306 WT.",
+    "steps": [
+      {
+        "title": "Not a result",
+        "body": "Synonymous ≠ arabinosyltransferase failure."
+      },
+      {
+        "title": "Look at 306",
+        "body": "If M306 is wild type and no graded missense exists, do not flip EMB."
+      },
+      {
+        "title": "Fix the parser",
+        "body": "Gene-name regex is how EMB columns fill with phylogeny."
+      }
+    ],
+    "takeaway": "EmbB DST is graded alleles, especially 306 — not H37Rv identity."
+  },
+  "check": [
+    {
+      "id": "emb-306",
+      "kind": "conceptual",
+      "prompt": "The canonical ethambutol resistance cluster is:",
+      "choices": [
+        "rpoB 450",
+        "embB codon 306",
+        "pncA H57 only",
+        "IS6110"
+      ],
+      "answer": "embB codon 306",
+      "why": "M306V/I/L class.",
+      "whyWrong": {
+        "rpoB 450": "RIF.",
+        "pncA H57 only": "Bovis PZA.",
+        "IS6110": "Detection target."
+      }
+    },
+    {
+      "id": "emb-noise",
+      "kind": "calculation",
+      "prompt": "EMB MGIT S with embB M306V should be filed as:",
+      "choices": [
+        "Proof M306V is always innocent",
+        "Expected-ish discordance in a noisy CC drug; report allele + grade + phenotype, do not silently drop M306V",
+        "RIF-R",
+        "A reason to stop all TB therapy"
+      ],
+      "answer": "Expected-ish discordance in a noisy CC drug; report allele + grade + phenotype, do not silently drop M306V",
+      "why": "Humility, not deletion of the hotspot.",
+      "whyWrong": {
+        "Proof M306V is always innocent": "Overclaim.",
+        "RIF-R": "Wrong drug.",
+        "A reason to stop all TB therapy": "No."
+      }
+    },
+    {
+      "id": "emb-figure",
+      "kind": "figure",
+      "prompt": "On the embB track, the shaded box marks:",
+      "choices": [
+        "The RRDR",
+        "The codon 306 cluster",
+        "DosR",
+        "RD1"
+      ],
+      "answer": "The codon 306 cluster",
+      "why": "Label on the region.",
+      "whyWrong": {
+        "The RRDR": "rpoB.",
+        "DosR": "Latency.",
+        "RD1": "ESX-1."
+      },
+      "figureHint": "Shaded region labelled codon 306 cluster."
+    }
+  ]
+}

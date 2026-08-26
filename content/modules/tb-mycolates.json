@@ -1,0 +1,253 @@
+{
+  "id": "tb-mycolates",
+  "title": "Mycolic acids and FAS-II",
+  "dek": "C60–C90 α-alkyl-β-hydroxy acids built by FAS-I then FAS-II. InhA is the elongation choke point that INH and ethionamide both occupy — after different activators.",
+  "domain": "tb",
+  "aliases": [
+    "FAS-II",
+    "InhA",
+    "meromycolate",
+    "trehalose dimycolate",
+    "cord factor",
+    "KasA"
+  ],
+  "tags": [
+    "mycolic acid",
+    "FAS-II",
+    "InhA",
+    "INH",
+    "lipid"
+  ],
+  "story": [
+    "Mycobacterial mycolic acids are very-long-chain α-alkyl, β-hydroxy fatty acids (typically C60–C90 in Mtb). FAS-I in the cytosol makes C16–C26 precursors. FAS-II, a dissociated bacterial-type cycle (KasA/B, MabA, InhA, HadAB/BC), elongates the meromycolate chain. Condensation onto the α-chain and subsequent decoration (α, methoxy, keto mycolates; cis/trans cyclopropanes via CmaA/MmaA/PcaA) yield the mature species transferred onto AG or trehalose.",
+    "Isoniazid, once KatG-activated, forms an INH–NAD adduct that blocks InhA. Ethionamide, once EthA-activated, does the same endpoint with a different adduct. That shared endpoint is why inhA promoter-up mutants are a two-drug problem.",
+    "Trehalose dimycolate (cord factor) and the covalent AG-mycolate monolayer are different uses of the same chemistry. Knocking down mycolate synthesis is cidal in replicating cells because the envelope cannot be finished; resting cells with a completed wall are a different pharmacologic object."
+  ],
+  "deepTitle": "Why the cycle is a genomic object",
+  "deep": [
+    "katG S315T is activation loss — high-level INH-R, InhA intact, ETH often spared. inhA c-15t is more enzyme — low-level INH-R plus ETH cross-R. Treat them as different vectors, not two spellings of INH-R.",
+    "Isoxyl and thiacetazone hit mycolate decoration (HadAB, MmaA4) and are historical; they still show up in papers and occasionally in salvage discussions. They are not HRZE.",
+    "PcaA cyclopropane synthase mutants alter cord morphology and inflammatory tone. Lipid chemistry is immunology.",
+    "Do not bulk-copy Mycobrowser annotations into a DST report. The clinically graded objects are katG, inhA (coding and promoter), and ethA for the ETH branch."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "FAS-I feeds FAS-II. INH and ETH converge on InhA after different activators. Mature mycolates go to AG or to TDM.",
+    "nodes": [
+      {
+        "id": "f1",
+        "label": "FAS-I",
+        "group": "enzyme",
+        "x": 12,
+        "y": 22,
+        "sub": "C16–C26"
+      },
+      {
+        "id": "f2",
+        "label": "FAS-II",
+        "group": "enzyme",
+        "x": 38,
+        "y": 22,
+        "sub": "elongation"
+      },
+      {
+        "id": "inhA",
+        "label": "InhA",
+        "group": "target",
+        "x": 62,
+        "y": 22,
+        "sub": "enoyl-ACP"
+      },
+      {
+        "id": "inh",
+        "label": "INH",
+        "group": "drug",
+        "x": 12,
+        "y": 55,
+        "sub": "prodrug"
+      },
+      {
+        "id": "katg",
+        "label": "KatG",
+        "group": "enzyme",
+        "x": 38,
+        "y": 55
+      },
+      {
+        "id": "eth",
+        "label": "ETH",
+        "group": "drug",
+        "x": 12,
+        "y": 82,
+        "sub": "prodrug"
+      },
+      {
+        "id": "etha",
+        "label": "EthA",
+        "group": "enzyme",
+        "x": 38,
+        "y": 82
+      },
+      {
+        "id": "ag",
+        "label": "AG-mycolate",
+        "group": "target",
+        "x": 86,
+        "y": 40
+      },
+      {
+        "id": "tdm",
+        "label": "TDM",
+        "group": "target",
+        "x": 86,
+        "y": 70
+      }
+    ],
+    "edges": [
+      {
+        "from": "f1",
+        "to": "f2"
+      },
+      {
+        "from": "f2",
+        "to": "inhA"
+      },
+      {
+        "from": "inh",
+        "to": "katg"
+      },
+      {
+        "from": "katg",
+        "to": "inhA",
+        "label": "INH–NAD"
+      },
+      {
+        "from": "eth",
+        "to": "etha"
+      },
+      {
+        "from": "etha",
+        "to": "inhA",
+        "label": "ETH adduct"
+      },
+      {
+        "from": "inhA",
+        "to": "ag"
+      },
+      {
+        "from": "inhA",
+        "to": "tdm"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "InhA enoyl-ACP reductase — UniProt P9WGR1",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WGR1/entry"
+    },
+    {
+      "title": "KatG catalase-peroxidase — UniProt P9WIE5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WIE5/entry"
+    },
+    {
+      "title": "Mycolic acid",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mycolic_acid"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "FAS-II teaching map for INH/ETH cross-resistance.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-cell-envelope",
+    "tb-isoniazid",
+    "tb-katg-inha",
+    "tb-organism",
+    "tb-ethionamide",
+    "tb-pdim",
+    "tb-thioacetazone"
+  ],
+  "example": {
+    "title": "Why c-15t is not S315T",
+    "setup": "WGS: inhA c-15t, katG WT. MIC INH 0.25 µg/mL. Team wants high-dose INH plus ethionamide in a longer MDR regimen.",
+    "steps": [
+      {
+        "title": "Shared endpoint",
+        "body": "More InhA protein raises the concentration needed for both INH–NAD and ETH adducts."
+      },
+      {
+        "title": "ETH is the wrong rescue",
+        "body": "Promoter inhA mutants are the canonical ETH cross-R pattern. Do not “add ETH to cover INH.”"
+      },
+      {
+        "title": "High-dose INH is a different, gated question",
+        "body": "Some Hr-TB and older MDR recipes use high-dose INH for low-level alleles. That is guidance-specific, not a licence to ignore the promoter."
+      }
+    ],
+    "takeaway": "Activation loss versus target overexpression are different INH resistances."
+  },
+  "check": [
+    {
+      "id": "myco-inha",
+      "kind": "conceptual",
+      "prompt": "INH and ethionamide share which molecular endpoint?",
+      "choices": [
+        "RpoB RRDR",
+        "InhA in FAS-II meromycolate elongation",
+        "GyrA QRDR",
+        "PncA pyrazinamidase"
+      ],
+      "answer": "InhA in FAS-II meromycolate elongation",
+      "why": "Different activators (KatG vs EthA), same enoyl-ACP reductase.",
+      "whyWrong": {
+        "RpoB RRDR": "Rifamycins.",
+        "GyrA QRDR": "Fluoroquinolones.",
+        "PncA pyrazinamidase": "PZA activation."
+      }
+    },
+    {
+      "id": "myco-len",
+      "kind": "calculation",
+      "prompt": "A meromycolate chain of ~C50 condensed with a C26 α-branch is in the C60–C90 mycolate window. Which biosynthetic claim is consistent?",
+      "choices": [
+        "FAS-I alone makes mature C80 mycolates",
+        "FAS-I makes the medium-chain primers; FAS-II elongates the meromycolate that is later condensed",
+        "EmbB elongates fatty acids",
+        "PncA is a fatty-acid synthase"
+      ],
+      "answer": "FAS-I makes the medium-chain primers; FAS-II elongates the meromycolate that is later condensed",
+      "why": "Two-stage synthesis is the point of the plate.",
+      "whyWrong": {
+        "FAS-I alone makes mature C80 mycolates": "FAS-I stops far earlier.",
+        "EmbB elongates fatty acids": "EmbB arabinosylates AG.",
+        "PncA is a fatty-acid synthase": "PncA is a nicotinamidase/pyrazinamidase."
+      }
+    },
+    {
+      "id": "myco-figure",
+      "kind": "figure",
+      "prompt": "On the FAS-II map, why do both INH and ETH arrows end at InhA?",
+      "choices": [
+        "Because both are activated by KatG",
+        "Because they form adducts that inhibit the same enoyl-ACP reductase after different activating enzymes",
+        "Because InhA is a gyrase",
+        "Because TDM activates INH"
+      ],
+      "answer": "Because they form adducts that inhibit the same enoyl-ACP reductase after different activating enzymes",
+      "why": "KatG vs EthA is the fork; InhA is the join.",
+      "whyWrong": {
+        "Because both are activated by KatG": "ETH uses EthA.",
+        "Because InhA is a gyrase": "No.",
+        "Because TDM activates INH": "TDM is a product, not an activator."
+      },
+      "figureHint": "Follow the two bottom-left prodrug rows."
+    }
+  ]
+}

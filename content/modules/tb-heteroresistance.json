@@ -1,0 +1,167 @@
+{
+  "id": "tb-heteroresistance",
+  "title": "Heteroresistance and mixed infection",
+  "dek": "A 8% rpoB minority, two lineages in one BAM, a cavity evolving under HPMZ. Filters, probes, and MGIT each have a different lower limit. Frequency is a clinical variable.",
+  "domain": "tb",
+  "aliases": [
+    "heteroresistance",
+    "mixed infection TB",
+    "minority variant",
+    "allele fraction DST",
+    "subpopulation resistance"
+  ],
+  "tags": [
+    "heteroresistance",
+    "AF",
+    "mixed infection",
+    "filters",
+    "evolution"
+  ],
+  "story": [
+    "Heteroresistance: more than one resistance genotype in what we treat as one infection. Mixed infection: more than one strain (often different lineages) in one host. They overlap in a BAM and they are not the same epidemiological object. Unlinked lineage SNPs at 40/60 split say mixed infection; a single rpoB S450L at 8% on an otherwise clonal background says emerging RR.",
+    "Xpert needs enough mutant template to drop a probe. MGIT CC can grow the susceptible majority. WGS default filters at 10% will hide 8%. tNGS at 2000× will see 8% and also see PCR error if you do not have UMIs or replicates.",
+    "Clinical translation: a minority RR allele in a still-smear-positive patient is a rifampin problem, not an average of assays. Do not “vote” Xpert S vs NGS R vs MGIT S and pick the modal letter."
+  ],
+  "deepTitle": "Statistics you already know",
+  "deep": [
+    "Binomial: 2/20 reads is compatible with error; 80/1000 is not the same 8%. Depth is the denominator of DST.",
+    "Cavities are structured populations. Serial sputum is a drain sample, not a census of all lesions.",
+    "Microevolution vs mixed infection changes contact investigation (one source vs two).",
+    "Pipeline methods sections that omit AF thresholds are incomplete DST methods."
+  ],
+  "formulas": [
+    {
+      "id": "af",
+      "label": "Allele fraction",
+      "expression": "AF = mutant reads / depth at site",
+      "note": "Report AF with DP. 0.08 at DP 20 ≠ 0.08 at DP 2000."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic allele-fraction observations. Error/noise hugs zero. True emerging minorities sit at a few percent to tens of percent. Fixed resistance sits near one. Your filter is a vertical cut on this axis.",
+    "xLabel": "allele fraction",
+    "curves": [
+      {
+        "id": "err",
+        "label": "seq error",
+        "mean": 0.015,
+        "sd": 0.008
+      },
+      {
+        "id": "min",
+        "label": "emerging minority",
+        "mean": 0.12,
+        "sd": 0.04
+      },
+      {
+        "id": "fix",
+        "label": "fixed allele",
+        "mean": 0.96,
+        "sd": 0.02
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO sequencing / tNGS guidance — minority variants",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "AF is DST. Mixed infection is epidemiology.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-wgs-dst",
+    "tb-xpert-ultra",
+    "tb-resistance",
+    "tb-tngs",
+    "tb-rifampin"
+  ],
+  "example": {
+    "title": "Two lineages, one rpoB",
+    "setup": "L2 55% / L4 45% unlinked SNPs. rpoB S450L at 52%, sitting on L2-linked reads. L4 rpoB WT.",
+    "steps": [
+      {
+        "title": "This is mixed infection, not 50% microevolution",
+        "body": "Unlinked genome-wide split is the tell."
+      },
+      {
+        "title": "RR is in the L2 population",
+        "body": "The patient still has RR-TB because one of the strains is RR. Do not treat the L4 DS clone and ignore the L2."
+      },
+      {
+        "title": "Infection control and epi",
+        "body": "Two strains may mean two sources. Do not draw a single transmission arrow."
+      }
+    ],
+    "takeaway": "Split the BAM into strain and resistance. Treat the worse DST."
+  },
+  "check": [
+    {
+      "id": "het-def",
+      "kind": "conceptual",
+      "prompt": "Heteroresistance versus mixed infection:",
+      "choices": [
+        "Identical terms",
+        "Heteroresistance is multiple resistance genotypes in an infection; mixed infection is multiple strains, which may also differ in DST",
+        "Mixed infection means NTM + TB only",
+        "Heteroresistance means IGRA+ / NAAT−"
+      ],
+      "answer": "Heteroresistance is multiple resistance genotypes in an infection; mixed infection is multiple strains, which may also differ in DST",
+      "why": "Overlapping BAM pictures, different epi objects.",
+      "whyWrong": {
+        "Identical terms": "They are not.",
+        "Mixed infection means NTM + TB only": "Usually two MTBC strains.",
+        "Heteroresistance means IGRA+ / NAAT−": "No."
+      }
+    },
+    {
+      "id": "het-dp",
+      "kind": "calculation",
+      "prompt": "AF 0.10 at DP 20 versus AF 0.10 at DP 2000. The minority call is stronger in which?",
+      "choices": [
+        "DP 20, because 10% exceeds 5%",
+        "DP 2000, because binomial sampling/error is far less likely to produce ~200 mutant reads",
+        "They are identical in all statistical senses",
+        "Neither can ever be real"
+      ],
+      "answer": "DP 2000, because binomial sampling/error is far less likely to produce ~200 mutant reads",
+      "why": "Depth is the denominator.",
+      "whyWrong": {
+        "DP 20, because 10% exceeds 5%": "Percent without N is not enough.",
+        "They are identical in all statistical senses": "False.",
+        "Neither can ever be real": "False."
+      }
+    },
+    {
+      "id": "het-figure",
+      "kind": "figure",
+      "prompt": "On the AF density plate, a 10% pipeline filter would most risk hiding which curve?",
+      "choices": [
+        "fixed allele near 0.96",
+        "emerging minority near 0.12 if the left tail crosses 0.10, and anything smaller",
+        "seq error at 0.015 only as a fixed allele",
+        "none"
+      ],
+      "answer": "emerging minority near 0.12 if the left tail crosses 0.10, and anything smaller",
+      "why": "Filters are vertical cuts. Minorities live near them.",
+      "whyWrong": {
+        "fixed allele near 0.96": "Far above 0.10.",
+        "seq error at 0.015 only as a fixed allele": "Error is already below typical filters.",
+        "none": "The minority is the point."
+      },
+      "figureHint": "Three curves along allele fraction."
+    }
+  ]
+}

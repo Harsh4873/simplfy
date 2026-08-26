@@ -1,0 +1,206 @@
+{
+  "id": "tb-tngs",
+  "title": "Targeted NGS as follow-on DST",
+  "dek": "Amplicon sequencing of resistance loci from sputum, without waiting for culture. Depth for heteroresistance; panels still live or die by WHO catalogue versioning.",
+  "domain": "tb",
+  "aliases": [
+    "targeted NGS",
+    "tNGS",
+    "Deeplex",
+    "amplicon sequencing TB",
+    "follow-on DST"
+  ],
+  "tags": [
+    "tNGS",
+    "heteroresistance",
+    "catalogue",
+    "sputum",
+    "DST"
+  ],
+  "story": [
+    "Targeted NGS (tNGS) sequences a panel of resistance-associated genes/loci — typically rpoB (whole or RRDR+), katG, inhA, pncA, embB, gyrA/B, rrs/eis, Rv0678, atpE, rplC/rrl, ddn/fbi — directly from clinical specimens. WHO has a path for tNGS as a follow-on DST after RR-TB is found, and increasingly as a broader WRD class when products meet evaluation bars.",
+    "The selling point versus Xpert is breadth plus allele fraction. The selling point versus WGS-from-culture is time. The failure modes are amplicon dropout (lineage SNPs under primers), incomplete pncA/Rv0678 coverage, and calling phylogenetic SNPs as resistance.",
+    "A tNGS report that says “embB mutation detected” without the amino-acid change, grade, AF, and depth is not a result. Same discipline as WGS."
+  ],
+  "deepTitle": "Panel design is DST policy",
+  "deep": [
+    "Hotspot-only rpoB misses I491F. Full-gene pncA is not optional if you claim PZA. Full-gene Rv0678 if you claim BDQ.",
+    "Deeplex-MycTB and similar commercial panels are products; the catalogue is the grading layer. Version both.",
+    "5% AF at 2000× on an amplicon is a different object from 5% at 15× on WGS.",
+    "Mixed infection (two lineages) looks like heteroresistance until you look at unlinked SNPs."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From RR-TB WRD to a tNGS panel to graded alleles. Culture/WGS remain the residual and the relatedness tool.",
+    "nodes": [
+      {
+        "id": "rr",
+        "label": "RR WRD",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "tngs",
+        "label": "tNGS panel",
+        "x": 32,
+        "y": 48,
+        "tone": "process",
+        "detail": "AF+DP"
+      },
+      {
+        "id": "cat",
+        "label": "Catalogue grade",
+        "x": 55,
+        "y": 30,
+        "tone": "decision"
+      },
+      {
+        "id": "reg",
+        "label": "Regimen pick",
+        "x": 78,
+        "y": 30,
+        "tone": "end"
+      },
+      {
+        "id": "wgs",
+        "label": "Culture WGS",
+        "x": 55,
+        "y": 70,
+        "tone": "process"
+      },
+      {
+        "id": "res",
+        "label": "Residual / epi",
+        "x": 78,
+        "y": 70,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "rr",
+        "to": "tngs"
+      },
+      {
+        "from": "tngs",
+        "to": "cat"
+      },
+      {
+        "from": "cat",
+        "to": "reg"
+      },
+      {
+        "from": "tngs",
+        "to": "wgs",
+        "label": "gaps"
+      },
+      {
+        "from": "wgs",
+        "to": "res"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO tNGS / sequencing for DR-TB follow-on DST",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Panel-versus-catalogue notes.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-wgs-dst",
+    "tb-xpert-ultra",
+    "tb-who-catalogue",
+    "tb-heteroresistance",
+    "tb-diagnosis"
+  ],
+  "example": {
+    "title": "Dropout of pncA amplicon",
+    "setup": "tNGS calls FQ-S, INH-R (katG S315T), RIF-R (S450L). pncA: no coverage. Team writes PZA-S.",
+    "steps": [
+      {
+        "title": "No coverage is not wild type",
+        "body": "You cannot grade a gene you did not sequence."
+      },
+      {
+        "title": "Reflex",
+        "body": "Repeat, different primers, or culture WGS. PZA in a 9-month regimen is not a guess."
+      },
+      {
+        "title": "Report the gap",
+        "body": "“pncA failed” is a result. “PZA-S” is a fiction."
+      }
+    ],
+    "takeaway": "tNGS is only as complete as the amplicons that actually sequenced."
+  },
+  "check": [
+    {
+      "id": "tngs-role",
+      "kind": "conceptual",
+      "prompt": "tNGS is most nearly:",
+      "choices": [
+        "A chest radiograph",
+        "Amplicon sequencing of selected DR loci, often direct-from-specimen, graded by a catalogue",
+        "IGRA",
+        "Proof that culture is obsolete for relatedness"
+      ],
+      "answer": "Amplicon sequencing of selected DR loci, often direct-from-specimen, graded by a catalogue",
+      "why": "Breadth between Xpert and WGS.",
+      "whyWrong": {
+        "A chest radiograph": "No.",
+        "IGRA": "No.",
+        "Proof that culture is obsolete for relatedness": "Relatedness still wants genome-wide data."
+      }
+    },
+    {
+      "id": "tngs-af",
+      "kind": "calculation",
+      "prompt": "An rpoB S450L call at AF 0.06 with 1800× amplicon depth is:",
+      "choices": [
+        "Indistinguishable from 2/20 WGS reads at codon 450",
+        "A better-supported minority than 2/20 WGS reads, but still a heteroresistance object to report with AF",
+        "Proof of contamination with H37Rv",
+        "Outside the RRDR"
+      ],
+      "answer": "A better-supported minority than 2/20 WGS reads, but still a heteroresistance object to report with AF",
+      "why": "Depth changes the binomial, not the clinical meaning of a minority.",
+      "whyWrong": {
+        "Indistinguishable from 2/20 WGS reads at codon 450": "Poisson error is not the same.",
+        "Proof of contamination with H37Rv": "H37Rv is S450.",
+        "Outside the RRDR": "S450L is inside."
+      }
+    },
+    {
+      "id": "tngs-figure",
+      "kind": "figure",
+      "prompt": "On the tNGS flow map, what does the “gaps” arrow to culture WGS represent?",
+      "choices": [
+        "That tNGS already sequenced PE/PPE for clustering",
+        "That dropout, silent loci, mixed infection, and relatedness still need a genome-wide residual",
+        "That CAD is required",
+        "That IGRA follows tNGS"
+      ],
+      "answer": "That dropout, silent loci, mixed infection, and relatedness still need a genome-wide residual",
+      "why": "tNGS is follow-on DST, not a complete microbiology department.",
+      "whyWrong": {
+        "That tNGS already sequenced PE/PPE for clustering": "Usually not.",
+        "That CAD is required": "No.",
+        "That IGRA follows tNGS": "No."
+      },
+      "figureHint": "Arrow labelled gaps into culture WGS."
+    }
+  ]
+}

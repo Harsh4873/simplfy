@@ -1,0 +1,207 @@
+{
+  "id": "tb-truenat",
+  "title": "Truenat and other mWRDs",
+  "dek": "Xpert is not the only WHO-endorsed molecular WRD. Truenat MTB/MTB-RIF, TB-LAMP, and others occupy the same algorithm slot: detect MTBC, then rifampin, then follow-on DST.",
+  "domain": "tb",
+  "aliases": [
+    "Truenat MTB",
+    "Molbio",
+    "TB-LAMP",
+    "mWRD",
+    "chip-based NAAT TB"
+  ],
+  "tags": [
+    "Truenat",
+    "mWRD",
+    "NAAT",
+    "RIF",
+    "decentralized"
+  ],
+  "story": [
+    "WHO groups several technologies as molecular WHO-recommended rapid diagnostics (mWRDs) for pulmonary TB: Xpert Ultra, Truenat MTB and MTB-Plus with MTB-RIF Dx, and selected other NAATs. The public-health job is the same: same-day MTBC detection and a rifampin window, closer to the patient than a reference WGS bench.",
+    "Truenat is a chip-based, battery-tolerant platform used widely in India and expanding. Workflow is two-step: MTB detection, then RIF on positives. Error codes, inhibition, and “indeterminate RIF” exist here too. Do not treat a platform brand as a different biological target.",
+    "TB-LAMP detects MTBC without a RIF channel — it is a detection WRD, not a DST. Lateral-flow LAM is not an mWRD for MTBC DNA. Keep the vocabulary honest when you write an algorithm."
+  ],
+  "deepTitle": "Implementation is the sensitivity",
+  "deep": [
+    "A perfect cartridge in a clinic without sputum quality is still a bad test. Instruction plates belong next to the device.",
+    "WHO LOD and Se/Sp estimates are study-specific. Local PPV still follows prevalence.",
+    "Follow-on FQ/INH testing is independent of whether the first bell was Ultra or Truenat.",
+    "Connectivity (GxAlert-like) is operations, not a gene."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Any initial mWRD that finds MTBC should open a RIF window (if the device has one) and then the same follow-on DST spine.",
+    "nodes": [
+      {
+        "id": "sput",
+        "label": "Specimen",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "mwrd",
+        "label": "mWRD",
+        "x": 28,
+        "y": 48,
+        "tone": "process",
+        "detail": "Ultra/Truenat/…"
+      },
+      {
+        "id": "mtb",
+        "label": "MTBC?",
+        "x": 48,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "rif",
+        "label": "RIF window",
+        "x": 68,
+        "y": 28,
+        "tone": "process"
+      },
+      {
+        "id": "folo",
+        "label": "Follow-on DST",
+        "x": 88,
+        "y": 28,
+        "tone": "end"
+      },
+      {
+        "id": "clin",
+        "label": "Clinical / other",
+        "x": 68,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "sput",
+        "to": "mwrd"
+      },
+      {
+        "from": "mwrd",
+        "to": "mtb"
+      },
+      {
+        "from": "mtb",
+        "to": "rif",
+        "label": "detected"
+      },
+      {
+        "from": "rif",
+        "to": "folo"
+      },
+      {
+        "from": "mtb",
+        "to": "clin",
+        "label": "not detected"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 3 — mWRD class, not one brand",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Platform-agnostic algorithm teaching.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "Nucleic acid test",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Nucleic_acid_test"
+    }
+  ],
+  "related": [
+    "tb-xpert-ultra",
+    "tb-xpert-xdr",
+    "tb-diagnosis",
+    "tb-predictive-values",
+    "tb-tngs"
+  ],
+  "example": {
+    "title": "Truenat MTB-positive, RIF indeterminate, no Xpert",
+    "setup": "Peripheral site, Truenat MTB detected, RIF Dx indeterminate, no Ultra stock.",
+    "steps": [
+      {
+        "title": "Treat as bacteriologically confirmed TB",
+        "body": "Do not wait for a brand change to start DS therapy if RR is not shown."
+      },
+      {
+        "title": "Repeat RIF channel or refer",
+        "body": "Indeterminate is not RR and not RIF-S. Get a second mWRD, LPA, tNGS, or culture."
+      },
+      {
+        "title": "Same follow-on logic",
+        "body": "If RR later confirms, Xpert XDR/tNGS — not a different biology."
+      }
+    ],
+    "takeaway": "mWRD is a class. Brand is logistics."
+  },
+  "check": [
+    {
+      "id": "tn-class",
+      "kind": "conceptual",
+      "prompt": "Truenat MTB/MTB-RIF sits in WHO algorithms as:",
+      "choices": [
+        "A serology test",
+        "An mWRD in the same slot as Xpert for detection ± RIF",
+        "A culture system",
+        "An IGRA"
+      ],
+      "answer": "An mWRD in the same slot as Xpert for detection ± RIF",
+      "why": "Different device, same public-health job.",
+      "whyWrong": {
+        "A serology test": "WHO advises against commercial TB serology for diagnosis.",
+        "A culture system": "No.",
+        "An IGRA": "Host memory."
+      }
+    },
+    {
+      "id": "tn-lamp",
+      "kind": "calculation",
+      "prompt": "TB-LAMP compared with Ultra/Truenat RIF assays is missing:",
+      "choices": [
+        "Any MTBC detection",
+        "A rifampin-resistance channel",
+        "Electricity always",
+        "Sputum as a specimen type"
+      ],
+      "answer": "A rifampin-resistance channel",
+      "why": "LAMP is detection. RIF still needs another test.",
+      "whyWrong": {
+        "Any MTBC detection": "LAMP detects MTBC.",
+        "Electricity always": "LAMP is often billed as lower-infrastructure.",
+        "Sputum as a specimen type": "It uses sputum."
+      }
+    },
+    {
+      "id": "tn-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, follow-on DST hangs off:",
+      "choices": [
+        "The clinical/other node only",
+        "The RIF window after MTBC detected",
+        "IGRA",
+        "CAD"
+      ],
+      "answer": "The RIF window after MTBC detected",
+      "why": "RR status gates the second-line spine.",
+      "whyWrong": {
+        "The clinical/other node only": "That’s the not-detected path.",
+        "IGRA": "LTBI.",
+        "CAD": "Screening."
+      },
+      "figureHint": "Upper right."
+    }
+  ]
+}

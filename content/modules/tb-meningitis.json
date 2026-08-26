@@ -1,0 +1,219 @@
+{
+  "id": "tb-meningitis",
+  "title": "Tuberculous meningitis",
+  "dek": "A CNS emergency: start therapy on a high prior, add steroids, delay ART 4–8 weeks if HIV. Standard HRZE is the WHO DS backbone; DR-TBM is not automatic BPaLM.",
+  "domain": "tb",
+  "aliases": [
+    "TBM",
+    "TB meningitis",
+    "CSF TB",
+    "dexamethasone TBM",
+    "Cape Town regimen"
+  ],
+  "tags": [
+    "meningitis",
+    "CNS",
+    "steroids",
+    "CSF",
+    "IRIS"
+  ],
+  "story": [
+    "Tuberculous meningitis presents as subacute meningitis with basal enhancement, hydrocephalus, and cranial-nerve palsies. Mortality and disability are high. Do not wait for a perfect CSF WRD if the prior is high: treat, then confirm. Ultra on CSF plus a large-volume culture is the lab spine; a negative NAAT does not exclude TBM.",
+    "WHO: DS-TBM is treated with first-line drugs for at least 6 months (many national overlays still use 9–12). Adjunctive dexamethasone or prednisolone tapered over 6–8 weeks is a strong recommendation. HIV: delay ART 4–8 weeks. Drug-resistant TBM needs drugs that actually enter CSF (FQ, LZD, INH, PZA, some rifamycin at adequate exposure) — pretomanid/BPaLM evidence in TBM is not the pulmonary trial.",
+    "Pediatric Cape Town-style intensified regimens (higher RIF/INH/PZA, ethionamide instead of EMB) appear in WHO child-TBM discussions. Adult intensified RIF (higher IV doses) is trial territory; do not freelance 35 mg/kg without a protocol."
+  ],
+  "deepTitle": "CSF pharmacology and complications",
+  "deep": [
+    "INH, PZA, LZD, levofloxacin: decent CSF. EMB and AMK: poor. Rifampin CSF fractions are low — another reason intensified RIF is researched.",
+    "Hydrocephalus may need EVD/shunt. Hyponatraemia is cerebral salt wasting or SIADH — different water prescriptions.",
+    "Paradoxical worsening on treatment can be IRIS or infarct. Imaging beats swapping to MDR empirically without a DST trigger.",
+    "Pregnancy does not forbid TBM therapy; it forbids forgetting steroids and a real rifamycin."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "TBM clock: treat + steroids immediately, DST in parallel, ART delayed if HIV. Do not wait on culture to start.",
+    "nodes": [
+      {
+        "id": "suspect",
+        "label": "Suspect TBM",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "lp",
+        "label": "CSF WRD+Cx",
+        "x": 30,
+        "y": 28,
+        "tone": "process"
+      },
+      {
+        "id": "rx",
+        "label": "Start Rx+steroid",
+        "x": 30,
+        "y": 68,
+        "tone": "process"
+      },
+      {
+        "id": "dst",
+        "label": "DST/source",
+        "x": 55,
+        "y": 28,
+        "tone": "decision"
+      },
+      {
+        "id": "hiv",
+        "label": "HIV ART 4–8w",
+        "x": 55,
+        "y": 68,
+        "tone": "process"
+      },
+      {
+        "id": "ds",
+        "label": "DS TBM path",
+        "x": 78,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "dr",
+        "label": "DR TBM path",
+        "x": 78,
+        "y": 48,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "suspect",
+        "to": "lp"
+      },
+      {
+        "from": "suspect",
+        "to": "rx"
+      },
+      {
+        "from": "lp",
+        "to": "dst"
+      },
+      {
+        "from": "dst",
+        "to": "ds",
+        "label": "DS"
+      },
+      {
+        "from": "dst",
+        "to": "dr",
+        "label": "RR"
+      },
+      {
+        "from": "rx",
+        "to": "hiv"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: steroids for TBM; ART delay in HIV-TBM",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — extrapulmonary / CNS TB",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "TBM as a clock plus CSF PK, not pulmonary BPaLM copy-paste.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pathogenesis",
+    "tb-hiv-art",
+    "tb-hrze",
+    "tb-extrapulmonary-dx",
+    "tb-pregnancy",
+    "tb-pericarditis",
+    "tb-miliary"
+  ],
+  "example": {
+    "title": "HIV, CD4 40, basal meningitis, Ultra CSF trace",
+    "setup": "Adult, HIV, CD4 40, 10 days of fever and diplopia. CSF Ultra trace, RIF indeterminate. Team wants ART today and BPaLM today.",
+    "steps": [
+      {
+        "title": "Treat TBM now with steroids",
+        "body": "Trace in naive CSF is not relic DNA from a 2018 lung. Start a CNS-penetrating regimen; RIF is uncalled — hunt a better DST (repeat CSF, extra-neural WRD, tNGS)."
+      },
+      {
+        "title": "Do not start ART today",
+        "body": "4–8 week delay. Steroids are not optional."
+      },
+      {
+        "title": "BPaLM is not automatic",
+        "body": "Indeterminate RIF is not RR. If RR is proven, pulmonary BPaLM evidence is thin for TBM — expert DR-TBM construction with CSF-penetrating agents."
+      }
+    ],
+    "takeaway": "TBM: immediate TB drugs + steroids; delayed ART; DST without delaying the first dose."
+  },
+  "check": [
+    {
+      "id": "tbm-steroid",
+      "kind": "conceptual",
+      "prompt": "WHO’s strong TBM adjunct is:",
+      "choices": [
+        "Withhold all antimicrobials for 6 weeks",
+        "Dexamethasone or prednisolone tapered over 6–8 weeks",
+        "BCG in the CSF",
+        "IGRA-guided ART the same day in all TBM"
+      ],
+      "answer": "Dexamethasone or prednisolone tapered over 6–8 weeks",
+      "why": "Steroids save lives in TBM. ART delay is the HIV-specific extra.",
+      "whyWrong": {
+        "Withhold all antimicrobials for 6 weeks": "Opposite.",
+        "BCG in the CSF": "No.",
+        "IGRA-guided ART the same day in all TBM": "ART is delayed."
+      }
+    },
+    {
+      "id": "tbm-csf",
+      "kind": "calculation",
+      "prompt": "Which pair has relatively favourable CSF penetration among TB drugs?",
+      "choices": [
+        "Amikacin and ethambutol",
+        "Isoniazid and linezolid (and generally PZA/FQ)",
+        "Praziquantel and ivermectin",
+        "PDIM and TDM"
+      ],
+      "answer": "Isoniazid and linezolid (and generally PZA/FQ)",
+      "why": "EMB/AMK are poor CSF drugs; that changes DR-TBM construction.",
+      "whyWrong": {
+        "Amikacin and ethambutol": "Poor CSF.",
+        "Praziquantel and ivermectin": "Wrong diseases.",
+        "PDIM and TDM": "Lipids, not drugs."
+      }
+    },
+    {
+      "id": "tbm-figure",
+      "kind": "figure",
+      "prompt": "On the TBM clock, why do “Start Rx+steroid” and “CSF WRD+Cx” sit in parallel from suspect?",
+      "choices": [
+        "Because steroids replace WRDs",
+        "Because treatment must not wait on laboratory confirmation when the prior is high",
+        "Because ART must start at minute zero in TBM",
+        "Because smear 3+ is required first"
+      ],
+      "answer": "Because treatment must not wait on laboratory confirmation when the prior is high",
+      "why": "Parallel arrows are the point.",
+      "whyWrong": {
+        "Because steroids replace WRDs": "You still sample.",
+        "Because ART must start at minute zero in TBM": "Opposite.",
+        "Because smear 3+ is required first": "CSF is paucibacillary."
+      },
+      "figureHint": "Two arrows leaving Suspect TBM."
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "id": "tb-tpt",
+  "title": "TB preventive treatment",
+  "dek": "After disease is excluded: 3HP or 3HR preferred; 1HP or 4R as alternatives; 6H/9H still valid; 6Lfx for MDR/RR contacts. TPT is not mini-HRZE.",
+  "domain": "tb",
+  "aliases": [
+    "3HP",
+    "1HP",
+    "3HR",
+    "6H",
+    "4R",
+    "6Lfx",
+    "IPT",
+    "LTBI treatment"
+  ],
+  "tags": [
+    "TPT",
+    "3HP",
+    "1HP",
+    "LTBI",
+    "levofloxacin"
+  ],
+  "story": [
+    "WHO 2024 TPT module: once TB disease is ruled out, treat infection in people with HIV, household contacts, and other risk groups. Strongly recommended rifamycin–INH short courses: 3 months weekly rifapentine+INH (3HP) or 3 months daily RIF+INH (3HR). Alternatives: 1 month daily rifapentine+INH (1HP) or 4 months daily rifampin (4R). 6 or 9 months daily INH remain acceptable. Contacts of MDR/RR-TB: 6 months daily levofloxacin (6Lfx).",
+    "Ruling out disease uses symptoms, CXR (±CAD), and mWRDs as available. In people with HIV in high-transmission settings, TPT should not be held hostage to a missing IGRA. Infection testing is desirable when it changes who you treat.",
+    "CDC’s US overlay still talks 3HP, 4R, 3HR, 6H/9H with slightly different ranking language. Doses: 3HP is weekly RPT 900 mg + INH 900 mg × 12 in adults; 1HP is daily RPT 600 mg + INH 300 mg × 28. Do not confuse with Study 31’s daily RPT 1200 mg."
+  ],
+  "deepTitle": "Drug interactions and MDR contacts",
+  "deep": [
+    "Rifapentine/rifampin induce ART, anticoagulants, and calcineurin inhibitors. 6H exists partly as the interaction escape hatch.",
+    "6Lfx for MDR contacts is not “a bit of FQ for luck.” Confirm the source’s FQ susceptibility if you can; do not use 6Lfx if the index is FQ-R.",
+    "Pregnancy: 6H or 3HR are the usual WHO-comfortable options; rifapentine TPT safety data are more limited — follow the current module, not a tweet.",
+    "Completion, not prescription, is the endpoint. Digital adherence and self-administered 3HP are programme tools, not a different drug."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "TPT menu after disease exclusion. Short rifamycin courses first; INH monotherapy still valid; 6Lfx is an MDR-contact regimen, not DS-TPT.",
+    "layers": [
+      {
+        "title": "Rule out disease",
+        "nodes": [
+          "symptoms",
+          "CXR/CAD",
+          "mWRD"
+        ]
+      },
+      {
+        "title": "Preferred DS-TPT",
+        "nodes": [
+          "3HP",
+          "3HR"
+        ]
+      },
+      {
+        "title": "Alternative DS-TPT",
+        "nodes": [
+          "1HP",
+          "4R",
+          "6H/9H"
+        ]
+      },
+      {
+        "title": "MDR/RR contact",
+        "nodes": [
+          "6Lfx",
+          "not 3HP"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TPT guidelines, second edition 2024",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "CDC LTBI treatment — US overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "TPT menu with 6Lfx and the RPT-dose trap.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-igra-tst",
+    "tb-rifapentine",
+    "tb-isoniazid",
+    "tb-latency-dosr",
+    "tb-hiv-synergy",
+    "tb-levofloxacin"
+  ],
+  "example": {
+    "title": "Contact of FQ-R RR-TB",
+    "setup": "Child contact of a parent on BPaL because gyrA D94G. Disease excluded in the child.",
+    "steps": [
+      {
+        "title": "3HP is the wrong antigen of prevention",
+        "body": "The source’s strain is not killed by INH/RIF if it is MDR/RR. 3HP assumes DS infection."
+      },
+      {
+        "title": "6Lfx assumes FQ-S",
+        "body": "This source is FQ-R. Levofloxacin TPT is misbuilt. Expert/NTP individualised prevention, not autopilot 6Lfx."
+      },
+      {
+        "title": "Close follow-up",
+        "body": "When you cannot give a clean TPT regimen, surveillance intensity goes up. That is also prevention."
+      }
+    ],
+    "takeaway": "TPT drugs must match the source’s DST, not the default poster."
+  },
+  "check": [
+    {
+      "id": "tpt-3hp",
+      "kind": "conceptual",
+      "prompt": "3HP is:",
+      "choices": [
+        "Daily rifapentine 1200 mg with moxifloxacin for DS-TB disease",
+        "Weekly rifapentine plus isoniazid for 3 months as TPT after disease exclusion",
+        "BPaLM",
+        "6 months of kanamycin"
+      ],
+      "answer": "Weekly rifapentine plus isoniazid for 3 months as TPT after disease exclusion",
+      "why": "Do not collide with HPMZ daily RPT.",
+      "whyWrong": {
+        "Daily rifapentine 1200 mg with moxifloxacin for DS-TB disease": "HPMZ.",
+        "BPaLM": "RR-TB treatment.",
+        "6 months of kanamycin": "Historical MDR."
+      }
+    },
+    {
+      "id": "tpt-lfx",
+      "kind": "calculation",
+      "prompt": "WHO 2024: a household contact of FQ-S MDR-TB, disease excluded, TPT of choice is:",
+      "choices": [
+        "3HP",
+        "6 months daily levofloxacin",
+        "2HRZE/4HR",
+        "BPaL"
+      ],
+      "answer": "6 months daily levofloxacin",
+      "why": "6Lfx is the MDR-contact regimen. 3HP is DS-TPT.",
+      "whyWrong": {
+        "3HP": "Wrong DST assumption.",
+        "2HRZE/4HR": "Disease treatment.",
+        "BPaL": "Disease treatment for RR-TB."
+      }
+    },
+    {
+      "id": "tpt-figure",
+      "kind": "figure",
+      "prompt": "On the TPT hierarchy, why does the MDR/RR row say “not 3HP”?",
+      "choices": [
+        "Because 3HP contains pretomanid",
+        "Because 3HP is built for DS infection; it does not cover a rifampin-resistant source strain",
+        "Because levofloxacin is INH",
+        "Because CAD forbids rifamycins"
+      ],
+      "answer": "Because 3HP is built for DS infection; it does not cover a rifampin-resistant source strain",
+      "why": "Match prevention to the index DST.",
+      "whyWrong": {
+        "Because 3HP contains pretomanid": "It does not.",
+        "Because levofloxacin is INH": "No.",
+        "Because CAD forbids rifamycins": "No."
+      },
+      "figureHint": "Bottom layer nodes: 6Lfx | not 3HP."
+    }
+  ]
+}

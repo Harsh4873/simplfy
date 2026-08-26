@@ -25,7 +25,8 @@
     "BPaLM eligibility is a clinical/DST statement (FQ status changes BPaL vs BPaLM). A genome that is FQ-R is not a BPaLM genome. Read the gyrA QRDR before using the acronym.",
     "atpE mutants are rare but high-level for BDQ. Rv0678 frameshifts are common-ish and give modest MIC shifts that can still matter under drug pressure. PepQ and atpE belong on the same plate. Reporting “no atpE mutation, therefore BDQ-S” is incomplete.",
     "Linezolid resistance is still uncommon in many surveys; rrl and rplC are the first places to look. Myelosuppression and neuropathy, not resistance, often limit duration — a pharmacology fact that still changes the genomic prior (less drug exposure, less selection, until it doesn’t).",
-    "Cross-resistance: ETH/INH via inhA; BDQ/CFZ via Rv0678; kanamycin/amikacin via rrs; capreomycin additionally cares about tlyA methylation. Draw the Venn diagram before recycling an injectable from an old regimen."
+    "Cross-resistance: ETH/INH via inhA; BDQ/CFZ via Rv0678; kanamycin/amikacin via rrs; capreomycin additionally cares about tlyA methylation. Draw the Venn diagram before recycling an injectable from an old regimen.",
+    "WHO 2025 adds BDLLfxC (bedaquiline, delamanid, linezolid, levofloxacin, clofazimine) as a 6-month Pa-sparing construct for pregnancy, age <14, or no pretomanid. Start five drugs if FQ DST is pending; drop CFZ if FQ-S, drop Lfx if FQ-R."
   ],
   "visual": {
     "kind": "mechanism-map",
@@ -68,7 +69,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-first-line", "tb-resistance", "tb-wgs-dst", "tb-rifampin"],
+  "related": ["tb-first-line", "tb-bpalm", "tb-bdllfxc", "tb-9month-drtb", "tb-resistance", "tb-wgs-dst", "tb-rifampin", "tb-bedaquiline", "tb-linezolid", "tb-pretomanid", "tb-who-groups", "tb-kanamycin", "tb-carbapenems"],
   "example": {
     "title": "FQ-R and the M in BPaLM",
     "setup": "An RR-TB isolate has gyrA D94G. atpE, Rv0678, rrl, rplC, ddn, fbiABC are wild type. The ward asks for BPaLM.",

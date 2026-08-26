@@ -1,0 +1,198 @@
+{
+  "id": "tb-folate-salvage",
+  "title": "Folate pathway: PAS, dfrA, thyA",
+  "dek": "PAS is old, ugly, and a folate-pathway drug. Resistance genetics (thyA, folC, dfrA, ribD) are real salvage genomics. INH also nicks folate indirectly; do not fuse the plates.",
+  "domain": "tb",
+  "aliases": [
+    "para-aminosalicylic acid",
+    "thyA",
+    "folC",
+    "dfrA",
+    "PAS resistance"
+  ],
+  "tags": [
+    "PAS",
+    "folate",
+    "thyA",
+    "salvage",
+    "dfrA"
+  ],
+  "story": [
+    "Para-aminosalicylic acid is a sulfonamide-adjacent antimetabolite from the pre-rifampin era. It poisons folate/thymidylate metabolism (FolC, dihydrofolate pathways) and is still a Group C salvage drug when Group A/B are exhausted. It is not a BPaLM ingredient and it is not first-line.",
+    "Resistance: thyA (thymidylate synthase) loss-of-function, folC missense, dfrA (dihydrofolate reductase) changes, and ribD overexpression stories appear in catalogues with uneven confidence. This is a pncA-like scatter plus metabolic bypass, not an RRDR.",
+    "INH has a side-conversation with folate (NAD adducts, ndh) that is not PAS resistance. Keep the genes on their plates. Do not bulk-copy Mycobrowser folate annotations into a PAS column."
+  ],
+  "deepTitle": "When PAS still appears",
+  "deep": [
+    "Longer individualised regimens when BDQ/LZD/Pa/FQ are gone. GI intolerance and hypothyroidism (especially with ETH) are the host taxes.",
+    "PAS-sodium vs PAS acid formulations change PK; follow the handbook if you actually use it.",
+    "dfrA is essential-ish; some “resistance” alleles are MIC nudges. MIC if you have it.",
+    "Sulfonamides/cotrimoxazole are not PAS, though folate is the shared neighbourhood — HIV prophylaxis is not TB salvage."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "PAS enters folate/thymidylate metabolism. thyA/folC/dfrA are the genomic handles. This is salvage biochemistry, not a first-line map.",
+    "nodes": [
+      {
+        "id": "pas",
+        "label": "PAS",
+        "group": "drug",
+        "x": 12,
+        "y": 45
+      },
+      {
+        "id": "folc",
+        "label": "FolC",
+        "group": "enzyme",
+        "x": 38,
+        "y": 22
+      },
+      {
+        "id": "dfra",
+        "label": "DfrA",
+        "group": "enzyme",
+        "x": 38,
+        "y": 68
+      },
+      {
+        "id": "thya",
+        "label": "ThyA",
+        "group": "target",
+        "x": 64,
+        "y": 45,
+        "sub": "dTMP"
+      },
+      {
+        "id": "dna",
+        "label": "DNA synthesis",
+        "group": "target",
+        "x": 88,
+        "y": 45
+      }
+    ],
+    "edges": [
+      {
+        "from": "pas",
+        "to": "folc"
+      },
+      {
+        "from": "pas",
+        "to": "dfra"
+      },
+      {
+        "from": "folc",
+        "to": "thya"
+      },
+      {
+        "from": "dfra",
+        "to": "thya"
+      },
+      {
+        "from": "thya",
+        "to": "dna"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — PAS / folate genes",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "ThyA thymidylate synthase — UniProt P9WFF7",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WFF7/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Salvage folate map; not a Mycobrowser dump.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pas",
+    "tb-isoniazid",
+    "tb-second-line",
+    "tb-who-catalogue",
+    "tb-h37rv-genome"
+  ],
+  "example": {
+    "title": "thyA frameshift, last-line construction",
+    "setup": "XDR 2021, BPaL failed, FQ-R, BDQ efflux, LZD rplC. Someone adds PAS. WGS: thyA frameshift.",
+    "steps": [
+      {
+        "title": "PAS is genetically compromised",
+        "body": "thyA LOF is a recognised PAS path. Do not count it as a full Group C drug without MIC humility."
+      },
+      {
+        "title": "You are in true salvage",
+        "body": "Carbapenems+clavulanate, linezolid if any residual, surgery, trials — not another historical oral for theatre."
+      },
+      {
+        "title": "Do not also blame INH genes",
+        "body": "katG is not this column."
+      }
+    ],
+    "takeaway": "Folate-pathway salvage has genetics. Use them, then admit when the cupboard is empty."
+  },
+  "check": [
+    {
+      "id": "fol-pas",
+      "kind": "conceptual",
+      "prompt": "PAS is best classified as:",
+      "choices": [
+        "A Group A BPaLM drug",
+        "A historical/salvage folate-pathway antimycobacterial",
+        "A rifamycin",
+        "An IGRA antigen"
+      ],
+      "answer": "A historical/salvage folate-pathway antimycobacterial",
+      "why": "Group C, not the 6-month acronyms.",
+      "whyWrong": {
+        "A Group A BPaLM drug": "No.",
+        "A rifamycin": "No.",
+        "An IGRA antigen": "No."
+      }
+    },
+    {
+      "id": "fol-thy",
+      "kind": "calculation",
+      "prompt": "thyA loss-of-function most directly threatens which salvage drug’s activity?",
+      "choices": [
+        "Rifampin",
+        "PAS",
+        "Bedaquiline",
+        "Moxifloxacin"
+      ],
+      "answer": "PAS",
+      "why": "Thymidylate synthase bypass/loss is a PAS story.",
+      "whyWrong": {
+        "Rifampin": "rpoB.",
+        "Bedaquiline": "atpE/Rv0678.",
+        "Moxifloxacin": "gyrA."
+      }
+    },
+    {
+      "id": "fol-figure",
+      "kind": "figure",
+      "prompt": "On the folate map, ThyA sits:",
+      "choices": [
+        "Upstream of PAS as a prodrug activator like KatG",
+        "Downstream of FolC/DfrA toward dTMP / DNA synthesis",
+        "On the rpoB RRDR",
+        "In the host ribosome"
+      ],
+      "answer": "Downstream of FolC/DfrA toward dTMP / DNA synthesis",
+      "why": "Right-of-centre target node.",
+      "whyWrong": {
+        "Upstream of PAS as a prodrug activator like KatG": "PAS is not a KatG prodrug.",
+        "On the rpoB RRDR": "No.",
+        "In the host ribosome": "No."
+      },
+      "figureHint": "Node labelled ThyA / dTMP."
+    }
+  ]
+}

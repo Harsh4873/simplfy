@@ -1,0 +1,203 @@
+{
+  "id": "tb-delamanid",
+  "title": "Delamanid",
+  "dek": "A nitroimidazole prodrug (Ddn/F420), twice-daily in adults, QTc-active, pregnancy-usable relative to pretomanid. The D in BDLLfxC and in some 9-month mixes.",
+  "domain": "tb",
+  "aliases": [
+    "DLM",
+    "delamanid",
+    "OPC-67683",
+    "Deltyba",
+    "nitroimidazole DLM"
+  ],
+  "tags": [
+    "delamanid",
+    "nitroimidazole",
+    "F420",
+    "QTc",
+    "BDLLfxC"
+  ],
+  "story": [
+    "Delamanid is activated by the same Ddn/F420 network as pretomanid and then disrupts mycolate synthesis and respiration. Adult dosing is 100 mg twice daily (not Pa’s 200 mg once daily). Pediatric dispersible tablets and weight bands exist — this is one reason DLM shows up in <14 6-month constructs.",
+    "WHO 2025: BDLLfxC uses DLM when Pa is off-limits. Some 9-month modified regimens include D (BDLLfxZ). It is not in BPaLM. Do not add DLM to BPaLM “for luck” — overlapping nitroimidazole activation, more QTc, more pills.",
+    "Resistance: ddn/fbi/fgd1 LOF, cross-R with Pa common. Catalogue 2nd ed expanded DLM-associated variants. QTc monitoring with BDQ/FQ/CFZ is mandatory scheduling, not optional folklore."
+  ],
+  "deepTitle": "Why it is not just “oral Pa”",
+  "deep": [
+    "Different regulators, different pregnancy evidence (still limited, but WHO chose DLM-containing 6-month for pregnancy rather than Pa).",
+    "Albumin binding and malabsorption: take with food as labelled.",
+    "PubChem CID 6480466. ChEMBL3137307.",
+    "Hypoalbuminemia was a trial exclusion/warning — read the current monograph your NTP uses."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "DLM is a twice-daily nitroimidazole sharing Pa’s activation network but occupying different regimen letters (BDLLfxC, not BPaLM).",
+    "nodes": [
+      {
+        "id": "dlm",
+        "label": "DLM BID",
+        "group": "drug",
+        "x": 12,
+        "y": 35
+      },
+      {
+        "id": "ddn",
+        "label": "Ddn/F420",
+        "group": "enzyme",
+        "x": 40,
+        "y": 35
+      },
+      {
+        "id": "myco",
+        "label": "mycolate/resp",
+        "group": "target",
+        "x": 68,
+        "y": 35
+      },
+      {
+        "id": "pa",
+        "label": "Pa daily",
+        "group": "drug",
+        "x": 12,
+        "y": 72
+      },
+      {
+        "id": "x",
+        "label": "cross-R",
+        "group": "target",
+        "x": 40,
+        "y": 72
+      }
+    ],
+    "edges": [
+      {
+        "from": "dlm",
+        "to": "ddn"
+      },
+      {
+        "from": "ddn",
+        "to": "myco"
+      },
+      {
+        "from": "pa",
+        "to": "ddn"
+      },
+      {
+        "from": "pa",
+        "to": "x"
+      },
+      {
+        "from": "dlm",
+        "to": "x"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 2025 — delamanid in BDLLfxC",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Delamanid — PubChem CID 6480466",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6480466"
+    },
+    {
+      "title": "Delamanid — CHEMBL3137307",
+      "attribution": "Ligand identity; not a clinical monograph.",
+      "license": "CC BY-SA 3.0 (ChEMBL)",
+      "url": "https://www.ebi.ac.uk/chembl/compound_report_card/CHEMBL3137307/"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "BID nitroimidazole; Pa-sparing 6-month letter D.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-ddn-f420",
+    "tb-pretomanid",
+    "tb-bdllfxc",
+    "tb-pregnancy",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "Adding DLM to failing BPaLM",
+    "setup": "Month 3 BPaLM, still positive, new ddn mutation. Proposal: add delamanid and continue Pa.",
+    "steps": [
+      {
+        "title": "Shared activation",
+        "body": "ddn LOF is not a Pa-specific sulk. DLM will not magically use another reductase."
+      },
+      {
+        "title": "Stop the nitroimidazole class as counting drugs",
+        "body": "Rebuild on remaining BDQ/LZD/FQ integrity — or admit salvage."
+      },
+      {
+        "title": "QTc",
+        "body": "If you still use DLM for some residual reason, you just stacked another QT drug on BDQ/MXF. Have a better reason than “add a D.”"
+      }
+    ],
+    "takeaway": "DLM ≠ a new mechanism versus Pa when Ddn is dead."
+  },
+  "check": [
+    {
+      "id": "dlm-act",
+      "kind": "conceptual",
+      "prompt": "Delamanid is:",
+      "choices": [
+        "A rifamycin",
+        "A Ddn/F420-activated nitroimidazole",
+        "An aminoglycoside",
+        "A β-lactam"
+      ],
+      "answer": "A Ddn/F420-activated nitroimidazole",
+      "why": "Shared path with pretomanid.",
+      "whyWrong": {
+        "A rifamycin": "RIF/RPT.",
+        "An aminoglycoside": "AMK.",
+        "A β-lactam": "carbapenems."
+      }
+    },
+    {
+      "id": "dlm-dose",
+      "kind": "calculation",
+      "prompt": "Adult delamanid dosing is typically:",
+      "choices": [
+        "200 mg once daily like pretomanid",
+        "100 mg twice daily",
+        "900 mg weekly",
+        "15 mg/kg EMB"
+      ],
+      "answer": "100 mg twice daily",
+      "why": "Do not swap Pa’s schedule onto DLM.",
+      "whyWrong": {
+        "200 mg once daily like pretomanid": "That is Pa.",
+        "900 mg weekly": "3HP RPT.",
+        "15 mg/kg EMB": "EMB."
+      }
+    },
+    {
+      "id": "dlm-figure",
+      "kind": "figure",
+      "prompt": "On the DLM map, why do Pa and DLM both arrow into Ddn/F420 and into cross-R?",
+      "choices": [
+        "Because they are chemically rifamycins",
+        "Because they share activation; LOF there predicts class trouble",
+        "Because DLM is INH",
+        "Because F420 is rpoB"
+      ],
+      "answer": "Because they share activation; LOF there predicts class trouble",
+      "why": "The plate’s whole point.",
+      "whyWrong": {
+        "Because they are chemically rifamycins": "No.",
+        "Because DLM is INH": "No.",
+        "Because F420 is rpoB": "No."
+      },
+      "figureHint": "Two drug nodes into one enzyme and a cross-R node."
+    }
+  ]
+}

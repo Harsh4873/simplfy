@@ -1,0 +1,186 @@
+{
+  "id": "tb-cell-envelope",
+  "title": "The mycobacterial cell envelope",
+  "dek": "A covalent AG–mycolate outer membrane, not Gram-positive wallpaper. Almost every first-line drug either builds this sandwich or has to cross it.",
+  "domain": "tb",
+  "aliases": [
+    "arabinogalactan",
+    "peptidoglycan mycobacteria",
+    "PDIM",
+    "LAM",
+    "outer membrane mycobacteria",
+    "cell envelope"
+  ],
+  "tags": [
+    "cell wall",
+    "mycolate",
+    "LAM",
+    "PDIM",
+    "acid-fast"
+  ],
+  "story": [
+    "From cytosol outward: plasma membrane with phosphatidylinositol mannosides and lipoarabinomannan anchors; a peptidoglycan that still uses DAP but with unusual 3-3 cross-links; arabinogalactan covalently tethered to PG; mycolic acids esterified to the AG termini, forming the inner leaflet of an outer membrane; then extractable outer lipids — phthiocerol dimycocerosates (PDIM), sulfoglycolipids, trehalose dimycolate — sitting in the outer leaflet.",
+    "That covalent AG–mycolate link is why envelope drugs are not interchangeable. Isoniazid (via InhA) stops meromycolate elongation. Ethambutol hits EmbCAB arabinosyltransferases. Neither is a β-lactam story, and BlaC plus a very different PG make carbapenems a salvage adjunct with clavulanate, not HRZE.",
+    "Acid-fastness is a retention assay for carbol fuchsin in this lipid barrier. It is not viability, not species, and not DST. Dead bacilli stain. Nocardia is partially acid-fast. Smear grade is density."
+  ],
+  "deepTitle": "Lipids as virulence, not decoration",
+  "deep": [
+    "PDIM is required for virulence in several models and for detergent resistance in culture. Some laboratory strains (including some H37Rv stocks) are PDIM-negative; that is a lab-evolution landmine for anyone doing macrophage assays.",
+    "Mannose-capped LAM (ManLAM) modulates innate recognition; PILAM of some NTM does not. Do not treat “LAM” as one molecule when you read an immunology paper.",
+    "Porin-like systems (MspA in rapid growers; Mtb uses a more limited outer-membrane protein set) and lipid fluidity set the permeability tax that makes gram-negative-style MIC intuition fail.",
+    "The envelope is also the staining and the aerosol physics: hydrophobic bacilli ride droplet nuclei. Envelope chemistry is pathogenesis, diagnostics, and drugs in one object."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Outer-in envelope. Extractable virulence lipids sit above the covalent mycolate–AG–PG core. Plasma membrane LAM/PIM and cytoplasm are the floor.",
+    "layers": [
+      {
+        "id": "pd",
+        "label": "Extractable outer lipids",
+        "detail": "PDIM, TDM, SL-1 — virulence, hydrophobicity",
+        "tone": "lipid"
+      },
+      {
+        "id": "om",
+        "label": "Mycolate outer membrane",
+        "detail": "AG-linked mycolates; FAS-II / InhA",
+        "tone": "wall"
+      },
+      {
+        "id": "ag",
+        "label": "Arabinogalactan",
+        "detail": "EmbCAB; ethambutol",
+        "tone": "wall"
+      },
+      {
+        "id": "pg",
+        "label": "Peptidoglycan",
+        "detail": "3-3 cross-links; BlaC-guarded",
+        "tone": "membrane"
+      },
+      {
+        "id": "pm",
+        "label": "Plasma membrane",
+        "detail": "PIM/LAM anchors; PMF",
+        "tone": "membrane"
+      },
+      {
+        "id": "cy",
+        "label": "Cytoplasm",
+        "detail": "RNAP, ribosome, PncA, Ddn",
+        "tone": "core"
+      }
+    ],
+    "annotation": "Acid-fastness lives in the mycolate-rich outer two layers."
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "EmbB arabinosyltransferase — UniProt P9WNL5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WNL5/entry"
+    },
+    {
+      "title": "Mycolic acid",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mycolic_acid"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Envelope section drawn for lab teaching, not from a textbook plate.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-organism",
+    "tb-mycolates",
+    "tb-isoniazid",
+    "tb-ethambutol",
+    "tb-pathogenesis",
+    "tb-iron-mycobactin",
+    "tb-pdim"
+  ],
+  "example": {
+    "title": "PDIM-negative H37Rv stock",
+    "setup": "A macrophage killing assay with “H37Rv” shows no PDIM peak on TLC. The strain has been passaged on plates for years.",
+    "steps": [
+      {
+        "title": "Believe the lipid",
+        "body": "Laboratory MTBC loses PDIM readily. Your virulence phenotype may be a stock artefact."
+      },
+      {
+        "title": "Check the genome",
+        "body": "Frameshifts in pps/mas/fadD26 are common. WGS of the working stock is part of the methods."
+      },
+      {
+        "title": "Do not compare to clinical L2",
+        "body": "A PDIM-null lab strain is not a surrogate for a cavitary isolate’s envelope."
+      }
+    ],
+    "takeaway": "The envelope is a phenotype you can lose in the freezer."
+  },
+  "check": [
+    {
+      "id": "env-emb",
+      "kind": "conceptual",
+      "prompt": "Ethambutol’s primary biosynthetic target in the envelope is:",
+      "choices": [
+        "FAS-II enoyl-ACP reductase InhA",
+        "Arabinosyltransferases EmbCAB building arabinogalactan",
+        "DNA gyrase GyrA",
+        "ATP synthase AtpE"
+      ],
+      "answer": "Arabinosyltransferases EmbCAB building arabinogalactan",
+      "why": "EMB is an AG drug. InhA is INH/ETH. GyrA is FQ. AtpE is BDQ.",
+      "whyWrong": {
+        "FAS-II enoyl-ACP reductase InhA": "Isoniazid/ethionamide.",
+        "DNA gyrase GyrA": "Fluoroquinolones.",
+        "ATP synthase AtpE": "Bedaquiline."
+      }
+    },
+    {
+      "id": "env-layers",
+      "kind": "calculation",
+      "prompt": "Order these from outside to cytoplasm: (1) peptidoglycan (2) extractable PDIM/TDM (3) AG-linked mycolates (4) plasma membrane. Which sequence is correct?",
+      "choices": [
+        "1-3-2-4",
+        "2-3-1-4",
+        "2-1-3-4",
+        "4-1-3-2"
+      ],
+      "answer": "2-3-1-4",
+      "why": "Extractable lipids, then mycolate OM, then AG/PG core, then membrane. The covalent mycolates sit outside PG.",
+      "whyWrong": {
+        "1-3-2-4": "PG is not the outermost layer.",
+        "2-1-3-4": "Mycolates are outside PG, not under it.",
+        "4-1-3-2": "That is inside-out."
+      }
+    },
+    {
+      "id": "env-figure",
+      "kind": "figure",
+      "prompt": "In the envelope section, which layer is annotated as the ethambutol target?",
+      "choices": [
+        "Extractable outer lipids",
+        "Arabinogalactan",
+        "Cytoplasm",
+        "Plasma membrane"
+      ],
+      "answer": "Arabinogalactan",
+      "why": "EmbCAB label sits on AG.",
+      "whyWrong": {
+        "Extractable outer lipids": "Virulence lipids, not EMB.",
+        "Cytoplasm": "RIF/PZA/LZD live there.",
+        "Plasma membrane": "LAM/PIM anchors, not EmbB’s polymer."
+      },
+      "figureHint": "Read layer labels from the top down."
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "id": "tb-hrze",
+  "title": "2HRZE/4HR — the six-month spine",
+  "dek": "Isoniazid, rifampin, pyrazinamide, ethambutol for two months, then HR for four. Still the WHO default DS-TB regimen and the grammar every four-month alternative is measured against.",
+  "domain": "tb",
+  "aliases": [
+    "2HRZE/4HR",
+    "RHZE",
+    "six-month TB regimen",
+    "short-course chemotherapy",
+    "continuation phase HR"
+  ],
+  "tags": [
+    "HRZE",
+    "DS-TB",
+    "regimen",
+    "WHO",
+    "first-line"
+  ],
+  "story": [
+    "Standard drug-susceptible pulmonary TB remains 2 months of isoniazid (H), rifampin/rifampicin (R), pyrazinamide (Z), and ethambutol (E), then 4 months of HR. The intensive phase covers high-burden replicating populations (INH) and lesions (PZA) while EMB guards against undetected resistance; the continuation phase is sterilizing rifamycin plus INH.",
+    "WHO 2024–2025 still lists 2HRZE/4HR as a core option. The 4-month HPMZ regimen (tb-hpzm) and the SHINE 4-month regimen for non-severe pediatric TB (tb-shine) are alternatives for eligible people, not a reason to forget why six months existed: relapse from persisters when you drop the rifamycin too soon.",
+    "HIV: treat TB at least as long as in HIV-negative people; ART timing is a separate clock (tb-hiv-art). Pregnancy: WHO uses HRZE including PZA; CDC historically hesitated on PZA and has moved closer to WHO — stamp the overlay, do not mix them silently. Meningitis and bone/joint disease still often need longer and different companions."
+  ],
+  "deepTitle": "Doses, FDC, and when the mnemonic breaks",
+  "deep": [
+    "Adults: INH 5 mg/kg (max 300 mg), RIF 10 mg/kg (max 600 mg), PZA 25 mg/kg, EMB 15 mg/kg — WHO weight bands via FDC tablets. Children have higher mg/kg bands (INH 10 mg/kg-class, RIF 15 mg/kg-class).",
+    "Ethambutol can be dropped in the continuation phase when DS is confirmed. It is a companion, not a sterilizing star.",
+    "Intermittent dosing in continuation is largely a historical CDC overlay; daily dosing is the WHO default.",
+    "If RIF is lost, this mnemonic is over. Do not “continue HRZE without R.” That is how you invent MDR in public."
+  ],
+  "formulas": [
+    {
+      "id": "inh-dose",
+      "label": "Adult INH daily dose",
+      "expression": "5 mg/kg  (usual cap 300 mg)",
+      "note": "A 60 kg adult is 300 mg, not 600 mg. Children use higher mg/kg."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Six-month DS-TB: intensive HRZE, continuation HR. Eligibility forks to HPMZ or SHINE are other plates, not silent substitutions.",
+    "nodes": [
+      {
+        "id": "ds",
+        "label": "DS-TB",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "int",
+        "label": "2 HRZE",
+        "x": 32,
+        "y": 48,
+        "tone": "process",
+        "detail": "cidal + PZA"
+      },
+      {
+        "id": "cont",
+        "label": "4 HR",
+        "x": 55,
+        "y": 48,
+        "tone": "process",
+        "detail": "sterilize"
+      },
+      {
+        "id": "done",
+        "label": "Complete",
+        "x": 78,
+        "y": 48,
+        "tone": "end"
+      },
+      {
+        "id": "hpmz",
+        "label": "HPMZ fork",
+        "x": 32,
+        "y": 18,
+        "tone": "decision"
+      },
+      {
+        "id": "shine",
+        "label": "SHINE fork",
+        "x": 32,
+        "y": 78,
+        "tone": "decision"
+      }
+    ],
+    "edges": [
+      {
+        "from": "ds",
+        "to": "int"
+      },
+      {
+        "from": "int",
+        "to": "cont"
+      },
+      {
+        "from": "cont",
+        "to": "done"
+      },
+      {
+        "from": "ds",
+        "to": "hpmz",
+        "label": "age ≥12 eligible"
+      },
+      {
+        "from": "ds",
+        "to": "shine",
+        "label": "child non-severe"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: 2HRZE/4HR as DS-TB backbone",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC 2025 DS-TB overlay — still knows HRZE",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/php/dear-colleague-letters/2025-treatment-guidelines.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Mnemonic with the 2020s forks drawn, not erased.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-first-line",
+    "tb-hpzm",
+    "tb-hiv-art",
+    "tb-pregnancy",
+    "tb-meningitis",
+    "tb-hepatotoxicity",
+    "tb-diabetes"
+  ],
+  "example": {
+    "title": "60 kg adult, FDC maths",
+    "setup": "Pulmonary DS-TB, 60 kg, no HIV, wants “the usual six months.”",
+    "steps": [
+      {
+        "title": "INH",
+        "body": "5 × 60 = 300 mg daily — the usual tablet.",
+        "expression": "5 mg/kg × 60 kg = 300 mg"
+      },
+      {
+        "title": "RIF",
+        "body": "10 × 60 = 600 mg daily."
+      },
+      {
+        "title": "Do not freelance a four-month drop unless eligible",
+        "body": "If they do not meet HPMZ criteria (age, drug-susceptible, pulmonary), six months is not “old-fashioned.” It is on-label WHO."
+      }
+    ],
+    "takeaway": "2HRZE/4HR is still a complete sentence."
+  },
+  "check": [
+    {
+      "id": "hrze-len",
+      "kind": "conceptual",
+      "prompt": "The continuation phase of standard adult DS-TB HRZE-based therapy is:",
+      "choices": [
+        "4 months of HR",
+        "4 months of EMB monotherapy",
+        "2 weeks of streptomycin",
+        "BPaL"
+      ],
+      "answer": "4 months of HR",
+      "why": "2HRZE/4HR. EMB is intensive-phase insurance.",
+      "whyWrong": {
+        "4 months of EMB monotherapy": "No.",
+        "2 weeks of streptomycin": "Historical.",
+        "BPaL": "RR-TB regimen."
+      }
+    },
+    {
+      "id": "hrze-dose",
+      "kind": "calculation",
+      "prompt": "WHO adult INH daily dose at 70 kg, cap 300 mg, is:",
+      "choices": [
+        "350 mg",
+        "300 mg",
+        "700 mg",
+        "75 mg"
+      ],
+      "answer": "300 mg",
+      "why": "5 × 70 = 350, then cap at 300 mg for the usual adult tablet strength.",
+      "whyWrong": {
+        "350 mg": "Uncapped arithmetic; programmes cap at 300 mg.",
+        "700 mg": "That is a different drug’s order of magnitude.",
+        "75 mg": "Pediatric confusion."
+      }
+    },
+    {
+      "id": "hrze-figure",
+      "kind": "figure",
+      "prompt": "On the HRZE flow map, what are the HPMZ and SHINE nodes?",
+      "choices": [
+        "NTM treatments",
+        "Eligible alternative 4-month DS-TB forks, not silent replacements of 2HRZE/4HR for everyone",
+        "Xpert probes",
+        "IGRAs"
+      ],
+      "answer": "Eligible alternative 4-month DS-TB forks, not silent replacements of 2HRZE/4HR for everyone",
+      "why": "The plate keeps the six-month spine as the default path.",
+      "whyWrong": {
+        "NTM treatments": "No.",
+        "Xpert probes": "No.",
+        "IGRAs": "No."
+      },
+      "figureHint": "Two decision nodes branching from DS-TB."
+    }
+  ]
+}

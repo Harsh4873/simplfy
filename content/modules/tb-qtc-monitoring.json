@@ -1,0 +1,159 @@
+{
+  "id": "tb-qtc-monitoring",
+  "title": "QTc stacking: BDQ, CFZ, FQ, DLM",
+  "dek": "Several Group A/B/C drugs prolong QT. Adding them is arithmetic on an ECG, not a surprise. Electrolytes, companion CYP3A4 inhibitors, and a stop rule belong on the same plate.",
+  "domain": "tb",
+  "aliases": [
+    "QTc BDQ",
+    "QT prolongation TB",
+    "Fridericia QTc",
+    "ECG monitoring DR-TB"
+  ],
+  "tags": [
+    "QTc",
+    "bedaquiline",
+    "clofazimine",
+    "moxifloxacin",
+    "delamanid"
+  ],
+  "story": [
+    "Bedaquiline, clofazimine, moxifloxacin (more than levofloxacin), and delamanid all prolong the QT interval. BPaLM stacks BDQ+Mfx. BDLLfxC can stack BDQ+DLM+CFZ+Lfx. This is expected pharmacology. Baseline ECG, repeat ECGs (programmes often week 2, 4, 8, 12, then monthly), and potassium/magnesium repletion are the monitoring, not an afterthought.",
+    "QTcF (Fridericia) is the usual correction. Absolute QTcF ≥500 ms or a large Δ from baseline is a hold/review threshold in most handbooks — look up the current operational cut, do not invent one from a blog. Drop the most dispensable QT drug first (often the FQ if BDQ is load-bearing, or CFZ in a five-drug Pa-sparing start).",
+    "CYP3A4 inhibitors (some azoles, macrolides, cobicistat) raise BDQ and sometimes DLM. Ondansetron and methadone add QT. The TB regimen is not the only line on the med rec."
+  ],
+  "deepTitle": "Congenital long QT and the unmeasured ECG",
+  "deep": [
+    "A family history of sudden death is a BDQ counselling item.",
+    "Moxifloxacin’s QT effect is why some HPMZ programmes still want a baseline ECG in older adults — DS-TB is not QT-free if an FQ is in the acronym.",
+    "Linezolid is not a QT drug; it is a marrow/nerve drug. Do not skip CBC because you did an ECG.",
+    "Portable ECG quality is data. A sloppy QTc is how people get denied BDQ incorrectly."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic QTcF distributions: baseline, plus one QT drug, plus a stack. The right tail is the stop-rule neighbourhood, not the mean.",
+    "xLabel": "QTcF (ms, schematic)",
+    "curves": [
+      {
+        "id": "base",
+        "label": "baseline",
+        "mean": 410,
+        "sd": 18
+      },
+      {
+        "id": "one",
+        "label": "+ one QT drug",
+        "mean": 430,
+        "sd": 20
+      },
+      {
+        "id": "stack",
+        "label": "BDQ+CFZ+FQ stack",
+        "mean": 455,
+        "sd": 24
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook — DR-TB monitoring",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC DR-TB monitoring overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "QT as arithmetic, not a scare word.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-bedaquiline",
+    "tb-clofazimine",
+    "tb-moxifloxacin",
+    "tb-delamanid",
+    "tb-bpalm",
+    "tb-bdllfxc"
+  ],
+  "example": {
+    "title": "QTcF 512 on BDLLfxC week 4",
+    "setup": "Pregnant RR, BDLLfxC, K 3.1, QTcF 512 ms. FQ DST still pending.",
+    "steps": [
+      {
+        "title": "Replete K/Mg now",
+        "body": "Do not first-stop BDQ for a potassium problem."
+      },
+      {
+        "title": "Repeat ECG after repletion",
+        "body": "If still ≥500, drop the most dispensable QT agent."
+      },
+      {
+        "title": "If FQ-S later, CFZ was already the prune",
+        "body": "If FQ-R, Lfx goes; CFZ stays — plan that fork before the panic."
+      }
+    ],
+    "takeaway": "QT management is electrolytes plus which letter you can actually drop."
+  },
+  "check": [
+    {
+      "id": "qt-drugs",
+      "kind": "conceptual",
+      "prompt": "Which list is the usual TB QT stack?",
+      "choices": [
+        "INH, EMB, PZA",
+        "BDQ, CFZ, moxifloxacin, DLM",
+        "LZD and pyridoxine",
+        "AMK and KM"
+      ],
+      "answer": "BDQ, CFZ, moxifloxacin, DLM",
+      "why": "LZD is marrow/nerve. Aminoglycosides are ears/kidneys.",
+      "whyWrong": {
+        "INH, EMB, PZA": "Hepatic/optic.",
+        "LZD and pyridoxine": "Not QT.",
+        "AMK and KM": "Ototoxicity."
+      }
+    },
+    {
+      "id": "qt-cut",
+      "kind": "calculation",
+      "prompt": "A commonly used hold-and-review QTcF neighbourhood is:",
+      "choices": [
+        "350 ms",
+        "≥500 ms (or a large Δ from baseline) — confirm in the current handbook",
+        "200 ms",
+        "600 as the mean of healthy adults"
+      ],
+      "answer": "≥500 ms (or a large Δ from baseline) — confirm in the current handbook",
+      "why": "Means sit near 400. The right tail is the rule.",
+      "whyWrong": {
+        "350 ms": "Low.",
+        "200 ms": "Not compatible with life as QTc.",
+        "600 as the mean of healthy adults": "Pathologic, not a mean."
+      }
+    },
+    {
+      "id": "qt-figure",
+      "kind": "figure",
+      "prompt": "On the density-shift plate, stacking QT drugs is drawn as:",
+      "choices": [
+        "A left shift of the mean",
+        "A right shift of the QTcF distribution (longer interval)",
+        "A new gene-track",
+        "A smear grade"
+      ],
+      "answer": "A right shift of the QTcF distribution (longer interval)",
+      "why": "Prolongation is a rightward mean. The danger is the overlapping tail past 500.",
+      "whyWrong": {
+        "A left shift of the mean": "Shorter QT.",
+        "A new gene-track": "Wrong visual.",
+        "A smear grade": "No."
+      },
+      "figureHint": "Three curves, rightward."
+    }
+  ]
+}

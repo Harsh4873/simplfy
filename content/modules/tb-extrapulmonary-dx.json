@@ -1,0 +1,182 @@
+{
+  "id": "tb-extrapulmonary-dx",
+  "title": "Extrapulmonary sampling",
+  "dek": "Lymph node, pleura, CSF, bone, urine. Paucibacillary sites punish smear and sometimes NAAT. The anatomic site is part of the pretest.",
+  "domain": "tb",
+  "aliases": [
+    "EPTB",
+    "TB lymphadenitis",
+    "pleural TB",
+    "osteomyelitis TB",
+    "genitourinary TB"
+  ],
+  "tags": [
+    "extrapulmonary",
+    "CSF",
+    "FNA",
+    "pleural",
+    "NAAT"
+  ],
+  "story": [
+    "Extrapulmonary TB is not one disease. Tuberculous lymphadenitis is common and relatively reachable (FNA + WRD + cytology). Pleural TB is often an immunological effusion with few bacilli — ADA and a pleural biopsy beat a smear. Osteoarticular TB is a surgical specimen problem. Genitourinary TB may give urine culture/NAAT. Miliary is a blood-and-lung problem that masquerades as “fever of unknown.”",
+    "CSF in meningitis is an emergency specimen: WRD on CSF, culture a large volume, do not wait for a third lumbar puncture to start therapy if the prior is high. See the meningitis treatment plate for steroids and ART timing.",
+    "Always look for a pulmonary companion — not because EPTB “doesn’t transmit,” but because a missed cavity is a missed source, a missed DST, and a missed infection-control decision."
+  ],
+  "deepTitle": "Assay-by-site priors",
+  "deep": [
+    "Xpert Ultra on CSF and FNA is WHO-supported; sensitivity is imperfect. Trace in CSF of a treatment-naive meningitic patient is not the same object as trace in a scarred lung.",
+    "Pleural fluid WRD sensitivity is middling; biopsy and ADA (in high-prevalence settings) still matter.",
+    "Blood Xpert is not a routine bacteremia test. Mycobacterial blood culture in advanced HIV is a different tool.",
+    "Do not use IGRA on CSF as a gold standard. Interferon in the CSF is research-y; diagnosis is NAAT/culture/clinical."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Sites with different bacillary loads and assay yields. CSF and node FNA are WRD-actionable. Pleura is a biopsy disease. Always hunt a lung.",
+    "terms": [
+      {
+        "label": "CSF WRD",
+        "weight": 5
+      },
+      {
+        "label": "node FNA",
+        "weight": 5
+      },
+      {
+        "label": "pleural biopsy",
+        "weight": 4
+      },
+      {
+        "label": "urine culture",
+        "weight": 3
+      },
+      {
+        "label": "bone OR sample",
+        "weight": 3
+      },
+      {
+        "label": "miliary blood",
+        "weight": 3
+      },
+      {
+        "label": "still image lung",
+        "weight": 4
+      },
+      {
+        "label": "ADA effusion",
+        "weight": 2
+      },
+      {
+        "label": "trace ≠ relic here",
+        "weight": 4
+      },
+      {
+        "label": "start Rx if high prior",
+        "weight": 5
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO diagnostic handbook — extrapulmonary specimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "CDC Core Curriculum — extrapulmonary TB",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Site-specific priors for WRD interpretation.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-meningitis",
+    "tb-pediatric-dx",
+    "tb-lf-lam",
+    "tb-smear-culture",
+    "tb-pericarditis",
+    "tb-miliary"
+  ],
+  "example": {
+    "title": "Lymph-node Ultra trace, pulmonary Ultra negative",
+    "setup": "Cervical node, HIV-negative adult, FNA Ultra trace, sputum Ultra not detected, CXR normal.",
+    "steps": [
+      {
+        "title": "Node is the disease site",
+        "body": "A negative sputum does not veto lymphadenitis. Trace on FNA in a treatment-naive node is a strong microbiologic clue."
+      },
+      {
+        "title": "Culture the leftover FNA",
+        "body": "DST still matters. Cytology for caseating granulomas supports."
+      },
+      {
+        "title": "Look for the source case",
+        "body": "Adult node TB is often reactivation; still do contacts if pulmonary disease is found anywhere in the cluster."
+      }
+    ],
+    "takeaway": "Match the specimen to the lesion; do not demand sputum physics of a node."
+  },
+  "check": [
+    {
+      "id": "ep-csf",
+      "kind": "conceptual",
+      "prompt": "For suspected TB meningitis, the immediate diagnostic move is:",
+      "choices": [
+        "Wait for a 6-week culture before any therapy",
+        "CSF WRD plus culture of an adequate volume, and do not delay treatment when clinical prior is high",
+        "IGRA on blood as a rule-in for meningitis",
+        "Stool Ultra only"
+      ],
+      "answer": "CSF WRD plus culture of an adequate volume, and do not delay treatment when clinical prior is high",
+      "why": "Meningitis is a clock.",
+      "whyWrong": {
+        "Wait for a 6-week culture before any therapy": "Too slow.",
+        "IGRA on blood as a rule-in for meningitis": "Not a disease test for TBM.",
+        "Stool Ultra only": "Wrong site."
+      }
+    },
+    {
+      "id": "ep-pleura",
+      "kind": "calculation",
+      "prompt": "Pleural fluid smear is rarely positive. The higher-yield next microbiologic step is usually:",
+      "choices": [
+        "Repeating smear on the same fluid ten times only",
+        "Pleural biopsy for histopathology plus culture/WRD, with ADA as a contextual adjunct in high-prevalence settings",
+        "Assuming pneumococcus",
+        "Starting BPaLM for all effusions"
+      ],
+      "answer": "Pleural biopsy for histopathology plus culture/WRD, with ADA as a contextual adjunct in high-prevalence settings",
+      "why": "Paucibacillary effusion: tissue beats fluid smear.",
+      "whyWrong": {
+        "Repeating smear on the same fluid ten times only": "Diminishing returns.",
+        "Assuming pneumococcus": "Different disease.",
+        "Starting BPaLM for all effusions": "No."
+      }
+    },
+    {
+      "id": "ep-figure",
+      "kind": "figure",
+      "prompt": "On the constellation plate, why does “still image lung” have substantial weight?",
+      "choices": [
+        "Because all EPTB is smear 3+ pulmonary by definition",
+        "Because a missed pulmonary companion changes transmission, DST sampling, and infection control",
+        "Because CXR diagnoses node TB with 100% PPV",
+        "Because CAD grades CSF"
+      ],
+      "answer": "Because a missed pulmonary companion changes transmission, DST sampling, and infection control",
+      "why": "Always look for the airway-connected lesion.",
+      "whyWrong": {
+        "Because all EPTB is smear 3+ pulmonary by definition": "False.",
+        "Because CXR diagnoses node TB with 100% PPV": "No.",
+        "Because CAD grades CSF": "No."
+      },
+      "figureHint": "Term: still image lung."
+    }
+  ]
+}

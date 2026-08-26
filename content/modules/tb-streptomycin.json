@@ -1,0 +1,177 @@
+{
+  "id": "tb-streptomycin",
+  "title": "Streptomycin (historical)",
+  "dek": "The 1940s aminoglycoside that launched combination therapy. rpsL K43/K88, rrs 514 region, gid. Ototoxicity, pregnancy ban, not a 2025 preferred drug.",
+  "domain": "tb",
+  "aliases": [
+    "SM",
+    "STR",
+    "streptomycin",
+    "S drug",
+    "Waksman TB"
+  ],
+  "tags": [
+    "streptomycin",
+    "rpsL",
+    "historical",
+    "ototoxicity",
+    "injectable"
+  ],
+  "story": [
+    "Streptomycin was the first really effective TB antibacterial and the reason combination therapy had to be invented (resistance emerged on monotherapy in months). It binds the 30S subunit. Clinical resistance: rpsL K43R/K88R, rrs mutations in the 514/517 neighbourhood, gidB loss-of-function (a 16S methyltransferase-adjacent story).",
+    "It is not AMK. rpsL K43R does not automatically clear or condemn amikacin. WHO does not want STR in preferred 6-month orals. Some older national DS overlays still mention S as a fifth drug in meningitis or when EMB cannot be used — check the year of the SOP.",
+    "Pregnancy: no. Audiometry: yes if you still inject it. PubChem CID 19649."
+  ],
+  "deepTitle": "Why labs still must decode it",
+  "deep": [
+    "Archive genomes and retreatment patients carry rpsL alleles. They explain old failures; they do not define 2021-XDR.",
+    "Do not call AMK-R from rpsL alone.",
+    "gid frameshifts can be lineage-associated in some studies — grade them.",
+    "Historical monotherapy papers are how you teach mutation supply, not how you treat today."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "Streptomycin’s genetic homes are not the AMK 1401 cassette. Keep the injectables on separate rows.",
+    "rows": [
+      {
+        "gene": "rpsL K43R",
+        "drug": "STR",
+        "canonical": "R",
+        "note": "30S protein"
+      },
+      {
+        "gene": "rpsL K88R",
+        "drug": "STR",
+        "canonical": "R",
+        "note": "also STR"
+      },
+      {
+        "gene": "rrs 514 region",
+        "drug": "STR",
+        "canonical": "R",
+        "note": "not 1401"
+      },
+      {
+        "gene": "gid LOF",
+        "drug": "STR",
+        "canonical": "often R",
+        "note": "grade; lineage traps"
+      },
+      {
+        "gene": "rrs 1401",
+        "drug": "AMK/KAN",
+        "canonical": "not STR by default",
+        "note": "different site"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO — streptomycin not preferred in modern DR-TB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Streptomycin — PubChem CID 19649",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/19649"
+    },
+    {
+      "title": "Streptomycin",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Streptomycin"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "First-line history, salvage genetics, not AMK.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-eis-rrs",
+    "tb-amikacin",
+    "tb-second-line",
+    "tb-pregnancy",
+    "tb-resistance",
+    "tb-gidb"
+  ],
+  "example": {
+    "title": "rpsL K43R flagged as “injectable R”",
+    "setup": "A junior report lists AMK-R because rpsL K43R is present. rrs 1401 WT, eis WT.",
+    "steps": [
+      {
+        "title": "Wrong injectable",
+        "body": "K43R is a streptomycin allele. AMK is a 1401/eis question."
+      },
+      {
+        "title": "STR is still not a good idea",
+        "body": "Genetically dead STR, and you probably did not want STR anyway."
+      },
+      {
+        "title": "If salvage injectable is truly needed, MIC AMK",
+        "body": "Do not skip MIC because a different aminoglycoside gene fired."
+      }
+    ],
+    "takeaway": "Streptomycin genetics ≠ amikacin genetics."
+  },
+  "check": [
+    {
+      "id": "str-rpsl",
+      "kind": "conceptual",
+      "prompt": "rpsL K43R is associated with resistance to:",
+      "choices": [
+        "Bedaquiline",
+        "Streptomycin",
+        "Isoniazid",
+        "Moxifloxacin"
+      ],
+      "answer": "Streptomycin",
+      "why": "30S protein, STR, not BDQ.",
+      "whyWrong": {
+        "Bedaquiline": "atpE/Rv0678.",
+        "Isoniazid": "katG/inhA.",
+        "Moxifloxacin": "gyrA."
+      }
+    },
+    {
+      "id": "str-amk",
+      "kind": "calculation",
+      "prompt": "rpsL K43R, rrs 1401 WT. Amikacin should be reported as:",
+      "choices": [
+        "Automatically R",
+        "Not condemned by rpsL; AMK depends on rrs/eis/MIC",
+        "Identical to STR always",
+        "A TPT option"
+      ],
+      "answer": "Not condemned by rpsL; AMK depends on rrs/eis/MIC",
+      "why": "Separate binding stories.",
+      "whyWrong": {
+        "Automatically R": "Overcall.",
+        "Identical to STR always": "False.",
+        "A TPT option": "No."
+      }
+    },
+    {
+      "id": "str-figure",
+      "kind": "figure",
+      "prompt": "In the STR grid, the last row (rrs 1401) is there to teach:",
+      "choices": [
+        "That 1401 is the STR hotspot",
+        "That the canonical AMK 16S allele is a different site from STR’s rpsL/514/gid cluster",
+        "That gid is gyrA",
+        "That STR is BDQ"
+      ],
+      "answer": "That the canonical AMK 16S allele is a different site from STR’s rpsL/514/gid cluster",
+      "why": "Contrast row.",
+      "whyWrong": {
+        "That 1401 is the STR hotspot": "Opposite.",
+        "That gid is gyrA": "No.",
+        "That STR is BDQ": "No."
+      },
+      "figureHint": "Last row note: not STR by default."
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "id": "tb-thioacetazone",
+  "title": "Thioacetazone (historical, HIV-lethal)",
+  "dek": "A cheap thiourea from the streptomycin era. Stevens–Johnson in people with HIV made it a “do not” more than a drug. HadC/HAD chemistry is a mycolate footnote, not a 2025 regimen letter.",
+  "domain": "tb",
+  "aliases": [
+    "thioacetazone",
+    "thiacetazone",
+    "T drug TB",
+    "amithiozone"
+  ],
+  "tags": [
+    "thioacetazone",
+    "historical",
+    "SJS",
+    "HIV",
+    "mycolate"
+  ],
+  "story": [
+    "Thioacetazone (thiacetazone) was an oral companion in older East African regimens. It is not in WHO 2024–2025 preferred lists. Severe cutaneous reactions, including Stevens–Johnson syndrome, cluster in people with HIV. That toxicity, not MIC poetry, retired it.",
+    "Mechanistically it intersects mycolate synthesis (HadABC dehydratase neighbourhood / related FAS-II steps — report cautiously, catalogues are thin). Cross-talk with ETH/INH pathways appears in old papers. None of that is a reason to reconstruct HRZ+thioacetazone because a freezer still has tablets.",
+    "If a genome pipeline still emits “thioacetazone R,” treat it as historical annotation. Do not let it alter BPaLM."
+  ],
+  "deepTitle": "Why it still appears in BAMs",
+  "deep": [
+    "Some mutation databases never deleted the rows.",
+    "Veterinary and very-old NTP documents still mention it. Date-stamp them.",
+    "SJS risk in HIV is the teaching point for why “cheap oral” is not enough.",
+    "Not the same molecule as ethionamide, despite the thio- prefix."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Thioacetazone as a retired object: cheap oral, mycolate-adjacent, HIV SJS, absent from 2025 letters.",
+    "terms": [
+      {
+        "label": "retired",
+        "weight": 5
+      },
+      {
+        "label": "HIV SJS",
+        "weight": 5
+      },
+      {
+        "label": "mycolate footnote",
+        "weight": 3
+      },
+      {
+        "label": "not ETH",
+        "weight": 3
+      },
+      {
+        "label": "not BPaLM",
+        "weight": 4
+      },
+      {
+        "label": "old East African Rx",
+        "weight": 2
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — medicines not recommended",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Thioacetazone — PubChem CID 9568510",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/9568510"
+    },
+    {
+      "title": "Thioacetazone",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Thioacetazone"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "HIV SJS retired this drug harder than any MIC.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-who-groups",
+    "tb-hiv-synergy",
+    "tb-mycolates",
+    "tb-ethionamide",
+    "tb-second-line"
+  ],
+  "example": {
+    "title": "Pipeline: thioacetazone R, team delays BPaLM",
+    "setup": "RR-TB, otherwise BPaLM-eligible. Report lists thioacetazone resistance as a “second-line” finding.",
+    "steps": [
+      {
+        "title": "Ignore for regimen choice",
+        "body": "Not a Group A/B/C 2025 letter."
+      },
+      {
+        "title": "Start BPaLM if eligible",
+        "body": "Do not wait on a retired drug’s MIC."
+      },
+      {
+        "title": "Ask informatics to hide the row",
+        "body": "Alert fatigue is a safety problem."
+      }
+    ],
+    "takeaway": "Thioacetazone is a cautionary history plate, not a DST gate."
+  },
+  "check": [
+    {
+      "id": "tac-hiv",
+      "kind": "conceptual",
+      "prompt": "Thioacetazone was abandoned primarily because:",
+      "choices": [
+        "It caused RR-TB via rpoB",
+        "Severe cutaneous reactions including SJS in people with HIV",
+        "It prolonged QTc more than BDQ",
+        "It is a FQ"
+      ],
+      "answer": "Severe cutaneous reactions including SJS in people with HIV",
+      "why": "Toxicity, not a better oral Group A drug arriving first.",
+      "whyWrong": {
+        "It caused RR-TB via rpoB": "Wrong target.",
+        "It prolonged QTc more than BDQ": "Not its story.",
+        "It is a FQ": "No."
+      }
+    },
+    {
+      "id": "tac-reg",
+      "kind": "calculation",
+      "prompt": "A thioacetazone-R call on a 2025 RR isolate should:",
+      "choices": [
+        "Block BPaLM",
+        "Not change preferred RR therapy",
+        "Force KM",
+        "Force 6H TPT"
+      ],
+      "answer": "Not change preferred RR therapy",
+      "why": "Historical annotation.",
+      "whyWrong": {
+        "Block BPaLM": "No.",
+        "Force KM": "No.",
+        "Force 6H TPT": "That’s infection treatment after excluding disease."
+      }
+    },
+    {
+      "id": "tac-figure",
+      "kind": "figure",
+      "prompt": "The constellation’s heaviest clinical term is:",
+      "choices": [
+        "old East African Rx",
+        "HIV SJS / retired",
+        "QTc",
+        "IS6110"
+      ],
+      "answer": "HIV SJS / retired",
+      "why": "Those weights are the plate.",
+      "whyWrong": {
+        "old East African Rx": "History, lower weight.",
+        "QTc": "Other drugs.",
+        "IS6110": "Ultra."
+      },
+      "figureHint": "Largest terms."
+    }
+  ]
+}

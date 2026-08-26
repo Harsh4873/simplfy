@@ -1,0 +1,185 @@
+{
+  "id": "tb-rifapentine",
+  "title": "Rifapentine",
+  "dek": "A long-half-life rifamycin. Weekly in 3HP, daily 1200 mg in HPMZ, still an RNAP/rpoB drug, still a CYP inducer. Not interchangeable with rifampin milligram-for-milligram.",
+  "domain": "tb",
+  "aliases": [
+    "RPT",
+    "P drug rifapentine",
+    "Priftin",
+    "long-acting rifamycin",
+    "3HP rifapentine"
+  ],
+  "tags": [
+    "rifapentine",
+    "rifamycin",
+    "3HP",
+    "HPMZ",
+    "induction"
+  ],
+  "story": [
+    "Rifapentine binds the same RpoB target as rifampin. rpoB RRDR (and I491F) resistance is class-level for practical purposes — a S450L strain is not a rifapentine opportunity. Pharmacokinetics are the reason it exists as a separate tablet: longer half-life enables weekly TPT (3HP: 900 mg RPT + 900 mg INH weekly × 12) and daily high-dose DS-TB (Study 31: 1200 mg).",
+    "Induction of CYP3A4/UGT still happens. Dolutegravir, DOACs, calcineurin inhibitors, and hormonal contraception care. Food increases RPT absorption — Study 31 was not a fasting ritual.",
+    "Do not substitute RPT 600 mg for RIF 600 mg and call it 2HRZE. Do not use weekly 3HP doses as daily HPMZ. Orange body fluids still happen. Hepatotoxicity still happens."
+  ],
+  "deepTitle": "Where CDC and WHO agree",
+  "deep": [
+    "Both now like 3HP as TPT and 2HPMZ/2HPM as a 4-month DS option for eligible adolescents/adults (CDC 2025; WHO Module 4).",
+    "Pregnancy: RPT TPT data thinner than 3HR/6H. Disease: HPMZ trial was not a pregnancy trial.",
+    "Rifabutin is the other rifamycin overlay for some ART co-administration in CDC-land; it is not rifapentine.",
+    "PubChem CID 6323497. Same RRDR as rifampin."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Same RpoB target, three pharmacokinetic objects. Bars are schematic dose intensity, not AUC tables. Do not swap columns.",
+    "panels": [
+      {
+        "title": "DS 6-mo RIF",
+        "bars": [
+          {
+            "label": "RIF 600",
+            "value": 6
+          },
+          {
+            "label": "daily",
+            "value": 6
+          }
+        ]
+      },
+      {
+        "title": "HPMZ RPT",
+        "bars": [
+          {
+            "label": "RPT 1200",
+            "value": 10
+          },
+          {
+            "label": "daily",
+            "value": 6
+          }
+        ]
+      },
+      {
+        "title": "3HP RPT",
+        "bars": [
+          {
+            "label": "RPT 900",
+            "value": 8
+          },
+          {
+            "label": "weekly",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO TPT 3HP and Module 4 HPMZ rifapentine",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240096196"
+    },
+    {
+      "title": "CDC 2025 2HPZM/2HPM and 3HP overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/php/dear-colleague-letters/2025-treatment-guidelines.html"
+    },
+    {
+      "title": "Rifapentine — PubChem CID 6323497",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6323497"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Three RPT dosing objects, one rpoB.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-rifampin",
+    "tb-hpzm",
+    "tb-tpt",
+    "tb-hiv-art",
+    "tb-first-line"
+  ],
+  "example": {
+    "title": "3HP weekly tablets given daily by mistake",
+    "setup": "Pharmacy labels 3HP components daily for 12 weeks. Patient takes RPT 900 mg daily.",
+    "steps": [
+      {
+        "title": "This is not 3HP and not HPMZ",
+        "body": "HPMZ RPT is 1200 mg with MXF/INH/PZA. 3HP is weekly. You have an unstudied toxicology experiment."
+      },
+      {
+        "title": "Stop, check LFTs, restart the intended regimen",
+        "body": "Induction and hepatitis risk are real."
+      },
+      {
+        "title": "If the intent was DS-TB disease, you were also undertreating (no companion drugs)",
+        "body": "TPT drugs are not HRZE."
+      }
+    ],
+    "takeaway": "Rifapentine’s identity is PK plus rpoB, not a synonym of rifampin."
+  },
+  "check": [
+    {
+      "id": "rpt-target",
+      "kind": "conceptual",
+      "prompt": "Rifapentine’s mycobacterial target is:",
+      "choices": [
+        "InhA",
+        "The β subunit of RNAP (rpoB), like rifampin",
+        "GyrA",
+        "Ddn"
+      ],
+      "answer": "The β subunit of RNAP (rpoB), like rifampin",
+      "why": "Class resistance via rpoB.",
+      "whyWrong": {
+        "InhA": "INH.",
+        "GyrA": "FQ.",
+        "Ddn": "Pa."
+      }
+    },
+    {
+      "id": "rpt-dose",
+      "kind": "calculation",
+      "prompt": "3HP rifapentine dosing in adults is closest to:",
+      "choices": [
+        "1200 mg daily for 4 months",
+        "900 mg once weekly for 12 weeks with INH",
+        "600 mg IV for TBM only",
+        "50 mg monthly"
+      ],
+      "answer": "900 mg once weekly for 12 weeks with INH",
+      "why": "HPMZ is the 1200 mg daily object.",
+      "whyWrong": {
+        "1200 mg daily for 4 months": "Study 31 RPT, not 3HP.",
+        "600 mg IV for TBM only": "RIF-ish, not 3HP.",
+        "50 mg monthly": "No."
+      }
+    },
+    {
+      "id": "rpt-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, which panel is weekly rather than daily?",
+      "choices": [
+        "DS 6-mo RIF",
+        "HPMZ RPT",
+        "3HP RPT",
+        "All three are weekly"
+      ],
+      "answer": "3HP RPT",
+      "why": "The weekly bar is the teaching contrast.",
+      "whyWrong": {
+        "DS 6-mo RIF": "Daily.",
+        "HPMZ RPT": "Daily 1200.",
+        "All three are weekly": "False."
+      },
+      "figureHint": "Third panel title 3HP RPT; weekly bar."
+    }
+  ]
+}

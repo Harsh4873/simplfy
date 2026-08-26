@@ -1,0 +1,224 @@
+{
+  "id": "tb-host-ifng",
+  "title": "IFN-γ, IL-12, and Mendelian susceptibility",
+  "dek": "The IL-12 / IFN-γ / STAT1 axis is the Mendelian proof that human TB control is a Th1 cytokine problem. IGRAs are a laboratory echo of the same axis.",
+  "domain": "tb",
+  "aliases": [
+    "interferon gamma",
+    "IL-12",
+    "STAT1",
+    "MSMD",
+    "IFNGR1",
+    "Th1 TB"
+  ],
+  "tags": [
+    "IFN-γ",
+    "IL-12",
+    "MSMD",
+    "host genetics",
+    "IGRA"
+  ],
+  "story": [
+    "Macrophages infected with Mtb make IL-12 (and IL-23). Lymphocytes — especially CD4 T cells and NK cells — answer with IFN-γ. IFN-γ through IFNGR1/2 and STAT1 activates macrophage killing programmes (reactive nitrogen/oxygen, autophagy, antigen presentation). TNF, from macrophages and T cells, maintains granuloma structure.",
+    "Mendelian susceptibility to mycobacterial disease (MSMD) is the human knockout series: IFNGR1, IFNGR2, IL12B, IL12RB1, STAT1, NEMO, and others. Children with these lesions get BCG-osis and NTM, and they teach that the axis is not optional. They are rare; HIV is the common acquired phenocopy.",
+    "IGRAs measure IFN-γ (or IFN-γ-secreting cells) after ESAT-6/CFP-10 stimulation. They are an assay of the axis, not a burden assay. Anergy from HIV, steroids, or anti-IFN biologics produces false negatives; that is immunology, not a lab error by default."
+  ],
+  "deepTitle": "What a TB lab should not over-call",
+  "deep": [
+    "Anti-IFN-γ autoantibodies in adults (especially some East- and Southeast-Asian cohorts) produce an acquired MSMD phenocopy with NTM and sometimes TB. Worth knowing when an adult presents like a pediatric cytokine defect.",
+    "JAK-STAT inhibitors and anti-IFN biologics are iatrogenic holes in the same axis. Screen and consider TPT the way you already do for anti-TNF.",
+    "Host GWAS hits (e.g. HLA, WASF3, ASIPs in some studies) are population priors, not individual DST.",
+    "Do not order an IGRA to diagnose meningitis or to follow treatment response. The axis does not report CFU."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "IL-12 from infected macrophages licenses IFN-γ from lymphocytes; IFN-γ and TNF return to the macrophage/granuloma. MSMD and HIV break this loop at different joints.",
+    "nodes": [
+      {
+        "id": "mac",
+        "label": "Infected Mϕ",
+        "group": "target",
+        "x": 14,
+        "y": 40
+      },
+      {
+        "id": "il12",
+        "label": "IL-12",
+        "group": "enzyme",
+        "x": 38,
+        "y": 22
+      },
+      {
+        "id": "t",
+        "label": "CD4 / NK",
+        "group": "enzyme",
+        "x": 62,
+        "y": 22
+      },
+      {
+        "id": "ifn",
+        "label": "IFN-γ",
+        "group": "drug",
+        "x": 84,
+        "y": 40
+      },
+      {
+        "id": "stat",
+        "label": "IFNGR/STAT1",
+        "group": "target",
+        "x": 62,
+        "y": 62
+      },
+      {
+        "id": "tnf",
+        "label": "TNF",
+        "group": "drug",
+        "x": 38,
+        "y": 78
+      },
+      {
+        "id": "gran",
+        "label": "Granuloma tone",
+        "group": "target",
+        "x": 14,
+        "y": 78
+      }
+    ],
+    "edges": [
+      {
+        "from": "mac",
+        "to": "il12"
+      },
+      {
+        "from": "il12",
+        "to": "t"
+      },
+      {
+        "from": "t",
+        "to": "ifn"
+      },
+      {
+        "from": "ifn",
+        "to": "stat"
+      },
+      {
+        "from": "stat",
+        "to": "mac"
+      },
+      {
+        "from": "t",
+        "to": "tnf"
+      },
+      {
+        "from": "tnf",
+        "to": "gran"
+      },
+      {
+        "from": "mac",
+        "to": "gran"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Mendelian susceptibility to mycobacterial disease",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Mendelian_susceptibility_to_mycobacterial_disease"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Host-axis notes so IGRAs are not treated as CFU.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-tnf-cd4",
+    "tb-hiv-synergy",
+    "tb-igra-tst",
+    "tb-pathogenesis",
+    "tb-bcg-rd1"
+  ],
+  "example": {
+    "title": "IGRA-negative miliary TB in advanced HIV",
+    "setup": "CD4 18, miliary pattern, Xpert Ultra trace on sputum, IGRA negative. Colleague calls the IGRA “reassuring against TB.”",
+    "steps": [
+      {
+        "title": "The axis is broken",
+        "body": "No CD4 help, exhausted IFN-γ. IGRA can be negative with high burden."
+      },
+      {
+        "title": "Disease tests are NAAT/culture/LAM",
+        "body": "Ultra trace here is a disease clue, not cancelled by IGRA."
+      },
+      {
+        "title": "Do not delay",
+        "body": "Treat disease algorithms. IGRA is the wrong tool."
+      }
+    ],
+    "takeaway": "IFN-γ assays need an IFN-γ axis."
+  },
+  "check": [
+    {
+      "id": "ifn-msmd",
+      "kind": "conceptual",
+      "prompt": "MSMD lesions (IFNGR1, IL12RB1, STAT1, …) teach that:",
+      "choices": [
+        "The IL-12/IFN-γ axis is required for mycobacterial control in humans",
+        "rpoB is a host gene",
+        "BCG is safe in complete IFNGR deficiency",
+        "IGRAs diagnose XDR-TB"
+      ],
+      "answer": "The IL-12/IFN-γ axis is required for mycobacterial control in humans",
+      "why": "Human knockouts are the proof, not a mouse-only story.",
+      "whyWrong": {
+        "rpoB is a host gene": "Bacterial RNAP.",
+        "BCG is safe in complete IFNGR deficiency": "BCG is contraindicated.",
+        "IGRAs diagnose XDR-TB": "No DST in IGRA."
+      }
+    },
+    {
+      "id": "ifn-igra",
+      "kind": "calculation",
+      "prompt": "QFT reports IFN-γ IU/mL in antigen minus nil tubes. A patient on high-dose steroids has nil 0.02, mitogen 0.3 (low), TB antigen 0.15. The correct first read is:",
+      "choices": [
+        "Positive IGRA, start MDR therapy",
+        "Indeterminate / invalid because the positive-control (mitogen) axis failed — do not call negative",
+        "Proof of sterility",
+        "Rifampin resistance detected"
+      ],
+      "answer": "Indeterminate / invalid because the positive-control (mitogen) axis failed — do not call negative",
+      "why": "Mitogen failure means you did not demonstrate an intact IFN-γ machinery.",
+      "whyWrong": {
+        "Positive IGRA, start MDR therapy": "Wrong test and wrong action.",
+        "Proof of sterility": "Invalid assay.",
+        "Rifampin resistance detected": "Not an IGRA output."
+      }
+    },
+    {
+      "id": "ifn-figure",
+      "kind": "figure",
+      "prompt": "On the cytokine map, what sits between IFN-γ and the infected macrophage?",
+      "choices": [
+        "rpoB",
+        "IFNGR/STAT1",
+        "PncA",
+        "EmbB"
+      ],
+      "answer": "IFNGR/STAT1",
+      "why": "Receptor and transcription factor of the IFN-γ response.",
+      "whyWrong": {
+        "rpoB": "Bacterial drug target.",
+        "PncA": "PZA activation.",
+        "EmbB": "Ethambutol."
+      },
+      "figureHint": "Follow the IFN-γ arrow left-down."
+    }
+  ]
+}

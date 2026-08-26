@@ -1,0 +1,207 @@
+{
+  "id": "tb-shine",
+  "title": "SHINE: 4-month pediatric non-severe TB",
+  "dek": "2HRZ(E)/2HR for children and adolescents 3 months–16 years with non-severe DS-TB. Shorter because the lesion is smaller, not because kids are miniature Study 31.",
+  "domain": "tb",
+  "aliases": [
+    "SHINE trial",
+    "non-severe pediatric TB",
+    "2HRZ/2HR",
+    "4-month children TB"
+  ],
+  "tags": [
+    "pediatric",
+    "SHINE",
+    "4-month",
+    "DS-TB",
+    "WHO"
+  ],
+  "story": [
+    "SHINE showed that 4 months (2HRZ(E)/2HR) was non-inferior to 6 months for children with non-severe, presumed drug-susceptible TB. WHO made this a strong recommendation for ages 3 months to 16 years when disease is non-severe and MDR/RR is not suspected.",
+    "Non-severe is a defined clinical/radiographic object: limited smear-negative (or paucibacillary) pulmonary disease, peripheral lymph-node TB, no severe forms (miliary, TBM, osteoarticular, cavitary extensive). If you have to argue hard about “non-severe,” it is not SHINE.",
+    "This is not HPMZ. No rifapentine, no moxifloxacin requirement. Child-friendly FDCs and higher mg/kg bands still apply. Severe pediatric TB stays on longer, and TBM has its own recipe."
+  ],
+  "deepTitle": "Operational traps",
+  "deep": [
+    "HIV-positive children were included with caveats; they still need ART clocks and sometimes longer treatment if disease is not non-severe.",
+    "Ethambutol in the intensive phase depends on HIV prevalence and extent of disease — the (E) in 2HRZ(E).",
+    "A 15-year-old with adult-type cavitation is not a SHINE case; they may be HPMZ-eligible if ≥12 and DS, or six-month HRZE.",
+    "Source-case DST is pediatric DST when the child’s own NAAT is negative."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Pediatric DS-TB forks on severity. SHINE is the non-severe 4-month path. Severe disease, TBM, and RR-TB leave this plate.",
+    "nodes": [
+      {
+        "id": "kid",
+        "label": "Child TB",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "rr",
+        "label": "RR suspected?",
+        "x": 30,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "sev",
+        "label": "Severe?",
+        "x": 52,
+        "y": 30,
+        "tone": "decision"
+      },
+      {
+        "id": "shine",
+        "label": "2HRZ(E)/2HR",
+        "x": 76,
+        "y": 18,
+        "tone": "end"
+      },
+      {
+        "id": "six",
+        "label": "Longer DS",
+        "x": 76,
+        "y": 48,
+        "tone": "end"
+      },
+      {
+        "id": "dr",
+        "label": "DR algorithm",
+        "x": 52,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "kid",
+        "to": "rr"
+      },
+      {
+        "from": "rr",
+        "to": "sev",
+        "label": "no"
+      },
+      {
+        "from": "rr",
+        "to": "dr",
+        "label": "yes"
+      },
+      {
+        "from": "sev",
+        "to": "shine",
+        "label": "non-severe"
+      },
+      {
+        "from": "sev",
+        "to": "six",
+        "label": "severe"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4: 4-month regimen for non-severe pediatric TB",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC Core Curriculum — TB in children",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "SHINE ≠ HPMZ ≠ TBM.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-hrze",
+    "tb-pediatric-tx",
+    "tb-hpzm",
+    "tb-first-line",
+    "tb-pediatric-dx"
+  ],
+  "example": {
+    "title": "Hilar nodes, smear-negative, source RIF-S",
+    "setup": "4-year-old, household index Xpert RIF not detected, CXR hilar adenopathy, no cavitation, HIV-negative, smear-negative, stool Ultra MTB detected.",
+    "steps": [
+      {
+        "title": "Non-severe?",
+        "body": "Limited intra-thoracic disease without severe forms: SHINE-shaped."
+      },
+      {
+        "title": "Treat 4 months 2HRZ(E)/2HR",
+        "body": "Child FDC, include EMB if your NTP’s HIV-prevalence rule says so."
+      },
+      {
+        "title": "If the source later flips to RR",
+        "body": "Rebuild. Pediatric DST often is the adult’s genome."
+      }
+    ],
+    "takeaway": "SHINE shortens non-severe childhood TB, not all childhood TB."
+  },
+  "check": [
+    {
+      "id": "shine-who",
+      "kind": "conceptual",
+      "prompt": "WHO’s 4-month 2HRZ(E)/2HR pediatric recommendation applies to:",
+      "choices": [
+        "All children with TBM",
+        "Children 3 months–16 years with non-severe DS-TB and no MDR/RR suspicion",
+        "Adults with cavities only",
+        "BPaLM-eligible RR-TB"
+      ],
+      "answer": "Children 3 months–16 years with non-severe DS-TB and no MDR/RR suspicion",
+      "why": "Severity and DST prior are the gates.",
+      "whyWrong": {
+        "All children with TBM": "TBM is severe.",
+        "Adults with cavities only": "Wrong population.",
+        "BPaLM-eligible RR-TB": "Wrong regimen class."
+      }
+    },
+    {
+      "id": "shine-vs",
+      "kind": "calculation",
+      "prompt": "A 13-year-old, 48 kg, adult-type cavitary DS-TB is closest to:",
+      "choices": [
+        "SHINE non-severe 4-month",
+        "An adult-type regimen decision (6-month HRZE or HPMZ if eligible) — not SHINE",
+        "Mandatory streptomycin",
+        "TPT 3HP as disease therapy"
+      ],
+      "answer": "An adult-type regimen decision (6-month HRZE or HPMZ if eligible) — not SHINE",
+      "why": "Cavitation is not non-severe. Age ≥12 may open HPMZ.",
+      "whyWrong": {
+        "SHINE non-severe 4-month": "Fails the severity gate.",
+        "Mandatory streptomycin": "No.",
+        "TPT 3HP as disease therapy": "TPT is not disease treatment."
+      }
+    },
+    {
+      "id": "shine-figure",
+      "kind": "figure",
+      "prompt": "On the SHINE flow map, a “yes” at RR suspected leads where?",
+      "choices": [
+        "2HRZ(E)/2HR",
+        "DR algorithm",
+        "IGRA",
+        "CAD only"
+      ],
+      "answer": "DR algorithm",
+      "why": "SHINE assumes DS disease.",
+      "whyWrong": {
+        "2HRZ(E)/2HR": "The no-RR, non-severe path.",
+        "IGRA": "No.",
+        "CAD only": "No."
+      },
+      "figureHint": "Bottom end node from the RR decision."
+    }
+  ]
+}

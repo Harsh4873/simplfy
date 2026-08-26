@@ -24,7 +24,8 @@
     "Xpert sensitivity drops with paucibacillary disease. Ultra improved limit of detection by adding IS6110/IS1081 targets and melt analysis, at the cost of more “trace” calls that need context (especially in people previously treated, where DNA may linger).",
     "Culture contamination and time-to-positivity are data, not nuisances. Rapid MGIT positivity correlates with burden. Negative culture after a clearly positive Xpert can be prior treatment, dead bacilli, or a lab problem — not a paradox to ignore.",
     "Phenotypic DST depends on critical concentrations that are historical. Borderline rpoB mutations and some inhA promoter alleles are the canonical places where genotype and a single critical concentration disagree. MIC or a catalogue-aware WGS call is the resolution, not shouting at the MGIT.",
-    "For RR/MDR, follow-on tests (Xpert XDR, targeted NGS, WGS, phenotypic second-line DST) are how you learn about FQ, BDQ, LZD, and the injectables. A RIF-resistant Xpert is the start of a DST algorithm, not the end."
+    "For RR/MDR, follow-on tests (Xpert XDR, targeted NGS, WGS, phenotypic second-line DST) are how you learn about FQ, BDQ, LZD, and the injectables. A RIF-resistant Xpert is the start of a DST algorithm, not the end.",
+    "Pediatric stool Ultra, urine LF-LAM in advanced HIV, and CAD-read CXR for adult screening are WHO-endorsed adjuncts, not replacements for a WRD-plus-culture spine. IGRA still does not diagnose disease."
   ],
   "visual": {
     "kind": "flow-map",
@@ -62,7 +63,7 @@
       "license": "CC BY-SA 4.0"
     }
   ],
-  "related": ["tb-rifampin", "tb-wgs-dst", "tb-pathogenesis", "tb-resistance"],
+  "related": ["tb-xpert-ultra", "tb-smear-culture", "tb-igra-tst", "tb-wgs-dst", "tb-rifampin", "tb-resistance", "tb-xpert-xdr", "tb-cxr-cad", "tb-lf-lam", "tb-truenat"],
   "example": {
     "title": "Trace Ultra in a previously treated patient",
     "setup": "A man treated two years ago for DS-TB presents with chronic cough. Chest radiograph is scarred. Xpert Ultra on sputum is “MTB detected, trace; RIF indeterminate.” Smear is negative.",

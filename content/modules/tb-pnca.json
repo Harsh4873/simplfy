@@ -1,0 +1,171 @@
+{
+  "id": "tb-pnca",
+  "title": "pncA and pyrazinamide",
+  "dek": "No tidy RRDR. PZA resistance is a scattered pncA loss-of-function plus rare panD/clpC1 stories. Sequence the whole gene, including the promoter. M. bovis is born resistant.",
+  "domain": "tb",
+  "aliases": [
+    "pncA",
+    "pyrazinamidase",
+    "PZase",
+    "panD",
+    "PZA resistance"
+  ],
+  "tags": [
+    "pncA",
+    "PZA",
+    "prodrug",
+    "whole gene",
+    "M. bovis"
+  ],
+  "story": [
+    "Pyrazinamide is a prodrug. PncA (pyrazinamidase/nicotinamidase) converts it to pyrazinoic acid (POA). POA’s target story is still messier than INH’s (CoA metabolism, panD, acidified POA accumulation), but the resistance genetics in clinic are dominated by pncA coding and promoter mutations scattered across the gene.",
+    "There is no 81-bp PZA cassette. A five-probe cartridge cannot do this gene. tNGS panels that drop pncA amplicons must not report PZA-S. Silent phylogenetic pncA SNPs exist and are graded not-associated in the catalogue — do not regex the gene name.",
+    "M. bovis and BCG carry an ancestral pncA lesion (commonly His57Asp). That is intrinsic PZA-R, not acquired MDR. H37Rv is PZA-S; it is the coordinate origin, not M. bovis."
+  ],
+  "deepTitle": "Phenotype is pH, genotype is scattered",
+  "deep": [
+    "PZA MGIT at the wrong pH is a false-R factory. Discordance with a WT pncA should make you check the pH, not invent a new gene first.",
+    "panD and clpC1 alleles are real but uncommon compared with pncA. Catalogue-grade them; do not let them drown the report.",
+    "POA efflux (some Rv1258c stories) is not the first place a clinical lab should look.",
+    "PZA is a sterilizing companion in DS-TB and in several 9-month DR recipes. A wrecked pncA means you lost a month-count, not a footnote."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "pncA is short and mean: resistance alleles scatter across the CDS and promoter. Contrast with rpoB’s RRDR hotspot. H57 is the bovis intrinsic mark.",
+    "gene": "pncA",
+    "start": -40,
+    "end": 187,
+    "unit": "codon (Mtb) + promoter nt schematic",
+    "regions": [
+      {
+        "start": -20,
+        "end": -1,
+        "label": "promoter"
+      },
+      {
+        "start": 1,
+        "end": 187,
+        "label": "pncA CDS"
+      }
+    ],
+    "marks": [
+      {
+        "pos": 57,
+        "label": "H57D",
+        "note": "bovis/BCG intrinsic"
+      },
+      {
+        "pos": 103,
+        "label": "scattered LOF",
+        "note": "no RRDR analogue"
+      },
+      {
+        "pos": 175,
+        "label": "C-term LOF",
+        "note": "frameshifts count"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — pncA",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "PncA pyrazinamidase — UniProt P9WHF5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WHF5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Whole-gene rule and the bovis intrinsic allele.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pyrazinamide",
+    "tb-mtbc",
+    "tb-who-catalogue",
+    "tb-resistance",
+    "tb-wgs-dst"
+  ],
+  "example": {
+    "title": "pncA synonymous lineage SNP called R",
+    "setup": "TBProfiler flags pncA. The change is a known lineage marker graded not-associated. Phenotypic PZA is S.",
+    "steps": [
+      {
+        "title": "Read the grade",
+        "body": "Gene name ≠ resistance. Catalogue not-associated alleles stay S."
+      },
+      {
+        "title": "Do not “confirm” with a bad MGIT",
+        "body": "If someone then runs PZA at pH 6.8 and gets R, you have two errors stacked."
+      },
+      {
+        "title": "Keep looking if phenotype is truly R and pncA is honestly WT",
+        "body": "Then panD/clpC1 and lab pH enter. That is a residual, not a regex failure."
+      }
+    ],
+    "takeaway": "pncA needs the whole gene and a grade, not a hit/no-hit."
+  },
+  "check": [
+    {
+      "id": "pnc-scatter",
+      "kind": "conceptual",
+      "prompt": "Why can’t a five-probe RRDR-style cartridge cover PZA well?",
+      "choices": [
+        "Because pncA is on a plasmid",
+        "Because clinically relevant pncA mutations are scattered across the gene/promoter, not confined to an 81-bp cassette",
+        "Because PZA is not a drug",
+        "Because Ultra already sequences pncA"
+      ],
+      "answer": "Because clinically relevant pncA mutations are scattered across the gene/promoter, not confined to an 81-bp cassette",
+      "why": "Whole-gene interrogation is the design implication.",
+      "whyWrong": {
+        "Because pncA is on a plasmid": "Chromosomal.",
+        "Because PZA is not a drug": "It is.",
+        "Because Ultra already sequences pncA": "It does not."
+      }
+    },
+    {
+      "id": "pnc-bovis",
+      "kind": "calculation",
+      "prompt": "M. bovis BCG pncA H57D should be reported as:",
+      "choices": [
+        "Acquired MDR-TB",
+        "Intrinsic PZA resistance of the bovis lineage, not treatment-emergent MDR",
+        "RIF-R",
+        "Proof of L2/Beijing"
+      ],
+      "answer": "Intrinsic PZA resistance of the bovis lineage, not treatment-emergent MDR",
+      "why": "Speciation first.",
+      "whyWrong": {
+        "Acquired MDR-TB": "Category error.",
+        "RIF-R": "Wrong gene.",
+        "Proof of L2/Beijing": "Wrong lineage."
+      }
+    },
+    {
+      "id": "pnc-figure",
+      "kind": "figure",
+      "prompt": "On the pncA track, what is the pedagogical contrast with rpoB?",
+      "choices": [
+        "pncA resistance is a single codon 450 analogue at H57 only",
+        "There is no compact RRDR-like hotspot; marks are drawn across the CDS",
+        "pncA is longer than the Mtb genome",
+        "H57D is an IS6110 insertion"
+      ],
+      "answer": "There is no compact RRDR-like hotspot; marks are drawn across the CDS",
+      "why": "The caption says it.",
+      "whyWrong": {
+        "pncA resistance is a single codon 450 analogue at H57 only": "H57 is the bovis allele, not the only clinical R.",
+        "pncA is longer than the Mtb genome": "No.",
+        "H57D is an IS6110 insertion": "Missense."
+      },
+      "figureHint": "Shaded whole CDS versus a tiny hotspot."
+    }
+  ]
+}

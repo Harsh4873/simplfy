@@ -1,0 +1,199 @@
+{
+  "id": "tb-ddn-f420",
+  "title": "Ddn, F420, and nitroimidazoles",
+  "dek": "Pretomanid and delamanid are prodrugs. Ddn (deazaflavin-dependent nitroreductase) plus the F420 biosynthetic genes (fbiA/B/C/D, fgd1) activate them. Loss-of-function is the resistance grammar.",
+  "domain": "tb",
+  "aliases": [
+    "ddn",
+    "fbiA",
+    "fgd1",
+    "F420",
+    "nitroimidazole resistance",
+    "Rv3547"
+  ],
+  "tags": [
+    "ddn",
+    "F420",
+    "pretomanid",
+    "delamanid",
+    "prodrug"
+  ],
+  "story": [
+    "Delamanid and pretomanid (Pa-824) are bicyclic nitroimidazoles. They require reduction by Ddn using the cofactor F420-H2. Mutations that wreck ddn, fgd1, or F420 biosynthesis (fbiA, fbiB, fbiC, fbiD) prevent activation. That is a loss-of-function catalogue, more like pncA than like rpoB’s missense hotspot.",
+    "Cross-resistance between DLM and Pa is expected when the shared activation path is broken, but it is not always complete — some alleles shift one MIC more than the other. Do not assume DLM rescues a ddn knockout.",
+    "WHO catalogue 2nd ed expanded DLM-associated variants substantially; Pa still has thinner phenotype pairing. Humility is part of the grade. A WT panel is a prior, not a promise, especially after prior nitroimidazole exposure."
+  ],
+  "deepTitle": "How to sequence this",
+  "deep": [
+    "Full-gene ddn and fbi genes, not a codon-306-style hotspot. Frameshifts count.",
+    "Lineage SNPs in fbi genes exist. Grade, don’t regex.",
+    "If BPaLM is being used at scale, this locus will stop being rare. Surveillance should watch ddn the way it watched rpoB in the 1990s.",
+    "Metronidazole is a different nitroimidazole with poor Mtb activity in oxic lesions; do not file it as Pa."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Nitroimidazole prodrugs funnel through F420-H2 and Ddn. Breaking any step of cofactor synthesis or the reductase blocks both DLM and Pa more often than not.",
+    "nodes": [
+      {
+        "id": "pa",
+        "label": "Pa / DLM",
+        "group": "drug",
+        "x": 12,
+        "y": 40,
+        "sub": "prodrugs"
+      },
+      {
+        "id": "fbi",
+        "label": "fbiA–D",
+        "group": "enzyme",
+        "x": 38,
+        "y": 22,
+        "sub": "F420 synth"
+      },
+      {
+        "id": "fgd",
+        "label": "Fgd1",
+        "group": "enzyme",
+        "x": 38,
+        "y": 62,
+        "sub": "F420-H2"
+      },
+      {
+        "id": "ddn",
+        "label": "Ddn",
+        "group": "enzyme",
+        "x": 64,
+        "y": 40,
+        "sub": "nitroreductase"
+      },
+      {
+        "id": "act",
+        "label": "Active species",
+        "group": "target",
+        "x": 88,
+        "y": 40,
+        "sub": "cell wall / resp"
+      }
+    ],
+    "edges": [
+      {
+        "from": "fbi",
+        "to": "fgd"
+      },
+      {
+        "from": "fgd",
+        "to": "ddn"
+      },
+      {
+        "from": "pa",
+        "to": "ddn"
+      },
+      {
+        "from": "ddn",
+        "to": "act"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO mutation catalogue — DLM/Pa activation genes",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Ddn deazaflavin-dependent nitroreductase — UniProt P9WP15",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WP15/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Shared activation path, scattered LOF, cross-R.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-pretomanid",
+    "tb-delamanid",
+    "tb-who-catalogue",
+    "tb-bpalm",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "fbiC frameshift on BPaLM month 3",
+    "setup": "Sputum tNGS at month 3: new fbiC frameshift AF 0.40. Baseline ddn/fbi WT. Still culture-positive.",
+    "steps": [
+      {
+        "title": "Pa is no longer a counting drug",
+        "body": "Activation loss is the nitroimidazole grammar. This is emerging Pa/DLM resistance until MIC says otherwise."
+      },
+      {
+        "title": "Do not swap in DLM as a rescue",
+        "body": "Shared F420 path. Adding DLM is not a new mechanism."
+      },
+      {
+        "title": "Rebuild",
+        "body": "You are leaving BPaLM. Need remaining Group A/B integrity (BDQ, LZD, FQ) and a longer or alternative construct."
+      }
+    ],
+    "takeaway": "Nitroimidazole resistance is an activation-network failure, often cross-class."
+  },
+  "check": [
+    {
+      "id": "ddn-pro",
+      "kind": "conceptual",
+      "prompt": "Pretomanid and delamanid require which activation idea?",
+      "choices": [
+        "KatG only",
+        "Ddn using F420-H2, hence fbi/fgd1/ddn integrity",
+        "RpoB binding",
+        "EmbB arabinosylation"
+      ],
+      "answer": "Ddn using F420-H2, hence fbi/fgd1/ddn integrity",
+      "why": "Prodrugs with a cofactor network.",
+      "whyWrong": {
+        "KatG only": "INH.",
+        "RpoB binding": "RIF.",
+        "EmbB arabinosylation": "EMB."
+      }
+    },
+    {
+      "id": "ddn-cross",
+      "kind": "calculation",
+      "prompt": "A ddn loss-of-function isolate is being considered for delamanid after pretomanid failure. The prior is:",
+      "choices": [
+        "DLM will always work because the names differ",
+        "Shared activation predicts cross-resistance; do not assume DLM rescues ddn LOF",
+        "The isolate is RIF-S",
+        "ddn LOF causes katG S315T"
+      ],
+      "answer": "Shared activation predicts cross-resistance; do not assume DLM rescues ddn LOF",
+      "why": "Different labels, same reductase.",
+      "whyWrong": {
+        "DLM will always work because the names differ": "Hope is not a mechanism.",
+        "The isolate is RIF-S": "Unrelated.",
+        "ddn LOF causes katG S315T": "Unrelated."
+      }
+    },
+    {
+      "id": "ddn-figure",
+      "kind": "figure",
+      "prompt": "On the nitroimidazole map, fbiA–D sit where in the path?",
+      "choices": [
+        "After the active species",
+        "Upstream, making F420 before Ddn can reduce the prodrug",
+        "On rpoB",
+        "In the host nucleus"
+      ],
+      "answer": "Upstream, making F420 before Ddn can reduce the prodrug",
+      "why": "Left-upper enzyme node feeding Fgd1/Ddn.",
+      "whyWrong": {
+        "After the active species": "Wrong order.",
+        "On rpoB": "No.",
+        "In the host nucleus": "No."
+      },
+      "figureHint": "Nodes: fbiA–D → Fgd1 → Ddn → active species."
+    }
+  ]
+}

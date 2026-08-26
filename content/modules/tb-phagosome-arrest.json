@@ -1,0 +1,211 @@
+{
+  "id": "tb-phagosome-arrest",
+  "title": "Phagosome arrest and cytosolic access",
+  "dek": "Mtb is not a happy resident of a sealed, acidic, fusion-competent phagolysosome. ESX-1, lipids, and CpnT-family toxins rewrite the compartment — and sometimes the cytosol.",
+  "domain": "tb",
+  "aliases": [
+    "phagosome maturation",
+    "phagolysosome",
+    "ESAT-6 membrane",
+    "CpnT",
+    "cytosolic access",
+    "Rab7"
+  ],
+  "tags": [
+    "macrophage",
+    "phagosome",
+    "ESX-1",
+    "virulence",
+    "autophagy"
+  ],
+  "story": [
+    "A canonical phagosome acidifies, acquires Rab7 and LAMP, and fuses with lysosomes. Mtb delays that programme. Mannose-capped LAM, PDIM, and secreted effectors interfere with PI3P, Rab conversion, and v-ATPase assembly. The bacterium sits in a mildly acidic, fusion-poor niche that still communicates with the endocytic pathway.",
+    "ESX-1-dependent membrane damage — ESAT-6 is the named actor, the apparatus is the truth — lets bacterial products and sometimes bacilli access the cytosol. Cytosolic DNA then lights cGAS–STING; the host counter with ubiquitin, LC3, and xenophagy. The infection is a negotiation between damage and repair, not a static “intraphagosomal pathogen” cartoon from 1998.",
+    "CpnT (and its C-terminal TNT NAD glycohydrolase in some models) and other contact-dependent toxins add to macrophage death. Necrosis, not tidy apoptosis, feeds the caseum. Genomics labs meeting “latency” should remember: the compartment is heterogeneous inside one granuloma."
+  ],
+  "deepTitle": "What this implies for drugs and screens",
+  "deep": [
+    "pH of the niche is why PZA’s pH-dependent activity is a lesion story, not a broth story. Broth at pH 6.8 under-calls PZA.",
+    "Autophagy-modulating host-directed ideas (rapamycin-class, interferon programmes) sit on this map. They are research, not WHO regimens.",
+    "ESX-1 loss (BCG, some clinical attenuations) changes both the compartment and the IGRA antigen display.",
+    "Macrophage Tn-seq hits (espA, ecc genes, pdim loci) are the genetic proof that “phagosome arrest” is many genes, not a single switch named ESAT-6."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Uptake to a damaged, poorly fused compartment. Cytosolic leak is an ESX-1 branch, not a separate species of bacterium.",
+    "nodes": [
+      {
+        "id": "up",
+        "label": "Uptake",
+        "x": 8,
+        "y": 48,
+        "tone": "start",
+        "detail": "alveolar Mϕ"
+      },
+      {
+        "id": "early",
+        "label": "Early phagosome",
+        "x": 30,
+        "y": 48,
+        "tone": "process"
+      },
+      {
+        "id": "arrest",
+        "label": "Maturation arrest",
+        "x": 52,
+        "y": 28,
+        "tone": "decision",
+        "detail": "LAM/PDIM"
+      },
+      {
+        "id": "esx",
+        "label": "ESX-1 damage",
+        "x": 52,
+        "y": 72,
+        "tone": "process"
+      },
+      {
+        "id": "niche",
+        "label": "Replication niche",
+        "x": 76,
+        "y": 28,
+        "tone": "end"
+      },
+      {
+        "id": "cyto",
+        "label": "Cytosol / cGAS",
+        "x": 76,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "up",
+        "to": "early"
+      },
+      {
+        "from": "early",
+        "to": "arrest"
+      },
+      {
+        "from": "early",
+        "to": "esx"
+      },
+      {
+        "from": "arrest",
+        "to": "niche"
+      },
+      {
+        "from": "esx",
+        "to": "cyto"
+      },
+      {
+        "from": "esx",
+        "to": "niche",
+        "label": "leaky phagosome"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "EsxA — UniProt P9WNK5",
+      "attribution": "Protein identity and function summary; not a bulk Mycobrowser dump.",
+      "license": "CC BY 4.0 (UniProt)",
+      "url": "https://www.uniprot.org/uniprotkb/P9WNK5/entry"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Compartment notes tying ESX-1 damage to PZA pH and IGRA.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-esx-secretion",
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "tb-organism"
+  ],
+  "example": {
+    "title": "PZA “S” in pH 6.8 broth, R in acidified MGIT",
+    "setup": "pncA wild type. One lab reports PZA-S in poorly acidified medium; WHO-method MGIT at acidic pH is R-borderline.",
+    "steps": [
+      {
+        "title": "PZA is a pH drug",
+        "body": "Pyrazinoic acid accumulation and activity require acidity. Neutral broth is the wrong object."
+      },
+      {
+        "title": "The macrophage niche is closer to acid than to pH 6.8",
+        "body": "Phagosome arrest is not pH 7.4 cytosol. Phenotype methods have to respect that."
+      },
+      {
+        "title": "Believe pncA plus a standardised pDST",
+        "body": "Do not invent a new resistance gene to explain a pH error."
+      }
+    ],
+    "takeaway": "Compartment chemistry is part of DST."
+  },
+  "check": [
+    {
+      "id": "phago-esx",
+      "kind": "conceptual",
+      "prompt": "ESX-1 contributes to intracellular survival mainly by:",
+      "choices": [
+        "Inhibiting DNA gyrase",
+        "Damaging the phagosomal membrane and enabling cytosolic signalling / access",
+        "Methylating 16S rRNA",
+        "Activating isoniazid"
+      ],
+      "answer": "Damaging the phagosomal membrane and enabling cytosolic signalling / access",
+      "why": "That is the RD1 virulence story.",
+      "whyWrong": {
+        "Inhibiting DNA gyrase": "Fluoroquinolones.",
+        "Methylating 16S rRNA": "tlyA/rRNA drugs.",
+        "Activating isoniazid": "KatG."
+      }
+    },
+    {
+      "id": "phago-ph",
+      "kind": "calculation",
+      "prompt": "If v-ATPase assembly is reduced on an Mtb phagosome, lumenal pH stays closer to 6 than to 4.5. Which drug’s activity is most pH-tied to that niche?",
+      "choices": [
+        "Moxifloxacin",
+        "Pyrazinamide",
+        "Linezolid",
+        "Ethambutol"
+      ],
+      "answer": "Pyrazinamide",
+      "why": "PZA/POA activity is strongly pH-dependent.",
+      "whyWrong": {
+        "Moxifloxacin": "Gyrase, not a pH prodrug.",
+        "Linezolid": "Ribosome.",
+        "Ethambutol": "AG synthesis."
+      }
+    },
+    {
+      "id": "phago-figure",
+      "kind": "figure",
+      "prompt": "On the phagosome flow map, what does the ESX-1 branch to “cytosol / cGAS” denote?",
+      "choices": [
+        "BCG replication in cytosol as the default",
+        "Membrane damage allowing bacterial DNA/products to light cytosolic sensors",
+        "Xpert cartridge flow",
+        "Rifampin binding RpoB"
+      ],
+      "answer": "Membrane damage allowing bacterial DNA/products to light cytosolic sensors",
+      "why": "cGAS–STING is the host side of a leaky phagosome.",
+      "whyWrong": {
+        "BCG replication in cytosol as the default": "BCG lacks ESX-1.",
+        "Xpert cartridge flow": "Wrong plate.",
+        "Rifampin binding RpoB": "Wrong plate."
+      },
+      "figureHint": "Bottom-right end node."
+    }
+  ]
+}

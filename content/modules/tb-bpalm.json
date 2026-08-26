@@ -1,0 +1,223 @@
+{
+  "id": "tb-bpalm",
+  "title": "BPaLM and BPaL",
+  "dek": "Six months of bedaquiline, pretomanid, linezolid 600 mg, plus moxifloxacin if FQ-S. WHO’s preferred RR/MDR regimen when eligible. FQ-R drops the M. Pregnancy drops the Pa.",
+  "domain": "tb",
+  "aliases": [
+    "BPaLM",
+    "BPaL",
+    "Nix-TB",
+    "ZeNix",
+    "TB-PRACTECAL",
+    "pretomanid regimen"
+  ],
+  "tags": [
+    "BPaLM",
+    "BPaL",
+    "RR-TB",
+    "pretomanid",
+    "linezolid"
+  ],
+  "story": [
+    "WHO suggests 6-month BPaLM (bedaquiline, pretomanid, linezolid 600 mg daily, moxifloxacin) rather than 9-month or longer regimens for eligible MDR/RR-TB. If fluoroquinolone resistance is confirmed, drop moxifloxacin and continue BPaL; BPaL may extend toward 9 months when response is slow. CDC/IDSA 2025 overlay: BPaLM for ≥14 years with RR, FQ-S pulmonary disease; BPaL when FQ-R or FQ-intolerant.",
+    "Eligibility gates: typically age ≥14 (programme-dependent), no pretomanid in pregnancy/breastfeeding (limited safety), caution in TBM and some extra-pulmonary sites, and do not start if BDQ/LZD/Pa resistance is known. Linezolid is 600 mg daily in the 2022–2025 WHO text — not the 1200 mg Nix-TB opening dose as a routine.",
+    "Unknown FQ DST should not delay BPaLM: start with the M, then drop it if gyrA/QRDR says FQ-R. If BDQ, LZD, or Pa is compromised, leave this acronym and go to BDLLfxC, a 9-month oral regimen, or an individualised longer regimen."
+  ],
+  "deepTitle": "Monitoring is the fourth drug",
+  "deep": [
+    "Linezolid: myelosuppression, neuropathy; some programmes TDM trough <2 µg/mL. Neuropathy is why people stop LZD and then fail.",
+    "Bedaquiline: QTc, hepatic; CYP3A4 (rifamycins are the enemy; you already left rifampin).",
+    "Pretomanid: hepatotoxicity, lactic acidosis rare, testicular toxicity in animals — hence the pregnancy caution.",
+    "Week 8–16 cultures still matter. A 6-month calendar is not a substitute for knowing whether the sputum converted."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "RR-TB eligible for a 6-month all-oral: start BPaLM, drop M if FQ-R, leave the acronym if BDQ/LZD/Pa is lost or pregnancy forbids pretomanid.",
+    "nodes": [
+      {
+        "id": "rr",
+        "label": "MDR/RR-TB",
+        "x": 8,
+        "y": 48,
+        "tone": "start"
+      },
+      {
+        "id": "el",
+        "label": "Eligible?",
+        "x": 28,
+        "y": 48,
+        "tone": "decision"
+      },
+      {
+        "id": "bpam",
+        "label": "BPaLM",
+        "x": 50,
+        "y": 28,
+        "tone": "process"
+      },
+      {
+        "id": "fq",
+        "label": "FQ-R?",
+        "x": 70,
+        "y": 28,
+        "tone": "decision"
+      },
+      {
+        "id": "bpal",
+        "label": "BPaL",
+        "x": 88,
+        "y": 28,
+        "tone": "end"
+      },
+      {
+        "id": "keepm",
+        "label": "Keep M",
+        "x": 88,
+        "y": 10,
+        "tone": "end"
+      },
+      {
+        "id": "other",
+        "label": "BDLLfxC / 9mo",
+        "x": 50,
+        "y": 72,
+        "tone": "end"
+      }
+    ],
+    "edges": [
+      {
+        "from": "rr",
+        "to": "el"
+      },
+      {
+        "from": "el",
+        "to": "bpam",
+        "label": "yes"
+      },
+      {
+        "from": "el",
+        "to": "other",
+        "label": "preg / <14 / Pa off"
+      },
+      {
+        "from": "bpam",
+        "to": "fq"
+      },
+      {
+        "from": "fq",
+        "to": "bpal",
+        "label": "yes"
+      },
+      {
+        "from": "fq",
+        "to": "keepm",
+        "label": "no"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 2025: BPaLM/BPaL 6-month regimens",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "CDC/IDSA 2025 BPaLM/BPaL overlay",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/php/dear-colleague-letters/2025-treatment-guidelines.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Acronym grammar: M is FQ-S; Pa is not for pregnancy.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-second-line",
+    "tb-bedaquiline",
+    "tb-pretomanid",
+    "tb-linezolid",
+    "tb-moxifloxacin",
+    "tb-bdllfxc",
+    "tb-who-groups",
+    "tb-qtc-monitoring"
+  ],
+  "example": {
+    "title": "Pregnant RR-TB, FQ unknown",
+    "setup": "28-year-old, 22 weeks pregnant, Xpert RIF detected, FQ DST pending. Ward wants BPaLM today.",
+    "steps": [
+      {
+        "title": "Pretomanid gate",
+        "body": "WHO: BPaLM recommendation does not apply to pregnant/breastfeeding people because Pa safety is insufficient."
+      },
+      {
+        "title": "2025 alternative",
+        "body": "BDLLfxC (or a 9-month oral such as BLMZ) is the designed off-ramp. Start a complete regimen, then drop Lfx or CFZ per FQ result as the BDLLfxC SOP says."
+      },
+      {
+        "title": "Do not wait idle",
+        "body": "Pregnancy is not a reason to give two weak drugs for a month. It is a reason to pick the non-Pa 6- or 9-month construct."
+      }
+    ],
+    "takeaway": "BPaLM is preferred when eligible — eligibility includes not being pregnant on pretomanid."
+  },
+  "check": [
+    {
+      "id": "bpalm-lzd",
+      "kind": "conceptual",
+      "prompt": "WHO’s recommended linezolid dose inside BPaLM/BPaL is:",
+      "choices": [
+        "1200 mg daily for 6 months as the routine dose",
+        "600 mg once daily",
+        "50 mg weekly",
+        "The INH 300 mg tablet"
+      ],
+      "answer": "600 mg once daily",
+      "why": "Nix-TB’s 1200 mg is not the 2022–2025 WHO routine.",
+      "whyWrong": {
+        "1200 mg daily for 6 months as the routine dose": "Historical trial opening dose, not current WHO routine.",
+        "50 mg weekly": "No.",
+        "The INH 300 mg tablet": "Wrong drug."
+      }
+    },
+    {
+      "id": "bpalm-fq",
+      "kind": "calculation",
+      "prompt": "RR-TB, gyrA D94G, atpE/Rv0678/rplC/ddn wild type, non-pregnant adult. Preferred WHO 6-month construct is:",
+      "choices": [
+        "BPaLM counting moxi as active",
+        "BPaL (drop M)",
+        "2HRZE/4HR",
+        "3HP"
+      ],
+      "answer": "BPaL (drop M)",
+      "why": "D94G is FQ-R. The M is not a decoration you keep for the acronym.",
+      "whyWrong": {
+        "BPaLM counting moxi as active": "M is dead.",
+        "2HRZE/4HR": "RIF is lost.",
+        "3HP": "TPT."
+      }
+    },
+    {
+      "id": "bpalm-figure",
+      "kind": "figure",
+      "prompt": "On the BPaLM map, pregnancy / age / Pa-off leads to which node?",
+      "choices": [
+        "Keep M",
+        "BPaL",
+        "BDLLfxC / 9mo",
+        "DS-TB HRZE"
+      ],
+      "answer": "BDLLfxC / 9mo",
+      "why": "That is the labelled ineligible end node.",
+      "whyWrong": {
+        "Keep M": "FQ-S continuation of BPaLM.",
+        "BPaL": "FQ-R but still Pa-eligible.",
+        "DS-TB HRZE": "Wrong resistance class."
+      },
+      "figureHint": "Bottom end node from Eligible? no."
+    }
+  ]
+}

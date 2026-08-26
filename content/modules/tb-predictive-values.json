@@ -1,0 +1,169 @@
+{
+  "id": "tb-predictive-values",
+  "title": "Se, Sp, PPV, and prevalence",
+  "dek": "Sensitivity and specificity are properties of a test in a population. Predictive values are properties of a test in your waiting room. TB diagnostics die when people swap those.",
+  "domain": "tb",
+  "aliases": [
+    "positive predictive value",
+    "NPV",
+    "Bayes TB test",
+    "pretest probability",
+    "likelihood ratio TB"
+  ],
+  "tags": [
+    "PPV",
+    "Bayes",
+    "screening",
+    "diagnostics",
+    "prevalence"
+  ],
+  "story": [
+    "Sensitivity: P(positive | disease). Specificity: P(negative | no disease). They do not know your prevalence. Positive predictive value: P(disease | positive) = Se·p / (Se·p + (1−Sp)·(1−p)). That is Bayes with a binary test, and it is why Ultra in a community survey is not Ultra in a TB ward.",
+    "LF-LAM, CAD, TST, and even Xpert acquire different PPV as p changes. Publishing “Xpert PPV 98%” without p is an incomplete sentence. So is “LAM is insensitive” without CD4 stratum.",
+    "Likelihood ratios (Se/(1−Sp) and (1−Se)/Sp) let you move log-odds without re-deriving Bayes each time. They still assume the Se/Sp you measured apply to this person — spectrum bias is how HIV and pediatric TB punish you."
+  ],
+  "deepTitle": "The actual identities",
+  "deep": [
+    "PPV = Se p / (Se p + FPR (1−p)), FPR = 1−Sp. NPV = Sp (1−p) / (Sp (1−p) + FNR p), FNR = 1−Se.",
+    "When p → 0, PPV → 0 even for excellent tests. That is screening. Confirmatory mWRDs exist because triage tests are not allowed to have the last word.",
+    "Heteroresistance and mixed samples break the implicit “one true disease state” in Se/Sp tables. Your residual is not always noise.",
+    "Do not average Se across smear-positive and pediatric gastric-aspirate cohorts and then quote one number to a clinician."
+  ],
+  "formulas": [
+    {
+      "id": "ppv",
+      "label": "PPV",
+      "expression": "PPV = Se p / [Se p + (1−Sp)(1−p)]",
+      "note": "p is pretest prevalence in the population you actually tested."
+    },
+    {
+      "id": "lr",
+      "label": "Positive likelihood ratio",
+      "expression": "LR+ = Se / (1−Sp)",
+      "note": "Multiplies pretest odds to give post-test odds."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Same test, two prevalences: the posterior mass on disease given a positive result collapses when the no-disease curve dominates the waiting room.",
+    "xLabel": "schematic test score",
+    "curves": [
+      {
+        "id": "neg",
+        "label": "no disease",
+        "mean": 0,
+        "sd": 1
+      },
+      {
+        "id": "pos",
+        "label": "TB disease",
+        "mean": 2.2,
+        "sd": 0.8
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO screening and diagnostic modules — interpret tests with prevalence",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240022676"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Bayes plate so CAD/LAM/Xpert are not quoted without p.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    }
+  ],
+  "related": [
+    "tb-cxr-cad",
+    "tb-xpert-ultra",
+    "tb-lf-lam",
+    "tb-diagnosis",
+    "tb-igra-tst"
+  ],
+  "example": {
+    "title": "Ward versus survey",
+    "setup": "Ultra Se 0.90, Sp 0.98. Clinic prevalence among tested 0.25. Community survey prevalence 0.01.",
+    "steps": [
+      {
+        "title": "Clinic PPV",
+        "body": "Se p = 0.225; FPR (1−p) = 0.02×0.75 = 0.015; PPV = 0.225/0.240 = 0.94.",
+        "expression": "PPV_clinic ≈ 0.94"
+      },
+      {
+        "title": "Survey PPV",
+        "body": "Se p = 0.009; FPR (1−p) = 0.02×0.99 = 0.0198; PPV = 0.009/0.0288 ≈ 0.31.",
+        "expression": "PPV_survey ≈ 0.31"
+      },
+      {
+        "title": "Same cartridge",
+        "body": "The chemistry did not change. The waiting room did."
+      }
+    ],
+    "takeaway": "Quote Se/Sp with p, or quote PPV with p. Never a floating 98%."
+  },
+  "check": [
+    {
+      "id": "pv-def",
+      "kind": "conceptual",
+      "prompt": "PPV is:",
+      "choices": [
+        "P(positive | disease)",
+        "P(disease | positive), hence prevalence-dependent",
+        "Always equal to sensitivity",
+        "A property of rpoB numbering"
+      ],
+      "answer": "P(disease | positive), hence prevalence-dependent",
+      "why": "Sensitivity is P(positive | disease) — the other direction.",
+      "whyWrong": {
+        "P(positive | disease)": "That is sensitivity.",
+        "Always equal to sensitivity": "Only in degenerate cases.",
+        "A property of rpoB numbering": "No."
+      }
+    },
+    {
+      "id": "pv-num",
+      "kind": "calculation",
+      "prompt": "Se = 0.80, Sp = 0.95, p = 0.10. PPV is closest to:",
+      "choices": [
+        "0.80",
+        "0.64",
+        "0.95",
+        "0.10"
+      ],
+      "answer": "0.64",
+      "why": "0.80×0.10 = 0.08; (0.05)×0.90 = 0.045; 0.08/0.125 = 0.64.",
+      "whyWrong": {
+        "0.80": "Sensitivity.",
+        "0.95": "Specificity.",
+        "0.10": "Prevalence."
+      }
+    },
+    {
+      "id": "pv-figure",
+      "kind": "figure",
+      "prompt": "On the density-shift plate, why does a single threshold yield different PPVs in a ward versus a survey?",
+      "choices": [
+        "Because the no-disease curve has far more mass when prevalence is low, so most threshold-crossers are false positives",
+        "Because rpoB changes",
+        "Because sensitivity becomes specificity at night",
+        "Because CAD software deletes Bayes"
+      ],
+      "answer": "Because the no-disease curve has far more mass when prevalence is low, so most threshold-crossers are false positives",
+      "why": "The mixing weight on the two curves is p versus 1−p.",
+      "whyWrong": {
+        "Because rpoB changes": "No.",
+        "Because sensitivity becomes specificity at night": "No.",
+        "Because CAD software deletes Bayes": "It does not."
+      },
+      "figureHint": "Two overlapping curves; mixing weights are off-stage prevalence."
+    }
+  ]
+}

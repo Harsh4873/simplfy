@@ -1,0 +1,154 @@
+{
+  "id": "tb-cxr-cad",
+  "title": "CXR, CAD, and triage",
+  "dek": "Chest radiography is a sensitive triage tool, not a microbiologic proof. Computer-aided detection is a WHO-endorsed reader for screening adults — still a score, still a pretest-probability problem.",
+  "domain": "tb",
+  "aliases": [
+    "computer-aided detection",
+    "CAD CXR",
+    "chest radiograph TB",
+    "triage radiography",
+    "CAD4TB"
+  ],
+  "tags": [
+    "CXR",
+    "CAD",
+    "screening",
+    "triage",
+    "PPV"
+  ],
+  "story": [
+    "CXR is among the most sensitive simple screens for pulmonary TB, and among the least specific. Scars, bronchiectasis, silicosis, cancer, and old granulomas all light up. WHO uses CXR in screening and in ruling out disease before TPT; it never licensed CXR as culture.",
+    "Computer-aided detection (CAD) software reads digital CXRs and emits a score. WHO (2021 screening module, carried forward) conditionally recommends CAD for screening/triage in people ≥15 years, HIV-positive or not, as a replacement for human reader in those use cases. Thresholds are product- and prevalence-specific.",
+    "A high CAD score in a 1% prevalence community survey is mostly false positives. The same score in a symptomatic clinic is a different posterior. That sentence is the entire point of the predictive-values plate — radiology is not exempt."
+  ],
+  "deepTitle": "What CAD does not see",
+  "deep": [
+    "Pediatric chests and extrapulmonary disease are outside the adult CAD endorsement. Do not run a toddler through an adult CAD SOP and call it WHO.",
+    "CAD does not speciate, does not grade RIF, and does not distinguish old scar from new cavity without a human and a NAAT.",
+    "CRP ≥5 mg/L is a WHO screening tool for people with HIV, not a CAD equivalent, but it lives on the same triage shelf.",
+    "Programmes must pick a threshold calibrated to their prevalence and their WRD capacity. Copy-pasting a vendor’s European cut-point is how you drown the lab."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic CAD-score distributions in people with and without TB. The dashed threshold is a policy choice: move it right to raise PPV and miss cases; move it left to catch cases and flood confirmatory testing.",
+    "xLabel": "CAD abnormality score (schematic)",
+    "curves": [
+      {
+        "id": "no",
+        "label": "no TB",
+        "mean": 32,
+        "sd": 12
+      },
+      {
+        "id": "tb",
+        "label": "pulmonary TB",
+        "mean": 72,
+        "sd": 10
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO operational handbook Module 2: Screening (CAD, CXR)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240022676"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "attribution": "U.S. public-domain overlay. Where WHO and CDC diverge, the plate says so.",
+      "license": "U.S. Government work, public domain",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "CAD as a likelihood-ratio machine, not a diagnosis.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-diagnosis",
+    "tb-predictive-values",
+    "tb-tpt",
+    "tb-transmission",
+    "tb-pediatric-dx"
+  ],
+  "example": {
+    "title": "Community screen, CAD ≥ 0.65, prevalence 0.8%",
+    "setup": "Vendor claims Se 0.90, Sp 0.70 at threshold 0.65. 10,000 people screened.",
+    "steps": [
+      {
+        "title": "Expected true cases",
+        "body": "80 people with TB if prevalence is 0.8%. Se 0.90 catches 72."
+      },
+      {
+        "title": "False positives",
+        "body": "9,920 without TB × 0.30 = 2,976 CAD-positive non-TB."
+      },
+      {
+        "title": "PPV",
+        "body": "72 / (72 + 2,976) ≈ 2.4%. Almost everyone you send for Xpert is negative. That is not CAD failing; that is Bayes.",
+        "expression": "PPV = 72 / 3048 ≈ 0.024"
+      }
+    ],
+    "takeaway": "CAD thresholds are prevalence-dependent policy, not microbiology."
+  },
+  "check": [
+    {
+      "id": "cad-who",
+      "kind": "conceptual",
+      "prompt": "WHO’s CAD recommendation is best summarised as:",
+      "choices": [
+        "CAD replaces culture in children under 5",
+        "CAD may replace human CXR readers for screening/triage in people ≥15 years, with thresholds set to context",
+        "CAD grades rpoB",
+        "CAD is required before every 3HP dose"
+      ],
+      "answer": "CAD may replace human CXR readers for screening/triage in people ≥15 years, with thresholds set to context",
+      "why": "Adult screening tool, not a DST.",
+      "whyWrong": {
+        "CAD replaces culture in children under 5": "Not the indication.",
+        "CAD grades rpoB": "No.",
+        "CAD is required before every 3HP dose": "CXR helps rule out disease; CAD is not a pill-gate."
+      }
+    },
+    {
+      "id": "cad-ppv",
+      "kind": "calculation",
+      "prompt": "Se = 0.90, Sp = 0.70, prevalence = 0.05. PPV ≈",
+      "choices": [
+        "0.90",
+        "0.14",
+        "0.70",
+        "0.95"
+      ],
+      "answer": "0.14",
+      "why": "PPV = 0.90×0.05 / (0.90×0.05 + 0.30×0.95) = 0.045/0.330 ≈ 0.136.",
+      "whyWrong": {
+        "0.90": "That is sensitivity, not PPV.",
+        "0.70": "Specificity.",
+        "0.95": "Prevalence complement, not PPV."
+      }
+    },
+    {
+      "id": "cad-figure",
+      "kind": "figure",
+      "prompt": "On the CAD density plate, moving the threshold rightward (toward the TB peak) does what to PPV and sensitivity?",
+      "choices": [
+        "Raises PPV, lowers sensitivity",
+        "Lowers PPV, raises sensitivity",
+        "Changes rpoB codon numbering",
+        "Has no effect"
+      ],
+      "answer": "Raises PPV, lowers sensitivity",
+      "why": "Classic ROC trade-off. The caption says it.",
+      "whyWrong": {
+        "Lowers PPV, raises sensitivity": "That is moving left.",
+        "Changes rpoB codon numbering": "No.",
+        "Has no effect": "It does."
+      },
+      "figureHint": "Two overlapping score distributions."
+    }
+  ]
+}

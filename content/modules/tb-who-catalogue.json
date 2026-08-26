@@ -1,0 +1,168 @@
+{
+  "id": "tb-who-catalogue",
+  "title": "The WHO mutation catalogue",
+  "dek": "A graded association between variants and phenotypic DST, not a law of physics. 2nd edition (2023) added BDQ/LZD/DLM alleles. Tools are not the catalogue. Version both.",
+  "domain": "tb",
+  "aliases": [
+    "WHO catalogue 2nd edition",
+    "mutation catalogue TB",
+    "associated with resistance",
+    "interim resistance",
+    "gDST grading"
+  ],
+  "tags": [
+    "catalogue",
+    "gDST",
+    "grading",
+    "WHO",
+    "evidence"
+  ],
+  "story": [
+    "The WHO catalogue of mutations in MTBC grades variants by their association with phenotypic resistance: associated with resistance, associated with resistance — interim, uncertain significance, not associated, not associated — interim (wording varies slightly by edition). It is a public statistical object built from paired WGS+pDST, not a list of “mutations that always fail therapy.”",
+    "First edition (2021) was strong on RIF/INH/FQ/AMK and weak on BDQ/LZD/DLM. Second edition (2023) analysed >50,000 isolates and added dozens of BDQ-associated variants, a handful of LZD, and more DLM. Third edition is being fed more Pa and cycloserine data. If your pipeline still grades with 2021, say so — especially for Group A drugs.",
+    "TBProfiler, Mykrobe, clockwork, and hospital regexes implement a catalogue (or their own freeze). Discordance between tools is often a version or filter fight, not a new biology."
+  ],
+  "deepTitle": "How to read a grade in clinic",
+  "deep": [
+    "Associated with resistance: count the drug as compromised unless a very good reason not to (mixed AF, contamination).",
+    "Uncertain: do not flip a regimen on it alone; add MIC and clinical context.",
+    "Not associated: usually phylogenetic. Do not call EMB-R from these.",
+    "Absence of a graded variant is not proof of susceptibility when coverage is missing, when AF is filtered, or when the mechanism is incomplete (BDQ without Rv0678 sequenced)."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Catalogue as a grading layer sitting on paired WGS+pDST. Tools freeze a version. Clinic consumes grades plus AF, depth, and MIC residual.",
+    "layers": [
+      {
+        "title": "Data",
+        "nodes": [
+          "WGS",
+          "pDST/MIC"
+        ]
+      },
+      {
+        "title": "Grades",
+        "nodes": [
+          "R-assoc",
+          "interim",
+          "uncertain",
+          "not-assoc"
+        ]
+      },
+      {
+        "title": "Tools freeze",
+        "nodes": [
+          "TBProfiler",
+          "Mykrobe",
+          "tNGS"
+        ]
+      },
+      {
+        "title": "Report",
+        "nodes": [
+          "allele",
+          "AF",
+          "DP",
+          "grade"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO catalogue of mutations in MTBC, 2nd ed. (2023)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Version the catalogue the way you version a caller. gDST is graded association plus residual.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-wgs-dst",
+    "tb-resistance",
+    "tb-tngs",
+    "tb-dst-phenotypic",
+    "tb-rifampin",
+    "tb-tbprofiler"
+  ],
+  "example": {
+    "title": "Same BAM, two tool versions",
+    "setup": "2021-catalogue TBProfiler: BDQ no variants. 2023-catalogue rerun: Rv0678 frameshift associated with resistance.",
+    "steps": [
+      {
+        "title": "The bacterium did not change",
+        "body": "The grading table did. Group A drugs moved most."
+      },
+      {
+        "title": "Re-issue the report",
+        "body": "Do not leave a 2021 BDQ-S in the chart because it was already signed."
+      },
+      {
+        "title": "Write the edition",
+        "body": "Methods: WHO catalogue 2nd ed. 2023, tool X vY. That sentence is DST."
+      }
+    ],
+    "takeaway": "Catalogue edition is part of the phenotype prediction."
+  },
+  "check": [
+    {
+      "id": "cat-claim",
+      "kind": "conceptual",
+      "prompt": "A WHO catalogue grade claims:",
+      "choices": [
+        "That the variant guarantees clinical failure in every lesion",
+        "A graded association with phenotypic resistance, with residual uncertainty",
+        "That H37Rv is the patient",
+        "That AF filters are set to 1%"
+      ],
+      "answer": "A graded association with phenotypic resistance, with residual uncertainty",
+      "why": "Statistical grading, not destiny.",
+      "whyWrong": {
+        "That the variant guarantees clinical failure in every lesion": "Overclaim.",
+        "That H37Rv is the patient": "Coordinate system.",
+        "That AF filters are set to 1%": "Tooling."
+      }
+    },
+    {
+      "id": "cat-ed",
+      "kind": "calculation",
+      "prompt": "Using a 2021 catalogue freeze for BDQ in 2026 is risky mainly because:",
+      "choices": [
+        "rpoB S450L was removed",
+        "2nd ed. added many BDQ-associated (mostly Rv0678-axis) variants that 2021 lacked",
+        "PZA no longer exists",
+        "Xpert became WGS"
+      ],
+      "answer": "2nd ed. added many BDQ-associated (mostly Rv0678-axis) variants that 2021 lacked",
+      "why": "Group A coverage is the edition story.",
+      "whyWrong": {
+        "rpoB S450L was removed": "It was not.",
+        "PZA no longer exists": "No.",
+        "Xpert became WGS": "No."
+      }
+    },
+    {
+      "id": "cat-figure",
+      "kind": "figure",
+      "prompt": "On the catalogue hierarchy, why do tools sit on a different row from grades?",
+      "choices": [
+        "Because tools invent physics",
+        "Because implementations freeze a catalogue version and add filters; they are not themselves the WHO table",
+        "Because TBProfiler is pDST",
+        "Because grades live in CXR"
+      ],
+      "answer": "Because implementations freeze a catalogue version and add filters; they are not themselves the WHO table",
+      "why": "The plate’s third layer.",
+      "whyWrong": {
+        "Because tools invent physics": "No.",
+        "Because TBProfiler is pDST": "No.",
+        "Because grades live in CXR": "No."
+      },
+      "figureHint": "Third layer: Tools freeze."
+    }
+  ]
+}

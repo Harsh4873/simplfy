@@ -1,0 +1,176 @@
+{
+  "id": "tb-capreomycin",
+  "title": "Capreomycin (historical injectable)",
+  "dek": "A cyclic peptide, not an aminoglycoside, that still wrecks hearing and kidneys. tlyA loss is the signature. Retired from preferred DR-TB; old XDR papers used it as the second injectable tick.",
+  "domain": "tb",
+  "aliases": [
+    "capreomycin",
+    "CM injectable",
+    "tlyA capreomycin",
+    "viomycin TB"
+  ],
+  "tags": [
+    "capreomycin",
+    "tlyA",
+    "injectable",
+    "historical",
+    "ototoxicity"
+  ],
+  "story": [
+    "Capreomycin is a tuberactinomycin (with viomycin) injected in the MDR era when kanamycin failed or as the “second injectable” that minted old XDR. It is not an aminoglycoside chemically, but the toxicity rhyme is the same: irreversible hearing loss, renal injury, electrolyte wasting.",
+    "tlyA encodes a 2'-O-methyltransferase for rRNA; loss-of-function confers CAP (and viomycin) resistance. rrs 1401 also raises CAP MIC. eis promoter-up does not equal CAP-R. Do not auto-translate “injectable R” from a KM eis allele onto CAP.",
+    "WHO preferred regimens do not start with CAP. If a salvage committee reaches for it, they have already lost BDQ/LZD/FQ options and should say that out loud, with audiometry scheduled before the first dose."
+  ],
+  "deepTitle": "Why the chemistry still confuses pipelines",
+  "deep": [
+    "Some software buckets KM/AMK/CAP as one “injectable” bit. Unbucket them.",
+    "Viomycin is not stocked; tlyA still appears in catalogues.",
+    "CAP does not treat NTM the way AMK sometimes does. Different object.",
+    "Pregnancy: injectables stay off for fetal ototoxicity."
+  ],
+  "visual": {
+    "kind": "mutation-grid",
+    "caption": "CAP is tlyA + some rrs, not eis. Old XDR used CAP/KM as the injectable tick; 2021 XDR does not.",
+    "rows": [
+      {
+        "gene": "tlyA",
+        "drug": "CAP",
+        "canonical": "LoF",
+        "note": "signature"
+      },
+      {
+        "gene": "rrs 1401",
+        "drug": "CAP/AMK/KM",
+        "canonical": "a1401g",
+        "note": "cross-R"
+      },
+      {
+        "gene": "eis promoter",
+        "drug": "KAN",
+        "canonical": "promoter-up",
+        "note": "not CAP by default"
+      },
+      {
+        "gene": "gidB",
+        "drug": "SM",
+        "canonical": "LoF",
+        "note": "not CAP"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 4 — injectables not preferred",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "WHO mutation catalogue — tlyA",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240082410"
+    },
+    {
+      "title": "Capreomycin — PubChem CID 3000502",
+      "attribution": "Molecular identity and formula only.",
+      "license": "Public domain (PubChem / NIH)",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/3000502"
+    },
+    {
+      "title": "Capreomycin",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Capreomycin"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "tlyA is CAP’s gidB, not eis.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-kanamycin",
+    "tb-amikacin",
+    "tb-eis-rrs",
+    "tb-gidb",
+    "tb-dr-definitions",
+    "tb-pregnancy"
+  ],
+  "example": {
+    "title": "tlyA nonsense, team adds KM “because injectable R already”",
+    "setup": "CAP-R genome, FQ-S, BDQ-S. Someone wants KM+CAP sequential.",
+    "steps": [
+      {
+        "title": "Do not stack injectables",
+        "body": "tlyA answers CAP, not a licence for KM."
+      },
+      {
+        "title": "Check rrs",
+        "body": "If 1401 WT, AMK might still be chemically active — and still a bad idea if orals exist."
+      },
+      {
+        "title": "Use the 2025 oral recipes",
+        "body": "BPaLM/BDLLfxC/9-month orals beat a 2010 injectable stack."
+      }
+    ],
+    "takeaway": "Capreomycin is tlyA plus harm. It is not a Group A drug."
+  },
+  "check": [
+    {
+      "id": "cap-chem",
+      "kind": "conceptual",
+      "prompt": "Capreomycin is:",
+      "choices": [
+        "A rifamycin",
+        "A tuberactinomycin injectable whose signature resistance gene is tlyA",
+        "A nitroimidazole",
+        "Group A"
+      ],
+      "answer": "A tuberactinomycin injectable whose signature resistance gene is tlyA",
+      "why": "Not an aminoglycoside, still ototoxic.",
+      "whyWrong": {
+        "A rifamycin": "rpoB.",
+        "A nitroimidazole": "Pa/DLM.",
+        "Group A": "FQ/BDQ/LZD."
+      }
+    },
+    {
+      "id": "cap-eis",
+      "kind": "calculation",
+      "prompt": "eis promoter-up without tlyA or rrs 1401 should be read as:",
+      "choices": [
+        "Proven CAP-R",
+        "Not a CAP call; KAN-tilted",
+        "Proven BDQ-R",
+        "2021-XDR"
+      ],
+      "answer": "Not a CAP call; KAN-tilted",
+      "why": "Unbucket injectables.",
+      "whyWrong": {
+        "Proven CAP-R": "Need tlyA/rrs.",
+        "Proven BDQ-R": "No.",
+        "2021-XDR": "Need FQ+BDQ/LZD."
+      }
+    },
+    {
+      "id": "cap-figure",
+      "kind": "figure",
+      "prompt": "On the grid, eis promoter is annotated as:",
+      "choices": [
+        "CAP signature",
+        "KAN, not CAP by default",
+        "INH",
+        "PZA"
+      ],
+      "answer": "KAN, not CAP by default",
+      "why": "That row is the trap.",
+      "whyWrong": {
+        "CAP signature": "tlyA.",
+        "INH": "katG.",
+        "PZA": "pncA."
+      },
+      "figureHint": "Third row."
+    }
+  ]
+}

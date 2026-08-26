@@ -1,0 +1,192 @@
+{
+  "id": "tb-is6110",
+  "title": "IS6110, IS1081, and Ultra’s extra ears",
+  "dek": "Xpert Ultra added multi-copy IS6110/IS1081 to the rpoB beacons. Trace calls are often IS-driven. Fingerprinting with IS6110 RFLP is historical; copy number still matters for LOD.",
+  "domain": "tb",
+  "aliases": [
+    "IS6110",
+    "IS1081",
+    "insertion sequence TB",
+    "Ultra IS targets",
+    "IS6110 RFLP"
+  ],
+  "tags": [
+    "IS6110",
+    "IS1081",
+    "Ultra",
+    "LOD",
+    "fingerprint"
+  ],
+  "story": [
+    "IS6110 is an MTBC-typical insertion sequence, usually 1–25 copies, absent or rare in most NTM. IS1081 is more copy-stable. Xpert MTB/RIF interrogated rpoB. Ultra added IS6110 and IS1081 amplification so paucibacillary DNA still rings the bell — that is why trace exists as a semi-quantitative band below “very low.”",
+    "Trace plus RIF-indeterminate means the IS targets fired and the RRDR beacons did not have enough template. Prior-treated lungs can shed DNA for months. Children and extrapulmonary sites live in this band on purpose.",
+    "IS6110 RFLP was the 1990s outbreak tool. WGS SNP distances replaced it. Copy-number variation still confounds mapping near insertion sites and still explains why some L1 strains with few IS6110 copies have a slightly different Ultra LOD than L2."
+  ],
+  "deepTitle": "Do not speciate from a single IS hit",
+  "deep": [
+    "Some NTM harbour IS6110-like elements. Speciation is a tree plus RD markers, not one BLAST hit.",
+    "M. bovis BCG has IS6110; Ultra can detect BCG DNA in urine after bladder instillation. RD1 is the BCG discriminator, not IS6110.",
+    "De-duplication of multi-mapping IS reads will punch holes in a BAM. Do not call those holes “deletions” without mates and coverage context.",
+    "Spoligotyping (CRISPR/DR) is another historical barcode. Lineage SNP barcodes superseded it for routine genomics."
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Cartoon LOD: rpoB-only cartridges need more genomes than IS-augmented Ultra. Trace is the IS-only neighbourhood, not a smear grade.",
+    "yLabel": "relative target copies (schematic)",
+    "panels": [
+      {
+        "title": "Xpert MTB/RIF",
+        "bars": [
+          {
+            "label": "rpoB",
+            "value": 1
+          },
+          {
+            "label": "IS6110",
+            "value": 0
+          },
+          {
+            "label": "IS1081",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "title": "Ultra",
+        "bars": [
+          {
+            "label": "rpoB",
+            "value": 1
+          },
+          {
+            "label": "IS6110",
+            "value": 8
+          },
+          {
+            "label": "IS1081",
+            "value": 5
+          }
+        ]
+      },
+      {
+        "title": "Trace band",
+        "bars": [
+          {
+            "label": "rpoB",
+            "value": 0
+          },
+          {
+            "label": "IS6110",
+            "value": 3
+          },
+          {
+            "label": "IS1081",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 3 — mWRDs including Ultra",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://www.who.int/publications/i/item/9789240088320"
+    },
+    {
+      "title": "IS6110",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/IS6110"
+    },
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "IS copy number as Ultra’s extra sensitivity and trace’s origin.",
+      "license": "Original teaching notes"
+    }
+  ],
+  "related": [
+    "tb-xpert-ultra",
+    "tb-h37rv-genome",
+    "tb-diagnosis",
+    "tb-mtbc",
+    "tb-heteroresistance"
+  ],
+  "example": {
+    "title": "Trace in a BCG bladder patient",
+    "setup": "Urology patient, Ultra on urine “MTB trace, RIF indeterminate.” No pulmonary symptoms.",
+    "steps": [
+      {
+        "title": "IS targets do not equal pulmonary TB",
+        "body": "BCG is MTBC. Trace IS signal in urine after instillation is expected chemistry."
+      },
+      {
+        "title": "Speciate",
+        "body": "RD1 deletion / BCG SNPs. Do not start HRZE from a trace urine."
+      },
+      {
+        "title": "RIF indeterminate is not RR",
+        "body": "Insufficient RRDR template, not a disputed rpoB mutation."
+      }
+    ],
+    "takeaway": "Ultra hears IS elements. Trace is a limit-of-detection object, not a smear."
+  },
+  "check": [
+    {
+      "id": "is-ultra",
+      "kind": "conceptual",
+      "prompt": "Ultra added IS6110/IS1081 primarily to:",
+      "choices": [
+        "Replace rpoB as the RIF target",
+        "Lower the limit of detection for MTBC DNA",
+        "Detect NTM specifically",
+        "Measure PDIM"
+      ],
+      "answer": "Lower the limit of detection for MTBC DNA",
+      "why": "Multi-copy IS elements fire when rpoB template is scarce. RIF still needs RRDR.",
+      "whyWrong": {
+        "Replace rpoB as the RIF target": "RRDR remains the RIF interrogation.",
+        "Detect NTM specifically": "IS6110 is an MTBC-ish marker, imperfectly.",
+        "Measure PDIM": "Lipid, not IS."
+      }
+    },
+    {
+      "id": "is-copies",
+      "kind": "calculation",
+      "prompt": "If a strain has ~1 IS6110 copy versus ~20, Ultra’s IS-driven LOD is expected to be:",
+      "choices": [
+        "Identical by definition",
+        "Worse (higher LOD) for the low-copy strain",
+        "Better for the low-copy strain",
+        "Independent of copy number always"
+      ],
+      "answer": "Worse (higher LOD) for the low-copy strain",
+      "why": "Fewer IS templates per genome means the IS-only trace band is harder to reach. Lineage 1 is the usual teaching example.",
+      "whyWrong": {
+        "Identical by definition": "Copy number is the point of IS targets.",
+        "Better for the low-copy strain": "Opposite.",
+        "Independent of copy number always": "rpoB is copy-1; IS is not."
+      }
+    },
+    {
+      "id": "is-figure",
+      "kind": "figure",
+      "prompt": "The Ultra panel’s extra bars relative to Xpert MTB/RIF are:",
+      "choices": [
+        "Only rpoB",
+        "IS6110 and IS1081",
+        "katG and inhA",
+        "atpE"
+      ],
+      "answer": "IS6110 and IS1081",
+      "why": "That is the cartridge change that created trace.",
+      "whyWrong": {
+        "Only rpoB": "Both cartridges have rpoB.",
+        "katG and inhA": "LPA/Xpert XDR neighbourhood.",
+        "atpE": "BDQ."
+      },
+      "figureHint": "Middle panel extra bars."
+    }
+  ]
+}

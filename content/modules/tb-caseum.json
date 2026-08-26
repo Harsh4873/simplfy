@@ -1,0 +1,164 @@
+{
+  "id": "tb-caseum",
+  "title": "Caseum, hypoxia, and lesion-centric PK",
+  "dek": "Cavitary caseum is necrotic, hypoxic, and poorly vascular. Cidal INH looks brilliant in log-phase broth and modest in caseum. Sterilizing drugs are the ones that still work there.",
+  "domain": "tb",
+  "aliases": [
+    "caseum PK",
+    "lesion-centric TB",
+    "hypoxic granuloma pharmacology",
+    "caseous necrosis drug"
+  ],
+  "tags": [
+    "caseum",
+    "hypoxia",
+    "PK",
+    "sterilizing",
+    "cavity"
+  ],
+  "story": [
+    "The granuloma is not a well-stirred beaker. Closed necrotic foci and open cavities fill with caseum: lipid-rich, low pH, hypoxic, and weakly perfused. Drug concentrations measured in plasma are a start; concentrations in caseum are the sterilizing question. Rifamycins and pyrazinamide earn their reputation here; INH’s early bactericidal activity is mostly the replicating rim.",
+    "DosR-adapted persisters in caseum are not genetically resistant. They are phenotypically tolerant. That is why monotherapy of cavitary disease manufactures katG mutants at the rim while the core waits for a sterilizing partner.",
+    "Bedaquiline and pretomanid were partly championed because caseum and hollow-fibre models liked them. That does not make them substitutes for knowing whether the cavity is still smear-positive at month two."
+  ],
+  "deepTitle": "What a genomics lab cannot see",
+  "deep": [
+    "WGS on sputum samples the airway-connected cavity more than the closed nodule. Heteroresistance in caseum can be invisible in a single expectorated genome.",
+    "PZA’s pH dependence is a caseum story. Neutral MGIT PZA DST is a different planet.",
+    "Moxifloxacin penetrates lesions well; that is one reason HPMZ could shorten DS-TB. gyrA mutants in the cavity still win if you guess.",
+    "PET/CT lesion-volume papers are research overlays, not WHO regimen gates."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "From airway to necrotic core: oxygen, replication, and drug effect fall together. Sterilizing drugs are judged at the core, not in log-phase MIC plates.",
+    "layers": [
+      {
+        "id": "air",
+        "label": "Cavity air / sputum",
+        "detail": "smear, Xpert, transmitted bacilli",
+        "tone": "space"
+      },
+      {
+        "id": "rim",
+        "label": "Replicating rim",
+        "detail": "INH-cidal; katG mutants born here",
+        "tone": "membrane"
+      },
+      {
+        "id": "hyp",
+        "label": "Hypoxic caseum",
+        "detail": "DosR; PZA/rifamycin sterilizing niche",
+        "tone": "core"
+      },
+      {
+        "id": "fib",
+        "label": "Fibrotic wall",
+        "detail": "perfusion limited; plasma ≠ lesion",
+        "tone": "wall"
+      }
+    ],
+    "annotation": "Plasma Cmax is not caseum Cmax."
+  },
+  "sources": [
+    {
+      "title": "Simplfy TB studio notes",
+      "attribution": "Lesion PK teaching for why sterilizing ≠ cidal.",
+      "license": "Original teaching notes"
+    },
+    {
+      "title": "WHO Module 4 — regimen rationale (paraphrase)",
+      "attribution": "Clinical truth taken from WHO open modules; teaching paraphrase, not a dump of guideline text.",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "url": "https://tbksp.who.int/"
+    },
+    {
+      "title": "Caseous necrosis",
+      "attribution": "Glossary / naming only. Doses and regimen grammar follow WHO, then CDC, not Wikipedia.",
+      "license": "CC BY-SA 4.0",
+      "url": "https://en.wikipedia.org/wiki/Caseous_necrosis"
+    }
+  ],
+  "related": [
+    "tb-granuloma",
+    "tb-latency-dosr",
+    "tb-pyrazinamide",
+    "tb-rifampin",
+    "tb-pathogenesis"
+  ],
+  "example": {
+    "title": "Month-2 smear-positive, genome WT",
+    "setup": "Cavitary DS-TB, HRZE, month-2 smear 2+, WGS still pan-susceptible.",
+    "steps": [
+      {
+        "title": "Tolerance is not katG",
+        "body": "Caseum persisters explain smear lag. Do not switch to MDR therapy from a smear alone."
+      },
+      {
+        "title": "Look for holes in adherence and PK",
+        "body": "Missed doses, malabsorption, a leftover cavity."
+      },
+      {
+        "title": "Culture still matters",
+        "body": "A rising TTP is reassuring; a new rpoB subpopulation is not."
+      }
+    ],
+    "takeaway": "Caseum is why short-course needs sterilizing partners, not just cidal INH."
+  },
+  "check": [
+    {
+      "id": "cas-steril",
+      "kind": "conceptual",
+      "prompt": "The sterilizing niche that most justifies rifamycin + PZA is:",
+      "choices": [
+        "Log-phase 7H9 broth",
+        "Hypoxic necrotic caseum",
+        "Blood culture bottles",
+        "IGRA supernatant"
+      ],
+      "answer": "Hypoxic necrotic caseum",
+      "why": "Early cidal activity is the rim. Relapse prevention is the core.",
+      "whyWrong": {
+        "Log-phase 7H9 broth": "INH looks best there.",
+        "Blood culture bottles": "Not the TB lesion.",
+        "IGRA supernatant": "Host assay."
+      }
+    },
+    {
+      "id": "cas-inh",
+      "kind": "calculation",
+      "prompt": "INH’s contribution to sterilizing 6-month HRZE is best described as:",
+      "choices": [
+        "The dominant sterilizing drug in caseum",
+        "Strong early cidal activity at the replicating rim, weak in caseum",
+        "Zero activity in humans",
+        "A QTc drug"
+      ],
+      "answer": "Strong early cidal activity at the replicating rim, weak in caseum",
+      "why": "That split is why INH monotherapy of cavities manufactures resistance.",
+      "whyWrong": {
+        "The dominant sterilizing drug in caseum": "Rifamycin/PZA.",
+        "Zero activity in humans": "False.",
+        "A QTc drug": "BDQ/CFZ/FQ/DLM."
+      }
+    },
+    {
+      "id": "cas-figure",
+      "kind": "figure",
+      "prompt": "On the lesion stack, katG mutants are annotated at:",
+      "choices": [
+        "The fibrotic wall only",
+        "The replicating rim",
+        "Plasma",
+        "IS6110"
+      ],
+      "answer": "The replicating rim",
+      "why": "Replication plus monotherapy pressure lives at the rim.",
+      "whyWrong": {
+        "The fibrotic wall only": "Perfusion, not mutation supply.",
+        "Plasma": "PK sample, not the birthplace.",
+        "IS6110": "LOD, not lesions."
+      },
+      "figureHint": "Second layer."
+    }
+  ]
+}
