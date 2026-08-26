@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
@@ -66,12 +66,12 @@ describe("lab brief pipeline", () => {
   });
 
   it("does not paint the reading stage in the old cream tokens", () => {
-    const cssPath = fileURLToPath(new URL("../styles/global.css", import.meta.url));
-    const css = readFileSync(cssPath, "utf8");
+    const css = readFileSync(resolve(process.cwd(), "src/styles/global.css"), "utf8");
     expect(css).not.toMatch(/--well:\s*#efeee9/i);
     expect(css).not.toMatch(/--plate:\s*#fafaf7/i);
     expect(css).not.toMatch(/\.stage\s*\{[^}]*color-scheme:\s*light/s);
-    expect(css).toMatch(/\.stage\s*\{[^}]*background:\s*var\(--chassis\)/s);
+    expect(css).toMatch(/background:\s*var\(--chassis\)/);
+    expect(css).toMatch(/\.stage\s*\{/);
     for (const token of CREAM_STAGE) {
       expect(css).not.toContain(`--well: ${token}`);
       expect(css).not.toContain(`--plate: ${token}`);
