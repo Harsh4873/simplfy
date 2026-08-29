@@ -28,12 +28,12 @@ export function PapersPage({
     void api.touchPapers(q, `Lookup · ${q}`);
   }, [api.ready, api.touchPapers, q]);
 
-  const papers = api.studios.filter((canvas) => {
-    if (canvas.kind === "papers") return Boolean(canvas.papersQuery);
+  const filed = api.studios.filter((canvas) => {
     if (canvas.kind !== "note" || !canvas.noteId || canvas.collectionId) return false;
     const item = api.library.find((row) => row.id === canvas.noteId);
     return item ? isPaperItem(item) : false;
   });
+  const lookups = api.studios.filter((canvas) => canvas.kind === "papers" && Boolean(canvas.papersQuery));
 
   const ingest = async (files: File[]) => {
     const last = await api.addFiles(files, { intent: "paper" });
@@ -104,9 +104,9 @@ export function PapersPage({
           }}
         />
       </div>
-      {papers.length ? (
+      {filed.length ? (
         <ul className="desk-grid">
-          {papers.map((canvas) => (
+          {filed.map((canvas) => (
             <SourceCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
           ))}
         </ul>
@@ -119,6 +119,13 @@ export function PapersPage({
           Type a gene, a drug, a method. Matches from the local shelf come out in lab order: Ioerger,
           then people he writes with, then the TB field, then explainers. Not a live PubMed crawl.
         </p>
+        {lookups.length ? (
+          <ul className="desk-grid">
+            {lookups.map((canvas) => (
+              <SourceCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
+            ))}
+          </ul>
+        ) : null}
         <form className="paste lookup-form" onSubmit={onLookup}>
           <label htmlFor="paper-q">Look up a gene, drug, or idea</label>
           <div className="search-row">

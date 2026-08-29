@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { libraryNoteRoute, isSourcesRoute, toHash, type Route } from "../app/routes";
+import { FEATURED_IDS } from "../lesson/paths";
 import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
@@ -54,7 +55,7 @@ export function TopBar({
     {
       route: api.continueModule
         ? { name: "learn", id: api.continueModule.id, step: "teach" }
-        : { name: "shelf" },
+        : { name: "learn", id: FEATURED_IDS[0], step: "teach" },
       label: "Learn",
       match: route.name === "learn",
     },

@@ -64,7 +64,9 @@ export function HomePage({
                 open(api.continueModule);
                 return;
               }
-              navigate({ name: "shelf" });
+              const first = featured[0];
+              if (first) open(first);
+              else navigate({ name: "shelf" });
             }}
           >
             Open Learn

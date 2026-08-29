@@ -7,6 +7,7 @@ import { LESSON_OVERLAYS } from "../lesson/overlays";
 describe("hash routes", () => {
   it("parses lesson steps and round-trips", () => {
     expect(parseHash("")).toEqual({ name: "home" });
+    expect(parseHash("#/learn")).toEqual({ name: "shelf" });
     expect(parseHash("#/learn/stats-lrt/practice")).toEqual({
       name: "learn",
       id: "stats-lrt",

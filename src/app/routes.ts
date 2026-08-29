@@ -37,9 +37,12 @@ export function parseHash(hash: string): Route {
   const parts = raw.split("/").filter(Boolean);
   if (parts.length === 0) return { name: "home" };
   const [head, id, step] = parts;
-  if (head === "learn" && id) {
-    const next = LESSON_STEPS.includes(step as LessonStep) ? (step as LessonStep) : "teach";
-    return { name: "learn", id, step: next };
+  if (head === "learn") {
+    if (id) {
+      const next = LESSON_STEPS.includes(step as LessonStep) ? (step as LessonStep) : "teach";
+      return { name: "learn", id, step: next };
+    }
+    return { name: "shelf" };
   }
   if (head === "shelf") return { name: "shelf", id };
   if (head === "sources") {
