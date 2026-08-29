@@ -1,0 +1,167 @@
+{
+  "id": "stats-bayes-theorem",
+  "title": "Bayes’ theorem as a probability identity",
+  "dek": "P(A | B) = P(B | A) P(A) / P(B). That is a swap of conditioning, after you rebuild P(B). Parameter posteriors are the same identity with a prior on θ — a different plate.",
+  "domain": "stats",
+  "aliases": [
+    "Bayes rule",
+    "Bayes theorem probability",
+    "posterior odds",
+    "likelihood ratio times prior odds",
+    "inverse probability"
+  ],
+  "tags": [
+    "probability",
+    "Bayes",
+    "diagnosis",
+    "identity"
+  ],
+  "story": [
+    "Once P(B) > 0, Bayes’ theorem is the definition of conditional probability with the intersection expanded the other way: P(A | B) = P(B | A) P(A) / P(B). You have not introduced a prior-as-belief until you choose to read A as a parameter. You have swapped which event is the slice, and you owe the reader a marginal for B.",
+    "The denominator is the law of total probability. If {A, Aᶜ} partitions, P(B) = P(B | A) P(A) + P(B | Aᶜ) P(Aᶜ). Diagnostic PPV is this arithmetic with A = disease and B = test positive. Sensitivity P(B | A) is not P(A | B). Skipping P(A) is how a 99% sensitive assay is quoted as a 99% chance of TB.",
+    "The same algebra with A = “θ in a set” and B = “data in a set” becomes a posterior probability. The inference plate (stats-bayesian) is that culture: a prior density, a likelihood function, MCMC when the marginal is ugly. This plate stays on events you can name without a sampler — a smear, an Ultra call, a lineage tag — and on the odds form that makes the swap hard to fudge."
+  ],
+  "deepTitle": "Odds form, two kinds of A, and what the identity refuses",
+  "deep": [
+    "Odds form: posterior odds = likelihood ratio × prior odds. For a binary A, P(A | B)/P(Aᶜ | B) = [P(B | A)/P(B | Aᶜ)] × [P(A)/P(Aᶜ)]. The likelihood ratio is a property of the test given the two worlds; prevalence sits only in the prior odds.",
+    "Two different A’s. Event A: disease, RR-TB, “this isolate is mixed.” Parameter A: π in (0.1, 0.2), a regression coefficient. Same identity, different σ-algebra. The glossary card wiki-bayes-theorem is the shared slogan; stats-predictive-values is the diagnostic PPV/NPV worksheet; stats-bayesian is θ as a random variable.",
+    "P(B) = 0 makes the ratio undefined. Continuous data need densities; do not divide by P(exactly this 24-digit MIC vector).",
+    "A likelihood ratio for a diagnostic test is not Wilks’ Λ for nested models, and it is not a Bayes factor (ratio of marginal likelihoods). Those own plates exist because the words collide.",
+    "Independence of A and B would make P(A | B) = P(A): the likelihood ratio is 1 and the theorem is a no-op. Household clustering is the usual reason that “independence” was a wish."
+  ],
+  "formulas": [
+    {
+      "id": "bayes-prob",
+      "label": "Probability form",
+      "expression": "P(A | B) = P(B | A) P(A) / P(B)    (P(B) > 0)",
+      "note": "Rebuild P(B) with a partition. Sensitivity is P(B | A), not this left-hand side."
+    },
+    {
+      "id": "bayes-odds",
+      "label": "Odds form (binary A)",
+      "expression": "O(A | B) = LR(B) × O(A)",
+      "note": "LR(B) = P(B | A)/P(B | Aᶜ). Prevalence enters only through prior odds O(A)."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Bayes as a swap: start from P(B | A) and a prior P(A), rebuild the marginal P(B) from both worlds, then invert to P(A | B). Diagnostic A and parameter θ are the same arrows with different labels — they are not the same scientific object.",
+    "nodes": [
+      { "id": "prior", "label": "P(A) prior event", "x": 8, "y": 28, "tone": "start" },
+      { "id": "lik", "label": "P(B | A)", "x": 8, "y": 72, "tone": "start" },
+      { "id": "marg", "label": "P(B) via partition", "x": 38, "y": 50, "tone": "process" },
+      { "id": "post", "label": "P(A | B)", "x": 66, "y": 50, "tone": "decision" },
+      { "id": "dx", "label": "A = disease", "x": 90, "y": 24, "tone": "end", "detail": "PPV plates" },
+      { "id": "th", "label": "A = parameter", "x": 90, "y": 76, "tone": "end", "detail": "stats-bayesian" }
+    ],
+    "edges": [
+      { "from": "prior", "to": "marg" },
+      { "from": "lik", "to": "marg", "label": "total P" },
+      { "from": "marg", "to": "post", "label": "÷ P(B)" },
+      { "from": "prior", "to": "post" },
+      { "from": "post", "to": "dx" },
+      { "from": "post", "to": "th" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bayes’ theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bayes%27_theorem",
+      "attribution": "Identity-level statement under CC BY-SA. Odds form, diagnostic versus parameter split, and TB-lab arithmetic are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — two basic rules of probability",
+      "url": "https://openstax.org/books/introductory-statistics/pages/3-3-two-basic-rules-of-probability",
+      "attribution": "CC BY 4.0. Conditional-probability rules only; worked RR-TB example is original.",
+      "license": "CC BY 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "U.S. public domain probability hygiene. This plate is original teaching notes.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "wiki-bayes-theorem",
+    "stats-bayesian",
+    "stats-conditional-probability",
+    "stats-predictive-values",
+    "stats-se-sp",
+    "stats-probability-axioms"
+  ],
+  "example": {
+    "title": "RR-TB prior 3%, assay LR+ = 20",
+    "setup": "Community prevalence of rifampin-resistant TB among people tested is P(R) = 0.03. A rapid rpoB assay has P(+ | R) = 0.90 and P(+ | Rᶜ) = 0.045, so LR+ = 0.90/0.045 = 20. Someone says “90% sensitive, so 90% chance this person is RR.”",
+    "steps": [
+      {
+        "title": "Prior odds and posterior odds",
+        "body": "Prior odds O(R) = 0.03/0.97 ≈ 0.0309. Posterior odds = 20 × 0.0309 ≈ 0.618. Convert: P(R | +) = 0.618 / (1 + 0.618) ≈ 0.38.",
+        "expression": "O(R | +) = 20 × 0.03/0.97 ≈ 0.618"
+      },
+      {
+        "title": "The same number from the probability form",
+        "body": "P(+) = 0.90×0.03 + 0.045×0.97 = 0.027 + 0.04365 = 0.07065. P(R | +) = 0.027 / 0.07065 ≈ 0.38. Sensitivity 0.90 never appeared as the posterior.",
+        "expression": "P(R | +) ≈ 0.38"
+      },
+      {
+        "title": "Change the prior, keep the assay",
+        "body": "In a DR-TB ward with P(R) = 0.40, posterior odds = 20 × 0.40/0.60 ≈ 13.3, so P(R | +) ≈ 0.93. The likelihood ratio did not change. The event R did."
+      }
+    ],
+    "takeaway": "Bayes swaps conditioning after you rebuild P(B). Prevalence is that rebuild, not an optional mood."
+  },
+  "check": [
+    {
+      "id": "bt-swap",
+      "kind": "conceptual",
+      "prompt": "P(A | B) equals P(B | A) when:",
+      "choices": [
+        "Always; that is what “inverse probability” means",
+        "Only in special cases (for example P(A) = P(B)); in general you must multiply by P(A)/P(B)",
+        "Whenever A is a disease and B is a test",
+        "Whenever you have used MCMC"
+      ],
+      "answer": "Only in special cases (for example P(A) = P(B)); in general you must multiply by P(A)/P(B)",
+      "why": "The theorem is a reweighting by the two priors, not a free swap of labels.",
+      "whyWrong": {
+        "Always; that is what “inverse probability” means": "That is the classic error the identity exists to stop.",
+        "Whenever A is a disease and B is a test": "Diagnostic use is the setting where the swap error is most expensive, not where it becomes legal.",
+        "Whenever you have used MCMC": "MCMC is how you compute a parameter posterior, not a licence to equate P(A|B) with P(B|A)."
+      }
+    },
+    {
+      "id": "bt-calc",
+      "kind": "calculation",
+      "prompt": "P(A) = 0.01, P(B | A) = 0.99, P(B | Aᶜ) = 0.01. What is P(A | B)?",
+      "choices": ["0.99", "0.50", "0.01", "0.98"],
+      "answer": "0.50",
+      "why": "P(B) = 0.99×0.01 + 0.01×0.99 = 0.0198. P(A|B) = 0.0099/0.0198 = 0.5. The classic 50% PPV with a 1% prior and a 99/99 assay.",
+      "whyWrong": {
+        "0.99": "That is sensitivity P(B|A), not the posterior.",
+        "0.01": "That is the prior P(A).",
+        "0.98": "Not the ratio; perhaps 0.99−0.01."
+      }
+    },
+    {
+      "id": "bt-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, two end nodes after P(A | B) exist because:",
+      "figureHint": "Right-hand forks: disease versus parameter.",
+      "choices": [
+        "The identity only applies to diseases",
+        "A might be a named event (disease, RR-TB) or a parameter; Simplfy splits those into different plates",
+        "You must run MCMC before quoting P(A | B) for a test",
+        "Prior odds are illegal in diagnosis"
+      ],
+      "answer": "A might be a named event (disease, RR-TB) or a parameter; Simplfy splits those into different plates",
+      "why": "Same arrows, different objects. Diagnostic PPV versus a posterior on θ.",
+      "whyWrong": {
+        "The identity only applies to diseases": "It applies to any events with P(B) > 0, including parameters once you put a prior on them.",
+        "You must run MCMC before quoting P(A | B) for a test": "Binary diagnosis is finite arithmetic; MCMC is for ugly integrals.",
+        "Prior odds are illegal in diagnosis": "Prevalence is the prior odds. Hiding it is the error."
+      }
+    }
+  ]
+}
