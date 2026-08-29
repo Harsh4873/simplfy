@@ -1,0 +1,178 @@
+{
+  "id": "stats-bernoulli-binomial",
+  "title": "Bernoulli and binomial sampling models",
+  "dek": "A Bernoulli is one 0/1 trial with mean π. A binomial is the sum of n independent Bernoulli trials — or a single count with that same law. Most resistance proportions start here.",
+  "domain": "stats",
+  "aliases": [
+    "Bernoulli distribution",
+    "binomial distribution",
+    "binary trial",
+    "n choose k",
+    "proportion model"
+  ],
+  "tags": [
+    "probability",
+    "Bernoulli",
+    "binomial",
+    "counts"
+  ],
+  "story": [
+    "A Bernoulli random variable Y takes values 0 or 1 with P(Y = 1) = π and P(Y = 0) = 1 − π. Then E[Y] = π and Var(Y) = π(1 − π). A smear-positive indicator, a high-confidence gyrA call, a culture conversion by month two: each is a Bernoulli the moment you write that mean.",
+    "If Y₁, …, Yₙ are iid Bernoulli(π), their sum X = ∑ Yᵢ is Binomial(n, π): P(X = k) = C(n,k) π^k (1−π)^{n−k} for k = 0, …, n. The mean is nπ and the variance is nπ(1−π). The sample proportion π̂ = X/n is the MLE and is also Ȳ. Same likelihood, two fonts.",
+    "Independence is doing the heavy lifting. n isolates from one outbreak are not n Bernoulli trials of a population proportion. Overdispersed binary data (households, labs) need a Beta-Binomial, a mixed logit, or a sandwich — not a smaller p-value from pretending n grew."
+  ],
+  "deepTitle": "Likelihood, approximation, and cousins",
+  "deep": [
+    "Log-likelihood ℓ(π) = x log π + (n − x) log(1 − π) (plus the binomial coefficient, which does not depend on π). Score x/π − (n−x)/(1−π) = 0 recovers π̂ = x/n. Fisher information n/(π(1−π)) is smallest near 0 and 1 — rare alleles are poorly estimated because the curvature vanishes, not because the sequencer failed.",
+    "Normal approximation: for nπ and n(1−π) both comfortably large, X is approximately N(nπ, nπ(1−π)) and π̂ is approximately N(π, π(1−π)/n). Wald intervals π̂ ± 1.96 se fail near 0 and 1. Score and Clopper–Pearson intervals exist because this approximation is a tool, not a right.",
+    "Poisson limit: if n → ∞, π → 0, nπ → λ, then X →d Poisson(λ). Rare adverse events and sparse mutation counts sometimes prefer that limit as the working law.",
+    "Binomial versus Bernoulli GLM: nᵢ trials at covariate pattern i with yᵢ successes is the same exponential family as nᵢ rows of Bernoulli. Grouping changes the residual df and the Pearson dispersion check; it does not change the MLE of a shared π.",
+    "Negative binomial is not “the other binomial.” It is an overdispersed count law (own plate). Do not relabel a binomial because the Pearson χ² looked large — write the extra-dispersion model."
+  ],
+  "formulas": [
+    {
+      "id": "binom-pmf",
+      "label": "Binomial pmf",
+      "expression": "P(X = k) = C(n,k) π^k (1−π)^{n−k}",
+      "note": "X = sum of n iid Bernoulli(π)."
+    },
+    {
+      "id": "binom-moments",
+      "label": "Mean and variance",
+      "expression": "E[X] = nπ,   Var(X) = nπ(1−π)",
+      "note": "Var(π̂) = π(1−π)/n for π̂ = X/n."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Three binomial laws with n = 20. Mean nπ moves the mass; variance nπ(1−π) is largest near π = 0.5 and collapses toward 0 and 1. That collapse is why rare-resistance intervals are awkward, not a software bug.",
+    "yLabel": "schematic mass",
+    "panels": [
+      {
+        "title": "π = 0.1, mean 2",
+        "bars": [
+          { "label": "low k", "value": 8 },
+          { "label": "mid", "value": 3 },
+          { "label": "high k", "value": 1 }
+        ]
+      },
+      {
+        "title": "π = 0.5, mean 10",
+        "bars": [
+          { "label": "low k", "value": 2 },
+          { "label": "mid", "value": 8 },
+          { "label": "high k", "value": 2 }
+        ]
+      },
+      {
+        "title": "π = 0.9, mean 18",
+        "bars": [
+          { "label": "low k", "value": 1 },
+          { "label": "mid", "value": 3 },
+          { "label": "high k", "value": 8 }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Bernoulli distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Bernoulli_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. TB-lab trials and checks are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Binomial distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Binomial_distribution",
+      "attribution": "pmf and moment formulae under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — binomial",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda366i.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-random-variables",
+    "stats-logit",
+    "stats-poisson",
+    "wiki-negbin",
+    "stats-expectation-variance",
+    "stats-normal-clt"
+  ],
+  "example": {
+    "title": "FQ-R among 50 RR isolates",
+    "setup": "n = 50 sequenced RR-TB isolates, x = 8 with a high-confidence gyrA QRDR mutation. Working model: X ~ Binomial(50, π). Estimate π and quote Var(π̂) at the MLE.",
+    "steps": [
+      {
+        "title": "MLE",
+        "body": "π̂ = 8/50 = 0.16. This is also the sample mean of 50 Bernoulli indicators.",
+        "expression": "π̂ = 0.16"
+      },
+      {
+        "title": "Variance of the count and of the proportion",
+        "body": "Plug-in Var̂(X) = 50×0.16×0.84 = 6.72. Then se(π̂) = √(0.16×0.84/50) ≈ 0.052.",
+        "expression": "se(π̂) ≈ 0.052"
+      },
+      {
+        "title": "When the model is the lie",
+        "body": "If 20 of the 50 are a single L2 outbreak clone, n is not 50 independent Bernoulli trials. Report a cluster-robust or hierarchical variance, not a smaller binomial p-value."
+      }
+    ],
+    "takeaway": "Write n, π, and the independence claim. The binomial is a joint, not a histogram bin."
+  },
+  "check": [
+    {
+      "id": "bb-sum",
+      "kind": "conceptual",
+      "prompt": "A Binomial(n, π) count is the sampling law of:",
+      "choices": [
+        "Any 0/1 column in a spreadsheet, even if rows are clustered",
+        "The sum of n independent Bernoulli(π) trials (or an equivalent single-count model)",
+        "A Normal with mean π",
+        "A Poisson regardless of π"
+      ],
+      "answer": "The sum of n independent Bernoulli(π) trials (or an equivalent single-count model)",
+      "why": "The binomial coefficient and the π^k (1−π)^{n−k} form come from independent identical Bernoulli trials.",
+      "whyWrong": {
+        "Any 0/1 column in a spreadsheet, even if rows are clustered": "Clustering breaks independence; the pmf is then wrong.",
+        "A Normal with mean π": "That is an approximation for π̂, not the exact law of one trial.",
+        "A Poisson regardless of π": "Poisson is a limit for rare events, not the exact binomial."
+      }
+    },
+    {
+      "id": "bb-var",
+      "kind": "calculation",
+      "prompt": "X ~ Binomial(n=10, π=0.3). What is Var(X)?",
+      "choices": ["3", "2.1", "0.3", "7"],
+      "answer": "2.1",
+      "why": "nπ(1−π) = 10×0.3×0.7 = 2.1. The mean is 3; the variance is not.",
+      "whyWrong": {
+        "3": "That is E[X] = nπ.",
+        "0.3": "That is π, not a variance of the count.",
+        "7": "That is n(1−π), not the variance."
+      }
+    },
+    {
+      "id": "bb-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, why is the middle panel (π = 0.5) the most spread out?",
+      "figureHint": "Three n = 20 panels.",
+      "choices": [
+        "Because n is largest in the middle panel",
+        "Because π(1−π) is maximised at π = 0.5, so the binomial variance nπ(1−π) is largest there",
+        "Because binomial laws are always symmetric",
+        "Because MLE is undefined at 0.5"
+      ],
+      "answer": "Because π(1−π) is maximised at π = 0.5, so the binomial variance nπ(1−π) is largest there",
+      "why": "The quadratic π(1−π) peaks at one half. Near 0 or 1 the mass piles at the edge.",
+      "whyWrong": {
+        "Because n is largest in the middle panel": "n = 20 in all three.",
+        "Because binomial laws are always symmetric": "Only when π = 0.5.",
+        "Because MLE is undefined at 0.5": "The MLE is Ȳ, defined on (0,1) and at the boundary as 0 or 1."
+      }
+    }
+  ]
+}

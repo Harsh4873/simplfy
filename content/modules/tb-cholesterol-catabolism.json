@@ -1,0 +1,159 @@
+{
+  "id": "tb-cholesterol-catabolism",
+  "title": "Cholesterol catabolism as a condition, not a slogan",
+  "dek": "Host cholesterol is a carbon source inside some lesions. The mce4 uptake system and the prpRDC methylcitrate genes become visible when you starve the library of glycerol. Griffin–Ioerger–Sassetti TnSeq is the teaching paper, not a blog post about ‘TB eats cholesterol.’",
+  "domain": "tb",
+  "aliases": [
+    "cholesterol catabolism Mtb",
+    "mce4",
+    "prpD",
+    "prpRDC",
+    "methylcitrate cycle",
+    "Griffin TnSeq cholesterol"
+  ],
+  "tags": [
+    "cholesterol",
+    "TnSeq",
+    "carbon source",
+    "prpD",
+    "mce4"
+  ],
+  "story": [
+    "Mycobacterium tuberculosis can use host cholesterol. That is a carbon-source claim, not ‘the bacillus is made of cholesterol.’ Uptake involves the Mce4 transporter. Side-chain and ring degradation dump propionyl-CoA. Excess propionate is toxic unless the methylcitrate cycle (prpR, prpC, prpD and friends) turns it over. Glycerol-rich 7H9 hides this whole pathway: insertions in those genes still grow, so a glycerol TnSeq library calls them dispensable.",
+    "Griffin et al. (2011) — Sassetti, Ioerger, DeJesus — grew saturating Himar1 libraries on cholesterol versus glycerol and asked which insertions vanished only on cholesterol. That is conditional essentiality. TRANSIT’s resampling test is the later software version of the same question. The gene names that drop out (mce4 operon, igr, prpRDC, some kstD/kshA ring genes) are a condition map, not a WHO resistance catalogue.",
+    "Computational use: a clinical frameshift in prpD is not DST. It is a carbon-source prior. If you are scoring fitness of a lineage on cholesterol, or explaining why a macrophage screen lights up a different set than 7H10, start with Griffin and the TRANSIT cholesterol vignette — Ioerger’s circle — before a random metabolomics review."
+  ],
+  "deepTitle": "What the screen can and cannot say",
+  "deep": [
+    "Propionyl-CoA is the toxic intermediate story. Methylmalonyl-CoA mutase / B12 and the methylcitrate cycle are two ways out. A ‘cholesterol essential’ call can be a propionate-handling call.",
+    "mce operons are redundant-looking and PE/PPE-adjacent. Mapping and polar effects are real. Confirm with a clean deletion or CRISPRi before you write a transporter paper from one cold TA.",
+    "Caseum is lipid-rich. That does not mean every caseum bacillus is running the cholesterol operon at full blast. Lesion chemistry is a distribution.",
+    "Do not equate cholesterol catabolism with virulence in every mouse. Some mutants fail in IFN-γ-activated macrophages and look ordinary on plates — that is the point of the condition.",
+    "prpD is a teaching locus: empty on cholesterol, inserted on glycerol. Quote the medium."
+  ],
+  "formulas": [
+    {
+      "id": "cond-ess",
+      "label": "Conditional essentiality (schematic)",
+      "expression": "call ≈ (insertions_glycerol ≫ 0) AND (insertions_cholesterol ≈ 0)",
+      "note": "Resampling / HMM in TRANSIT is the actual test. This cartoon is the scientific claim."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Host cholesterol in, Mce4 uptake, ring/side-chain breakdown, propionyl-CoA, methylcitrate (prpRDC) as the relief valve. Glycerol bypasses the valve, which is why a glycerol library never sees the genes.",
+    "nodes": [
+      { "id": "chol", "label": "Host cholesterol", "x": 8, "y": 48, "tone": "start" },
+      { "id": "mce", "label": "Mce4 uptake", "x": 30, "y": 48, "tone": "process" },
+      { "id": "ring", "label": "Ring / side-chain catabolism", "x": 52, "y": 28, "tone": "process" },
+      { "id": "prp", "label": "prpRDC (propionate)", "x": 52, "y": 70, "tone": "decision", "detail": "toxic if blocked" },
+      { "id": "fit", "label": "Fitness on cholesterol", "x": 78, "y": 48, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "chol", "to": "mce" },
+      { "from": "mce", "to": "ring" },
+      { "from": "mce", "to": "prp", "label": "propionyl-CoA" },
+      { "from": "ring", "to": "fit" },
+      { "from": "prp", "to": "fit" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Griffin et al. 2011 — cholesterol TnSeq (PLoS Pathogens)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21980272/",
+      "attribution": "The teaching experiment: glycerol vs cholesterol essentiality. Paraphrase only; read the paper.",
+      "license": "Open-access article; teaching paraphrase"
+    },
+    {
+      "title": "Cholesterol — Wikipedia (molecule only)",
+      "url": "https://en.wikipedia.org/wiki/Cholesterol",
+      "attribution": "Sterol structure under CC BY-SA. Mtb pathway teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "TRANSIT documentation — conditional essentiality",
+      "url": "https://transit.readthedocs.io/",
+      "attribution": "Method names. This plate does not copy tutorial text.",
+      "license": "Open software documentation; teaching paraphrase"
+    }
+  ],
+  "related": [
+    "tb-tnseq-transit",
+    "tb-essentiality",
+    "tb-granuloma",
+    "tb-caseum",
+    "tb-crispri-hypomorphs",
+    "tb-fitness-cost"
+  ],
+  "example": {
+    "title": "prpD empty only on cholesterol",
+    "setup": "A Himar1 library looks dense in prpD on 7H10-glycerol (many TA hits). The same pool, after outgrowth on cholesterol as sole carbon source, shows a cold prpD. A student writes ‘prpD is essential in Mtb.’",
+    "steps": [
+      {
+        "title": "Name both conditions",
+        "body": "The glycerol track says dispensable. The cholesterol track says required (or growth-defect). The gene did not change. The medium did."
+      },
+      {
+        "title": "What biochemistry predicts",
+        "body": "Cholesterol → propionyl-CoA. Without methylcitrate turnover, propionate poisoning looks like ‘essentiality.’ A glycerol carbon source never makes that pile of propionate."
+      },
+      {
+        "title": "How to cite it",
+        "body": "Griffin 2011 and the later DeJesus/Ioerger TRANSIT papers are the first ring. A Wikipedia sterol page is the last ring, not the evidence."
+      }
+    ],
+    "takeaway": "Cholesterol catabolism is a condition-essential map. Quote glycerol vs cholesterol, then the gene."
+  },
+  "check": [
+    {
+      "id": "ch-cond",
+      "kind": "conceptual",
+      "prompt": "A gene with dense Himar1 insertions on glycerol and almost none after cholesterol outgrowth is best called:",
+      "choices": [
+        "WHO-associated with rifampin resistance",
+        "Conditionally essential for growth on cholesterol (in this library)",
+        "Essential in every medium and every mouse",
+        "Proof that the isolate is MDR"
+      ],
+      "answer": "Conditionally essential for growth on cholesterol (in this library)",
+      "why": "That is the Griffin-style claim. Essentiality is the condition, not a permanent gene badge.",
+      "whyWrong": {
+        "WHO-associated with rifampin resistance": "Wrong object — DST catalogue, not TnSeq.",
+        "Essential in every medium and every mouse": "The glycerol track contradicts that.",
+        "Proof that the isolate is MDR": "Carbon source ≠ resistance definition."
+      }
+    },
+    {
+      "id": "ch-prp",
+      "kind": "calculation",
+      "prompt": "Toy occupancy: prpD has 8 independent TA sites, occupancy 0.5 on glycerol. Approximate P(all 8 empty | tolerated) is about:",
+      "choices": ["0.5", "0.004", "0.25", "1"],
+      "answer": "0.004",
+      "why": "0.5⁸ = 1/256 ≈ 0.0039. Eight empty sites on a saturated glycerol library would already be surprising if the gene were tolerated — cholesterol emptiness on top of a hot glycerol track is the conditional signal.",
+      "whyWrong": {
+        "0.5": "One site.",
+        "0.25": "Two sites (0.5²).",
+        "1": "Not certain emptiness."
+      }
+    },
+    {
+      "id": "ch-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, why does the arrow from uptake split toward both ring catabolism and prpRDC?",
+      "figureHint": "Propionyl-CoA as the toxic branch.",
+      "choices": [
+        "Because Xpert probe D covers prpD",
+        "Because cholesterol breakdown makes propionyl-CoA that the methylcitrate genes have to handle",
+        "Because prpD is in the RRDR",
+        "Because Mce4 is a ribosome"
+      ],
+      "answer": "Because cholesterol breakdown makes propionyl-CoA that the methylcitrate genes have to handle",
+      "why": "The teaching biochemistry: uptake → rings/side chain → propionate stress → prpRDC relief.",
+      "whyWrong": {
+        "Because Xpert probe D covers prpD": "Xpert is rpoB.",
+        "Because prpD is in the RRDR": "RRDR is rpoB.",
+        "Because Mce4 is a ribosome": "Mce4 is an uptake system."
+      }
+    }
+  ]
+}

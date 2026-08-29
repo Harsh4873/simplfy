@@ -1,0 +1,163 @@
+{
+  "id": "stats-qq-plot",
+  "title": "Reading a Q–Q plot",
+  "dek": "Sample order statistics against theoretical quantiles of a named reference. The diagonal is a bulk match. Slope is scale, intercept is location, a bow is shape, peeled tails are tails — or QC.",
+  "domain": "stats",
+  "aliases": [
+    "quantile-quantile plot",
+    "normal probability plot",
+    "how to read a QQ plot",
+    "theoretical versus sample quantiles"
+  ],
+  "tags": [
+    "diagnostics",
+    "QQ",
+    "quantiles",
+    "Normal"
+  ],
+  "story": [
+    "A Q–Q plot is a scatter of sample quantiles against theoretical quantiles of a reference law you named (often N(0,1) or χ²_1). Sort y₍₁₎ ≤ ⋯ ≤ y₍ₙ₎. Choose plotting positions, commonly (i − 1/2)/n or (i − 3/8)/(n + 1/4), invert the reference CDF, and plot (F⁻¹(pᵢ), y₍ᵢ₎). Points on the line y = x (after location-scale matching) mean the bulk of the sample is behaving like that reference.",
+    "Read the geometry before you read the anecdote. A vertical shift is location: the sample is centred elsewhere than the reference. A slope other than 1 is scale: the sample is more or less spread than the reference (on a Normal plot, slope estimates σ if the intercept estimates μ). A smooth bow is skew. Both tails peeling off the diagonal in the same fan is heavier tails (or a mixture). The opposite S is lighter tails. A few off-diagonal points at the ends can be discoveries, contaminants, or a bad assay — the plot does not caption itself.",
+    "In a TB methods section the two honest Q–Q jobs are residual checks (log MIC, GLM Pearson residuals) and GWAS inflation (χ² or −log₁₀ p Q–Q, λ_GC as a median summary). The glossary card wiki-qq is the encyclopedia name. This plate is how you refuse “the points looked fairly straight” as a Methods sentence."
+  ],
+  "deepTitle": "Plotting positions, what bows, and what you must not delete",
+  "deep": [
+    "Location-scale families (Normal, t after studentising) are judged after you allow an intercept and slope. A straight line with slope 2 on a standard Normal Q–Q is a variance problem, not a failed mean. Shape families (γ, χ²) are judged on curvature that location-scale cannot absorb.",
+    "Tails are noisy: order statistics at p = 1/n have large sampling variance. Do not declare a science result from three points off the diagonal without a named alternative (outlier rule, mixture, unmodelled structure).",
+    "GWAS: a χ²_1 Q–Q with λ_GC = median(χ²)/0.456 ≫ 1 is bulk inflation — population structure, polygenicity, or a miscalibrated test — not two starred SNPs. Manhattan without Q–Q is incomplete; Q–Q without a scientific null is theatre (stats-gwas).",
+    "Residual Q–Q in OLS assumes the error law you claimed, usually Normal after the mean structure. Curvature can be missing nonlinearity, heteroscedasticity, or a heavy-tailed error. Straightening the plot by deleting the peak residuals is not a diagnostic; it is a cover-up (stats-ols-diagnostics).",
+    "A probability plot that uses expected Normal scores (Blom, van der Waerden) is the same idea with a slightly different F⁻¹(pᵢ). The reading rules do not change."
+  ],
+  "formulas": [
+    {
+      "id": "qq-plotpos",
+      "label": "A common plotting position",
+      "expression": "pᵢ = (i − 1/2) / n,    xᵢ = F₀⁻¹(pᵢ),    plot (xᵢ, y₍ᵢ₎)",
+      "note": "Other positions exist. Name which one software used if the n is tiny."
+    },
+    {
+      "id": "lambda-gc",
+      "label": "Genomic inflation (χ²_1 Q–Q summary)",
+      "expression": "λ_GC = median(χ²_obs) / 0.456",
+      "note": "0.456 ≈ median of χ²_1. λ ≫ 1 is bulk miscalibration, not a medal."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "How a Q–Q plot is built and then read: sort the sample, pick plotting positions, invert the named reference, plot against the diagonal. Geometry after that is location, scale, shape, or tail — not a vibe.",
+    "nodes": [
+      { "id": "sort", "label": "Sort y₍i₎", "x": 8, "y": 50, "tone": "start" },
+      { "id": "p", "label": "pᵢ = (i−½)/n", "x": 28, "y": 50, "tone": "process" },
+      { "id": "inv", "label": "xᵢ = F₀⁻¹(pᵢ)", "x": 50, "y": 50, "tone": "process" },
+      { "id": "plot", "label": "Plot vs diagonal", "x": 70, "y": 50, "tone": "decision" },
+      { "id": "bulk", "label": "Bulk: location / scale", "x": 90, "y": 22, "tone": "end" },
+      { "id": "tail", "label": "Tails: shape / QC", "x": 90, "y": 78, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "sort", "to": "p" },
+      { "from": "p", "to": "inv" },
+      { "from": "inv", "to": "plot" },
+      { "from": "plot", "to": "bulk", "label": "line" },
+      { "from": "plot", "to": "tail", "label": "peel / bow" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Q–Q plot — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot",
+      "attribution": "Glossary-level definition under CC BY-SA. Reading rules, plotting positions, and TB/GWAS examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — quantile-quantile plot",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/qqplot.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — the Normal distribution (probability plots in spirit)",
+      "url": "https://openstax.org/books/introductory-statistics/pages/6-1-the-standard-normal-distribution",
+      "attribution": "CC BY 4.0. Normal quantiles only; this plate is original teaching notes, not a publisher lab.",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "related": [
+    "wiki-qq",
+    "stats-normal-clt",
+    "stats-ols-diagnostics",
+    "stats-gwas",
+    "stats-chi-square",
+    "stats-t-distribution"
+  ],
+  "example": {
+    "title": "Three readings of a Normal Q–Q of log-MIC residuals",
+    "setup": "n = 40 OLS residuals on log MIC, plotted against N(0,1) quantiles after dividing by residual s (so a well-specified Normal error should hug y = x).",
+    "steps": [
+      {
+        "title": "Straight line, slope ≈ 1.1, intercept ≈ 0",
+        "body": "Bulk matches Normal; slightly extra scale. Check whether residual s was computed with the same n you plotted, and whether one lab batch is noisier — not a reason to invent a new mean structure yet."
+      },
+      {
+        "title": "Both tails peel up/down, bulk still linear",
+        "body": "Heavier tails than Normal (or a two-point mixture of labs). A t error, a sandwich SE, or a robust loss is on the table. Deleting the six tail residuals to “fix the Q–Q” is not a residual analysis."
+      },
+      {
+        "title": "Smooth upward bow in the right half",
+        "body": "Positive skew remaining after the log. The log was not enough, or the mean model is missing a clade. A Normal Q–Q is a shape check, not a proof that μ̂ is unbiased."
+      }
+    ],
+    "takeaway": "Diagonal = bulk match to the named law. Slope, intercept, bow, and peeled tails are four different sentences."
+  },
+  "check": [
+    {
+      "id": "qq-read",
+      "kind": "conceptual",
+      "prompt": "On a standard Normal Q–Q plot (reference N(0,1)), a straight line with slope about 2 and intercept 0 most likely means:",
+      "choices": [
+        "The sample mean is 2 and the SD is 1",
+        "The sample matches Normal location-scale with SD about twice the reference (σ ≈ 2), not a failed mean",
+        "The data are χ²_2",
+        "You should delete half the points to restore slope 1"
+      ],
+      "answer": "The sample matches Normal location-scale with SD about twice the reference (σ ≈ 2), not a failed mean",
+      "why": "In a location-scale family the Q–Q line’s slope is scale and the intercept is location. Slope 2 is σ, not μ = 2.",
+      "whyWrong": {
+        "The sample mean is 2 and the SD is 1": "Intercept 0 argues location still matches the reference centre; slope is scale.",
+        "The data are χ²_2": "χ² is skewed; that would bow, not sit on a straight steep line through the origin.",
+        "You should delete half the points to restore slope 1": "That would hide scale, not diagnose it."
+      }
+    },
+    {
+      "id": "qq-calc",
+      "kind": "calculation",
+      "prompt": "n = 10, i = 8, plotting position pᵢ = (i − 1/2)/n. What is p₈?",
+      "choices": ["0.8", "0.75", "0.85", "0.5"],
+      "answer": "0.75",
+      "why": "(8 − 0.5)/10 = 7.5/10 = 0.75. Using i/n = 0.8 is a different plotting convention; this plate named (i − 1/2)/n.",
+      "whyWrong": {
+        "0.8": "That is i/n, not (i − 1/2)/n.",
+        "0.85": "That would be (i − 0.5)/(n−1) or similar, not this formula.",
+        "0.5": "That is the middle position, i = 5.5, not i = 8."
+      }
+    },
+    {
+      "id": "qq-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, the split after “plot vs diagonal” exists because:",
+      "figureHint": "Two end nodes: bulk location/scale versus tails shape/QC.",
+      "choices": [
+        "A Q–Q plot only ever diagnoses means",
+        "A linear bulk and a peeled tail are different readings — location/scale versus shape, outliers, or QC",
+        "Plotting positions replace the reference law",
+        "GWAS λ_GC is the intercept of every Q–Q"
+      ],
+      "answer": "A linear bulk and a peeled tail are different readings — location/scale versus shape, outliers, or QC",
+      "why": "The construction ends at the scatter. Interpretation forks: line geometry in the bulk versus what the ends are doing.",
+      "whyWrong": {
+        "A Q–Q plot only ever diagnoses means": "Means are the intercept; scale and shape live here too.",
+        "Plotting positions replace the reference law": "pᵢ chooses where on F₀ you invert; F₀ is still named.",
+        "GWAS λ_GC is the intercept of every Q–Q": "λ_GC is a median χ² summary on one specialised Q–Q, not a universal intercept."
+      }
+    }
+  ]
+}

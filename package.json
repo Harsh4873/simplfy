@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Visual study studio for research-grade explanations of statistics and tuberculosis biology.",
+  "description": "Study buddy for statistics and tuberculosis biology: analogy, worked problems, practice, say it back.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

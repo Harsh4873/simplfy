@@ -1,0 +1,155 @@
+{
+  "id": "stats-expectation-variance",
+  "title": "Expectation, variance, and the second moment",
+  "dek": "Expectation is a linear functional of the sampling law. Variance is the expected squared error around that mean. Neither is a spreadsheet cell until you say which random variable you meant.",
+  "domain": "stats",
+  "aliases": [
+    "expected value",
+    "mean of a random variable",
+    "variance",
+    "covariance",
+    "second moment",
+    "standard deviation of Y"
+  ],
+  "tags": [
+    "probability",
+    "expectation",
+    "variance",
+    "moments"
+  ],
+  "story": [
+    "If Y is a random variable with sampling law f, the expectation E[Y] is the centre of mass of that law: ∑ y f(y) in the discrete case, ∫ y f(y) dy in the continuous case. It is a property of the model, not of yesterday’s sample mean. Linearity does not need independence: E[aU + bV] = a E[U] + b E[V] even when U and V share a household.",
+    "Variance is the second central moment, Var(Y) = E[(Y − E[Y])²] = E[Y²] − (E[Y])². It is always nonnegative. Scaling is quadratic: Var(cY) = c² Var(Y). That is why a log transform and a unit change are not cosmetic — they rewrite the variance you will later invert into a standard error.",
+    "Covariance Cov(U,V) = E[(U − E[U])(V − E[V])] is the extra term when you add: Var(U+V) = Var(U) + Var(V) + 2 Cov(U,V). Independent implies uncorrelated (covariance zero) for finite-variance variables; the converse is false. A genomics talk that says “uncorrelated, hence independent” has skipped a lemma that is not optional for Gaussians-without-saying-so."
+  ],
+  "deepTitle": "Operators, not adjectives",
+  "deep": [
+    "E[g(Y)] is not g(E[Y]) unless g is linear (or you are very lucky). Jensen’s inequality is the adult reminder: for convex φ, φ(E[Y]) ≤ E[φ(Y)]. Geometric-mean CFU and log-MIC analyses live here.",
+    "The sample mean Ȳ_n is a different random variable from Y. E[Ȳ_n] = E[Y] under iid sampling (unbiasedness of the mean). Var(Ȳ_n) = Var(Y)/n under iid. That 1/n is the whole point of replication; clustering replaces n with an effective sample size.",
+    "Standard deviation sd(Y) = √Var(Y) is on the scale of Y. A standard error is an estimated sd of an estimator, not of Y. Confusing those two is the next plate.",
+    "Indicator variables are the bridge to probability: if I_A = 1{A occurs}, then E[I_A] = P(A) and Var(I_A) = P(A)(1 − P(A)). Bernoulli means are probabilities. That is not a pun.",
+    "Existence: Cauchy laws have no mean; some heavy-tailed read-count models have infinite variance. Software that always prints a mean is assuming a moment you did not check."
+  ],
+  "formulas": [
+    {
+      "id": "var-def",
+      "label": "Variance as a second moment",
+      "expression": "Var(Y) = E[Y²] − (E[Y])²",
+      "note": "Equivalent to E[(Y − μ)²] with μ = E[Y]. Always ≥ 0 when it exists."
+    },
+    {
+      "id": "var-sum",
+      "label": "Variance of a sum",
+      "expression": "Var(U+V) = Var(U) + Var(V) + 2 Cov(U,V)",
+      "note": "Independence zeros the covariance. Clustering does not."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "The mean is a one-parameter summary of the law of Y. Variance adds a second moment around that mean. Estimators (Ȳ, s²) are different random variables sitting on top of the same law — they are not extra axioms.",
+    "reduced": { "label": "First moment", "params": ["μ = E[Y]"] },
+    "full": { "label": "Second-moment model", "params": ["μ = E[Y]", "σ² = Var(Y)", "Cov if a sum"] },
+    "statistic": "MSE = bias² + variance",
+    "reference": "moments live on the law, not on one cell"
+  },
+  "sources": [
+    {
+      "title": "Expected value — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Expected_value",
+      "attribution": "Glossary-level definition under CC BY-SA. Linearity, TB-lab moments, and checks are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Variance — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Variance",
+      "attribution": "Glossary-level second-moment definition under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook — summary statistics",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-random-variables",
+    "stats-inequalities",
+    "stats-sd-versus-se",
+    "stats-sampling-distribution",
+    "stats-bernoulli-binomial"
+  ],
+  "example": {
+    "title": "Two household smear indicators",
+    "setup": "Y₁, Y₂ are Bernoulli smear-positive indicators, each with E[Yⱼ] = 0.2 and Corr(Y₁,Y₂) = 0.4 (shared exposure). You want E[Y₁+Y₂] and Var(Y₁+Y₂).",
+    "steps": [
+      {
+        "title": "Linearity first",
+        "body": "E[Y₁+Y₂] = 0.2 + 0.2 = 0.4. Correlation does not enter. The expected number of smear-positive people in the household is 0.4 whether or not they share air.",
+        "expression": "E[Y₁+Y₂] = 0.4"
+      },
+      {
+        "title": "Variance needs the covariance",
+        "body": "Var(Yⱼ) = 0.2×0.8 = 0.16. Cov = 0.4 × √(0.16×0.16) = 0.064. Then Var(sum) = 0.16+0.16+2×0.064 = 0.448, not 0.32.",
+        "expression": "Var(Y₁+Y₂) = 0.448"
+      },
+      {
+        "title": "What a naive iid SE would do",
+        "body": "An iid binomial n = 2 calculation uses Var = 0.32. The clustered variance is 40% larger. Treating households as two independent Bernoulli trials understates uncertainty about the mean."
+      }
+    ],
+    "takeaway": "Means add regardless. Variances add only after you have named the covariance."
+  },
+  "check": [
+    {
+      "id": "ev-linear",
+      "kind": "conceptual",
+      "prompt": "Linearity of expectation E[U+V] = E[U]+E[V] requires:",
+      "choices": [
+        "Independence of U and V",
+        "Nothing beyond the expectations existing (finite)",
+        "Gaussian U and V",
+        "Var(U+V) = Var(U)+Var(V)"
+      ],
+      "answer": "Nothing beyond the expectations existing (finite)",
+      "why": "Linearity never asked for independence. That demand belongs to the variance-of-a-sum formula without a covariance term.",
+      "whyWrong": {
+        "Independence of U and V": "Needed to drop Cov, not to add means.",
+        "Gaussian U and V": "Linearity is not a Normal lemma.",
+        "Var(U+V) = Var(U)+Var(V)": "That is the uncorrelated case, a different claim."
+      }
+    },
+    {
+      "id": "ev-scale",
+      "kind": "calculation",
+      "prompt": "Var(Y) = 4. What is Var(3Y + 7)?",
+      "choices": ["4", "12", "36", "43"],
+      "answer": "36",
+      "why": "Var(cY + d) = c² Var(Y) = 9×4 = 36. Adding 7 does not change variance.",
+      "whyWrong": {
+        "4": "Translation invariance confused with scaling.",
+        "12": "That is 3×4, as if variance scaled linearly.",
+        "43": "That illegally added the constant 7 into a variance."
+      }
+    },
+    {
+      "id": "ev-figure",
+      "kind": "figure",
+      "prompt": "On the nested-moment plate, why is μ drawn as a reduced model inside a second-moment box?",
+      "figureHint": "Inner box labelled first moment.",
+      "choices": [
+        "Because the mean does not exist until you specify a variance",
+        "Because a mean is a one-number summary; variance is an extra parameter of the same law, not a different experiment",
+        "Because MSE forbids a mean",
+        "Because covariance replaces the mean"
+      ],
+      "answer": "Because a mean is a one-number summary; variance is an extra parameter of the same law, not a different experiment",
+      "why": "Moments are nested summaries of one sampling law. Estimators of those moments are further random variables.",
+      "whyWrong": {
+        "Because the mean does not exist until you specify a variance": "Means can exist without finite variance (and vice versa, in pathological cases).",
+        "Because MSE forbids a mean": "MSE is bias² + variance, which uses both.",
+        "Because covariance replaces the mean": "Covariance is a cross second moment."
+      }
+    }
+  ]
+}

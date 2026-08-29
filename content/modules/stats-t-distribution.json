@@ -1,0 +1,156 @@
+{
+  "id": "stats-t-distribution",
+  "title": "Student’s t when s replaces σ",
+  "dek": "t_ν is a Normal numerator over an independent χ²-based scale. You use it because s is random, not because the science is “small-n philosophy.” Degrees of freedom name that scale’s χ².",
+  "domain": "stats",
+  "aliases": [
+    "Student t",
+    "t distribution",
+    "Gosset t",
+    "one-sample t",
+    "t versus z"
+  ],
+  "tags": [
+    "probability",
+    "t-distribution",
+    "degrees of freedom",
+    "standard error"
+  ],
+  "story": [
+    "When σ is known and Yᵢ are iid Normal, Z = (Ȳ − μ) / (σ/√n) is exactly N(0,1). In a lab you almost never know σ. Replacing σ by the sample SD s gives T = (Ȳ − μ) / (s/√n). That extra randomness in s fattens the tails relative to Z. Under the Normal iid model, T ~ t_{n−1}. The move is studentisation, not a different philosophy of H₀.",
+    "Student’s t_ν can be built as Z / √(V/ν) with Z ~ N(0,1) independent of V ~ χ²_ν. The χ² in the denominator is why (n−1)s²/σ² ~ χ²_{n−1} for Normal data, and why the one-sample df is n−1 rather than n: s² is computed from residuals around Ȳ, one linear constraint. As ν → ∞, s concentrates (a variance LLN) and t_ν → N(0,1).",
+    "Six technical replicates of a log MIC do not become a z-interval because you are tired of tables. t_5 97.5% is about 2.57, not 1.96. Using z pretends s was σ. The SD-versus-SE plate already split s from s/√n; this plate is what happens to the Normal reference when the denominator is estimated."
+  ],
+  "deepTitle": "df, heavier tails, and what is not a t",
+  "deep": [
+    "One-sample: df = n − 1. Paired differences: df = number of pairs minus 1. Two-sample equal-variance: n₁ + n₂ − 2. Welch (unequal variance) uses a data-dependent df approximation — a different reference, still a t-shaped tail, not a licence to quote z.",
+    "Var(t_ν) = ν/(ν − 2) for ν > 2, larger than 1. That is the heavier-tail fact in one line. Critical values recede toward 1.96 as ν grows; they do not start there.",
+    "Robustness: the exact t law used iid Normal Y. A CLT can still justify a z or t approximation for Ȳ in large n without Normal Y, but then you are in approximation land (and sandwich/bootstrap SEs if dependence or heavy tails bite). Small n plus heavy tails is the regime where neither z nor t is a blessing.",
+    "A t test is a test that uses this reference. The distribution is not the test. Software printing “t = 2.1, df = 8, p = …” assumed a model for the scale. Caption the sampling unit (isolate, well, patient), not the column title.",
+    "z versus t is estimated scale versus known scale. It is not “Bayesian versus frequentist,” and it is not χ² (that is a sum of Normal squares, own plate)."
+  ],
+  "formulas": [
+    {
+      "id": "t-def",
+      "label": "Student’s t as a ratio",
+      "expression": "T = Z / √(V/ν),   Z ~ N(0,1)  ⊥  V ~ χ²_ν   ⇒   T ~ t_ν",
+      "note": "Independence of numerator and denominator is part of the definition."
+    },
+    {
+      "id": "one-sample-t",
+      "label": "One-sample studentised mean",
+      "expression": "T = (Ȳ − μ) / (s/√n)  ~  t_{n−1}",
+      "note": "Normal iid Y. s estimates σ; n−1 is the χ² df in s²."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Same centre, three tails: N(0,1), t with tiny df (mass in the wings), and t with large df hugging the Normal. The extra spread is the price of estimating σ. It is not a different null hypothesis.",
+    "xLabel": "studentised scale (schematic t or z)",
+    "curves": [
+      { "id": "z", "label": "N(0,1)", "mean": 0, "sd": 1 },
+      { "id": "t3", "label": "t_3 (heavy tails)", "mean": 0, "sd": 1.73 },
+      { "id": "t30", "label": "t_30 ≈ Normal", "mean": 0, "sd": 1.04 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Student’s t-distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Student%27s_t-distribution",
+      "attribution": "Glossary-level t family under CC BY-SA. Studentisation teaching and TB MIC examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — a single population mean using Student’s t",
+      "url": "https://openstax.org/books/introductory-statistics/pages/8-2-a-single-population-mean-using-the-student-t-distribution",
+      "attribution": "CC BY 4.0. t versus z as a named procedure only; this plate is original teaching notes.",
+      "license": "CC BY 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — t distribution",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda3663.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-normal-clt",
+    "stats-chi-square",
+    "stats-sd-versus-se",
+    "stats-confidence-intervals",
+    "stats-hypothesis-testing",
+    "stats-law-of-large-numbers"
+  ],
+  "example": {
+    "title": "n = 6 log-MIC replicates, z versus t",
+    "setup": "iid Normal model on log MIC. Ȳ = 0.40, s = 0.30, n = 6. H₀: μ = 0.20 (a process target). Two people studentise; one uses z = 1.96 as if s were σ.",
+    "steps": [
+      {
+        "title": "SE and T",
+        "body": "se = s/√n = 0.30/√6 ≈ 0.122. T = (0.40 − 0.20)/0.122 ≈ 1.63. The statistic is the same whether you later compare it to z or to t_5. The reference changes.",
+        "expression": "T = (Ȳ − μ₀) / (s/√n) ≈ 1.63"
+      },
+      {
+        "title": "df",
+        "body": "One-sample df = 6 − 1 = 5, because (n−1)s²/σ² ~ χ²_5 in this model. A two-sided 95% t_5 critical value is about 2.57, not 1.96. |1.63| does not reject at 5% on t_5; pretending s = σ makes the tail look rarer than it is."
+      },
+      {
+        "title": "What n = 6 did not buy",
+        "body": "A CLT story for Ȳ might be a stretch at n = 6 if log MIC is skewed. Switching from z to t repairs estimated scale, not a heavy-tailed parent. If the well-to-well errors are not even iid, neither reference is the adult object."
+      }
+    ],
+    "takeaway": "s in the denominator changes the reference to t. df counts how that s was built."
+  },
+  "check": [
+    {
+      "id": "t-why",
+      "kind": "conceptual",
+      "prompt": "In the Normal iid model, we use a t reference for (Ȳ − μ)/(s/√n) rather than N(0,1) because:",
+      "choices": [
+        "The null hypothesis is a different scientific question when n is small",
+        "s is a random estimate of σ, so the studentised ratio has heavier tails than Z",
+        "Variance is infinite by definition whenever s is used",
+        "t is the Bayesian posterior for μ with no prior"
+      ],
+      "answer": "s is a random estimate of σ, so the studentised ratio has heavier tails than Z",
+      "why": "Studentisation is extra randomness in the scale. H₀ did not change species.",
+      "whyWrong": {
+        "The null hypothesis is a different scientific question when n is small": "H₀ is still a statement about μ. The sampling law of the statistic changed.",
+        "Variance is infinite by definition whenever s is used": "s² estimates a finite σ²; t_ν has finite variance once ν > 2.",
+        "t is the Bayesian posterior for μ with no prior": "t here is a frequentist sampling law. A posterior needs a prior (own Bayes plates)."
+      }
+    },
+    {
+      "id": "t-calc",
+      "kind": "calculation",
+      "prompt": "One-sample t, n = 16, Ȳ = 12, s = 8, H₀: μ = 10. The t statistic is:",
+      "choices": ["2", "1", "0.25", "8"],
+      "answer": "1",
+      "why": "se = 8/√16 = 2. T = (12 − 10)/2 = 1. df would be 15 if you needed a tail; the statistic itself is 1.",
+      "whyWrong": {
+        "2": "That is the SE, or (12−10) without dividing by se.",
+        "0.25": "That divided by s instead of se, or used n not √n.",
+        "8": "That is s, not T."
+      }
+    },
+    {
+      "id": "t-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, the t_3 curve is the widest because:",
+      "figureHint": "Three curves: N(0,1), t_3, t_30.",
+      "choices": [
+        "Small df means the χ² scale in the denominator is noisy, so more probability sits in the tails",
+        "t_3 has a larger mean than N(0,1)",
+        "Large df always has the heaviest tails",
+        "The plate is a χ² on CFU"
+      ],
+      "answer": "Small df means the χ² scale in the denominator is noisy, so more probability sits in the tails",
+      "why": "t_3 is Z over a noisy √(V/3). t_30 has already almost recovered the Normal.",
+      "whyWrong": {
+        "t_3 has a larger mean than N(0,1)": "All three curves are centred at 0 in the plate.",
+        "Large df always has the heaviest tails": "Opposite: t_ν → z as ν grows.",
+        "The plate is a χ² on CFU": "χ² is a different named law (sum of squares)."
+      }
+    }
+  ]
+}

@@ -11,6 +11,9 @@ describe("catalogue", () => {
     const ids = new Set(modules.map((module) => module.id));
     expect(ids.has("stats-lrt")).toBe(true);
     expect(ids.has("tb-rifampin")).toBe(true);
+    expect(ids.has("tb-tnseq-transit")).toBe(true);
+    expect(ids.has("stats-normal-clt")).toBe(true);
+    expect(ids.has("tb-cholesterol-catabolism")).toBe(true);
     for (const module of modules) {
       expect(validateModule(module)).toEqual([]);
       expect(module.story.join(" ").length).toBeGreaterThan(200);

@@ -1,0 +1,159 @@
+{
+  "id": "tb-tnseq-transit",
+  "title": "TnSeq and TRANSIT as a genome-wide essentiality assay",
+  "dek": "Himar1 inserts at TA dinucleotides. A saturated library turns insertion density into a fitness map. TRANSIT is the analysis stack (Gumbel, HMM, resampling) — not a DST catalogue.",
+  "domain": "tb",
+  "aliases": [
+    "Tn-seq",
+    "TnSeq",
+    "Himar1",
+    "TRANSIT software",
+    "transposon sequencing Mtb",
+    "TraSH"
+  ],
+  "tags": [
+    "TnSeq",
+    "essentiality",
+    "Himar1",
+    "fitness",
+    "genomics"
+  ],
+  "story": [
+    "Transposon sequencing (TnSeq) asks, at genome scale, which loci tolerate insertion. In M. tuberculosis the workhorse is Himar1, which inserts at TA dinucleotides. H37Rv carries on the order of 74,000 TA sites. A saturated library — many independent insertions per TA, across a large pool — makes the absence of reads at a site informative rather than a sampling zero.",
+    "After outgrowth (7H10, macrophage, mouse spleen, a drug at sub-MIC), you sequence the insertion junctions. Genes that drop out of the pool are candidate essentials or condition-essentials. Genes that stay densely inserted are dispensable in that condition. This is a relative fitness assay on a pool, not a MIC and not a WHO catalogue grade.",
+    "TRANSIT (DeJesus, Ioerger and colleagues) is the usual analysis environment: Gumbel methods for essentiality of a whole gene, HMM models that can call domain-level essential segments inside a gene, and resampling tests for conditioned libraries. The software does not know your medium. A “non-essential” call on rich plates is compatible with essentiality in hypoxia or in a mouse."
+  ],
+  "deepTitle": "What a computational lab actually checks",
+  "deep": [
+    "Saturation first. A gene with two TA sites cannot be called essential by the same rule as a 40-TA gene. TRANSIT reports help; a methods section that omits library density is incomplete.",
+    "Read counts are compositional. A bottleneck (mouse infection, a harsh macrophage) inflates apparent essentiality because many insertions are lost by chance. Resampling and HMM help; they do not replace a bottleneck diagnostic (unique-insertion counts, occupancy).",
+    "Polar effects: an insertion can knock down a downstream gene in an operon. Essentiality of RvXXXX may be an operon artefact. CRISPRi and complementation are how you argue the gene rather than the TA.",
+    "TraSH and earlier microarray insertion methods are ancestors. Do not meta-analyse a 2003 TraSH list with a 2020 Himar1 HMM as if they were one likelihood.",
+    "Clinical WGS: a frameshift in a TnSeq-essential gene in a viable isolate is a mapping problem, a mixed sample, a wrong essentiality prior, or a condition mismatch — look at the BAM before you invent new biology."
+  ],
+  "formulas": [
+    {
+      "id": "occupancy",
+      "label": "Site occupancy (schematic)",
+      "expression": "occupancy ≈ (# TA sites with ≥1 insertion) / (TA sites in window)",
+      "note": "Near-zero occupancy along a gene is the essentiality signal after you have saturation."
+    }
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "Schematic TA map of a 900-bp gene. Dense insertions in the C-terminal third (dispensable in this condition) versus a cold N-terminal domain. HMM essentiality is a segment call, not a gene-name binary. TRANSIT is how you compute that; the wet library is how it is true.",
+    "gene": "example CDS",
+    "start": 1,
+    "end": 900,
+    "unit": "bp",
+    "regions": [
+      { "start": 1, "end": 420, "label": "HMM-essential segment" },
+      { "start": 640, "end": 900, "label": "inserted (dispensable)" }
+    ],
+    "marks": [
+      { "pos": 40, "label": "TA-N", "note": "Himar1 site" },
+      { "pos": 200, "label": "cold", "note": "no reads" },
+      { "pos": 720, "label": "hot TA", "note": "high counts" },
+      { "pos": 880, "label": "TA-C", "note": "tolerant" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Transposon mutagenesis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Transposon_mutagenesis",
+      "attribution": "Glossary-level insertion-mutagenesis idea under CC BY-SA. Mtb Himar1/TRANSIT teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "TRANSIT documentation (Ioerger lab)",
+      "url": "https://transit.readthedocs.io/",
+      "attribution": "Method names (Gumbel, HMM, resampling) as used in public software docs. This plate does not copy tutorial text.",
+      "license": "Open software documentation; teaching paraphrase"
+    },
+    {
+      "title": "NCBI Bookshelf / public-domain NIH materials on microbial genetics",
+      "url": "https://www.ncbi.nlm.nih.gov/books/",
+      "attribution": "Background pointer only. Essentiality examples are original teaching notes.",
+      "license": "U.S. government / as marked on each book"
+    }
+  ],
+  "related": [
+    "tb-essentiality",
+    "tb-crispri-hypomorphs",
+    "tb-h37rv-genome",
+    "tb-organism",
+    "tb-fitness-cost",
+    "tb-cholesterol-catabolism"
+  ],
+  "example": {
+    "title": "Zero insertions in a 4-TA gene",
+    "setup": "A 180-bp gene has four TA sites and zero insertions in a library whose genome-wide occupancy is ~50%. A student calls it “essential, p very small.” TRANSIT Gumbel on long genes in the same library looks well calibrated.",
+    "steps": [
+      {
+        "title": "Under-powered window",
+        "body": "Four sites at 50% occupancy can be empty by chance with probability 0.5⁴ = 0.0625 even if every TA is tolerated. That is not a genome-wide essentiality claim."
+      },
+      {
+        "title": "What to do",
+        "body": "Report occupancy and TA count. Use a method that models small genes conservatively, or treat the locus as uncertain. CRISPRi or a longer homologue comparison may be the evidence, not a starred Gumbel on n_TA = 4."
+      },
+      {
+        "title": "Do not paste into a DST report",
+        "body": "Essentiality is not rpoB. A clinical isolate’s LOF in this gene is still a BAM question, not a TRANSIT p-value pasted into WHO grading."
+      }
+    ],
+    "takeaway": "TnSeq is a saturated insertion likelihood. Small genes and bottlenecks are the regularity failures."
+  },
+  "check": [
+    {
+      "id": "tn-himar",
+      "kind": "conceptual",
+      "prompt": "Himar1 TnSeq in Mtb primarily reports fitness at which sequence motif?",
+      "choices": [
+        "Start codons only",
+        "TA dinucleotides",
+        "RRDR only",
+        "PE_PGRS repeats exclusively"
+      ],
+      "answer": "TA dinucleotides",
+      "why": "Himar1’s insertion specificity is TA. Saturation is counted in TA space, not in amino acids.",
+      "whyWrong": {
+        "Start codons only": "ATG is not the insertion motif.",
+        "RRDR only": "That is rpoB DST.",
+        "PE_PGRS repeats exclusively": "Those genes are hard to map; they are not the transposon’s motif."
+      }
+    },
+    {
+      "id": "tn-calc",
+      "kind": "calculation",
+      "prompt": "A gene with 3 TA sites in a library with independent occupancy 0.5 per TA (toy model). P(all three empty | tolerated) is:",
+      "choices": ["0.5", "0.125", "0.875", "0"],
+      "answer": "0.125",
+      "why": "0.5³ = 0.125. Empty is not automatic essentiality when n_TA is tiny.",
+      "whyWrong": {
+        "0.5": "That is one site.",
+        "0.875": "That is 1 − 0.125, the chance of at least one insertion.",
+        "0": "Chance emptiness is not impossible."
+      }
+    },
+    {
+      "id": "tn-figure",
+      "kind": "figure",
+      "prompt": "On the gene track, a cold N-terminal segment next to a hot C-terminus is the picture of:",
+      "figureHint": "HMM-essential segment versus inserted region.",
+      "choices": [
+        "A WHO resistance grade",
+        "Domain-level (HMM) essentiality: part of the gene is required in this condition, not necessarily every codon",
+        "Proof that the gene is non-essential everywhere",
+        "Xpert probe dropout"
+      ],
+      "answer": "Domain-level (HMM) essentiality: part of the gene is required in this condition, not necessarily every codon",
+      "why": "TRANSIT’s HMM was built for this pattern. A binary gene call would lie about the C-terminus.",
+      "whyWrong": {
+        "A WHO resistance grade": "Wrong object.",
+        "Proof that the gene is non-essential everywhere": "The N-terminus is cold.",
+        "Xpert probe dropout": "Cartridge DST, not TnSeq."
+      }
+    }
+  ]
+}

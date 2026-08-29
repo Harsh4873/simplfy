@@ -1,0 +1,157 @@
+{
+  "id": "stats-law-of-large-numbers",
+  "title": "The law of large numbers as consistency of the mean",
+  "dek": "Ȳ_n converges in probability to μ. That is the mean settling, not a bell. The CLT is a different claim about √n fluctuations once a variance exists.",
+  "domain": "stats",
+  "aliases": [
+    "LLN",
+    "weak law of large numbers",
+    "strong law of large numbers",
+    "consistency of the sample mean",
+    "law of averages"
+  ],
+  "tags": [
+    "probability",
+    "LLN",
+    "consistency",
+    "sample mean"
+  ],
+  "story": [
+    "The weak law of large numbers is a consistency statement about averages. If Y₁, …, Yₙ are iid with finite mean μ, then Ȳ_n →p μ: for every fixed ε > 0, P(|Ȳ_n − μ| > ε) → 0 as n grows. The sample mean eventually sits near the thing it estimates. The theorem does not say that a histogram of the Yᵢ becomes a bell, and it does not by itself licence a 1.96 se interval.",
+    "The central limit theorem is the next-order object. After you zoom the error by √n, the leftover fluctuation looks Normal when a variance is finite. You can have an LLN when that zoomed error is not Normal (infinite variance, other stable limits). You can also have a pretty mound of Ȳ at n = 30 and still fail the scientific ε you care about: Chebyshev only gives P(|Ȳ − μ| ≥ ε) ≤ σ²/(nε²), which is slow if σ is large or ε is tight.",
+    "In a TB QC lab a running mean of log₁₀ CFU for a stock strain should settle toward the process mean as plates accumulate. Each Tuesday plate keeps the parent scatter. Publishing one plate as “the titre” refuses the LLN. Publishing a Normal interval around a mean of n = 4 as if the titre had Gaussianised confuses the LLN with the CLT — the Normal-and-CLT plate is that second claim."
+  ],
+  "deepTitle": "What settles, how fast, and what never had a mean",
+  "deep": [
+    "Weak versus strong: WLLN is convergence in probability. The strong law (SLLN) is Ȳ_n → μ almost surely, under a finite-mean iid model (Kolmogorov). For lab reporting the distinction rarely changes the sentence; both are consistency, not a shape.",
+    "Chebyshev proof of the WLLN when Var(Y) = σ² < ∞: Var(Ȳ) = σ²/n, so P(|Ȳ − μ| ≥ ε) ≤ σ²/(nε²). Finite variance is a convenience for this bound, not the most general WLLN (Khintchine needs only a finite mean).",
+    "No mean, no LLN. A Cauchy parent has no expectation; the sample mean has the same Cauchy law at every n and does not settle. Heavy tails with a mean but no variance can still be consistent while refusing a classical CLT.",
+    "Bernoulli special case: Ȳ_n = π̂ →p π. That is why a prevalence estimator is consistent. The se √(π(1−π)/n) and the Normal interval are CLT/Wald objects, not the LLN.",
+    "“n > 30” is not in the theorem. Name ε, name a tail bound or a sampling law, and name whether you needed consistency or a Normal approximation."
+  ],
+  "formulas": [
+    {
+      "id": "wlln",
+      "label": "Weak law (iid, finite mean)",
+      "expression": "Ȳ_n  →p  μ",
+      "note": "For every ε > 0, P(|Ȳ_n − μ| > ε) → 0. Consistency of the mean, not a Normal shape."
+    },
+    {
+      "id": "cheb-mean",
+      "label": "Chebyshev on the mean (finite variance)",
+      "expression": "P(|Ȳ_n − μ| ≥ ε)  ≤  σ² / (n ε²)",
+      "note": "Gives a rate. Loose if tails are light; honest if you refuse a shape."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Same parent, three laws: the wide law of Y, the still-wide sampling law of Ȳ at small n, and the tight mound of Ȳ at large n sitting on μ. The LLN is that last mound collapsing onto the mean — not a claim that any of the three curves is Gaussian.",
+    "xLabel": "value (schematic Y or Ȳ)",
+    "curves": [
+      { "id": "parent", "label": "parent Y", "mean": 0.2, "sd": 1.4 },
+      { "id": "nsmall", "label": "Ȳ at small n", "mean": 0.15, "sd": 0.7 },
+      { "id": "nlarge", "label": "Ȳ at large n", "mean": 0.12, "sd": 0.22 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Law of large numbers — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Law_of_large_numbers",
+      "attribution": "Statement-level WLLN/SLLN under CC BY-SA. Contrast with CLT, Chebyshev rate, and TB QC examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — sampling and the mean",
+      "url": "https://openstax.org/books/introductory-statistics/pages/2-7-measures-of-the-spread-of-the-data",
+      "attribution": "CC BY 4.0. Mean and spread only; this plate is original teaching notes, not a publisher-branded derivative.",
+      "license": "CC BY 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — law of large numbers (related sampling facts)",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-normal-clt",
+    "stats-expectation-variance",
+    "stats-sampling-distribution",
+    "stats-sd-versus-se",
+    "stats-inequalities",
+    "stats-bernoulli-binomial"
+  ],
+  "example": {
+    "title": "A titre mean that settles, and one that only looks Normal",
+    "setup": "QC strain, iid log₁₀ CFU with μ = 6.0 and σ = 0.4. First: n = 4 plates. Second: n = 100. Someone quotes both means as “the titre, Gaussian by CLT.”",
+    "steps": [
+      {
+        "title": "What the LLN promised",
+        "body": "Both Ȳ_n are consistent for 6.0 as n grows. At n = 4, Chebyshev with ε = 0.2 gives P(|Ȳ − 6| ≥ 0.2) ≤ 0.16 / (4 × 0.04) = 1, a vacuous bound: you have not yet bought a useful ε at this n.",
+        "expression": "σ²/(nε²) = 0.16 / 0.16 = 1"
+      },
+      {
+        "title": "n = 100",
+        "body": "The same ε = 0.2 now has Chebyshev bound 0.16 / (100 × 0.04) = 0.04. The running mean is allowed to be called settled for this coarse ε. The parent plates are still σ = 0.4 wide.",
+        "expression": "σ²/(nε²) = 0.04"
+      },
+      {
+        "title": "What the CLT would add",
+        "body": "A Normal approximation for Ȳ uses se = 0.4/√n. That is a shape-and-interval claim. The LLN only said the mass around μ piles up. Do not print 1.96 se because “the mean converged.”"
+      }
+    ],
+    "takeaway": "The LLN is consistency of Ȳ. Speed and Gaussian intervals are extra theorems."
+  },
+  "check": [
+    {
+      "id": "lln-about",
+      "kind": "conceptual",
+      "prompt": "The classical weak law of large numbers is a statement that:",
+      "choices": [
+        "The histogram of the raw Yᵢ becomes Normal once n exceeds 30",
+        "The sample mean Ȳ_n converges in probability to E[Y], given a finite mean",
+        "√n (Ȳ_n − μ) is exactly N(0,1) at every finite n",
+        "Variance must be infinite"
+      ],
+      "answer": "The sample mean Ȳ_n converges in probability to E[Y], given a finite mean",
+      "why": "That is consistency of the mean. Shape of Y, and Normal limits after √n zoom, are different claims.",
+      "whyWrong": {
+        "The histogram of the raw Yᵢ becomes Normal once n exceeds 30": "The parent can stay skewed; n > 30 is folklore, not the LLN.",
+        "√n (Ȳ_n − μ) is exactly N(0,1) at every finite n": "That is a CLT-style fluctuation claim, and even the CLT is a limit, not an exact finite-n Normal.",
+        "Variance must be infinite": "A finite mean is the usual ingredient; infinite variance can still allow an LLN while breaking the classical CLT."
+      }
+    },
+    {
+      "id": "lln-cheb",
+      "kind": "calculation",
+      "prompt": "iid Y with σ = 2, n = 100, ε = 1. Chebyshev’s bound on P(|Ȳ − μ| ≥ 1) is:",
+      "choices": ["1", "0.04", "0.02", "4"],
+      "answer": "0.04",
+      "why": "σ²/(nε²) = 4 / (100 × 1) = 0.04. The bound is on the mean’s deviation, not on one Y.",
+      "whyWrong": {
+        "1": "That would be a vacuous probability bound, here the arithmetic is 4/100.",
+        "0.02": "That is 2/100, using σ instead of σ² in the numerator.",
+        "4": "That is σ², not the probability bound."
+      }
+    },
+    {
+      "id": "lln-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, the narrowest curve is Ȳ at large n in order to show:",
+      "figureHint": "Three curves: parent Y, Ȳ small n, Ȳ large n.",
+      "choices": [
+        "That the parent Y has become Gaussian",
+        "That the sampling law of the mean concentrates around μ as n grows — the LLN picture",
+        "That variance of Ȳ grows with n",
+        "That Cauchy means settle fastest"
+      ],
+      "answer": "That the sampling law of the mean concentrates around μ as n grows — the LLN picture",
+      "why": "The parent stays wide. Concentration of Ȳ is the consistency claim.",
+      "whyWrong": {
+        "That the parent Y has become Gaussian": "The wide parent is still drawn; Gaussianity is not the LLN.",
+        "That variance of Ȳ grows with n": "Var(Ȳ) = σ²/n shrinks.",
+        "That Cauchy means settle fastest": "Cauchy has no mean; the sample mean does not settle."
+      }
+    }
+  ]
+}

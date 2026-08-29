@@ -1,0 +1,149 @@
+{
+  "id": "tb-relapse-reinfection",
+  "title": "Relapse versus reinfection as a genomic fork",
+  "dek": "A late isolate sitting a handful of SNPs from the baseline genome looks like relapse or persistence. A distant, often different-lineage pair looks like reinfection or mixed infection. Thresholds are screens, not likelihoods.",
+  "domain": "tb",
+  "aliases": [
+    "relapse versus reinfection",
+    "recurrent TB genomics",
+    "recurrence TB",
+    "exogenous reinfection"
+  ],
+  "tags": [
+    "relapse",
+    "reinfection",
+    "WGS",
+    "recurrence"
+  ],
+  "story": [
+    "Recurrent TB after treatment is two different scientific objects. Relapse (or persistence) is the same strain returning — residual bacilli, often from a poorly sterilised lesion, sometimes with acquired resistance. Reinfection is a new strain, common in high-incidence settings and in HIV, and a reason that “cure” at six months is not lifelong immunity.",
+    "WGS made the fork operational: a pairwise SNP distance, a tree, sometimes mixed-allele fractions. Near-identity (after a stated mask) supports relapse. A different lineage, or a large distance within a lineage, supports reinfection. Heteroresistance and mixed infection sit in the middle and can fool a single colony pick.",
+    "Epidemiology still has to speak. A 2-SNP pair six years later can be relapse with a slow clock, or a common source still circulating. A 80-SNP pair in two weeks is mixed infection or a sample swap until proven otherwise. The transmission-genomics stats plate is the caveat engine; this plate is the clinical fork."
+  ],
+  "deepTitle": "How to write the report",
+  "deep": [
+    "State the mask (PE/PPE, repeats, optionally DR genes), the reference, and the clock you believe. Unmasked PE_PGRS distances are not this fork.",
+    "Acquired resistance on a near-identical background is a relapse-plus-evolution story (cavity under pressure). A new rpoB on a different lineage is reinfection with RR-TB, not “the first course created S450L in a new clade overnight.”",
+    "HIV and high force of infection raise the prior on reinfection. Low-incidence settings raise the prior on relapse. Bayes lives here as a prior, not as a p-value.",
+    "Culture contamination and swapped tubes mimic both forks. Discordant NTM or a second patient’s barcode is a lab incident."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Recurrent isolate in, then a genomic comparison. Near-identity heads to relapse/persistence; a distant or different-lineage genome heads to reinfection. Mixed BAM or sample-swap is the decision node you must not skip.",
+    "nodes": [
+      { "id": "rec", "label": "Recurrent isolate", "x": 8, "y": 48, "tone": "start" },
+      { "id": "cmp", "label": "Distance vs baseline", "x": 32, "y": 48, "tone": "decision" },
+      { "id": "near", "label": "Near-identical", "x": 56, "y": 22, "tone": "process", "detail": "same strain" },
+      { "id": "far", "label": "Distant / other lineage", "x": 56, "y": 48, "tone": "process" },
+      { "id": "mix", "label": "Mixed / swap?", "x": 56, "y": 76, "tone": "decision" },
+      { "id": "rel", "label": "Relapse / persistence", "x": 82, "y": 22, "tone": "end" },
+      { "id": "rei", "label": "Reinfection", "x": 82, "y": 48, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "rec", "to": "cmp" },
+      { "from": "cmp", "to": "near" },
+      { "from": "cmp", "to": "far" },
+      { "from": "cmp", "to": "mix" },
+      { "from": "near", "to": "rel" },
+      { "from": "far", "to": "rei" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Tuberculosis recurrence / reinfection (Wikipedia tuberculosis page overlay)",
+      "url": "https://en.wikipedia.org/wiki/Tuberculosis",
+      "attribution": "Disease-level recurrence language under CC BY-SA. Genomic fork teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO / CDC treatment-outcome language (relapse as a programme word)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Programme definitions of recurrence overlay; genomic criteria are original teaching.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": [
+    "stats-transmission-genomics",
+    "tb-snp-thresholds",
+    "tb-heteroresistance",
+    "tb-latency-dosr",
+    "tb-hiv-synergy",
+    "tb-core-genome-mask"
+  ],
+  "example": {
+    "title": "Month-18 isolate, 3 SNPs, new gyrA",
+    "setup": "Baseline DS-TB, L4, treated with HRZE. Recurrence at month 18. WGS: same barcode, 3 SNPs after a standard core mask, plus gyrA D94G at AF 0.95. The patient lives in a high-incidence city.",
+    "steps": [
+      {
+        "title": "Same strain plus evolution",
+        "body": "3 SNPs and a shared barcode is a relapse/persistence picture, not a new L2 reinfection. D94G on that background is acquired FQ-R (or unmasking of a minority) under pressure if a FQ was used — check the history."
+      },
+      {
+        "title": "Do not over-call reinfection because incidence is high",
+        "body": "A high prior on reinfection does not beat a 3-SNP identity. Reinfection would look like a different lineage or a long distance."
+      },
+      {
+        "title": "Lesion hygiene",
+        "body": "Ask about the original cavity, adherence, and whether FQ-containing regimens were given. The genome forked to relapse-plus-resistance, not to a new contact’s strain."
+      }
+    ],
+    "takeaway": "Near-identity is relapse/persistence until a mixed BAM says otherwise. Distance is reinfection."
+  },
+  "check": [
+    {
+      "id": "rr-near",
+      "kind": "conceptual",
+      "prompt": "A recurrent isolate with the same lineage barcode and 2 core SNPs from baseline most strongly supports:",
+      "choices": [
+        "A different species of NTM",
+        "Relapse or persistence of the same strain (or a missed mixed infection if the BAM is mixed)",
+        "Reinfection with a typical between-lineage distance",
+        "That TPT caused Beijing"
+      ],
+      "answer": "Relapse or persistence of the same strain (or a missed mixed infection if the BAM is mixed)",
+      "why": "Near-identity is the relapse fork. Mixed infection is the caveat, not the default.",
+      "whyWrong": {
+        "A different species of NTM": "Same barcode is MTBC.",
+        "Reinfection with a typical between-lineage distance": "Between-lineage is hundreds of SNPs.",
+        "That TPT caused Beijing": "Nonsense."
+      }
+    },
+    {
+      "id": "rr-lin",
+      "kind": "calculation",
+      "prompt": "Baseline L4; recurrence L2, ~250 SNPs. The working call is:",
+      "choices": [
+        "Relapse with a fast clock of 250 SNPs in 4 months",
+        "Reinfection (or mixed infection / swap until the lab is clean)",
+        "BCG bladder therapy",
+        "PZA DST only"
+      ],
+      "answer": "Reinfection (or mixed infection / swap until the lab is clean)",
+      "why": "Different major lineage is not a 6-month clock. Check swaps, then treat as new infection.",
+      "whyWrong": {
+        "Relapse with a fast clock of 250 SNPs in 4 months": "Unphysical for MTBC clocks.",
+        "BCG bladder therapy": "RD1/BCG story, not L2 pulmonary recurrence by default.",
+        "PZA DST only": "Wrong object."
+      }
+    },
+    {
+      "id": "rr-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, why is a mixed/swap node drawn beside near versus far?",
+      "figureHint": "Lower decision branch.",
+      "choices": [
+        "Because sample mix-ups and mixed infection can mimic either fork if you only look at a consensus FASTA",
+        "Because swaps are impossible",
+        "Because lineage is a drug",
+        "Because Xpert measures SNP distance"
+      ],
+      "answer": "Because sample mix-ups and mixed infection can mimic either fork if you only look at a consensus FASTA",
+      "why": "A consensus sequence hides 40/60 lineage splits. Look at the BAM.",
+      "whyWrong": {
+        "Because swaps are impossible": "They are a classic error.",
+        "Because lineage is a drug": "No.",
+        "Because Xpert measures SNP distance": "Xpert interrogates RRDR, not a core alignment."
+      }
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "id": "stats-hypothesis-testing",
+  "title": "Hypothesis testing as a two-error procedure",
+  "dek": "A test is a rule that, for each data set, says reject H₀ or not. Size is the Type I probability of that rule. Power is one minus Type II at a specified alternative. A p-value is not the procedure; it is a tail the procedure can use.",
+  "domain": "stats",
+  "aliases": [
+    "statistical hypothesis test",
+    "null hypothesis",
+    "significance test",
+    "reject or not",
+    "size and power"
+  ],
+  "tags": [
+    "inference",
+    "testing",
+    "Neyman-Pearson",
+    "p-value"
+  ],
+  "story": [
+    "A hypothesis test starts with two scientific stories written as sets of parameters: H₀ (the restriction you might reject) and H₁ (the alternative you take seriously). A test is a measurable partition of the sample space into a rejection region R and its complement. You do not “accept H₀” in the Neyman–Pearson grammar; you fail to reject it. That wording is pedantic on purpose: absence of evidence is not a proof of the restriction.",
+    "Size (Type I error rate) is P(reject H₀ | H₀ true), usually capped at α = 0.05 by convention, not by nature. Power is P(reject H₀ | a named point in H₁). You cannot quote power without an alternative, an n, and a test. Type I and Type II already have a glossary plate; this plate is the procedure those errors belong to.",
+    "A p-value is P(discrepancy as large or larger | H₀). Comparing it to α is one way to build R. It is not P(H₀ | data), not an effect size, and not a posterior odds. The p-versus-posterior plate exists because this swap is the most expensive sentence in applied work."
+  ],
+  "deepTitle": "How to write one without theatre",
+  "deep": [
+    "Simple versus simple: Neyman–Pearson lemma says a likelihood-ratio rejection region is most powerful at a given size (own glossary plate). Composite H₀ (θ in a set) needs a maximised null, which is why LRTs, Wald, and score exist.",
+    "Pre-specify the discrepancy. Two-sided versus one-sided, LRT versus Wald, permutation versus parametric — each is a different test. Optional stopping without a plan changes the null sampling law of the p-value.",
+    "Equivalence and non-inferiority reverse which error is which: you reject a difference larger than a margin. “p > 0.05 therefore equivalent” is not that test.",
+    "Multiple testing: each extra test is another chance at Type I. FWER and FDR (own plates) change the error-rate contract. They do not change the definition of a single test.",
+    "In TB genomics, H₀ is often “this mutation is not associated with MIC after lineage.” Write the likelihood and the restriction. A starred SNP without a named H₀ is a ranking, not a test."
+  ],
+  "formulas": [
+    {
+      "id": "size",
+      "label": "Size of a test",
+      "expression": "α = P(Y ∈ R | H₀)",
+      "note": "A property of the rule R, not of one observed y."
+    },
+    {
+      "id": "power",
+      "label": "Power at a point",
+      "expression": "1 − β(θ₁) = P(Y ∈ R | θ = θ₁ ∈ H₁)",
+      "note": "Needs a named alternative. “The study was powered” without θ₁ is a slogan."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From a named H₀ and a discrepancy to a reject / do-not-reject rule. α is a long-run property of that rule under H₀. A p-value is a tail computed on the way; it is not P(H₀ | y).",
+    "nodes": [
+      { "id": "h0", "label": "H₀ as a restriction", "x": 8, "y": 48, "tone": "start" },
+      { "id": "disc", "label": "Discrepancy T(Y)", "x": 32, "y": 48, "tone": "process" },
+      { "id": "tail", "label": "p-value tail under H₀", "x": 56, "y": 28, "tone": "process" },
+      { "id": "rule", "label": "Compare to α", "x": 56, "y": 70, "tone": "decision" },
+      { "id": "rej", "label": "Reject H₀", "x": 82, "y": 28, "tone": "end" },
+      { "id": "keep", "label": "Do not reject", "x": 82, "y": 70, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "h0", "to": "disc" },
+      { "from": "disc", "to": "tail" },
+      { "from": "disc", "to": "rule" },
+      { "from": "tail", "to": "rej", "label": "p ≤ α" },
+      { "from": "rule", "to": "keep", "label": "p > α" },
+      { "from": "tail", "to": "rule" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Statistical hypothesis testing — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Statistical_hypothesis_testing",
+      "attribution": "Glossary-level procedure under CC BY-SA. TB-lab restrictions and checks are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — hypothesis testing",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc13.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "wiki-pvalue",
+    "wiki-type-errors",
+    "wiki-neyman-pearson",
+    "stats-lrt",
+    "stats-power",
+    "stats-pvalue-versus-posterior"
+  ],
+  "example": {
+    "title": "A proportion test is a rule, not a vibe",
+    "setup": "H₀: π = 0.05 FQ-R among RR-TB. n = 40, x = 0. Someone says “zero events, so H₀ is true.” Another says “p is small because 0 is far from 0.05.”",
+    "steps": [
+      {
+        "title": "Write the test",
+        "body": "X ~ Binomial(40, π) under the iid claim. A one-sided test of H₀: π = 0.05 versus π < 0.05 can use the lower tail P(X ≤ 0 | π = 0.05) = (0.95)⁴⁰ ≈ 0.13. That p-value does not reject at α = 0.05."
+      },
+      {
+        "title": "What “zero events” did not do",
+        "body": "Failing to reject is compatible with π = 0.05 and with π = 0.01. A confidence interval or a posterior is the object that reports remaining π values. The test only said the lower tail was not rare enough under this H₀."
+      },
+      {
+        "title": "Power needs an alternative",
+        "body": "Power at π = 0.01 with this n and this tail is modest. If the scientific job was to rule out 5%, you needed a larger n or a different design — that is the power plate, not a smaller α."
+      }
+    ],
+    "takeaway": "A test is a reject/not rule with a size. Zero events are data, not an automatic proof of H₀."
+  },
+  "check": [
+    {
+      "id": "ht-accept",
+      "kind": "conceptual",
+      "prompt": "Failing to reject H₀ at level α means:",
+      "choices": [
+        "H₀ has been proven true",
+        "The data were not rare enough, under this test, to reject the restriction at the chosen size",
+        "P(H₀ | data) > 1 − α",
+        "The alternative is impossible"
+      ],
+      "answer": "The data were not rare enough, under this test, to reject the restriction at the chosen size",
+      "why": "Neyman–Pearson grammar does not “accept” H₀. Equivalence needs a different hypothesis.",
+      "whyWrong": {
+        "H₀ has been proven true": "Absence of evidence is not proof of the restriction.",
+        "P(H₀ | data) > 1 − α": "That would be a posterior, which this procedure does not compute.",
+        "The alternative is impossible": "Power may simply be low."
+      }
+    },
+    {
+      "id": "ht-size",
+      "kind": "calculation",
+      "prompt": "A test rejects when p ≤ 0.05 and, under a simple H₀, p is Uniform(0,1). The Type I error rate is:",
+      "choices": ["0", "0.05", "0.95", "1"],
+      "answer": "0.05",
+      "why": "P(p ≤ 0.05 | H₀) = 0.05 if p is Uniform(0,1) under H₀. That is the size of the rule.",
+      "whyWrong": {
+        "0": "A level-α test is allowed to reject true H₀ with probability α.",
+        "0.95": "That would be 1 − α, a confidence-level number, not this test’s size.",
+        "1": "That would reject always."
+      }
+    },
+    {
+      "id": "ht-figure",
+      "kind": "figure",
+      "prompt": "On the testing flow, the p-value node sits before reject/do-not-reject because:",
+      "figureHint": "Tail node feeds both the comparison and Reject.",
+      "choices": [
+        "The p-value is already P(H₀ | y)",
+        "The tail is an input you may compare to α to define the rejection region; the decision is the rule, not the tail itself",
+        "You must reject whenever a p-value exists",
+        "α is computed from the alternative only"
+      ],
+      "answer": "The tail is an input you may compare to α to define the rejection region; the decision is the rule, not the tail itself",
+      "why": "A p-value can be reported without α. A test is the comparison (or an equivalent critical-value rule).",
+      "whyWrong": {
+        "The p-value is already P(H₀ | y)": "That is the swap the posterior plate exists to stop.",
+        "You must reject whenever a p-value exists": "You can report p without a binary decision.",
+        "α is computed from the alternative only": "α is a null property of the rule."
+      }
+    }
+  ]
+}

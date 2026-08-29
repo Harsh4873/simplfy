@@ -1,0 +1,148 @@
+{
+  "id": "tb-dormancy-versus-persistence",
+  "title": "Phenotypic persistence versus resistance versus latency",
+  "dek": "Persisters are genetically drug-susceptible cells that survive a pulse of antibiotic by being temporarily non-growing or tolerant. Resistance is a heritable MIC shift. LTBI is a clinical label. Do not fuse the three.",
+  "domain": "tb",
+  "aliases": [
+    "persister cells Mtb",
+    "phenotypic tolerance TB",
+    "dormancy versus resistance",
+    "biphasic kill curve",
+    "antibiotic tolerance"
+  ],
+  "tags": [
+    "persistence",
+    "tolerance",
+    "resistance",
+    "latency"
+  ],
+  "story": [
+    "A biphasic kill curve is the laboratory handle on phenotypic persistence: a fast death of the replicating bulk, then a shallow tail of survivors that, once drug is removed and growth resumes, yield colonies that are still drug-susceptible on a MIC plate. Those survivors are persisters. Their children are not a resistant clone. The genotype did not buy the tail; a physiologic state did (slow or no replication, a stressed envelope, a DosR-high programme — the latency-and-DosR plate is that physiology).",
+    "Genetic resistance is a different object: a heritable change (rpoB S450L, katG S315T, pncA LOF) that shifts the MIC of the lineage, not of one stressed cell for one afternoon. You can select resistant mutants from a large replicating population while a persister subpopulation is sitting through the same drug pulse without a new SNP. Relapse after apparently adequate therapy can be reconstitution from persisters, a missed resistant subclone, or reinfection — those are three hypotheses, not one word.",
+    "Latent TB infection (LTBI) is an immune-operational category: a positive IGRA or TST after active disease has been excluded. It does not prove a named caseum full of Wayne-model persisters, and a negative IGRA does not prove sterility. TPT is a low-burden bet. Treating a cavity as if it were a persister tail with two weekly drugs is the category error the LTBI plate already forbids."
+  ],
+  "deepTitle": "Kill curves, mutation supply, and the words people smash",
+  "deep": [
+    "Tolerance versus resistance: tolerance is slower kill at a concentration that still exceeds the MIC; resistance is a higher MIC. Persistence is a subpopulation phenomenon (heterogeneous survival) rather than a uniform shift of the whole culture’s MIC. A “tolerant strain” with a longer minimum duration of killing is related but not identical to a stochastic persister fraction.",
+    "Mutation supply scales with N × μ among cells that replicate. A tiny non-replicating tail contributes little new resistance during the pulse; the replicating bulk is where rpoB mutants are born. That is why combination therapy and burden matter even when a persister story is true.",
+    "Models: Wayne hypoxic shift-down, nutrient starvation, caseum surrogates, and hollow-fibre hollow the same word “dormant” at different oxygen, lipid, and pH settings. PZA’s special reputation is partly “activity on non-replicators in acid.” None of those models is a DST catalogue.",
+    "Do not write “MDR persister” unless you measured a resistant genotype and a phenotypic tail. MDR is a DST/genome claim. Persister is a kill-curve claim. LTBI is a clinic claim. The DosR regulon is a transcription claim. Four vocabularies, four assays.",
+    "Serial isolates that stay genotypically susceptible after failure push you toward persistence, inadequate drug exposure, or a sampling miss — not toward inventing a new rpoB codon in the methods sentence."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Four layers people collapse into one adjective. Top: a clinical LTBI label. Next: physiologic non-replication (hypoxia, caseum, DosR). Next: a phenotypic persister tail on a kill curve, still genetically susceptible. Bottom: heritable resistance that moves the MIC. Relatedness is conceptual, not a developmental pathway you can assume in one patient.",
+    "layers": [
+      { "title": "Clinical label", "nodes": ["LTBI: IGRA/TST+, disease excluded", "TPT as a low-N bet"] },
+      { "title": "Physiologic state", "nodes": ["DosR / hypoxia / NO / CO", "caseum, starvation models"] },
+      { "title": "Phenotypic persistence", "nodes": ["biphasic kill, drug-S progeny", "tolerance without new MIC"] },
+      { "title": "Genetic resistance", "nodes": ["heritable MIC shift", "rpoB, katG, pncA, …"] }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Persister cells — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Persister_cells",
+      "attribution": "Glossary-level persistence versus resistance under CC BY-SA. Mtb kill-curve teaching and the four-layer split are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Latent tuberculosis — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Latent_tuberculosis",
+      "attribution": "LTBI as an operational category under CC BY-SA. Not a paste of article clinical protocols.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. public-domain overlay on LTBI versus disease. Persistence physiology is original teaching, not a CDC molecular chapter.",
+      "license": "U.S. Government work, public domain"
+    }
+  ],
+  "related": [
+    "tb-latency-dosr",
+    "tb-granuloma",
+    "tb-caseum",
+    "tb-relapse-reinfection",
+    "tb-igra-tst",
+    "tb-pyrazinamide",
+    "tb-rifampin",
+    "tb-fitness-cost"
+  ],
+  "example": {
+    "title": "A surviving tail that still looks wild-type on DST",
+    "setup": "Hollow-fibre or flask: 10⁸ CFU, rifampin well above the WT MIC. After a steep 2-log drop, a tail of ~10⁴ CFU holds. Colonies from the tail have a wild-type rpoB and a WT MIC. A colleague files them as “rifampin resistant persisters.”",
+    "steps": [
+      {
+        "title": "Name the tail",
+        "body": "10⁴ / 10⁸ = 10⁻⁴ of the inoculum survived the pulse and grew out susceptible. That is a persister fraction, not a resistance frequency. Call it phenotypic persistence."
+      },
+      {
+        "title": "Where resistance would have lived",
+        "body": "Pre-existing rpoB mutants, if present at ~10⁻⁸, would be ~10 cells in 10⁸ — a different pile, and their progeny would fail a MIC test. Mixing the piles is how “the tail proves MDR” gets written."
+      },
+      {
+        "title": "What you still do not know",
+        "body": "Whether those persisters were DosR-high, lipid-loaded, or simply non-growing is a physiology experiment (latency-DosR plate), not a consequence of the kill curve alone. Whether the patient has LTBI is a clinic experiment, not this flask."
+      }
+    ],
+    "takeaway": "A drug-S tail is persistence. A heritable MIC shift is resistance. IGRA+ is LTBI. Assay each."
+  },
+  "check": [
+    {
+      "id": "pers-def",
+      "kind": "conceptual",
+      "prompt": "Phenotypic persisters, in the sense of this plate, are best described as:",
+      "choices": [
+        "Cells whose progeny show a stably elevated MIC because of a resistance mutation",
+        "A subpopulation that survives a lethal antibiotic pulse without a heritable MIC shift — genetically susceptible on regrowth",
+        "Anyone with a positive IGRA",
+        "Any isolate with a DosR gene present (it is core)"
+      ],
+      "answer": "A subpopulation that survives a lethal antibiotic pulse without a heritable MIC shift — genetically susceptible on regrowth",
+      "why": "The defining lab picture is a kill-curve tail whose colonies remain drug-S. Resistance and LTBI are other layers.",
+      "whyWrong": {
+        "Cells whose progeny show a stably elevated MIC because of a resistance mutation": "That is genetic resistance.",
+        "Anyone with a positive IGRA": "That is the LTBI operational label, not a flask persister assay.",
+        "Any isolate with a DosR gene present (it is core)": "DosR is nearly universal in MTBC; presence of the gene is not a persister phenotype."
+      }
+    },
+    {
+      "id": "pers-calc",
+      "kind": "calculation",
+      "prompt": "Inoculum 10⁸ CFU, persister fraction 10⁻⁴, resistance mutation rate ~10⁻⁸ per replication to a named rpoB codon. Order-of-magnitude counts in the starting flask:",
+      "choices": [
+        "~10⁴ persisters and ~10 pre-existing resistant mutants — different piles",
+        "~10⁸ persisters and ~10⁸ resistant mutants",
+        "~1 persister and ~10⁴ resistant mutants",
+        "The two counts must be equal by definition"
+      ],
+      "answer": "~10⁴ persisters and ~10 pre-existing resistant mutants — different piles",
+      "why": "10⁸ × 10⁻⁴ = 10⁴ phenotypic survivors if that fraction is persisters. 10⁸ × 10⁻⁸ = 10 expected resistant mutants if that μ applies to the replicating pool. They are not interchangeable.",
+      "whyWrong": {
+        "~10⁸ persisters and ~10⁸ resistant mutants": "That would be the whole culture twice.",
+        "~1 persister and ~10⁴ resistant mutants": "The exponents were swapped.",
+        "The two counts must be equal by definition": "The whole point of the plate is that they are not the same definition."
+      }
+    },
+    {
+      "id": "pers-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy plate, a wild-type MIC after a kill-curve tail belongs in which layer?",
+      "figureHint": "Four stacked layers from LTBI down to genetic resistance.",
+      "choices": [
+        "Clinical label (LTBI)",
+        "Genetic resistance (heritable MIC shift)",
+        "Phenotypic persistence (biphasic kill, drug-S progeny)",
+        "They are all the same layer"
+      ],
+      "answer": "Phenotypic persistence (biphasic kill, drug-S progeny)",
+      "why": "Drug-S progeny after a tail is the persister layer. A heritable MIC shift would sit one layer down; IGRA+ sits at the top.",
+      "whyWrong": {
+        "Clinical label (LTBI)": "No immunoassay was mentioned.",
+        "Genetic resistance (heritable MIC shift)": "The MIC stayed wild-type.",
+        "They are all the same layer": "The plate exists because they are not."
+      }
+    }
+  ]
+}

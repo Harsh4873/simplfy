@@ -9,7 +9,23 @@ const TEXT_TYPES = new Set([
   "text/html",
 ]);
 
-const TEXT_EXT = [".txt", ".md", ".csv", ".tsv", ".json", ".xml", ".html", ".tex", ".r", ".py", ".tsv"];
+const TEXT_EXT = [
+  ".txt",
+  ".md",
+  ".csv",
+  ".tsv",
+  ".json",
+  ".xml",
+  ".html",
+  ".tex",
+  ".r",
+  ".py",
+  ".ipynb",
+  ".rmd",
+  ".qmd",
+  ".rst",
+  ".org",
+];
 
 const MIME_BY_EXT: Record<string, string> = {
   ".md": "text/markdown",

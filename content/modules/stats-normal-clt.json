@@ -1,0 +1,157 @@
+{
+  "id": "stats-normal-clt",
+  "title": "The Normal law and the central limit theorem",
+  "dek": "A Normal is a two-parameter location-scale density. The CLT says that many sample means become approximately Normal. It does not say that your raw CFU values were Gaussian.",
+  "domain": "stats",
+  "aliases": [
+    "Gaussian distribution",
+    "normal distribution",
+    "central limit theorem",
+    "CLT",
+    "standard normal",
+    "z score"
+  ],
+  "tags": [
+    "probability",
+    "Normal",
+    "CLT",
+    "approximation"
+  ],
+  "story": [
+    "The Normal (Gaussian) family is indexed by a mean μ and a variance σ² > 0. The density is the familiar bell: proportional to exp{−(y−μ)²/(2σ²)}. Standard Normal means μ = 0, σ = 1; any other Normal is a location-scale shift, Z = (Y − μ)/σ ~ N(0,1). Linear combinations of independent Normals are Normal. That closure is why linear models like this family.",
+    "The central limit theorem is a different claim: if Y₁, …, Yₙ are iid with finite mean μ and finite variance σ², then √n (Ȳ_n − μ)/σ →d N(0,1). The Yᵢ need not be Normal. The theorem is about the sampling law of the mean (and, with more work, of many other smooth estimators). A histogram of n = 12 MICs can still look nothing like a bell.",
+    "In a TB lab the CLT is why a Wald interval for a proportion or a log-rate can be a first approximation, and why it is a bad last approximation when nπ is 3, when a cluster variance dominates, or when the functional is a maximum rather than a mean. Name the finite-n object you actually computed."
+  ],
+  "deepTitle": "What is Normal, what is only approximately, what is not",
+  "deep": [
+    "68–95–99.7 is a Normal mnemonic for 1, 2, 3 σ. Chebyshev only gives 1/k². If you need 0.003 outside 3σ, you assumed a shape.",
+    "Law of large numbers: Ȳ_n →p μ. That is consistency of the mean, not a Normal shape. The CLT is the next-order fluctuation, order 1/√n.",
+    "Delta method: a smooth g(Ȳ) inherits a Normal limit with variance (g′(μ))² σ²/n. Logits, log-rates, and back-transformed CFU intervals live here (own plate).",
+    "Sums of independent Normals: if Yⱼ ~ N(μⱼ, σⱼ²) independent, ∑ Yⱼ ~ N(∑ μⱼ, ∑ σⱼ²). χ²_k is the law of a sum of k independent standard Normal squares. t uses a Normal numerator over an independent χ²-based denominator. Those named laws are why software prints t and χ², not because the genes are Gaussian.",
+    "Failure modes: heavy tails (no finite variance, CLT may fail), dependence (you need a different n_eff), and rare events (skewed binomial, Poisson). QQ plots (own plate) are a display of this assumption, not a ritual blessing."
+  ],
+  "formulas": [
+    {
+      "id": "clt",
+      "label": "Classical CLT",
+      "expression": "√n (Ȳ_n − μ) / σ  →d  N(0,1)",
+      "note": "iid, finite variance. The Yᵢ need not be Normal."
+    },
+    {
+      "id": "wald-mean",
+      "label": "Wald interval for a mean",
+      "expression": "Ȳ ± 1.96 s/√n",
+      "note": "Plug-in Normal approximation for Ȳ. Fragile for small n or heavy tails."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Three laws on the scale of a sample mean: a skewed parent (schematic), the tighter sampling law of Ȳ at moderate n, and the Normal approximation sitting on that mean. The CLT is the last curve being a usable stand-in for the middle one — not a claim about the parent.",
+    "xLabel": "value (schematic Ȳ or Y)",
+    "curves": [
+      { "id": "parent", "label": "skewed parent Y", "mean": -0.4, "sd": 1.2 },
+      { "id": "mean", "label": "sampling law of Ȳ", "mean": 0.15, "sd": 0.45 },
+      { "id": "norm", "label": "Normal approximation", "mean": 0.15, "sd": 0.42 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Normal distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Normal_distribution",
+      "attribution": "Glossary-level location-scale family under CC BY-SA. CLT teaching and TB examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Central limit theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Central_limit_theorem",
+      "attribution": "Statement-level CLT under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — Normal distribution",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda3661.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-sd-versus-se",
+    "stats-delta-method",
+    "stats-chi-square",
+    "stats-bernoulli-binomial",
+    "wiki-qq"
+  ],
+  "example": {
+    "title": "Proportion with n = 50 versus n = 8",
+    "setup": "π̂ from iid Bernoulli. First: 8/50. Second: 1/8. Both have the same point estimate 0.16. People quote π̂ ± 1.96 √(π̂(1−π̂)/n) both times.",
+    "steps": [
+      {
+        "title": "n = 50",
+        "body": "se ≈ √(0.16×0.84/50) ≈ 0.052. The 1.96 se interval is about 0.06 to 0.26. nπ̂ = 8 is a bit thin for Wald theatre, but the Normal approximation is at least discussing a mean of 50 bounded indicators."
+      },
+      {
+        "title": "n = 8",
+        "body": "se ≈ √(0.16×0.84/8) ≈ 0.13. The same recipe gives an interval that comes close to 0 and is still a Normal tail on a highly skewed binomial. A score or exact interval is the adult object.",
+        "expression": "nπ̂ = 1   (CLT is a rumour)"
+      },
+      {
+        "title": "What the CLT promised",
+        "body": "The theorem promised a limit for Ȳ, not a licence to treat one success in eight as a Gaussian likelihood. If you need a number for n = 8, write a binomial likelihood or a Beta posterior, not a z."
+      }
+    ],
+    "takeaway": "The CLT is about means in growing n. Rare events and tiny n keep their skew."
+  },
+  "check": [
+    {
+      "id": "clt-about",
+      "kind": "conceptual",
+      "prompt": "The classical CLT is a statement about:",
+      "choices": [
+        "The histogram of the raw observations Yᵢ always looking bell-shaped for n > 30",
+        "The sampling law of Ȳ_n (and similar means) becoming approximately Normal as n grows, given finite variance",
+        "Independence being unnecessary",
+        "Variance becoming infinite"
+      ],
+      "answer": "The sampling law of Ȳ_n (and similar means) becoming approximately Normal as n grows, given finite variance",
+      "why": "The Yᵢ need not be Normal. The mean’s sampling law is the object that Gaussianises.",
+      "whyWrong": {
+        "The histogram of the raw observations Yᵢ always looking bell-shaped for n > 30": "n > 30 is folklore; the parent can stay skewed.",
+        "Independence being unnecessary": "The classical statement uses iid (or weak dependence with a different proof).",
+        "Variance becoming infinite": "The classical CLT needs finite variance."
+      }
+    },
+    {
+      "id": "clt-se",
+      "kind": "calculation",
+      "prompt": "iid observations with s = 10, n = 25. The usual Normal-approximation SE for Ȳ is:",
+      "choices": ["10", "2", "0.4", "50"],
+      "answer": "2",
+      "why": "s/√n = 10/5 = 2. The SD of one Y is 10; the SE of the mean divides by √n.",
+      "whyWrong": {
+        "10": "That is s, the estimated SD of Y, not of Ȳ.",
+        "0.4": "That is 10/25, dividing by n instead of √n.",
+        "50": "n, not an SE."
+      }
+    },
+    {
+      "id": "clt-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, the Normal curve is drawn next to the sampling law of Ȳ in order to show:",
+      "figureHint": "Three curves: skewed parent, Ȳ, Normal stand-in.",
+      "choices": [
+        "That the parent Y must be Gaussian before you may compute Ȳ",
+        "That the CLT approximates the law of the mean, not the parent",
+        "That variance of Ȳ grows with n",
+        "That χ² is the parent of Y"
+      ],
+      "answer": "That the CLT approximates the law of the mean, not the parent",
+      "why": "The parent stays skewed in the picture. The approximation target is Ȳ.",
+      "whyWrong": {
+        "That the parent Y must be Gaussian before you may compute Ȳ": "You may always compute Ȳ; Gaussianity is an extra claim.",
+        "That variance of Ȳ grows with n": "Var(Ȳ) = σ²/n shrinks.",
+        "That χ² is the parent of Y": "χ² is a different named law (sum of Normal squares)."
+      }
+    }
+  ]
+}

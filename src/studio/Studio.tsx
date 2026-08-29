@@ -1,39 +1,23 @@
-import { useEffect } from "react";
-import { CheckPanel } from "./CheckPanel";
-import { ConceptMap } from "./ConceptMap";
-import { IntakeRail } from "./IntakeRail";
-import { Masthead } from "./Masthead";
-import { RecallDeck } from "./RecallDeck";
-import { WorkedExample } from "./WorkedExample";
-import { Canvas } from "./Canvas";
-import { TOOLS } from "./tools";
+import { TopBar } from "../chrome/TopBar";
+import { useRoute } from "../app/useRoute";
+import { useTheme } from "../app/useTheme";
+import { DeskPage } from "../pages/DeskPage";
+import { HomePage } from "../pages/HomePage";
+import { LearnPage } from "../pages/LearnPage";
+import { NotesPage } from "../pages/NotesPage";
+import { PapersPage } from "../pages/PapersPage";
+import { RecallPage } from "../pages/RecallPage";
+import { ShelfPage } from "../pages/ShelfPage";
 import { useStudio } from "./useStudio";
-import { cx } from "../ui/cx";
 
 export function Studio() {
   const api = useStudio();
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      const target = event.target;
-      if (
-        target instanceof HTMLInputElement ||
-        target instanceof HTMLTextAreaElement ||
-        target instanceof HTMLSelectElement
-      ) {
-        return;
-      }
-      if (event.key === "Escape") {
-        api.setDrawer(null);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [api]);
+  const { route, navigate } = useRoute();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="shell">
-      <Masthead api={api} />
+      <TopBar api={api} route={route} navigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
       {api.notice ? (
         <p className="banner" role="status">
           {api.notice}
@@ -47,40 +31,19 @@ export function Studio() {
           {api.errors.length} catalogue file{api.errors.length === 1 ? "" : "s"} failed validation. See the console.
         </p>
       ) : null}
-      <div className="workspace">
-        {api.drawer ? (
-          <button type="button" className="scrim tablet-only" aria-label="Close panel" onClick={() => api.setDrawer(null)} />
+      <main id="main" className="stage">
+        {route.name === "home" ? <HomePage api={api} navigate={navigate} /> : null}
+        {route.name === "desk" ? <DeskPage api={api} navigate={navigate} /> : null}
+        {route.name === "learn" ? (
+          <LearnPage api={api} id={route.id} step={route.step} navigate={navigate} />
         ) : null}
-        <IntakeRail api={api} />
-        <main id="canvas" className="stage">
-          <Canvas topic={api.topic} api={api} />
-        </main>
-        <aside className={cx("dock", api.drawer === "dock" && "is-open")} aria-label="Check and tools">
-          <div className="tool-switch" role="tablist" aria-label="Studio tools">
-            {TOOLS.map((tool) => (
-              <button
-                key={tool.id}
-                type="button"
-                role="tab"
-                aria-selected={api.tool === tool.id}
-                className={cx(api.tool === tool.id && "is-active")}
-                onClick={() => {
-                  api.setTool(tool.id);
-                  api.setDrawer("dock");
-                }}
-              >
-                {tool.label}
-              </button>
-            ))}
-          </div>
-          <div className="dock-body">
-            {api.tool === "check" ? <CheckPanel topic={api.topic} api={api} /> : null}
-            {api.tool === "map" ? <ConceptMap topic={api.topic} api={api} /> : null}
-            {api.tool === "example" ? <WorkedExample topic={api.topic} api={api} /> : null}
-            {api.tool === "recall" ? <RecallDeck api={api} /> : null}
-          </div>
-        </aside>
-      </div>
+        {route.name === "shelf" ? <ShelfPage api={api} id={route.id} navigate={navigate} /> : null}
+        {route.name === "papers" ? <PapersPage api={api} q={route.q} navigate={navigate} /> : null}
+        {route.name === "recall" ? <RecallPage api={api} classId={route.classId} navigate={navigate} /> : null}
+        {route.name === "notes" ? (
+          <NotesPage api={api} id={route.id} classId={route.classId} navigate={navigate} />
+        ) : null}
+      </main>
     </div>
   );
 }
