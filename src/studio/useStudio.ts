@@ -3,27 +3,34 @@ import { indexModules, loadCatalog } from "../catalog/loadCatalog";
 import { searchStudio, type SearchHit } from "../catalog/search";
 import type { CheckItem, StudyModule } from "../catalog/types";
 import {
+  deleteCollectionRow,
   deleteLibraryItem,
   deleteRecallCard,
   deleteStudio,
+  getCollection,
   getPref,
   getStudio,
+  listCollections,
   listLibrary,
   listRecall,
   listStudios,
   openStudioDb,
+  putCollection,
   putLibraryItem,
   putRecallCard,
   putStudio,
   setPref,
+  type Collection,
   type LibraryItem,
   type RecallCard,
   type StudioCanvas,
 } from "../library/db";
 import { withBrief } from "../library/hydrate";
+import { inferCollectionName, MAX_DROP_FILES, pickDropFiles, relPathOf, spawnPlan } from "../library/ingest";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
 import { recallFromMiss } from "../quiz/grade";
+import { sayBackItem } from "../lesson/fromModule";
 
 export function useStudio() {
   const loaded = useMemo(() => loadCatalog(), []);
@@ -32,6 +39,7 @@ export function useStudio() {
   const [library, setLibrary] = useState<LibraryItem[]>([]);
   const [recall, setRecall] = useState<RecallCard[]>([]);
   const [studios, setStudios] = useState<StudioCanvas[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
   const [query, setQuery] = useState("");
   const [continueRef, setContinueRef] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -39,10 +47,11 @@ export function useStudio() {
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
-      const [items, cards, canvases] = await Promise.all([
+      const [items, cards, canvases, folders] = await Promise.all([
         listLibrary(database),
         listRecall(database),
         listStudios(database),
+        listCollections(database),
       ]);
       const hydrated: LibraryItem[] = [];
       for (const item of items) {
@@ -53,6 +62,7 @@ export function useStudio() {
       setLibrary(hydrated);
       setRecall(cards);
       setStudios(canvases);
+      setCollections(folders);
     },
     [loaded.modules],
   );
@@ -106,6 +116,7 @@ export function useStudio() {
           createdAt: existing?.createdAt ?? now,
           ...existing,
           ...partial,
+          collectionId: partial.collectionId ?? existing?.collectionId,
           updatedAt: now,
         };
         await putStudio(db, canvas);
@@ -119,7 +130,7 @@ export function useStudio() {
   );
 
   const touchLesson = useCallback(
-    async (module: StudyModule, step?: string) => {
+    async (module: StudyModule, step?: string, collectionId?: string) => {
       await remember(`module:${module.id}`);
       await upsertCanvas({
         id: `lesson:${module.id}`,
@@ -127,13 +138,14 @@ export function useStudio() {
         title: module.title,
         moduleId: module.id,
         step,
+        collectionId,
       });
     },
     [remember, upsertCanvas],
   );
 
   const touchPapers = useCallback(
-    async (query: string, title?: string) => {
+    async (query: string, title?: string, collectionId?: string) => {
       const q = query.trim();
       const id = q ? `papers:${q.toLowerCase()}` : "papers:";
       await upsertCanvas({
@@ -141,6 +153,7 @@ export function useStudio() {
         kind: "papers",
         title: title ?? (q ? `Lookup · ${q}` : "Papers lookup"),
         papersQuery: q,
+        collectionId,
       });
     },
     [upsertCanvas],
@@ -176,59 +189,182 @@ export function useStudio() {
     [query, loaded.modules, library],
   );
 
+  const ensureCollection = useCallback(
+    async (name: string, existingId?: string) => {
+      if (!db) return null;
+      if (existingId) {
+        const row = await getCollection(db, existingId);
+        if (row) {
+          const next = { ...row, name: name.trim() || row.name, updatedAt: Date.now() };
+          await putCollection(db, next);
+          await refresh(db);
+          return next;
+        }
+      }
+      const title = name.trim() || "Inbox";
+      const match = collections.find((row) => row.name.toLowerCase() === title.toLowerCase());
+      if (match) {
+        await putCollection(db, { ...match, updatedAt: Date.now() });
+        await refresh(db);
+        return match;
+      }
+      const row: Collection = {
+        id: crypto.randomUUID(),
+        name: title,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      };
+      await putCollection(db, row);
+      await refresh(db);
+      return row;
+    },
+    [collections, db, refresh],
+  );
+
   const addFiles = useCallback(
-    async (files: File[]) => {
+    async (files: File[], opts?: { collectionId?: string; collectionName?: string }) => {
       if (!db) return null;
       setBusy(true);
       try {
-        let last: LibraryItem | null = null;
-        for (const file of files) {
+        const batch = pickDropFiles(files);
+        if (!batch.length) {
+          setNotice("Nothing ingestible in that drop (skipped binaries, .git, node_modules).");
+          return null;
+        }
+        const truncated = files.length > batch.length;
+        const folder = await ensureCollection(inferCollectionName(batch, opts?.collectionName), opts?.collectionId);
+        if (!folder) return null;
+
+        const filed: LibraryItem[] = [];
+        const inClass = library.filter((item) => item.collectionId === folder.id);
+        for (const file of batch) {
           if (file.size > MAX_FILE_BYTES) {
             setNotice(`${file.name} exceeds the 12 MB studio limit.`);
             continue;
           }
+          const rel = relPathOf(file);
           const parsed = await parseDroppedFile(file);
           const mime = mimeForDroppedFile(file);
           const brief = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
+          const prior =
+            inClass.find((item) => (item.relPath || item.name) === rel) ??
+            filed.find((item) => (item.relPath || item.name) === rel);
           const item: LibraryItem = {
-            id: crypto.randomUUID(),
+            id: prior?.id ?? crypto.randomUUID(),
             kind: "file",
             name: brief?.title ?? file.name,
             mime,
             size: file.size,
             text: parsed.text,
             parseNote: parsed.parseNote,
-            createdAt: Date.now(),
+            createdAt: prior?.createdAt ?? Date.now(),
             blob: file,
             brief,
+            collectionId: folder.id,
+            relPath: rel,
           };
           await putLibraryItem(db, item);
-          last = item;
+          if (!prior) inClass.push(item);
+          else {
+            const idx = inClass.findIndex((row) => row.id === prior.id);
+            if (idx >= 0) inClass[idx] = item;
+          }
+          filed.push(item);
         }
-        await refresh(db);
-        if (last) {
-          await remember(`library:${last.id}`);
-          await upsertCanvas({
-            id: `note:${last.id}`,
+
+        const plan = spawnPlan(filed, loaded.modules);
+        const now = Date.now();
+        await putStudio(db, {
+          id: `class:${folder.id}`,
+          kind: "class",
+          title: folder.name,
+          collectionId: folder.id,
+          pinned: false,
+          createdAt: now,
+          updatedAt: now,
+        });
+        for (const item of filed) {
+          await putStudio(db, {
+            id: `note:${item.id}`,
             kind: "note",
-            title: last.name,
-            noteId: last.id,
+            title: item.name,
+            noteId: item.id,
+            collectionId: folder.id,
+            pinned: false,
+            createdAt: now,
+            updatedAt: now,
           });
-          setNotice(`Filed ${last.name} in the local library.`);
         }
+        for (const moduleId of plan.moduleIds) {
+          const module = byId.get(moduleId);
+          if (!module) continue;
+          const existing = await getStudio(db, `lesson:${module.id}`);
+          await putStudio(db, {
+            id: `lesson:${module.id}`,
+            kind: "lesson",
+            title: module.title,
+            moduleId: module.id,
+            step: existing?.step ?? "teach",
+            collectionId: folder.id,
+            pinned: existing?.pinned ?? false,
+            createdAt: existing?.createdAt ?? now,
+            updatedAt: now,
+          });
+          const seed = sayBackItem(module);
+          const already = (await listRecall(db)).find(
+            (card) => card.moduleId === module.id && card.checkId === seed.id && card.collectionId === folder.id,
+          );
+          if (!already) {
+            await putRecallCard(db, {
+              id: crypto.randomUUID(),
+              moduleId: module.id,
+              checkId: seed.id,
+              prompt: seed.prompt,
+              kind: seed.kind,
+              createdAt: now,
+              misses: 0,
+              lastMissedAt: now,
+              collectionId: folder.id,
+            });
+          }
+        }
+        for (const query of plan.paperQueries) {
+          const existing = await getStudio(db, `papers:${query.toLowerCase()}`);
+          await putStudio(db, {
+            id: `papers:${query.toLowerCase()}`,
+            kind: "papers",
+            title: `Lookup · ${query}`,
+            papersQuery: query,
+            collectionId: folder.id,
+            pinned: existing?.pinned ?? false,
+            createdAt: existing?.createdAt ?? now,
+            updatedAt: now,
+          });
+        }
+
+        await refresh(db);
+        const last = filed[filed.length - 1] ?? null;
+        if (last) await remember(`library:${last.id}`);
+        const bits = [`Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`];
+        if (plan.moduleIds.length) bits.push(`${plan.moduleIds.length} lesson${plan.moduleIds.length === 1 ? "" : "s"}`);
+        if (plan.paperQueries.length) bits.push(`${plan.paperQueries.length} paper lookup${plan.paperQueries.length === 1 ? "" : "s"}`);
+        if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
+        setNotice(`${bits.join(". ")}. They are on the desk, grouped under the class.`);
         return last;
       } finally {
         setBusy(false);
       }
     },
-    [db, loaded.modules, refresh, remember, upsertCanvas],
+    [byId, db, ensureCollection, library, loaded.modules, refresh, remember],
   );
 
   const addNote = useCallback(
-    async (raw: string) => {
+    async (raw: string, collectionId?: string) => {
       if (!db || !raw.trim()) return null;
       const body = raw.trim();
       const brief = composeBrief(body, loaded.modules);
+      const folder = await ensureCollection("Inbox", collectionId);
+      if (!folder) return null;
       const item: LibraryItem = {
         id: crypto.randomUUID(),
         kind: "note",
@@ -239,26 +375,35 @@ export function useStudio() {
         parseNote: "Pasted note, stored only in this browser.",
         createdAt: Date.now(),
         brief,
+        collectionId: folder.id,
       };
       await putLibraryItem(db, item);
-      await refresh(db);
       await remember(`library:${item.id}`);
       await upsertCanvas({
         id: `note:${item.id}`,
         kind: "note",
         title: item.name,
         noteId: item.id,
+        collectionId: folder.id,
       });
-      setNotice("Note kept in the local library.");
+      await upsertCanvas({
+        id: `class:${folder.id}`,
+        kind: "class",
+        title: folder.name,
+        collectionId: folder.id,
+      });
+      await refresh(db);
+      setNotice(`Note kept in the local library (${folder.name}).`);
       return item;
     },
-    [db, loaded.modules, refresh, remember, upsertCanvas],
+    [db, ensureCollection, loaded.modules, refresh, remember, upsertCanvas],
   );
 
   const removeLibrary = useCallback(
     async (id: string) => {
       if (!db) return;
       await deleteLibraryItem(db, id);
+      await deleteStudio(db, `note:${id}`);
       await refresh(db);
       if (continueRef === `library:${id}`) {
         await remember("");
@@ -267,11 +412,37 @@ export function useStudio() {
     [continueRef, db, refresh, remember],
   );
 
+  const removeCollection = useCallback(
+    async (id: string) => {
+      if (!db) return;
+      const items = library.filter((item) => item.collectionId === id);
+      for (const item of items) {
+        await deleteLibraryItem(db, item.id);
+        await deleteStudio(db, `note:${item.id}`);
+      }
+      for (const canvas of studios.filter((row) => row.collectionId === id)) {
+        await deleteStudio(db, canvas.id);
+      }
+      for (const card of recall.filter((row) => row.collectionId === id)) {
+        await deleteRecallCard(db, card.id);
+      }
+      await deleteCollectionRow(db, id);
+      await refresh(db);
+    },
+    [db, library, recall, refresh, studios],
+  );
+
   const missCheck = useCallback(
     async (moduleId: string, item: CheckItem) => {
       if (!db) return;
       const seed = recallFromMiss(moduleId, item);
-      const existing = recall.find((card) => card.moduleId === moduleId && card.checkId === item.id);
+      const fromClass = studios.find((row) => row.kind === "lesson" && row.moduleId === moduleId)?.collectionId;
+      const existing = recall.find(
+        (card) =>
+          card.moduleId === moduleId &&
+          card.checkId === item.id &&
+          (fromClass ? card.collectionId === fromClass : true),
+      );
       const card: RecallCard = existing
         ? { ...existing, misses: existing.misses + 1, lastMissedAt: Date.now(), prompt: item.prompt }
         : {
@@ -280,11 +451,12 @@ export function useStudio() {
             createdAt: Date.now(),
             misses: 1,
             lastMissedAt: Date.now(),
+            collectionId: fromClass,
           };
       await putRecallCard(db, card);
       await refresh(db);
     },
-    [db, recall, refresh],
+    [db, recall, refresh, studios],
   );
 
   const bumpRecall = useCallback(
@@ -329,6 +501,8 @@ export function useStudio() {
     addFiles,
     addNote,
     removeLibrary,
+    removeCollection,
+    ensureCollection,
     missCheck,
     bumpRecall,
     clearRecall,
@@ -338,6 +512,7 @@ export function useStudio() {
     pinStudio,
     removeStudio,
     studios,
+    collections,
     continueModule,
     continueNote,
     ready: Boolean(db),

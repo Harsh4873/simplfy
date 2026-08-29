@@ -3,6 +3,7 @@ import { lessonFromModule } from "../lesson/fromModule";
 import type { Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { RecallCard } from "../library/db";
+import { cx } from "../ui/cx";
 
 function cardAnswer(api: StudioApi, card: RecallCard): { title: string; answer: string; why: string } {
   const module = api.byId.get(card.moduleId);
@@ -21,26 +22,30 @@ function cardAnswer(api: StudioApi, card: RecallCard): { title: string; answer: 
 
 export function RecallPage({
   api,
+  classId,
   navigate,
 }: {
   api: StudioApi;
+  classId?: string;
   navigate: (route: Route) => void;
 }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const cards = api.recall;
+  const cards = classId ? api.recall.filter((card) => card.collectionId === classId) : api.recall;
   const card = cards[Math.min(index, Math.max(cards.length - 1, 0))];
+  const currentClass = classId ? api.collections.find((row) => row.id === classId) : undefined;
 
   const face = useMemo(() => (card ? cardAnswer(api, card) : null), [api, card]);
 
   if (!card || !face) {
     return (
       <div className="page">
-        <p className="kicker">Quizlet-style deck</p>
-        <h1>Deck empty</h1>
+        <p className="kicker">Quizlet-style deck{currentClass ? ` · ${currentClass.name}` : ""}</p>
+        <h1>{currentClass ? `${currentClass.name} is empty` : "Deck empty"}</h1>
         <p className="lede">
-          Misses from practice, and anything you parked from “say it back,” land here. Work a lesson
-          and get a few wrong on purpose if you want to see the loop.
+          {currentClass
+            ? "Drop lecture notes into this class and we park say-it-back cards from the plates those notes hit. Misses from practice also land here."
+            : "Misses from practice, and anything you parked from “say it back,” land here. Work a lesson and get a few wrong on purpose if you want to see the loop. Classes get their own deck when you drop a folder of notes."}
         </p>
         <button type="button" className="solid" onClick={() => navigate({ name: "home" })}>
           Pick a lesson
@@ -57,9 +62,30 @@ export function RecallPage({
   return (
     <div className="page recall-page">
       <p className="kicker">
-        Recall · {Math.min(index, cards.length - 1) + 1} / {cards.length}
+        Recall{currentClass ? ` · ${currentClass.name}` : ""} · {Math.min(index, cards.length - 1) + 1} / {cards.length}
       </p>
       <h1>Flip until it sticks</h1>
+      {api.collections.length ? (
+        <div className="chips" role="tablist" aria-label="Recall by class">
+          <button
+            type="button"
+            className={cx("chip", !classId && "is-active")}
+            onClick={() => navigate({ name: "recall" })}
+          >
+            All
+          </button>
+          {api.collections.map((row) => (
+            <button
+              key={row.id}
+              type="button"
+              className={cx("chip", classId === row.id && "is-active")}
+              onClick={() => navigate({ name: "recall", classId: row.id })}
+            >
+              {row.name}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <p className="lede">
         Front is the prompt. Back is the answer you should be able to say. “Still shaky” keeps the
         card and bumps the miss count. “Knew it” takes it off the deck.

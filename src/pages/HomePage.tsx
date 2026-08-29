@@ -1,10 +1,9 @@
 import { FEATURED_IDS, STUDY_PATHS } from "../lesson/paths";
 import { lessonFromModule } from "../lesson/fromModule";
 import type { StudyModule } from "../catalog/types";
-import type { Route } from "../app/routes";
+import { LESSON_STEPS, libraryNoteRoute, STEP_META, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import { ModuleCard } from "./ModuleCard";
-import { STEP_META, LESSON_STEPS } from "../app/routes";
 
 export function HomePage({
   api,
@@ -32,7 +31,8 @@ export function HomePage({
         <p className="lede">
           Pick a topic. The lesson walks you the way a good study buddy does: analogy first, a demo,
           two or three problems, then “say it back in your own words.” The dense notes stay on the
-          shelf until you ask for them. Search is always up top — press <kbd>/</kbd>.
+          shelf until you ask for them. Search is always up top — press <kbd>/</kbd>. Or dump a
+          whole lecture folder under Classes and we spin studios from that pile.
         </p>
         <div className="hero-stats">
           <span>
@@ -48,6 +48,11 @@ export function HomePage({
             <strong>{api.recall.length}</strong> on the recall deck
           </span>
         </div>
+        <div className="step-nav">
+          <button type="button" className="solid" onClick={() => navigate({ name: "notes" })}>
+            Drop a class folder
+          </button>
+        </div>
       </section>
 
       {api.continueModule || api.continueNote || api.studios.length ? (
@@ -62,7 +67,7 @@ export function HomePage({
             <button
               type="button"
               className="ghost"
-              onClick={() => navigate({ name: "notes", id: api.continueNote!.id })}
+              onClick={() => navigate(libraryNoteRoute(api.continueNote!.id, api.continueNote!.collectionId))}
             >
               Open note: {api.continueNote.name}
             </button>

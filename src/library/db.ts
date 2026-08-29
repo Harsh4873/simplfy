@@ -13,6 +13,15 @@ export type LibraryItem = {
   parseNote?: string;
   blob?: Blob;
   brief?: LabBrief;
+  collectionId?: string;
+  relPath?: string;
+};
+
+export type Collection = {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type RecallCard = {
@@ -24,9 +33,10 @@ export type RecallCard = {
   createdAt: number;
   misses: number;
   lastMissedAt: number;
+  collectionId?: string;
 };
 
-export type StudioKind = "lesson" | "note" | "papers";
+export type StudioKind = "lesson" | "note" | "papers" | "class";
 
 export type StudioCanvas = {
   id: string;
@@ -35,6 +45,7 @@ export type StudioCanvas = {
   moduleId?: string;
   noteId?: string;
   papersQuery?: string;
+  collectionId?: string;
   step?: string;
   pinned: boolean;
   createdAt: number;
@@ -42,7 +53,7 @@ export type StudioCanvas = {
 };
 
 const DB_NAME = "simplfy";
-const DB_VERSION = 3;
+const DB_VERSION = 4;
 
 function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -71,6 +82,9 @@ function ensureStores(db: IDBDatabase) {
   }
   if (!db.objectStoreNames.contains("studios")) {
     db.createObjectStore("studios", { keyPath: "id" });
+  }
+  if (!db.objectStoreNames.contains("collections")) {
+    db.createObjectStore("collections", { keyPath: "id" });
   }
 }
 
@@ -160,5 +174,28 @@ export async function putStudio(db: IDBDatabase, canvas: StudioCanvas): Promise<
 export async function deleteStudio(db: IDBDatabase, id: string): Promise<void> {
   const tx = db.transaction("studios", "readwrite");
   tx.objectStore("studios").delete(id);
+  await txDone(tx);
+}
+
+export async function listCollections(db: IDBDatabase): Promise<Collection[]> {
+  if (!db.objectStoreNames.contains("collections")) return [];
+  const items = await requestToPromise(db.transaction("collections").objectStore("collections").getAll());
+  return items.sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export async function getCollection(db: IDBDatabase, id: string): Promise<Collection | undefined> {
+  if (!db.objectStoreNames.contains("collections")) return undefined;
+  return requestToPromise(db.transaction("collections").objectStore("collections").get(id));
+}
+
+export async function putCollection(db: IDBDatabase, collection: Collection): Promise<void> {
+  const tx = db.transaction("collections", "readwrite");
+  tx.objectStore("collections").put(collection);
+  await txDone(tx);
+}
+
+export async function deleteCollectionRow(db: IDBDatabase, id: string): Promise<void> {
+  const tx = db.transaction("collections", "readwrite");
+  tx.objectStore("collections").delete(id);
   await txDone(tx);
 }

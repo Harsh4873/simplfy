@@ -28,7 +28,7 @@ describe("studio shell", () => {
   it("files a pasted note in the library", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^notes$/i }));
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste a paragraph/i);
@@ -41,7 +41,7 @@ describe("studio shell", () => {
   it("keeps a filed note after the studio remounts", async () => {
     const user = userEvent.setup();
     const view = render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^notes$/i }));
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     await user.type(screen.getByLabelText(/paste a paragraph/i), "Heteroresistance is not a pipeline filter.");
@@ -94,6 +94,22 @@ describe("studio shell", () => {
     await user.keyboard("{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /normal law and the central limit theorem/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /crowd of dice/i })).toBeInTheDocument();
+  });
+
+  it("files a dropped lecture folder as a class and spawns desk canvases", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await user.type(screen.getByLabelText(/name this class/i), "TB methods");
+    const input = await screen.findByLabelText(/^choose files$/i);
+    const a = new File(["# TRANSIT\n\nHimar1 TnSeq essentiality."], "tnseq.md", { type: "text/markdown" });
+    const b = new File(["# rpoB\n\nRifampin RRDR S450L."], "rpob.md", { type: "text/markdown" });
+    Object.defineProperty(a, "webkitRelativePath", { value: "TB651/week1/tnseq.md" });
+    Object.defineProperty(b, "webkitRelativePath", { value: "TB651/week1/rpob.md" });
+    await user.upload(input, [a, b]);
+    expect(await screen.findByRole("heading", { level: 1, name: /tb methods/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    expect(await screen.findByRole("button", { name: /tb methods/i })).toBeInTheDocument();
   });
 
   it("switches between light and dark themes", async () => {

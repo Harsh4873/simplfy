@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { toHash, type Route } from "../app/routes";
+import { libraryNoteRoute, toHash, type Route } from "../app/routes";
 import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
@@ -43,7 +43,8 @@ export function TopBar({
       navigate({ name: "learn", id: first.module.id, step: "teach" });
     } else {
       void api.remember(`library:${first.item.id}`);
-      navigate({ name: "notes", id: first.item.id });
+      const filed = api.library.find((item) => item.id === first.item.id);
+      navigate(libraryNoteRoute(first.item.id, filed?.collectionId));
     }
   };
 
@@ -60,7 +61,7 @@ export function TopBar({
     { route: { name: "shelf" }, label: "Shelf", match: route.name === "shelf" },
     { route: { name: "papers" }, label: "Papers", match: route.name === "papers" },
     { route: { name: "recall" }, label: "Recall", match: route.name === "recall" },
-    { route: { name: "notes" }, label: "Notes", match: route.name === "notes" },
+    { route: { name: "notes" }, label: "Classes", match: route.name === "notes" },
   ];
 
   return (
@@ -171,7 +172,8 @@ export function TopBar({
                     onClick={() => {
                       void api.remember(`library:${hit.item.id}`);
                       api.setQuery("");
-                      navigate({ name: "notes", id: hit.item.id });
+                      const filed = api.library.find((item) => item.id === hit.item.id);
+                      navigate(libraryNoteRoute(hit.item.id, filed?.collectionId));
                     }}
                   >
                     <span className="domain library">Local</span>

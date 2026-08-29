@@ -15,6 +15,11 @@ describe("hash routes", () => {
     expect(parseHash("#/learn/stats-lrt")).toEqual({ name: "learn", id: "stats-lrt", step: "teach" });
     expect(toHash({ name: "notes", id: "abc" })).toBe("#/notes/abc");
     expect(toHash({ name: "desk" })).toBe("#/desk");
+    expect(parseHash("#/notes/c/class-1")).toEqual({ name: "notes", classId: "class-1" });
+    expect(toHash({ name: "notes", classId: "class-1" })).toBe("#/notes/c/class-1");
+    expect(toHash({ name: "notes", classId: "class-1", id: "file-9" })).toBe("#/notes/c/class-1/file-9");
+    expect(parseHash("#/notes/c/class-1/file-9")).toEqual({ name: "notes", classId: "class-1", id: "file-9" });
+    expect(parseHash("#/recall/c/class-1")).toEqual({ name: "recall", classId: "class-1" });
   });
 });
 

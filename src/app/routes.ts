@@ -8,8 +8,8 @@ export type Route =
   | { name: "learn"; id: string; step: LessonStep }
   | { name: "shelf"; id?: string }
   | { name: "papers"; q?: string }
-  | { name: "recall" }
-  | { name: "notes"; id?: string };
+  | { name: "recall"; classId?: string }
+  | { name: "notes"; id?: string; classId?: string };
 
 export const STEP_META: Record<LessonStep, { n: number; label: string; hint: string }> = {
   teach: { n: 1, label: "Teach", hint: "Simple words, an analogy, the figure" },
@@ -35,8 +35,17 @@ export function parseHash(hash: string): Route {
     return { name: "papers", q: q || undefined };
   }
   if (head === "desk") return { name: "desk" };
-  if (head === "recall") return { name: "recall" };
-  if (head === "notes") return { name: "notes", id };
+  if (head === "recall") {
+    if (id === "c" && step) return { name: "recall", classId: decodeURIComponent(step) };
+    return { name: "recall" };
+  }
+  if (head === "notes" || head === "classes") {
+    if (id === "c" && step) {
+      const rest = parts.slice(3).map((part) => decodeURIComponent(part)).join("/");
+      return { name: "notes", classId: decodeURIComponent(step), id: rest || undefined };
+    }
+    return { name: "notes", id };
+  }
   return { name: "home" };
 }
 
@@ -53,12 +62,21 @@ export function toHash(route: Route): string {
     case "papers":
       return route.q ? `#/papers/${encodeURIComponent(route.q)}` : "#/papers";
     case "recall":
-      return "#/recall";
+      return route.classId ? `#/recall/c/${encodeURIComponent(route.classId)}` : "#/recall";
     case "notes":
+      if (route.classId) {
+        return route.id
+          ? `#/notes/c/${encodeURIComponent(route.classId)}/${encodeURIComponent(route.id)}`
+          : `#/notes/c/${encodeURIComponent(route.classId)}`;
+      }
       return route.id ? `#/notes/${route.id}` : "#/notes";
   }
 }
 
 export function isLessonStep(value: string): value is LessonStep {
   return LESSON_STEPS.includes(value as LessonStep);
+}
+
+export function libraryNoteRoute(id: string, collectionId?: string): Route {
+  return collectionId ? { name: "notes", classId: collectionId, id } : { name: "notes", id };
 }

@@ -39,8 +39,10 @@ export function Studio() {
         ) : null}
         {route.name === "shelf" ? <ShelfPage api={api} id={route.id} navigate={navigate} /> : null}
         {route.name === "papers" ? <PapersPage api={api} q={route.q} navigate={navigate} /> : null}
-        {route.name === "recall" ? <RecallPage api={api} navigate={navigate} /> : null}
-        {route.name === "notes" ? <NotesPage api={api} id={route.id} navigate={navigate} /> : null}
+        {route.name === "recall" ? <RecallPage api={api} classId={route.classId} navigate={navigate} /> : null}
+        {route.name === "notes" ? (
+          <NotesPage api={api} id={route.id} classId={route.classId} navigate={navigate} />
+        ) : null}
       </main>
     </div>
   );

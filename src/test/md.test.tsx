@@ -50,7 +50,7 @@ describe("lab brief pipeline", () => {
   it("files the golden paste as a readable brief on the canvas", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^notes$/i }));
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste a paragraph/i);

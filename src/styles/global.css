@@ -1009,6 +1009,15 @@ kbd {
   opacity: 0.6;
 }
 
+.drop-large {
+  padding: 22px 18px;
+  margin-bottom: 18px;
+}
+
+.class-folder {
+  margin-bottom: 12px;
+}
+
 .paste {
   margin: 14px 0 18px;
   display: grid;

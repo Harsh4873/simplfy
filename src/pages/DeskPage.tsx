@@ -1,17 +1,21 @@
 import type { Route } from "../app/routes";
-import { isLessonStep } from "../app/routes";
+import { isLessonStep, libraryNoteRoute } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { StudioCanvas } from "../library/db";
 import { cx } from "../ui/cx";
 
 function openCanvas(canvas: StudioCanvas, navigate: (route: Route) => void) {
+  if (canvas.kind === "class" && canvas.collectionId) {
+    navigate({ name: "notes", classId: canvas.collectionId });
+    return;
+  }
   if (canvas.kind === "lesson" && canvas.moduleId) {
     const step = canvas.step && isLessonStep(canvas.step) ? canvas.step : "teach";
     navigate({ name: "learn", id: canvas.moduleId, step });
     return;
   }
   if (canvas.kind === "note" && canvas.noteId) {
-    navigate({ name: "notes", id: canvas.noteId });
+    navigate(libraryNoteRoute(canvas.noteId, canvas.collectionId));
     return;
   }
   navigate({ name: "papers", q: canvas.papersQuery || undefined });
@@ -24,8 +28,33 @@ export function DeskPage({
   api: StudioApi;
   navigate: (route: Route) => void;
 }) {
-  const pinned = api.studios.filter((row) => row.pinned);
-  const recent = api.studios.filter((row) => !row.pinned);
+  const collectionName = (id: string | undefined) =>
+    id ? api.collections.find((row) => row.id === id)?.name : undefined;
+
+  const grouped = (() => {
+    const pinned = api.studios.filter((row) => row.pinned);
+    const buckets = new Map<string, StudioCanvas[]>();
+    const loose: StudioCanvas[] = [];
+    for (const canvas of api.studios) {
+      if (canvas.pinned || canvas.kind === "class") continue;
+      if (canvas.collectionId) {
+        const list = buckets.get(canvas.collectionId) ?? [];
+        list.push(canvas);
+        buckets.set(canvas.collectionId, list);
+      } else {
+        loose.push(canvas);
+      }
+    }
+    const classes = api.collections
+      .filter((row) => buckets.has(row.id))
+      .map((row) => ({ collection: row, canvases: buckets.get(row.id) ?? [] }));
+    for (const [id, canvases] of buckets) {
+      if (!classes.some((row) => row.collection.id === id)) {
+        classes.push({ collection: { id, name: "Class", createdAt: 0, updatedAt: 0 }, canvases });
+      }
+    }
+    return { classes, loose, pinned };
+  })();
 
   return (
     <div className="page">
@@ -33,29 +62,42 @@ export function DeskPage({
         <p className="kicker">This device</p>
         <h1>Desk</h1>
         <p className="lede">
-          Every lesson, note, and papers lookup you open stays here as a canvas. Come back and you
-          drop into the same tab you left. Pinned canvases sit on top. Nothing syncs to another
-          machine.
+          Canvases are grouped by class — the folder you dropped lecture notes into. Pinned cards
+          stay on top. Nothing syncs off this machine.
         </p>
       </header>
       {api.studios.length === 0 ? (
-        <p className="lede">Desk is empty. Search a term or start a guided lesson and it will land here.</p>
+        <p className="lede">Desk is empty. Drop a class folder under Classes, or start a guided lesson.</p>
       ) : null}
-      {pinned.length ? (
+      {grouped.pinned.length ? (
         <section>
           <h2 className="section-title">Pinned</h2>
           <ul className="desk-grid">
-            {pinned.map((canvas) => (
-              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
+            {grouped.pinned.map((canvas) => (
+              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} className={collectionName(canvas.collectionId)} />
             ))}
           </ul>
         </section>
       ) : null}
-      {recent.length ? (
-        <section>
-          <h2 className="section-title">Recent canvases</h2>
+      {grouped.classes.map(({ collection, canvases }) => (
+        <section key={collection.id}>
+          <h2 className="section-title">
+            <button type="button" className="text-btn" onClick={() => navigate({ name: "notes", classId: collection.id })}>
+              {collection.name}
+            </button>
+          </h2>
           <ul className="desk-grid">
-            {recent.map((canvas) => (
+            {canvases.map((canvas) => (
+              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
+            ))}
+          </ul>
+        </section>
+      ))}
+      {grouped.loose.length ? (
+        <section>
+          <h2 className="section-title">Ungrouped</h2>
+          <ul className="desk-grid">
+            {grouped.loose.map((canvas) => (
               <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
             ))}
           </ul>
@@ -69,16 +111,23 @@ function CanvasCard({
   canvas,
   api,
   navigate,
+  className,
 }: {
   canvas: StudioCanvas;
   api: StudioApi;
   navigate: (route: Route) => void;
+  className?: string;
 }) {
-  const kindLabel = canvas.kind === "lesson" ? "Lesson" : canvas.kind === "note" ? "Note" : "Papers";
+  const kindLabel =
+    canvas.kind === "lesson" ? "Lesson" : canvas.kind === "note" ? "Note" : canvas.kind === "class" ? "Class" : "Papers";
   return (
     <li className={cx("desk-card", canvas.pinned && "is-pinned")}>
       <button type="button" className="desk-open" onClick={() => openCanvas(canvas, navigate)}>
-        <span className="kicker">{kindLabel}{canvas.step ? ` · ${canvas.step}` : ""}</span>
+        <span className="kicker">
+          {kindLabel}
+          {canvas.step ? ` · ${canvas.step}` : ""}
+          {className ? ` · ${className}` : ""}
+        </span>
         <span className="hit-title">{canvas.title}</span>
         <span className="muted">{new Date(canvas.updatedAt).toLocaleString()}</span>
       </button>
