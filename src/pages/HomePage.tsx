@@ -32,8 +32,9 @@ export function HomePage({
           Pick a topic. The lesson walks you the way a good study buddy does: analogy first, a demo,
           two or three problems, then “say it back in your own words.” The dense notes stay on the
           shelf until you ask for them. Search is always up top — press <kbd>/</kbd>. Or dump a
-          whole lecture folder under Classes. Paste a markdown dump and it becomes its own flip
-          deck — study it from Decks, not by pinning a card.
+          whole lecture folder under Classes. Paste a markdown dump or drop a research PDF and it
+          becomes its own flip deck — study it from Decks. A folder pack is a class; a single paper
+          stays a paper unless you file it into a class.
         </p>
         <div className="hero-stats">
           <span>

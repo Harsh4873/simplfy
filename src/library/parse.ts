@@ -1,3 +1,12 @@
+import { looksLikePaperText, paperToMarkdown } from "./paperText";
+
+async function loadPdfjs() {
+  if (typeof DOMMatrix === "undefined") {
+    return import("pdfjs-dist/legacy/build/pdf.mjs");
+  }
+  return import("pdfjs-dist");
+}
+
 const TEXT_TYPES = new Set([
   "text/plain",
   "text/markdown",
@@ -38,15 +47,55 @@ const MIME_BY_EXT: Record<string, string> = {
   ".tex": "text/plain",
   ".r": "text/plain",
   ".py": "text/plain",
+  ".pdf": "application/pdf",
 };
 
 export function mimeForDroppedFile(file: File): string {
   const name = file.name.toLowerCase();
-  if (name.endsWith(".md")) return "text/markdown";
+  if (name.endsWith(".md") || name.endsWith(".markdown")) return "text/markdown";
+  if (name.endsWith(".pdf")) return "application/pdf";
   if (file.type) return file.type;
   const ext = Object.keys(MIME_BY_EXT).find((item) => name.endsWith(item));
   if (ext) return MIME_BY_EXT[ext];
   return "application/octet-stream";
+}
+
+export function linesFromPdfItems(items: unknown[]): string[] {
+  const rows = new Map<number, { x: number; str: string }[]>();
+  let hasGeom = false;
+  const loose: string[] = [];
+  for (const raw of items) {
+    if (!raw || typeof raw !== "object") continue;
+    const item = raw as { str?: string; transform?: number[]; hasEOL?: boolean };
+    const str = item.str ?? "";
+    if (!str) continue;
+    if (Array.isArray(item.transform) && item.transform.length >= 6) {
+      hasGeom = true;
+      const x = item.transform[4] ?? 0;
+      const y = item.transform[5] ?? 0;
+      const key = Math.round(y / 3) * 3;
+      const list = rows.get(key) ?? [];
+      list.push({ x, str });
+      rows.set(key, list);
+    } else {
+      loose.push(str);
+    }
+  }
+  if (!hasGeom) {
+    const blob = loose.join(" ").replace(/\s+/g, " ").trim();
+    return blob ? [blob] : [];
+  }
+  return [...rows.keys()]
+    .sort((a, b) => b - a)
+    .map((key) =>
+      (rows.get(key) ?? [])
+        .sort((a, b) => a.x - b.x)
+        .map((part) => part.str)
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim(),
+    )
+    .filter(Boolean);
 }
 
 export type ParsedFile = {
@@ -61,8 +110,11 @@ function isTextFile(file: File): boolean {
 }
 
 async function extractPdf(file: File): Promise<ParsedFile> {
-  const pdfjs = await import("pdfjs-dist");
-  const worker = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url);
+  const pdfjs = await loadPdfjs();
+  const worker =
+    typeof DOMMatrix === "undefined"
+      ? new URL("pdfjs-dist/legacy/build/pdf.worker.min.mjs", import.meta.url)
+      : new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url);
   pdfjs.GlobalWorkerOptions.workerSrc = worker.toString();
   const data = await file.arrayBuffer();
   const doc = await pdfjs.getDocument({ data }).promise;
@@ -71,20 +123,17 @@ async function extractPdf(file: File): Promise<ParsedFile> {
   for (let i = 1; i <= limit; i += 1) {
     const page = await doc.getPage(i);
     const content = await page.getTextContent();
-    const line = content.items
-      .map((item) => ("str" in item ? item.str : ""))
-      .join(" ")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (line) pages.push(line);
+    const pageText = linesFromPdfItems(content.items).join("\n").trim();
+    if (pageText) pages.push(pageText);
   }
-  const text = pages.join("\n\n");
+  const raw = pages.join("\n\n");
+  const text = raw ? paperToMarkdown(raw) : "";
   const parseNote =
     doc.numPages > limit
-      ? `Extracted text from the first ${limit} of ${doc.numPages} pages.`
+      ? `Extracted text from the first ${limit} of ${doc.numPages} pages and cut a study deck from the sections.`
       : text
-        ? `Extracted text from ${doc.numPages} page${doc.numPages === 1 ? "" : "s"}.`
-        : "PDF stored, but no extractable text layer was found.";
+        ? `Extracted text from ${doc.numPages} page${doc.numPages === 1 ? "" : "s"} and cut a study deck from the sections.`
+        : "PDF stored, but no extractable text layer was found. Image-only scans cannot become flip cards.";
   return { text, parseNote };
 }
 
@@ -100,13 +149,17 @@ export async function parseDroppedFile(file: File): Promise<ParsedFile> {
     }
   }
   if (isTextFile(file)) {
-    const text = await file.text();
+    const raw = await file.text();
     const markdown = mimeForDroppedFile(file) === "text/markdown";
+    const asPaper = !/^#{1,3}\s+/m.test(raw.trim()) && looksLikePaperText(raw);
+    const text = asPaper ? paperToMarkdown(raw) : raw;
     return {
       text,
-      parseNote: markdown
-        ? "Markdown stored as original text. The studio composes a lab brief on file."
-        : "Stored as searchable text.",
+      parseNote: asPaper
+        ? "Academic paper text cut into sections for a study deck."
+        : markdown
+          ? "Markdown stored as original text. The studio composes a lab brief on file."
+          : "Stored as searchable text.",
     };
   }
   return {

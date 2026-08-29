@@ -1,6 +1,6 @@
 import type { LabBrief } from "../md/types";
 
-export type LibraryKind = "file" | "note";
+export type LibraryKind = "file" | "note" | "paper";
 
 export type LibraryItem = {
   id: string;
@@ -113,6 +113,10 @@ export function openStudioDb(): Promise<IDBDatabase> {
 export async function listLibrary(db: IDBDatabase): Promise<LibraryItem[]> {
   const items = await requestToPromise(db.transaction("library").objectStore("library").getAll());
   return items.sort((a, b) => b.createdAt - a.createdAt);
+}
+
+export async function getLibraryItem(db: IDBDatabase, id: string): Promise<LibraryItem | undefined> {
+  return requestToPromise(db.transaction("library").objectStore("library").get(id));
 }
 
 export async function putLibraryItem(db: IDBDatabase, item: LibraryItem): Promise<void> {

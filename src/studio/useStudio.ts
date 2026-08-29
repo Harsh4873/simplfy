@@ -8,6 +8,7 @@ import {
   deleteRecallCard,
   deleteStudio,
   getCollection,
+  getLibraryItem,
   getPref,
   getStudio,
   listCollections,
@@ -39,7 +40,8 @@ import {
 import { seedClassStudios, seedNoteDeck } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
-import { titleFromMarkdown } from "../library/noteCards";
+import { titleFromDroppedText } from "../library/noteCards";
+import { libraryKindForSource, looksLikePaperText, paperToMarkdown } from "../library/paperText";
 import { recallFromMiss } from "../quiz/grade";
 
 export function useStudio() {
@@ -270,11 +272,12 @@ export function useStudio() {
             const parsed = await parseDroppedFile(file);
             const mime = mimeForDroppedFile(file);
             const base = rel.split("/").pop() ?? file.name;
-            const name = parsed.text.trim() ? titleFromMarkdown(parsed.text) : base;
+            const kind = libraryKindForSource({ mime, name: base, text: parsed.text });
+            const name = parsed.text.trim() ? titleFromDroppedText(parsed.text, base, mime) : base;
             const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
             const item: LibraryItem = {
               id: crypto.randomUUID(),
-              kind: "file",
+              kind,
               name,
               mime,
               size: file.size,
@@ -292,8 +295,14 @@ export function useStudio() {
           await refresh(db);
           const last = filed[filed.length - 1] ?? null;
           if (last) await remember(`library:${last.id}`);
+          const papers = filed.filter((row) => row.kind === "paper").length;
+          const dumps = filed.length - papers;
           const bits = [
-            `Filed ${filed.length} deck${filed.length === 1 ? "" : "s"}`,
+            papers && !dumps
+              ? `Filed ${papers} paper deck${papers === 1 ? "" : "s"}`
+              : papers
+                ? `Filed ${dumps} dump${dumps === 1 ? "" : "s"} and ${papers} paper${papers === 1 ? "" : "s"}`
+                : `Filed ${filed.length} deck${filed.length === 1 ? "" : "s"}`,
           ];
           if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"}`);
           bits.push("Study them under Decks");
@@ -320,7 +329,9 @@ export function useStudio() {
           const parsed = await parseDroppedFile(file);
           const mime = mimeForDroppedFile(file);
           const base = rel.split("/").pop() ?? file.name;
-          const heading = parsed.text.trim() ? titleFromReadme(parsed.text) : null;
+          const heading = parsed.text.trim()
+            ? titleFromReadme(parsed.text) || titleFromDroppedText(parsed.text, base, mime)
+            : null;
           const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
           const brief = composed
             ? { ...composed, title: heading || base }
@@ -328,9 +339,10 @@ export function useStudio() {
           const prior =
             inClass.find((item) => itemKey(item.relPath || item.name) === key) ??
             filed.find((item) => itemKey(item.relPath || item.name) === key);
+          const kind = libraryKindForSource({ mime, name: base, text: parsed.text });
           const item: LibraryItem = {
             id: prior?.id ?? crypto.randomUUID(),
-            kind: "file",
+            kind,
             name: base,
             mime,
             size: file.size,
@@ -393,20 +405,25 @@ export function useStudio() {
   const addNote = useCallback(
     async (raw: string, collectionId?: string) => {
       if (!db || !raw.trim()) return null;
-      const body = raw.trim();
-      const name = titleFromMarkdown(body);
+      const incoming = raw.trim();
+      const body =
+        !/^#{1,3}\s+/m.test(incoming) && looksLikePaperText(incoming) ? paperToMarkdown(incoming) : incoming;
+      const name = titleFromDroppedText(body, "Pasted note");
+      const kind = libraryKindForSource({ text: body, pasted: true, mime: "text/markdown" });
       const composed = composeBrief(body, loaded.modules);
       const brief = { ...composed, title: name };
       const folder = collectionId ? await ensureCollection("", collectionId, true) : null;
       if (collectionId && !folder) return null;
       const item: LibraryItem = {
         id: crypto.randomUUID(),
-        kind: "note",
+        kind,
         name,
         mime: "text/markdown",
         size: body.length,
         text: body,
-        parseNote: "Pasted note, stored only in this browser.",
+        parseNote: kind === "paper"
+          ? "Pasted paper, stored only in this browser and cut into a study deck."
+          : "Pasted note, stored only in this browser.",
         createdAt: Date.now(),
         brief,
         collectionId: folder?.id,
@@ -420,7 +437,11 @@ export function useStudio() {
         await seedClassStudios(db, folder, classItems, loaded.modules, byId);
       }
       await refresh(db);
-      const bits = [`Note kept in the local library${folder ? ` (${folder.name})` : ""}`];
+      const bits = [
+        kind === "paper"
+          ? `Paper kept as its own deck${folder ? ` in ${folder.name}` : ""}`
+          : `Note kept in the local library${folder ? ` (${folder.name})` : ""}`,
+      ];
       if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"} — Study this deck under Decks`);
       setNotice(`${bits.join(". ")}.`);
       return item;
@@ -478,6 +499,38 @@ export function useStudio() {
       setNotice(`Class renamed to ${title}.`);
     },
     [db, refresh],
+  );
+
+  const moveLibrary = useCallback(
+    async (id: string, collectionId: string | null) => {
+      if (!db) return;
+      const item = await getLibraryItem(db, id);
+      if (!item) return;
+      const fromId = item.collectionId;
+      const nextId = collectionId || undefined;
+      if (fromId === nextId) return;
+      const next: LibraryItem = { ...item, collectionId: nextId };
+      await putLibraryItem(db, next);
+      await seedNoteDeck(db, next);
+      const resync = async (folderId: string | undefined) => {
+        if (!folderId) return;
+        const folder = await getCollection(db, folderId);
+        if (!folder) return;
+        const stored = await listLibrary(db);
+        const classItems = stored.filter((row) => row.collectionId === folderId);
+        await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+      };
+      if (fromId) await resync(fromId);
+      if (nextId) await resync(nextId);
+      await refresh(db);
+      const folderName = nextId ? (await getCollection(db, nextId))?.name : undefined;
+      setNotice(
+        folderName
+          ? `Filed in ${folderName}. Study it there or as its own deck.`
+          : "Detached as its own deck under Decks.",
+      );
+    },
+    [byId, db, loaded.modules, refresh],
   );
 
   const missCheck = useCallback(
@@ -551,6 +604,7 @@ export function useStudio() {
     removeLibrary,
     removeCollection,
     renameCollection,
+    moveLibrary,
     ensureCollection,
     missCheck,
     bumpRecall,

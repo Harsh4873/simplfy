@@ -1,11 +1,12 @@
 import type { LibraryItem, RecallCard } from "./db";
 import { isSnapshotRel, packFileRank } from "./ingest";
+import { looksLikePaperText, paperToMarkdown, titleFromPaperText } from "./paperText";
 
 export const MAX_CARDS_PER_FILE = 16;
 export const MAX_CLASS_CARDS = 40;
 
 const SKIP_HEADING =
-  /^(rules|honor|who \/ when|if you need|read this folder|platforms \/ people|optional|as of)|update pack/i;
+  /^(rules|honor|who \/ when|if you need|read this folder|platforms \/ people|optional|as of|references|bibliography|acknowledgments?|acknowledgements)|update pack/i;
 
 function slug(value: string): string {
   const s = value
@@ -29,6 +30,18 @@ function tidy(value: string): string {
 
 function skipSnapshot(rel: string): boolean {
   return isSnapshotRel(rel);
+}
+
+export function titleFromDroppedText(text: string, fallback = "Pasted note", mime = ""): string {
+  const pdf = mime === "application/pdf" || /\.pdf$/i.test(fallback);
+  if (pdf || looksLikePaperText(text)) {
+    const paper = titleFromPaperText(text, "");
+    if (paper) return paper;
+  }
+  const fromMd = titleFromMarkdown(text);
+  if (fromMd && fromMd !== "Pasted note") return fromMd;
+  const base = fallback.replace(/\.(pdf|md|markdown|txt)$/i, "").replace(/[_-]+/g, " ").trim();
+  return base || fromMd;
 }
 
 export function titleFromMarkdown(text: string): string {
@@ -167,6 +180,21 @@ export function cardsFromMarkdown(
   return cards;
 }
 
+export function cardsFromNoteText(
+  text: string,
+  itemId: string,
+  fileLabel: string,
+): Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[] {
+  const alreadyMd = /^#{1,3}\s+/m.test(text.trim());
+  const paperMd = alreadyMd ? text : paperToMarkdown(text);
+  const fromPaper =
+    looksLikePaperText(text) || paperMd !== text ? cardsFromMarkdown(paperMd, itemId, fileLabel) : [];
+  if (fromPaper.length >= 2) return fromPaper;
+  const fromMd = cardsFromMarkdown(text, itemId, fileLabel);
+  if (fromPaper.length > fromMd.length) return fromPaper;
+  return fromMd.length ? fromMd : fromPaper;
+}
+
 export function cardsFromClassNotes(items: LibraryItem[]): Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[] {
   const ranked = [...items].sort((a, b) => {
     const ra = packFileRank(a.relPath ?? a.name);
@@ -178,7 +206,7 @@ export function cardsFromClassNotes(items: LibraryItem[]): Omit<RecallCard, "id"
     const rel = item.relPath ?? item.name;
     if (skipSnapshot(rel) && ranked.some((row) => !skipSnapshot(row.relPath ?? row.name))) continue;
     const label = rel.split("/").pop() || item.name;
-    const cards = cardsFromMarkdown(item.text, item.id, label);
+    const cards = cardsFromNoteText(item.text, item.id, label);
     for (const card of cards) {
       if (out.length >= MAX_CLASS_CARDS) return out;
       out.push(card);

@@ -2,6 +2,7 @@ import type { Route } from "../app/routes";
 import { isLessonStep, libraryNoteRoute, recallNoteRoute } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { StudioCanvas } from "../library/db";
+import { isPaperItem } from "../library/paperText";
 import { cx } from "../ui/cx";
 
 function openCanvas(canvas: StudioCanvas, api: StudioApi, navigate: (route: Route) => void) {
@@ -63,7 +64,12 @@ export function DeskPage({
         classes.push({ collection: { id, name: "Class", createdAt: 0, updatedAt: 0 }, canvases });
       }
     }
-    return { classes, loose, pinned, decks };
+    const papers = decks.filter((canvas) => {
+      const item = canvas.noteId ? api.library.find((row) => row.id === canvas.noteId) : undefined;
+      return item ? isPaperItem(item) : false;
+    });
+    const dumps = decks.filter((canvas) => !papers.includes(canvas));
+    return { classes, loose, pinned, papers, dumps };
   })();
 
   return (
@@ -72,12 +78,13 @@ export function DeskPage({
         <p className="kicker">This device</p>
         <h1>Decks</h1>
         <p className="lede">
-          Click a dump to study it — headings and bold names become flip cards. Pin keeps it on
-          top. Classes group a folder pack. Nothing syncs off this machine.
+          Click a dump or a dropped paper to study it. Papers get cards from Abstract and section
+          headings, not from the catalogue lookup tab. Pin keeps it on top. Classes group a folder
+          pack. Nothing syncs off this machine.
         </p>
       </header>
       {api.studios.length === 0 ? (
-        <p className="lede">No decks yet. Paste markdown under Classes, or start a guided lesson.</p>
+        <p className="lede">No decks yet. Paste markdown or drop a PDF under Classes.</p>
       ) : null}
       {grouped.pinned.length ? (
         <section>
@@ -95,11 +102,21 @@ export function DeskPage({
           </ul>
         </section>
       ) : null}
-      {grouped.decks.length ? (
+      {grouped.papers.length ? (
+        <section>
+          <h2 className="section-title">Dropped papers</h2>
+          <ul className="desk-grid">
+            {grouped.papers.map((canvas) => (
+              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {grouped.dumps.length ? (
         <section>
           <h2 className="section-title">Pasted dumps</h2>
           <ul className="desk-grid">
-            {grouped.decks.map((canvas) => (
+            {grouped.dumps.map((canvas) => (
               <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
             ))}
           </ul>
@@ -144,17 +161,21 @@ function CanvasCard({
   navigate: (route: Route) => void;
   className?: string;
 }) {
+  const note = canvas.noteId ? api.library.find((row) => row.id === canvas.noteId) : undefined;
   const noteCards = canvas.noteId ? api.recall.filter((card) => card.noteId === canvas.noteId).length : 0;
+  const paper = note ? isPaperItem(note) : false;
   const kindLabel =
     canvas.kind === "lesson"
       ? "Lesson"
       : canvas.kind === "note"
         ? noteCards
-          ? `Deck · ${noteCards} card${noteCards === 1 ? "" : "s"}`
-          : "Note"
+          ? `${paper ? "Paper" : "Deck"} · ${noteCards} card${noteCards === 1 ? "" : "s"}`
+          : paper
+            ? "Paper"
+            : "Note"
         : canvas.kind === "class"
           ? "Class"
-          : "Papers";
+          : "Papers lookup";
   return (
     <li className={cx("desk-card", canvas.pinned && "is-pinned")}>
       <button type="button" className="desk-open" onClick={() => openCanvas(canvas, api, navigate)}>

@@ -3,6 +3,7 @@ import { FieldNoteDoc } from "../studio/FieldNoteDoc";
 import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
+import { isPaperItem } from "../library/paperText";
 import { isLessonStep, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
@@ -67,6 +68,10 @@ export function NotesPage({
       navigate({ name: "notes", classId: last.collectionId });
       return;
     }
+    if (last && !collection) {
+      navigate(libraryNoteRoute(last.id));
+      return;
+    }
     if (collection) navigate({ name: "notes", classId: collection.id });
   };
 
@@ -100,10 +105,10 @@ export function NotesPage({
               type="button"
               className="text-btn"
               onClick={() =>
-                navigate(file.collectionId ? { name: "notes", classId: file.collectionId } : { name: "notes" })
+                navigate(file.collectionId ? { name: "notes", classId: file.collectionId } : { name: "desk" })
               }
             >
-              ← {collection?.name ?? "Classes"}
+              ← {collection?.name ?? "Decks"}
             </button>
           </p>
           <p className="muted">{file.relPath || file.name}</p>
@@ -115,9 +120,46 @@ export function NotesPage({
                 Study this deck
               </button>
             ) : (
-              <p className="hint">Add ## headings or longer paragraphs and we will cut a flip deck from this dump.</p>
+              <p className="hint">
+                {isPaperItem(file)
+                  ? "This file has no text layer we can split. A PDF with selectable text, or a markdown paper with Abstract / Introduction, becomes flip cards."
+                  : "Add ## headings or longer paragraphs and we will cut a flip deck from this dump."}
+              </p>
             )}
           </div>
+          {api.collections.length ? (
+            <form
+              className="paste"
+              onSubmit={(event) => {
+                event.preventDefault();
+                const value = String(new FormData(event.currentTarget).get("classId") ?? "");
+                void (async () => {
+                  await api.moveLibrary(file.id, value || null);
+                  if (value) navigate({ name: "notes", classId: value, id: file.id });
+                  else navigate(libraryNoteRoute(file.id));
+                })();
+              }}
+            >
+              <label htmlFor="file-in-class">
+                {file.collectionId
+                  ? "Filed in a class pack — or keep it as its own deck"
+                  : "Own deck, or file it into a class"}
+              </label>
+              <div className="search-row">
+                <select id="file-in-class" name="classId" defaultValue={file.collectionId ?? ""} key={file.collectionId ?? "solo"}>
+                  <option value="">Own deck (not a class pack)</option>
+                  {api.collections.map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.name}
+                    </option>
+                  ))}
+                </select>
+                <button type="submit" className="ghost" disabled={!api.ready}>
+                  Save
+                </button>
+              </div>
+            </form>
+          ) : null}
           <FieldNoteDoc
             item={file}
             modules={api.modules}
@@ -184,7 +226,10 @@ export function NotesPage({
           </form>
           <div className={cx("drop", api.busy && "is-busy")} {...dropProps}>
             <p>Drop an update folder to replace these files and rebuild the deck.</p>
-            <p className="hint">Add files merges. Add folder / drop a directory replaces this class with that pack.</p>
+            <p className="hint">
+              Add files merges — a PDF or markdown paper joins this class and still gets its own
+              Study deck. Add folder / drop a directory replaces this class with that pack.
+            </p>
             <div className="step-nav">
               <button type="button" className="text-btn" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
                 Add files
@@ -198,6 +243,7 @@ export function NotesPage({
               className="sr-only"
               type="file"
               multiple
+              accept=".pdf,.md,.markdown,.txt,.tex,application/pdf,text/markdown,text/plain"
               aria-label="Choose files"
               onChange={(event) => {
                 void ingest([...(event.target.files ?? [])], false);
@@ -227,7 +273,7 @@ export function NotesPage({
           </form>
           <p className="kicker">Files in this pack</p>
           {classItems.length === 0 ? (
-            <p className="hint">Empty class. Drop a folder of notes.</p>
+            <p className="hint">Empty class. Drop a folder of notes, or add a PDF / markdown file.</p>
           ) : (
             folders.map(([folder, items]) => (
               <div key={folder || "(root)"} className="class-folder">
@@ -271,7 +317,8 @@ export function NotesPage({
           <p className="lede">
             This class is the files you dropped. An update folder replaces the previous pack
             (leftovers and snapshots are dropped) and rebuilds the recall deck from those notes —
-            last-class, deadlines, todos — not a pile of unrelated catalogue plates.
+            last-class, deadlines, todos, and any PDFs you attached. A paper can live here or as
+            its own deck under Decks.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
@@ -323,7 +370,7 @@ export function NotesPage({
           <section>
             <h2 className="section-title">Deck from these notes</h2>
             {noteDeck.length === 0 ? (
-              <p className="hint">Drop a markdown pack and we cut recall cards from headings, tables, and todos in those files.</p>
+              <p className="hint">Drop a markdown pack or a PDF with a text layer and we cut recall cards from headings, sections, tables, and todos.</p>
             ) : (
               <p className="lede">
                 {noteDeck.length} card{noteDeck.length === 1 ? "" : "s"} built from this class’s files.{" "}
@@ -400,12 +447,12 @@ export function NotesPage({
       </aside>
       <div className="notes-stage">
         <p className="kicker">Topic / class folders</p>
-        <h1>Drop a pile, not one file</h1>
+        <h1>Classes, decks, or a paper</h1>
         <p className="lede">
-          Name the class, or drop an update folder. A folder named “update” still becomes the course
-          on the README title (CSCE 627, STAT 651). That drop <em>is</em> the class: we replace the
-          previous pack, keep those files, and cut a recall deck from the notes — not a pile of
-          unrelated catalogue plates.
+          A folder drop is a class pack (README title or the folder name). A single PDF or markdown
+          file — including a research paper — stays its own deck under Decks, with flip cards from
+          Abstract / Introduction / Results when we can read the text. Name a class first if you
+          want that paper sitting next to lecture notes instead.
         </p>
         <form
           className="paste"
@@ -428,10 +475,10 @@ export function NotesPage({
           </div>
         </form>
         <div className={cx("drop drop-large", api.busy && "is-busy")} {...dropProps}>
-          <p>Drop a folder of lecture notes or an update pack.</p>
+          <p>Drop a class folder, or a PDF / markdown file for its own deck.</p>
           <p className="hint">
-            Skips .git, node_modules, images. First 80 files. Generic folder names like “update”
-            use the README heading. Dropping a folder replaces that class’s files.
+            Folder pack → class (generic names like “update” use the README heading). Loose PDF or
+            .md → its own study deck. Skips .git, node_modules, images. First 80 files.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => folderRef.current?.click()} disabled={!api.ready}>
@@ -446,6 +493,7 @@ export function NotesPage({
             className="sr-only"
             type="file"
             multiple
+            accept=".pdf,.md,.markdown,.txt,.tex,application/pdf,text/markdown,text/plain"
             aria-label="Choose files"
             onChange={(event) => {
               void ingest([...(event.target.files ?? [])], false);
@@ -468,7 +516,12 @@ export function NotesPage({
         </div>
         <form className="paste" onSubmit={(event) => void onPaste(event)}>
           <label htmlFor="note">Paste markdown to make a deck</label>
-          <textarea id="note" name="note" rows={5} placeholder="Headings and **bold names** become flip cards…" />
+          <textarea
+            id="note"
+            name="note"
+            rows={5}
+            placeholder="Lecture dump, or a paper with Abstract / Introduction…"
+          />
           <button type="submit" className="solid" disabled={!api.ready}>
             File in the studio
           </button>

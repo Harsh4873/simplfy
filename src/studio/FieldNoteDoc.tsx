@@ -107,7 +107,8 @@ export function FieldNoteDoc({
     <>
       <header className="stage-head">
         <p className="kicker">
-          <span className="domain library">Local</span> Field note · Fig. L
+          <span className="domain library">Local</span>{" "}
+          {item.kind === "paper" ? "Paper" : "Field note"} · Fig. L
         </p>
         <h1>{brief?.title ?? item.name}</h1>
         <p className="dek">

@@ -12,7 +12,7 @@ import {
   type LibraryItem,
 } from "./db";
 import { spawnPlan, type SpawnPlan } from "./ingest";
-import { cardsFromClassNotes, cardsFromMarkdown } from "./noteCards";
+import { cardsFromClassNotes, cardsFromNoteText } from "./noteCards";
 
 export type SeedResult = SpawnPlan & { noteCards: number };
 
@@ -30,7 +30,7 @@ export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<
     updatedAt: now,
   });
 
-  const built = cardsFromMarkdown(item.text, item.id, item.name);
+  const built = cardsFromNoteText(item.text, item.id, item.name);
   const keepKeys = new Set(built.map((card) => `${card.moduleId}:${card.checkId}`));
   for (const card of await listRecall(db)) {
     if (card.noteId !== item.id) continue;

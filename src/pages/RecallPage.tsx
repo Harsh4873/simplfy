@@ -58,10 +58,10 @@ export function RecallPage({
         <h1>{scopeLabel ? `${scopeLabel} is empty` : "Deck empty"}</h1>
         <p className="lede">
           {currentNote
-            ? "This dump needs headings or longer paragraphs before we can cut flip cards. Open the source and add ## sections."
+            ? "This dump needs headings, Abstract/Introduction sections, or longer paragraphs before we can cut flip cards."
             : currentClass
-              ? "Drop an update folder into this class, or paste markdown. We cut recall cards from those notes."
-              : "Paste a markdown dump under Classes, drop a class pack, or miss a catalogue check. Then flip here."}
+              ? "Drop an update folder into this class, add a PDF, or paste markdown. We cut recall cards from those notes."
+              : "Paste a markdown dump, drop a PDF, drop a class pack, or miss a catalogue check. Then flip here."}
         </p>
         <button
           type="button"

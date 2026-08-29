@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { Studio } from "../studio/Studio";
+import { TOY_PAPER_TEXT } from "./toyPaper";
 
 describe("studio shell", () => {
   it("opens a guided lesson for likelihood ratio test and rifampin", async () => {
@@ -235,6 +236,48 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.click(screen.getByRole("link", { name: /^decks$/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
+  });
+
+  it("turns a dropped research paper into a studyable deck, not a class", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    const choose = await screen.findByLabelText(/^choose files$/i);
+    await waitFor(() => expect(screen.getByRole("button", { name: /choose files/i })).toBeEnabled());
+    const paper = new File([TOY_PAPER_TEXT], "toy-assay.txt", { type: "text/plain" });
+    await user.upload(choose, paper);
+    expect(await screen.findByRole("button", { name: /study this deck/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: /toy assay for counting colonies/i })).toBeInTheDocument();
+    expect(screen.getByText(/paper · fig/i)).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { level: 1, name: /toy-assay/i })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /study this deck/i }));
+    expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
+    expect(screen.getAllByText(/abstract/i).length).toBeGreaterThan(0);
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    expect(await screen.findByRole("heading", { name: /dropped papers/i })).toBeInTheDocument();
+    expect(screen.getByText(/paper ·/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
+  });
+
+  it("files a paper deck into a class without turning the PDF into the whole pack", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await user.type(screen.getByLabelText(/name this class/i), "Host immunology");
+    await user.click(screen.getByRole("button", { name: /open empty class/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /host immunology/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /all classes/i }));
+    const submit = await screen.findByRole("button", { name: /file in the studio/i });
+    await waitFor(() => expect(submit).toBeEnabled());
+    await user.click(screen.getByLabelText(/paste markdown to make a deck/i));
+    await user.paste(TOY_PAPER_TEXT);
+    await user.click(submit);
+    expect(await screen.findByRole("button", { name: /study this deck/i })).toBeInTheDocument();
+    const select = screen.getByLabelText(/own deck, or file it into a class/i);
+    await user.selectOptions(select, screen.getByRole("option", { name: /host immunology/i }));
+    await user.click(screen.getByRole("button", { name: /^save$/i }));
+    expect(await screen.findByRole("button", { name: /host immunology/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /study this deck/i })).toBeInTheDocument();
   });
 
   it("switches between light and dark themes", async () => {
