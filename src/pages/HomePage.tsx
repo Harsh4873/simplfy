@@ -1,7 +1,7 @@
 import { FEATURED_IDS, STUDY_PATHS } from "../lesson/paths";
 import { lessonFromModule } from "../lesson/fromModule";
 import type { StudyModule } from "../catalog/types";
-import { LESSON_STEPS, STEP_META, type Route } from "../app/routes";
+import { LESSON_STEPS, STEP_META, resumeLearnRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import { ModuleCard } from "./ModuleCard";
 import { SourceCard } from "./SourceCard";
@@ -56,30 +56,26 @@ export function HomePage({
           <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
             Open Sources
           </button>
-          <button
-            type="button"
-            className="ghost"
-            onClick={() => {
-              if (api.continueModule) {
-                open(api.continueModule);
-                return;
-              }
-              const first = featured[0];
-              if (first) open(first);
-              else navigate({ name: "shelf" });
-            }}
-          >
+          <button type="button" className="ghost" onClick={() => navigate(resumeLearnRoute(api.continueNote?.id, api.continueModule?.id))}>
             Open Learn
           </button>
         </div>
       </section>
 
-      {pinned.length || api.continueModule ? (
+      {pinned.length || api.continueModule || api.continueNote ? (
         <section className="continue-strip" aria-label="Pinned">
           <p className="kicker">On Home</p>
           {api.continueModule ? (
             <button type="button" className="solid" onClick={() => open(api.continueModule!)}>
               Resume {api.continueModule.title}
+            </button>
+          ) : api.continueNote ? (
+            <button
+              type="button"
+              className="solid"
+              onClick={() => navigate(resumeLearnRoute(api.continueNote?.id))}
+            >
+              Resume {api.continueNote.name}
             </button>
           ) : null}
           {pinned.length ? (

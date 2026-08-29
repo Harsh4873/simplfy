@@ -1,4 +1,5 @@
 export const LESSON_STEPS = ["teach", "example", "practice", "say-back", "shelf", "papers"] as const;
+export const FILE_LESSON_STEPS = ["teach", "example", "practice", "say-back"] as const;
 
 export type LessonStep = (typeof LESSON_STEPS)[number];
 
@@ -7,7 +8,7 @@ export type SourceTab = "decks" | "classes" | "papers";
 export type Route =
   | { name: "home" }
   | { name: "desk" }
-  | { name: "learn"; id: string; step: LessonStep }
+  | { name: "learn"; id: string; step: LessonStep; kind?: "file" }
   | { name: "shelf"; id?: string }
   | { name: "papers"; q?: string }
   | { name: "recall"; classId?: string; noteId?: string }
@@ -38,6 +39,11 @@ export function parseHash(hash: string): Route {
   if (parts.length === 0) return { name: "home" };
   const [head, id, step] = parts;
   if (head === "learn") {
+    if (id === "file" && parts[2]) {
+      const fileId = decodeURIComponent(parts[2] ?? "");
+      const next = LESSON_STEPS.includes(parts[3] as LessonStep) ? (parts[3] as LessonStep) : "teach";
+      return { name: "learn", id: fileId, step: next, kind: "file" };
+    }
     if (id) {
       const next = LESSON_STEPS.includes(step as LessonStep) ? (step as LessonStep) : "teach";
       return { name: "learn", id, step: next };
@@ -87,7 +93,9 @@ export function toHash(route: Route): string {
     case "desk":
       return "#/sources/decks";
     case "learn":
-      return `#/learn/${route.id}/${route.step}`;
+      return route.kind === "file"
+        ? `#/learn/file/${encodeURIComponent(route.id)}/${route.step}`
+        : `#/learn/${route.id}/${route.step}`;
     case "shelf":
       return route.id ? `#/shelf/${route.id}` : "#/shelf";
     case "papers":
@@ -115,4 +123,14 @@ export function libraryNoteRoute(id: string, collectionId?: string): Route {
 
 export function recallNoteRoute(noteId: string): Route {
   return { name: "recall", noteId };
+}
+
+export function learnFileRoute(noteId: string, step: LessonStep = "teach"): Route {
+  return { name: "learn", id: noteId, step, kind: "file" };
+}
+
+export function resumeLearnRoute(continueNoteId?: string, continueModuleId?: string): Route {
+  if (continueNoteId) return learnFileRoute(continueNoteId);
+  if (continueModuleId) return { name: "learn", id: continueModuleId, step: "teach" };
+  return { name: "shelf" };
 }

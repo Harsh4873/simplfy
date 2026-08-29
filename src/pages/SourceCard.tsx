@@ -1,8 +1,7 @@
 import type { Route } from "../app/routes";
-import { isLessonStep, libraryNoteRoute, recallNoteRoute } from "../app/routes";
+import { isLessonStep, learnFileRoute, libraryNoteRoute, recallNoteRoute } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { StudioCanvas } from "../library/db";
-import { relatedForLibraryItem } from "../library/fieldNote";
 import { isPaperItem } from "../library/paperText";
 import { cx } from "../ui/cx";
 
@@ -47,8 +46,6 @@ export function SourceCard({
       : 0;
   const paper = note ? isPaperItem(note) : false;
   const lesson = canvas.kind === "lesson" ? canvas : undefined;
-  const related = note && !canvas.collectionId ? relatedForLibraryItem(note, api.modules)[0] : undefined;
-  const learnId = lesson?.moduleId ?? related?.id;
   const learnStep = lesson?.step && isLessonStep(lesson.step) ? lesson.step : "teach";
   const kindLabel =
     canvas.kind === "lesson"
@@ -84,14 +81,19 @@ export function SourceCard({
             Study
           </button>
         ) : null}
-        {learnId ? (
+        {canvas.kind === "note" && canvas.noteId ? (
+          <button type="button" className="ghost" onClick={() => navigate(learnFileRoute(canvas.noteId!))}>
+            Learn this file
+          </button>
+        ) : null}
+        {lesson?.moduleId ? (
           <button
             type="button"
             className="ghost"
             onClick={() => {
-              const module = api.byId.get(learnId);
+              const module = api.byId.get(lesson.moduleId!);
               if (module) void api.touchLesson(module, learnStep);
-              navigate({ name: "learn", id: learnId, step: learnStep });
+              navigate({ name: "learn", id: lesson.moduleId!, step: learnStep });
             }}
           >
             Open in Learn

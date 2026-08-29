@@ -152,8 +152,15 @@ describe("studio shell", () => {
     expect(screen.queryByText(/ioerger/i)).not.toBeInTheDocument();
     expect(screen.getByText(/does not attach those plates/i)).toBeInTheDocument();
     expect(screen.getByText(/recall card from the notes/i)).toBeInTheDocument();
-    await user.click(screen.getAllByRole("button", { name: /^recall this class$/i })[0]);
-    expect(await screen.findAllByText(/5-tuple/i)).not.toHaveLength(0);
+    await user.click(screen.getAllByRole("button", { name: /last-class\.md/i })[0]);
+    expect(await screen.findByRole("button", { name: /learn this file/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /learn this file/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /last class|dfa/i })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /tnseq/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/class file/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^learn$/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /last class|dfa/i })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /tnseq/i })).not.toBeInTheDocument();
   });
 
   it("replaces leftover class files when you drop an update folder", async () => {

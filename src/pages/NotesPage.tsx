@@ -1,13 +1,13 @@
-import { useRef, type DragEvent, type FormEvent } from "react";
 import { FieldNoteDoc } from "../studio/FieldNoteDoc";
 import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
 import { isPaperItem } from "../library/paperText";
-import { libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
+import { learnFileRoute, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { cx } from "../ui/cx";
+import { useEffect, useRef, type DragEvent, type FormEvent } from "react";
 
 function sortPackFiles(items: LibraryItem[]) {
   return [...items].sort((a, b) => {
@@ -55,6 +55,11 @@ export function NotesPage({
         : undefined;
   const classItems = collection ? api.library.filter((item) => item.collectionId === collection.id) : [];
   const related = file && !file.collectionId ? relatedForLibraryItem(file, api.modules) : [];
+
+  const fileId = file?.id;
+  useEffect(() => {
+    if (fileId) void api.remember(`library:${fileId}`);
+  }, [api.remember, fileId]);
 
   const typedName = () => nameRef.current?.value ?? "";
 
@@ -120,8 +125,11 @@ export function NotesPage({
         </aside>
         <div className="notes-stage">
           <div className="step-nav">
+            <button type="button" className="solid" onClick={() => navigate(learnFileRoute(file.id))}>
+              Learn this file
+            </button>
             {api.recall.some((card) => card.noteId === file.id) ? (
-              <button type="button" className="solid" onClick={() => navigate(recallNoteRoute(file.id))}>
+              <button type="button" className="ghost" onClick={() => navigate(recallNoteRoute(file.id))}>
                 Study this deck
               </button>
             ) : (
@@ -131,18 +139,6 @@ export function NotesPage({
                   : "Add ## headings or longer paragraphs and we will cut a flip deck from this dump."}
               </p>
             )}
-            {related[0] ? (
-              <button
-                type="button"
-                className="ghost"
-                onClick={() => {
-                  void api.touchLesson(related[0]!, "teach");
-                  navigate({ name: "learn", id: related[0]!.id, step: "teach" });
-                }}
-              >
-                Open in Learn
-              </button>
-            ) : null}
             <button
               type="button"
               className="ghost"

@@ -2,11 +2,19 @@ import { describe, expect, it } from "vitest";
 import { parseHash, toHash } from "../app/routes";
 import { loadCatalog } from "../catalog/loadCatalog";
 import { lessonFromModule } from "../lesson/fromModule";
+import { lessonFromNote } from "../lesson/fromNote";
 import { LESSON_OVERLAYS } from "../lesson/overlays";
 
 describe("hash routes", () => {
   it("parses lesson steps and round-trips", () => {
     expect(parseHash("")).toEqual({ name: "home" });
+    expect(parseHash("#/learn/file/note-9/teach")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "teach",
+      kind: "file",
+    });
+    expect(toHash({ name: "learn", id: "note-9", step: "teach", kind: "file" })).toBe("#/learn/file/note-9/teach");
     expect(parseHash("#/learn")).toEqual({ name: "shelf" });
     expect(parseHash("#/learn/stats-lrt/practice")).toEqual({
       name: "learn",
@@ -14,6 +22,13 @@ describe("hash routes", () => {
       step: "practice",
     });
     expect(parseHash("#/learn/stats-lrt")).toEqual({ name: "learn", id: "stats-lrt", step: "teach" });
+    expect(parseHash("#/learn/file/note-9/teach")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "teach",
+      kind: "file",
+    });
+    expect(toHash({ name: "learn", id: "note-9", step: "teach", kind: "file" })).toBe("#/learn/file/note-9/teach");
     expect(toHash({ name: "notes", id: "abc" })).toBe("#/notes/abc");
     expect(toHash({ name: "desk" })).toBe("#/sources/decks");
     expect(parseHash("#/desk")).toEqual({ name: "desk" });
@@ -55,5 +70,21 @@ describe("lessons", () => {
         expect(lesson.overlay.analogy.body).toBe(LESSON_OVERLAYS[module.id].analogy.body);
       }
     }
+  });
+
+  it("builds a lesson from a class file instead of a catalogue plate", () => {
+    const lesson = lessonFromNote({
+      id: "note-dfa",
+      kind: "note",
+      name: "last-class.md",
+      mime: "text/markdown",
+      size: 40,
+      text: "# Last class\n\n## DFA 5-tuple\n\nA DFA is the 5-tuple (Q, Sigma, delta, q0, F). Accept states may be empty or many.\n",
+      createdAt: 1,
+      collectionId: "class-1",
+    });
+    expect(lesson.title).toMatch(/last class|dfa/i);
+    expect(lesson.steps.some((step) => /dfa/i.test(step.title) || /5-tuple/i.test(step.body))).toBe(true);
+    expect(lesson.plain.join(" ")).not.toMatch(/tnseq|transit|ioerger/i);
   });
 });
