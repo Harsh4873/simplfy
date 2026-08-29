@@ -50,6 +50,7 @@ describe("lab brief pipeline", () => {
   it("files the golden paste as a readable brief on the canvas", async () => {
     const user = userEvent.setup();
     render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^notes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste a paragraph/i);
@@ -69,13 +70,12 @@ describe("lab brief pipeline", () => {
     expect(document.querySelector(".raw-dump pre")?.textContent).toContain("/Users/harshdave");
   });
 
-  it("does not paint the reading stage in the old cream tokens", () => {
+  it("defines light and dark themes without the old cream chassis tokens", () => {
     const css = readFileSync(resolve(process.cwd(), "src/styles/global.css"), "utf8");
-    expect(css).not.toMatch(/--well:\s*#efeee9/i);
-    expect(css).not.toMatch(/--plate:\s*#fafaf7/i);
-    expect(css).not.toMatch(/\.stage\s*\{[^}]*color-scheme:\s*light/s);
-    expect(css).toMatch(/background:\s*var\(--chassis\)/);
+    expect(css).toMatch(/\[data-theme="light"\]/);
+    expect(css).toMatch(/\[data-theme="dark"\]/);
     expect(css).toMatch(/\.stage\s*\{/);
+    expect(css).toMatch(/background:\s*var\(--bg\)/);
     for (const token of CREAM_STAGE) {
       expect(css).not.toContain(`--well: ${token}`);
       expect(css).not.toContain(`--plate: ${token}`);

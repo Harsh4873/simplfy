@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { Studio } from "../studio/Studio";
 
 describe("studio shell", () => {
-  it("opens a canvas for likelihood ratio test and rifampin", async () => {
+  it("opens a guided lesson for likelihood ratio test and rifampin", async () => {
     const user = userEvent.setup();
     render(<Studio />);
     const search = await screen.findByLabelText(/name a term/i);
@@ -13,8 +13,9 @@ describe("studio shell", () => {
     await user.keyboard("{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /likelihood ratio test/i })).toBeInTheDocument();
     expect(screen.getByText(/reduced model is a subset of the full parameter space/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /extra toppings on a pizza/i })).toBeInTheDocument();
 
-    await user.click(screen.getByRole("tab", { name: /check/i }));
+    await user.click(screen.getByRole("tab", { name: /practice/i }));
     expect(await screen.findByText(/when is a likelihood ratio test/i)).toBeInTheDocument();
 
     await user.clear(search);
@@ -27,6 +28,7 @@ describe("studio shell", () => {
   it("files a pasted note in the library", async () => {
     const user = userEvent.setup();
     render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^notes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste a paragraph/i);
@@ -39,6 +41,7 @@ describe("studio shell", () => {
   it("keeps a filed note after the studio remounts", async () => {
     const user = userEvent.setup();
     const view = render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^notes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     await user.type(screen.getByLabelText(/paste a paragraph/i), "Heteroresistance is not a pipeline filter.");
@@ -46,9 +49,19 @@ describe("studio shell", () => {
     expect(await screen.findByRole("heading", { level: 1, name: /heteroresistance is not a pipeline filter/i })).toBeInTheDocument();
     view.unmount();
     render(<Studio />);
-    await waitFor(() => expect(screen.getByRole("button", { name: /file in the studio/i })).toBeEnabled());
     expect(
       await screen.findByRole("heading", { level: 1, name: /heteroresistance is not a pipeline filter/i }),
     ).toBeInTheDocument();
+  });
+
+  it("switches between light and dark themes", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    const toggle = await screen.findByRole("button", { name: /switch to (light|dark) theme/i });
+    const start = document.documentElement.dataset.theme;
+    await user.click(toggle);
+    expect(document.documentElement.dataset.theme).not.toBe(start);
+    await user.click(toggle);
+    expect(document.documentElement.dataset.theme).toBe(start);
   });
 });
