@@ -1,10 +1,10 @@
 import type { Route } from "../app/routes";
-import { isLessonStep, libraryNoteRoute } from "../app/routes";
+import { isLessonStep, libraryNoteRoute, recallNoteRoute } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { StudioCanvas } from "../library/db";
 import { cx } from "../ui/cx";
 
-function openCanvas(canvas: StudioCanvas, navigate: (route: Route) => void) {
+function openCanvas(canvas: StudioCanvas, api: StudioApi, navigate: (route: Route) => void) {
   if (canvas.kind === "class" && canvas.collectionId) {
     navigate({ name: "notes", classId: canvas.collectionId });
     return;
@@ -15,6 +15,11 @@ function openCanvas(canvas: StudioCanvas, navigate: (route: Route) => void) {
     return;
   }
   if (canvas.kind === "note" && canvas.noteId) {
+    const cards = api.recall.filter((card) => card.noteId === canvas.noteId);
+    if (cards.length) {
+      navigate(recallNoteRoute(canvas.noteId));
+      return;
+    }
     navigate(libraryNoteRoute(canvas.noteId, canvas.collectionId));
     return;
   }
@@ -35,8 +40,13 @@ export function DeskPage({
     const pinned = api.studios.filter((row) => row.pinned);
     const buckets = new Map<string, StudioCanvas[]>();
     const loose: StudioCanvas[] = [];
+    const decks: StudioCanvas[] = [];
     for (const canvas of api.studios) {
       if (canvas.pinned || canvas.kind === "class") continue;
+      if (canvas.kind === "note" && !canvas.collectionId) {
+        decks.push(canvas);
+        continue;
+      }
       if (canvas.collectionId) {
         const list = buckets.get(canvas.collectionId) ?? [];
         list.push(canvas);
@@ -53,28 +63,44 @@ export function DeskPage({
         classes.push({ collection: { id, name: "Class", createdAt: 0, updatedAt: 0 }, canvases });
       }
     }
-    return { classes, loose, pinned };
+    return { classes, loose, pinned, decks };
   })();
 
   return (
     <div className="page">
       <header className="page-head">
         <p className="kicker">This device</p>
-        <h1>Desk</h1>
+        <h1>Decks</h1>
         <p className="lede">
-          Canvases are grouped by class — the folder you dropped lecture notes into. Pinned cards
-          stay on top. Nothing syncs off this machine.
+          Click a dump to study it — headings and bold names become flip cards. Pin keeps it on
+          top. Classes group a folder pack. Nothing syncs off this machine.
         </p>
       </header>
       {api.studios.length === 0 ? (
-        <p className="lede">Desk is empty. Drop a class folder under Classes, or start a guided lesson.</p>
+        <p className="lede">No decks yet. Paste markdown under Classes, or start a guided lesson.</p>
       ) : null}
       {grouped.pinned.length ? (
         <section>
           <h2 className="section-title">Pinned</h2>
           <ul className="desk-grid">
             {grouped.pinned.map((canvas) => (
-              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} className={collectionName(canvas.collectionId)} />
+              <CanvasCard
+                key={canvas.id}
+                canvas={canvas}
+                api={api}
+                navigate={navigate}
+                className={collectionName(canvas.collectionId)}
+              />
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {grouped.decks.length ? (
+        <section>
+          <h2 className="section-title">Pasted dumps</h2>
+          <ul className="desk-grid">
+            {grouped.decks.map((canvas) => (
+              <CanvasCard key={canvas.id} canvas={canvas} api={api} navigate={navigate} />
             ))}
           </ul>
         </section>
@@ -118,11 +144,20 @@ function CanvasCard({
   navigate: (route: Route) => void;
   className?: string;
 }) {
+  const noteCards = canvas.noteId ? api.recall.filter((card) => card.noteId === canvas.noteId).length : 0;
   const kindLabel =
-    canvas.kind === "lesson" ? "Lesson" : canvas.kind === "note" ? "Note" : canvas.kind === "class" ? "Class" : "Papers";
+    canvas.kind === "lesson"
+      ? "Lesson"
+      : canvas.kind === "note"
+        ? noteCards
+          ? `Deck · ${noteCards} card${noteCards === 1 ? "" : "s"}`
+          : "Note"
+        : canvas.kind === "class"
+          ? "Class"
+          : "Papers";
   return (
     <li className={cx("desk-card", canvas.pinned && "is-pinned")}>
-      <button type="button" className="desk-open" onClick={() => openCanvas(canvas, navigate)}>
+      <button type="button" className="desk-open" onClick={() => openCanvas(canvas, api, navigate)}>
         <span className="kicker">
           {kindLabel}
           {canvas.step ? ` · ${canvas.step}` : ""}
@@ -132,6 +167,20 @@ function CanvasCard({
         <span className="muted">{new Date(canvas.updatedAt).toLocaleString()}</span>
       </button>
       <div className="step-nav">
+        {canvas.kind === "note" && canvas.noteId && noteCards ? (
+          <button type="button" className="solid" onClick={() => navigate(recallNoteRoute(canvas.noteId!))}>
+            Study
+          </button>
+        ) : null}
+        {canvas.kind === "note" && canvas.noteId ? (
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => navigate(libraryNoteRoute(canvas.noteId!, canvas.collectionId))}
+          >
+            Open source
+          </button>
+        ) : null}
         <button type="button" className="ghost" onClick={() => void api.pinStudio(canvas.id, !canvas.pinned)}>
           {canvas.pinned ? "Unpin" : "Pin"}
         </button>

@@ -31,7 +31,7 @@ describe("studio shell", () => {
     await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
-    const area = screen.getByLabelText(/paste a paragraph/i);
+    const area = screen.getByLabelText(/paste markdown/i);
     await user.type(area, "Caseum is hypoxic. PZA cares about pH.");
     await user.click(submit);
     expect(await screen.findByText(/note kept in the local library/i)).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe("studio shell", () => {
     await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
-    await user.type(screen.getByLabelText(/paste a paragraph/i), "Heteroresistance is not a pipeline filter.");
+    await user.type(screen.getByLabelText(/paste markdown/i), "Heteroresistance is not a pipeline filter.");
     await user.click(submit);
     expect(await screen.findByRole("heading", { level: 1, name: /heteroresistance is not a pipeline filter/i })).toBeInTheDocument();
     view.unmount();
@@ -64,8 +64,8 @@ describe("studio shell", () => {
     expect(await screen.findByRole("heading", { level: 1, name: /tnseq and transit/i })).toBeInTheDocument();
     await user.click(screen.getByRole("tab", { name: /papers/i }));
     expect(await screen.findByText(/ioerger lab/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^desk$/i }));
-    expect(await screen.findByRole("heading", { level: 1, name: /desk/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
     expect(await screen.findByText(/tnseq and transit/i)).toBeInTheDocument();
   });
 
@@ -81,7 +81,7 @@ describe("studio shell", () => {
     expect(screen.getByText(/griffin/i)).toBeInTheDocument();
     expect(screen.queryByText(/^people he writes with$/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/level 1/i)).not.toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
     expect(await screen.findByText(/lookup · prpd/i)).toBeInTheDocument();
   });
 
@@ -108,7 +108,7 @@ describe("studio shell", () => {
     Object.defineProperty(b, "webkitRelativePath", { value: "TB651/week1/rpob.md" });
     await user.upload(input, [a, b]);
     expect(await screen.findByRole("heading", { level: 1, name: /tb methods/i })).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
     expect(await screen.findByRole("button", { name: /tb methods/i })).toBeInTheDocument();
   });
 
@@ -204,13 +204,37 @@ describe("studio shell", () => {
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     await user.type(
-      screen.getByLabelText(/paste a paragraph into this class/i),
+      screen.getByLabelText(/paste markdown into this class/i),
       "Himar1 TnSeq with TRANSIT. Essentiality calls on cholesterol, prpD.",
     );
     await user.click(submit);
     expect(await screen.findByText(/note kept in the local library/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
     expect(await screen.findByRole("button", { name: /host immunology/i })).toBeInTheDocument();
+  });
+
+  it("turns pasted markdown into a studyable deck on Decks", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    const submit = await screen.findByRole("button", { name: /file in the studio/i });
+    await waitFor(() => expect(submit).toBeEnabled());
+    const area = screen.getByLabelText(/paste markdown/i);
+    await user.click(area);
+    await user.paste(`## Picture
+
+Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope and wall genes.
+
+**rho** — S times Rif is number one because HN878 is already on the floor at R0, so there is nothing left to lose.
+`);
+    await user.click(submit);
+    expect(await screen.findByRole("button", { name: /study this deck/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /study this deck/i }));
+    expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
+    expect(screen.getAllByText(/picture|rho/i).length).toBeGreaterThan(0);
+    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
   });
 
   it("switches between light and dark themes", async () => {

@@ -8,7 +8,7 @@ export type Route =
   | { name: "learn"; id: string; step: LessonStep }
   | { name: "shelf"; id?: string }
   | { name: "papers"; q?: string }
-  | { name: "recall"; classId?: string }
+  | { name: "recall"; classId?: string; noteId?: string }
   | { name: "notes"; id?: string; classId?: string };
 
 export const STEP_META: Record<LessonStep, { n: number; label: string; hint: string }> = {
@@ -34,9 +34,10 @@ export function parseHash(hash: string): Route {
     const q = parts.slice(1).map((part) => decodeURIComponent(part)).join("/").trim();
     return { name: "papers", q: q || undefined };
   }
-  if (head === "desk") return { name: "desk" };
+  if (head === "desk" || head === "decks") return { name: "desk" };
   if (head === "recall") {
     if (id === "c" && step) return { name: "recall", classId: decodeURIComponent(step) };
+    if (id === "n" && step) return { name: "recall", noteId: decodeURIComponent(step) };
     return { name: "recall" };
   }
   if (head === "notes" || head === "classes") {
@@ -62,6 +63,7 @@ export function toHash(route: Route): string {
     case "papers":
       return route.q ? `#/papers/${encodeURIComponent(route.q)}` : "#/papers";
     case "recall":
+      if (route.noteId) return `#/recall/n/${encodeURIComponent(route.noteId)}`;
       return route.classId ? `#/recall/c/${encodeURIComponent(route.classId)}` : "#/recall";
     case "notes":
       if (route.classId) {
@@ -79,4 +81,8 @@ export function isLessonStep(value: string): value is LessonStep {
 
 export function libraryNoteRoute(id: string, collectionId?: string): Route {
   return collectionId ? { name: "notes", classId: collectionId, id } : { name: "notes", id };
+}
+
+export function recallNoteRoute(noteId: string): Route {
+  return { name: "recall", noteId };
 }

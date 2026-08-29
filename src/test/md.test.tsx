@@ -53,7 +53,7 @@ describe("lab brief pipeline", () => {
     await user.click(screen.getByRole("link", { name: /^classes$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
-    const area = screen.getByLabelText(/paste a paragraph/i);
+    const area = screen.getByLabelText(/paste markdown/i);
     await user.click(area);
     await user.paste(GOLDEN_LRT_NOTE);
     await user.click(submit);

@@ -50,4 +50,27 @@ Track the prefix of 001; after accept, stay forever.
     expect(cards.some((card) => /Old topic/i.test(card.prompt))).toBe(false);
     expect(cards.some((card) => /Current topic/i.test(card.prompt))).toBe(true);
   });
+
+  it("cuts cards from a lead paragraph and bold names", () => {
+    const cards = cardsFromMarkdown(
+      `rho is our S times Rif number one because HN878 is already on the floor at R0. Xu 2017 never labeled that geometry.
+
+## Picture
+
+Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope and wall genes.
+
+**rho** — S times Rif is number one because HN878 is already on the floor at R0, so there is nothing left to lose.
+
+**Rv3717** — rif rank 27. H37Rv liquid drops 41 to 10 to 7; HN878 starts higher and still drops.
+`,
+      "note-1",
+      "paste.md",
+    );
+    const prompts = cards.map((card) => card.prompt);
+    expect(prompts.some((prompt) => /rho is our S times Rif/i.test(prompt))).toBe(true);
+    expect(prompts.some((prompt) => /^rho$/i.test(prompt))).toBe(true);
+    expect(prompts.some((prompt) => /Picture/i.test(prompt))).toBe(true);
+    expect(prompts.some((prompt) => /Rv3717/i.test(prompt))).toBe(true);
+    expect(cards.every((card) => card.noteId === "note-1" && card.answer)).toBe(true);
+  });
 });

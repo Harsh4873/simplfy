@@ -32,7 +32,8 @@ export function HomePage({
           Pick a topic. The lesson walks you the way a good study buddy does: analogy first, a demo,
           two or three problems, then “say it back in your own words.” The dense notes stay on the
           shelf until you ask for them. Search is always up top — press <kbd>/</kbd>. Or dump a
-          whole lecture folder under Classes and we spin studios from that pile.
+          whole lecture folder under Classes. Paste a markdown dump and it becomes its own flip
+          deck — study it from Decks, not by pinning a card.
         </p>
         <div className="hero-stats">
           <span>
@@ -74,7 +75,7 @@ export function HomePage({
           ) : null}
           {api.studios.length ? (
             <button type="button" className="ghost" onClick={() => navigate({ name: "desk" })}>
-              Open desk · {api.studios.length} canvas{api.studios.length === 1 ? "" : "es"}
+              Open decks · {api.studios.length} canvas{api.studios.length === 1 ? "" : "es"}
             </button>
           ) : null}
         </section>

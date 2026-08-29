@@ -22,12 +22,12 @@ Eight flagship topics have a full tutor script (LRT, likelihood, foundations, Ba
 Pages:
 
 - **Home** — how a session works, continue, guided lessons, stats/TB paths
-- **Desk** — canvases from this device, grouped by class
+- **Decks** — canvases from this device; click a pasted dump to **Study** its flip cards
 - **Learn** — the six-step lesson
 - **Shelf** — the encyclopedia of every bundled plate
 - **Papers** — gene and method lookup, Ioerger first when he wrote on it
-- **Recall** — Quizlet-style flip deck, including a deck per class
-- **Classes** — drop an update folder; rename the class; the pack is the source of truth and the recall deck is cut from those notes
+- **Recall** — Quizlet-style flip deck, including a deck per class and per pasted note
+- **Classes** — drop an update folder; paste markdown to make a deck; rename the class
 
 Light and dark themes. The toggle is in the header; the choice is stored in `localStorage`.
 

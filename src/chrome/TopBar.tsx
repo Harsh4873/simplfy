@@ -50,7 +50,7 @@ export function TopBar({
 
   const nav: { route: Route; label: string; match: boolean }[] = [
     { route: { name: "home" }, label: "Home", match: route.name === "home" },
-    { route: { name: "desk" }, label: "Desk", match: route.name === "desk" },
+    { route: { name: "desk" }, label: "Decks", match: route.name === "desk" },
     {
       route: api.continueModule
         ? { name: "learn", id: api.continueModule.id, step: "teach" }
@@ -98,7 +98,7 @@ export function TopBar({
             }}
           >
             {item.label}
-            {item.label === "Desk" && api.studios.length ? (
+            {item.label === "Decks" && api.studios.length ? (
               <span className="badge quiet" aria-hidden="true">
                 {api.studios.length}
               </span>

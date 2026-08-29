@@ -36,9 +36,10 @@ import {
   stripGenericRoot,
   titleFromReadme,
 } from "../library/ingest";
-import { seedClassStudios } from "../library/spawn";
+import { seedClassStudios, seedNoteDeck } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
+import { titleFromMarkdown } from "../library/noteCards";
 import { recallFromMiss } from "../quiz/grade";
 
 export function useStudio() {
@@ -254,6 +255,53 @@ export function useStudio() {
         const truncated = files.length > batch.length;
         const replace = opts?.replace ?? looksLikeFolderDrop(batch);
         const typed = opts?.collectionName?.trim() ?? "";
+        const folderDrop = replace || looksLikeFolderDrop(batch);
+        const standalone = !opts?.collectionId && !typed && !folderDrop;
+
+        if (standalone) {
+          const filed: LibraryItem[] = [];
+          let noteCards = 0;
+          for (const file of batch) {
+            if (file.size > MAX_FILE_BYTES) {
+              setNotice(`${file.name} exceeds the 12 MB studio limit.`);
+              continue;
+            }
+            const rel = stripGenericRoot(relPathOf(file));
+            const parsed = await parseDroppedFile(file);
+            const mime = mimeForDroppedFile(file);
+            const base = rel.split("/").pop() ?? file.name;
+            const name = parsed.text.trim() ? titleFromMarkdown(parsed.text) : base;
+            const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
+            const item: LibraryItem = {
+              id: crypto.randomUUID(),
+              kind: "file",
+              name,
+              mime,
+              size: file.size,
+              text: parsed.text,
+              parseNote: parsed.parseNote,
+              createdAt: Date.now(),
+              blob: file,
+              brief: composed ? { ...composed, title: name } : undefined,
+              relPath: rel,
+            };
+            await putLibraryItem(db, item);
+            noteCards += await seedNoteDeck(db, item);
+            filed.push(item);
+          }
+          await refresh(db);
+          const last = filed[filed.length - 1] ?? null;
+          if (last) await remember(`library:${last.id}`);
+          const bits = [
+            `Filed ${filed.length} deck${filed.length === 1 ? "" : "s"}`,
+          ];
+          if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"}`);
+          bits.push("Study them under Decks");
+          if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
+          setNotice(`${bits.join(". ")}.`);
+          return last;
+        }
+
         const inferred =
           typed ||
           (opts?.collectionId && !replace ? "" : await inferCollectionNameFromFiles(batch, ""));
@@ -346,30 +394,38 @@ export function useStudio() {
     async (raw: string, collectionId?: string) => {
       if (!db || !raw.trim()) return null;
       const body = raw.trim();
-      const brief = composeBrief(body, loaded.modules);
-      const folder = await ensureCollection(collectionId ? "" : "Inbox", collectionId);
-      if (!folder) return null;
+      const name = titleFromMarkdown(body);
+      const composed = composeBrief(body, loaded.modules);
+      const brief = { ...composed, title: name };
+      const folder = collectionId ? await ensureCollection("", collectionId, true) : null;
+      if (collectionId && !folder) return null;
       const item: LibraryItem = {
         id: crypto.randomUUID(),
         kind: "note",
-        name: brief.title,
+        name,
         mime: "text/markdown",
         size: body.length,
         text: body,
         parseNote: "Pasted note, stored only in this browser.",
         createdAt: Date.now(),
         brief,
-        collectionId: folder.id,
+        collectionId: folder?.id,
       };
       await putLibraryItem(db, item);
       await remember(`library:${item.id}`);
-      const classItems = [...library.filter((row) => row.collectionId === folder.id && row.id !== item.id), item];
-      await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+      const noteCards = await seedNoteDeck(db, item);
+      if (folder) {
+        const stored = await listLibrary(db);
+        const classItems = stored.filter((row) => row.collectionId === folder.id);
+        await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+      }
       await refresh(db);
-      setNotice(`Note kept in the local library (${folder.name}).`);
+      const bits = [`Note kept in the local library${folder ? ` (${folder.name})` : ""}`];
+      if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"} — Study this deck under Decks`);
+      setNotice(`${bits.join(". ")}.`);
       return item;
     },
-    [byId, db, ensureCollection, library, loaded.modules, refresh, remember],
+    [byId, db, ensureCollection, loaded.modules, refresh, remember],
   );
 
   const removeLibrary = useCallback(

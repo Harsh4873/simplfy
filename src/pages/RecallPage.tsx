@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { lessonFromModule } from "../lesson/fromModule";
-import type { Route } from "../app/routes";
+import { libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { RecallCard } from "../library/db";
 import { cx } from "../ui/cx";
@@ -28,32 +28,47 @@ function cardAnswer(api: StudioApi, card: RecallCard): { title: string; answer: 
 export function RecallPage({
   api,
   classId,
+  noteId,
   navigate,
 }: {
   api: StudioApi;
   classId?: string;
+  noteId?: string;
   navigate: (route: Route) => void;
 }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
-  const cards = classId ? api.recall.filter((card) => card.collectionId === classId) : api.recall;
+  const cards = noteId
+    ? api.recall.filter((card) => card.noteId === noteId)
+    : classId
+      ? api.recall.filter((card) => card.collectionId === classId)
+      : api.recall;
   const card = cards[Math.min(index, Math.max(cards.length - 1, 0))];
   const currentClass = classId ? api.collections.find((row) => row.id === classId) : undefined;
+  const currentNote = noteId ? api.library.find((item) => item.id === noteId) : undefined;
+  const noteDecks = api.library.filter((item) => api.recall.some((card) => card.noteId === item.id));
 
   const face = useMemo(() => (card ? cardAnswer(api, card) : null), [api, card]);
+  const scopeLabel = currentNote?.name ?? currentClass?.name;
 
   if (!card || !face) {
     return (
       <div className="page">
-        <p className="kicker">Quizlet-style deck{currentClass ? ` · ${currentClass.name}` : ""}</p>
-        <h1>{currentClass ? `${currentClass.name} is empty` : "Deck empty"}</h1>
+        <p className="kicker">Quizlet-style deck{scopeLabel ? ` · ${scopeLabel}` : ""}</p>
+        <h1>{scopeLabel ? `${scopeLabel} is empty` : "Deck empty"}</h1>
         <p className="lede">
-          {currentClass
-            ? "Drop an update folder into this class. We cut recall cards from those notes. Misses from catalogue practice also land here."
-            : "Misses from practice, cards cut from a class pack, and anything you parked from “say it back” land here."}
+          {currentNote
+            ? "This dump needs headings or longer paragraphs before we can cut flip cards. Open the source and add ## sections."
+            : currentClass
+              ? "Drop an update folder into this class, or paste markdown. We cut recall cards from those notes."
+              : "Paste a markdown dump under Classes, drop a class pack, or miss a catalogue check. Then flip here."}
         </p>
-        <button type="button" className="solid" onClick={() => navigate({ name: "home" })}>
-          Pick a lesson
+        <button
+          type="button"
+          className="solid"
+          onClick={() => navigate(currentNote ? libraryNoteRoute(currentNote.id, currentNote.collectionId) : { name: "notes" })}
+        >
+          {currentNote ? "Open source" : "Paste a dump"}
         </button>
       </div>
     );
@@ -67,23 +82,33 @@ export function RecallPage({
   return (
     <div className="page recall-page">
       <p className="kicker">
-        Recall{currentClass ? ` · ${currentClass.name}` : ""} · {Math.min(index, cards.length - 1) + 1} / {cards.length}
+        Recall{scopeLabel ? ` · ${scopeLabel}` : ""} · {Math.min(index, cards.length - 1) + 1} / {cards.length}
       </p>
       <h1>Flip until it sticks</h1>
-      {api.collections.length ? (
-        <div className="chips" role="tablist" aria-label="Recall by class">
+      {api.collections.length || noteDecks.length ? (
+        <div className="chips" role="tablist" aria-label="Recall by deck">
           <button
             type="button"
-            className={cx("chip", !classId && "is-active")}
+            className={cx("chip", !classId && !noteId && "is-active")}
             onClick={() => navigate({ name: "recall" })}
           >
             All
           </button>
+          {noteDecks.slice(0, 8).map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={cx("chip", noteId === item.id && "is-active")}
+              onClick={() => navigate(recallNoteRoute(item.id))}
+            >
+              {item.name}
+            </button>
+          ))}
           {api.collections.map((row) => (
             <button
               key={row.id}
               type="button"
-              className={cx("chip", classId === row.id && "is-active")}
+              className={cx("chip", classId === row.id && !noteId && "is-active")}
               onClick={() => navigate({ name: "recall", classId: row.id })}
             >
               {row.name}
@@ -144,14 +169,14 @@ export function RecallPage({
           onClick={() => {
             if (card.noteId) {
               const note = api.library.find((item) => item.id === card.noteId);
-              navigate(note?.collectionId ? { name: "notes", classId: note.collectionId, id: note.id } : { name: "notes", id: card.noteId });
+              navigate(note ? libraryNoteRoute(note.id, note.collectionId) : { name: "notes", id: card.noteId });
               return;
             }
             const module = api.byId.get(card.moduleId);
             if (module) navigate({ name: "learn", id: module.id, step: "teach" });
           }}
         >
-          {card.noteId ? "Open note" : "Open lesson"}
+          {card.noteId ? "Open source" : "Open lesson"}
         </button>
       </div>
     </div>

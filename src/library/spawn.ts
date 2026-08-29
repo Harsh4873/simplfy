@@ -12,9 +12,63 @@ import {
   type LibraryItem,
 } from "./db";
 import { spawnPlan, type SpawnPlan } from "./ingest";
-import { cardsFromClassNotes } from "./noteCards";
+import { cardsFromClassNotes, cardsFromMarkdown } from "./noteCards";
 
 export type SeedResult = SpawnPlan & { noteCards: number };
+
+export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<number> {
+  const now = Date.now();
+  const existing = await getStudio(db, `note:${item.id}`);
+  await putStudio(db, {
+    id: `note:${item.id}`,
+    kind: "note",
+    title: item.name,
+    noteId: item.id,
+    collectionId: item.collectionId,
+    pinned: existing?.pinned ?? false,
+    createdAt: existing?.createdAt ?? now,
+    updatedAt: now,
+  });
+
+  const built = cardsFromMarkdown(item.text, item.id, item.name);
+  const keepKeys = new Set(built.map((card) => `${card.moduleId}:${card.checkId}`));
+  for (const card of await listRecall(db)) {
+    if (card.noteId !== item.id) continue;
+    if (card.misses > 0) continue;
+    const key = `${card.moduleId}:${card.checkId}`;
+    if (!keepKeys.has(key)) await deleteRecallCard(db, card.id);
+  }
+
+  const recallNow = await listRecall(db);
+  let stamp = now;
+  for (const card of built) {
+    const already = recallNow.find(
+      (row) => row.moduleId === card.moduleId && row.checkId === card.checkId && row.noteId === item.id,
+    );
+    if (already) {
+      if (already.misses === 0) {
+        await putRecallCard(db, {
+          ...already,
+          prompt: card.prompt,
+          answer: card.answer,
+          noteId: item.id,
+          collectionId: item.collectionId,
+        });
+      }
+      continue;
+    }
+    await putRecallCard(db, {
+      id: crypto.randomUUID(),
+      ...card,
+      createdAt: now,
+      misses: 0,
+      lastMissedAt: stamp,
+      collectionId: item.collectionId,
+    });
+    stamp -= 1;
+  }
+  return built.length;
+}
 
 export async function seedClassStudios(
   db: IDBDatabase,

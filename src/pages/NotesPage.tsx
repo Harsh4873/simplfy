@@ -3,7 +3,7 @@ import { FieldNoteDoc } from "../studio/FieldNoteDoc";
 import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
-import { isLessonStep, libraryNoteRoute, type Route } from "../app/routes";
+import { isLessonStep, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { cx } from "../ui/cx";
@@ -109,6 +109,15 @@ export function NotesPage({
           <p className="muted">{file.relPath || file.name}</p>
         </aside>
         <div className="notes-stage">
+          <div className="step-nav">
+            {api.recall.some((card) => card.noteId === file.id) ? (
+              <button type="button" className="solid" onClick={() => navigate(recallNoteRoute(file.id))}>
+                Study this deck
+              </button>
+            ) : (
+              <p className="hint">Add ## headings or longer paragraphs and we will cut a flip deck from this dump.</p>
+            )}
+          </div>
           <FieldNoteDoc
             item={file}
             modules={api.modules}
@@ -210,8 +219,8 @@ export function NotesPage({
             />
           </div>
           <form className="paste" onSubmit={(event) => void onPaste(event)}>
-            <label htmlFor="note">Paste a paragraph into this class</label>
-            <textarea id="note" name="note" rows={4} placeholder="A confusing paragraph from lecture…" />
+            <label htmlFor="note">Paste markdown into this class</label>
+            <textarea id="note" name="note" rows={4} placeholder="A confusing paragraph, or a whole slide dump…" />
             <button type="submit" className="solid" disabled={!api.ready}>
               File in the studio
             </button>
@@ -266,7 +275,7 @@ export function NotesPage({
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
-              Open desk
+              Open decks
             </button>
             <button
               type="button"
@@ -458,8 +467,8 @@ export function NotesPage({
           />
         </div>
         <form className="paste" onSubmit={(event) => void onPaste(event)}>
-          <label htmlFor="note">Paste a paragraph into Inbox</label>
-          <textarea id="note" name="note" rows={5} placeholder="Methods, a confusing paragraph, a gene list…" />
+          <label htmlFor="note">Paste markdown to make a deck</label>
+          <textarea id="note" name="note" rows={5} placeholder="Headings and **bold names** become flip cards…" />
           <button type="submit" className="solid" disabled={!api.ready}>
             File in the studio
           </button>
