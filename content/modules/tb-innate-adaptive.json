@@ -1,0 +1,147 @@
+{
+  "id": "tb-innate-adaptive",
+  "title": "Innate and adaptive immunity meet M. tuberculosis",
+  "dek": "Innate recognition and macrophage killing happen in hours. Adaptive Th1 help takes days to weeks. Mtb is adapted to live in the overlap. HIV removes the adaptive half of that sentence.",
+  "domain": "tb",
+  "aliases": [
+    "innate versus adaptive TB",
+    "innate immunity tuberculosis",
+    "adaptive immunity TB",
+    "macrophage T cell cooperation"
+  ],
+  "tags": [
+    "immunology",
+    "innate",
+    "adaptive",
+    "macrophage",
+    "Th1"
+  ],
+  "story": [
+    "Innate immunity is the fast, germline-encoded layer: alveolar macrophages and recruited monocytes, neutrophils, complement fragments, pattern-recognition receptors (TLR2, NOD2, MINCLE and others), and NK cells. It can kill some bacilli, start cytokine programmes (including IL-12 and TNF), and draw in more cells. It does not, by itself, write long-lived antigen-specific memory.",
+    "Adaptive immunity is the slow, clonally selected layer: CD4 T cells polarised toward a Th1 IFN-γ programme, CD8 T cells, and B-cell responses whose role in human TB is still not a WRD. IFN-γ and TNF returning to the macrophage are how a granuloma becomes a structured lesion rather than an abscess of neutrophils alone. Mendelian defects in the IL-12/IFN-γ axis are the human knockout proof; HIV is the common acquired phenocopy.",
+    "Mtb is not a toxin producer waiting to be opsonised in blood. It is an intracellular organism that arrests phagosome maturation, accesses the cytosol via ESX-1, and persists in necrotic debris. Vaccine and TPT conversations sit on this two-layer picture: BCG and “trained immunity” argue about the innate layer; IGRA conversion argues about the adaptive layer. Neither test is a CFU."
+  ],
+  "deepTitle": "Why the split still earns a plate",
+  "deep": [
+    "Timing: innate programmes start at first contact. Detectable IFN-γ responses to RD1 antigens take weeks. A negative IGRA in the first fortnight after exposure is not a sterilising-innate certificate.",
+    "Neutrophils: abundant in progressive human disease and in some mouse models; they can be host-protective or tissue-destructive depending on the lesion. They are innate. They are not a reason to skip CD4 counts in HIV.",
+    "Antibodies: measurable, sometimes correlated, not a WHO diagnostic for disease. Do not replace sputum NAAT with an IgG.",
+    "Trained innate immunity (BCG, epigenetic monocyte programmes) is a research-layer hypothesis about why BCG can have off-target effects. It does not make BCG a reliable adult pulmonary-TB vaccine (own BCG plates).",
+    "The IFN-γ, Th1, macrophage, and phagosome plates are the named children. This plate is the parent split so searches for “innate vs adaptive TB” do not bounce only to a cytokine glossary."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Two layers, one lesion. Innate cells and receptors first; adaptive CD4/IFN-γ help second; the granuloma is the tissue programme that uses both. HIV subtracts the adaptive layer.",
+    "layers": [
+      { "title": "Innate (hours)", "nodes": ["Mϕ / monocytes", "neutrophils", "TLR/NOD", "NK"] },
+      { "title": "Adaptive (days–weeks)", "nodes": ["CD4 Th1", "IFN-γ", "CD8", "memory"] },
+      { "title": "Shared tissue programme", "nodes": ["granuloma", "TNF", "caseum"] },
+      { "title": "Common failure", "nodes": ["HIV CD4 loss", "anti-TNF", "MSMD"] }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Innate immune system — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Innate_immune_system",
+      "attribution": "Layer naming under CC BY-SA. Mtb-specific meeting point is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Adaptive immune system — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Adaptive_immune_system",
+      "attribution": "Layer naming under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum on Tuberculosis — pathogenesis overlay",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. public-domain pathogenesis framing. Immunology teaching is original.",
+      "license": "U.S. Government work, public domain"
+    }
+  ],
+  "related": [
+    "tb-tlr-nod",
+    "tb-pathogenesis",
+    "tb-phagosome-arrest",
+    "wiki-macrophage",
+    "tb-host-ifng",
+    "wiki-th1-glossary",
+    "tb-tnf-cd4"
+  ],
+  "example": {
+    "title": "IGRA-negative at day 5 is not sterilisation",
+    "setup": "Household contact, smear 3+ index, tested on day 5 with QFT-Plus: negative. A clinician writes “innate immunity cleared it; no TPT.”",
+    "steps": [
+      {
+        "title": "Timing of the adaptive readout",
+        "body": "An IGRA measures an adaptive IFN-γ programme against RD1 antigens. It is often still negative in the first weeks after infection. It is not a macrophage-killing assay."
+      },
+      {
+        "title": "What TPT is for",
+        "body": "Recent close contact with a high-output source is the risk group. TPT is a public-health bet on a small persisting population, not a prize for a negative day-5 IGRA."
+      },
+      {
+        "title": "Re-test and treat by programme rules",
+        "body": "Repeat IGRA/TST at the recommended window, exclude disease, offer TPT. Do not invent an innate-clearance certificate."
+      }
+    ],
+    "takeaway": "Innate is fast and incomplete. Adaptive tests lag. TPT follows exposure, not a day-5 IGRA."
+  },
+  "check": [
+    {
+      "id": "ia-speed",
+      "kind": "conceptual",
+      "prompt": "Which layer is fast (hours) and germline-encoded rather than clonally selected?",
+      "choices": [
+        "Adaptive CD4 memory only",
+        "Innate (macrophages, neutrophils, PRRs, NK)",
+        "Xpert Ultra",
+        "WGS lineage barcode"
+      ],
+      "answer": "Innate (macrophages, neutrophils, PRRs, NK)",
+      "why": "That is the definition of the innate layer in this split.",
+      "whyWrong": {
+        "Adaptive CD4 memory only": "Adaptive is slower and clonal.",
+        "Xpert Ultra": "A NAAT, not an immune layer.",
+        "WGS lineage barcode": "A genome label."
+      }
+    },
+    {
+      "id": "ia-hiv",
+      "kind": "calculation",
+      "prompt": "HIV’s most characteristic hole in this two-layer picture is:",
+      "choices": [
+        "Deletion of TLR2 from the germline of every macrophage",
+        "Loss of CD4 T-cell help (adaptive layer), with innate cells still present but poorly licensed",
+        "Proof that neutrophils do not exist",
+        "Replacement of Mtb by BCG in the lung"
+      ],
+      "answer": "Loss of CD4 T-cell help (adaptive layer), with innate cells still present but poorly licensed",
+      "why": "HIV is the common phenocopy of missing Th1 help. Innate cells remain; the licence is gone.",
+      "whyWrong": {
+        "Deletion of TLR2 from the germline of every macrophage": "HIV does not delete TLR2 from the genome.",
+        "Proof that neutrophils do not exist": "False.",
+        "Replacement of Mtb by BCG in the lung": "False."
+      }
+    },
+    {
+      "id": "ia-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, granuloma/TNF/caseum sit in a shared layer because:",
+      "figureHint": "Third layer, shared tissue programme.",
+      "choices": [
+        "The lesion is built from innate recruitment and adaptive maintenance, not from one layer alone",
+        "Caseum is an antibody titre",
+        "TNF is a NAAT target",
+        "Innate and adaptive are the same word"
+      ],
+      "answer": "The lesion is built from innate recruitment and adaptive maintenance, not from one layer alone",
+      "why": "The plate’s point is the meeting point, not a winner-take-all immunology.",
+      "whyWrong": {
+        "Caseum is an antibody titre": "Caseum is necrotic debris.",
+        "TNF is a NAAT target": "TNF is a cytokine.",
+        "Innate and adaptive are the same word": "The plate exists because they are not."
+      }
+    }
+  ]
+}

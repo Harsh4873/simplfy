@@ -1,0 +1,157 @@
+{
+  "id": "tb-tlr-nod",
+  "title": "Pattern recognition: TLR2, NOD2, and cord-factor lectins",
+  "dek": "Mtb is seen by several innate receptors at once (lipoproteins/LAM via TLR2, muramyl dipeptide via NOD2, TDM via MINCLE). MyD88 and downstream cytokines are the shared trunk. This is not a diagnostic panel.",
+  "domain": "tb",
+  "aliases": [
+    "TLR2 tuberculosis",
+    "NOD2 mycobacteria",
+    "MINCLE TDM",
+    "pattern recognition Mtb",
+    "MyD88 TB"
+  ],
+  "tags": [
+    "innate",
+    "TLR",
+    "NOD2",
+    "LAM",
+    "cord factor"
+  ],
+  "story": [
+    "Macrophages do not recognise “M. tuberculosis” as a species name. They bind molecular patterns: mannose-capped LAM and some lipoproteins through TLR2 (with heterodimer partners), peptidoglycan fragments including muramyl dipeptide through NOD2, and trehalose dimycolate (cord factor) through MINCLE and related C-type lectins. Several receptors fire on one bacillus. Knocking out one in a mouse is not a complete innate-blind animal.",
+    "Adaptor logic: many TLRs use MyD88; NOD2 uses RIP2. Downstream NF-κB and interferon-stimulated programmes produce TNF, IL-12, and chemokines that recruit the adaptive layer. Mendelian MyD88/IRAK4 defects are more often pyogenic-bacteria stories than classic MSMD, which is a reminder that TB control is not a single TLR.",
+    "ManLAM of pathogenic mycobacteria is a quieter TLR agonist than some NTM PILAM stories; that is envelope chemistry (own LAM plate), not a reason to skip immunology. None of these receptors is an Xpert probe."
+  ],
+  "deepTitle": "What to keep, what to leave in the review article",
+  "deep": [
+    "Vitamin D / cathelicidin and autophagy papers sit downstream of some of these receptors. They are research-layer. They do not change HRZE.",
+    "Anti-TNF remains the clinical innate/adaptive hole you actually screen for. TLR SNPs in GWAS are population priors, not individual TPT rules.",
+    "ESX-1 and phagosome rupture change which ligands become cytosolic (NOD2) versus vacuolar. Pathogenesis plates own that geometry.",
+    "Do not order a “TLR panel” to diagnose pulmonary TB."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Three ligand classes onto three receptor names, then a shared cytokine trunk toward IL-12/TNF. The adaptive plate sits off this map; DST does not sit on it at all.",
+    "nodes": [
+      { "id": "lam", "label": "LAM / lipoproteins", "group": "drug", "x": 10, "y": 22, "sub": "envelope" },
+      { "id": "mdp", "label": "MDP / PGN", "group": "drug", "x": 10, "y": 50, "sub": "cytosol/vacuole" },
+      { "id": "tdm", "label": "TDM (cord factor)", "group": "drug", "x": 10, "y": 78 },
+      { "id": "tlr2", "label": "TLR2", "group": "enzyme", "x": 40, "y": 22 },
+      { "id": "nod2", "label": "NOD2", "group": "enzyme", "x": 40, "y": 50 },
+      { "id": "minc", "label": "MINCLE", "group": "enzyme", "x": 40, "y": 78 },
+      { "id": "cyt", "label": "IL-12 / TNF axis", "group": "target", "x": 78, "y": 50, "sub": "to adaptive plate" }
+    ],
+    "edges": [
+      { "from": "lam", "to": "tlr2" },
+      { "from": "mdp", "to": "nod2" },
+      { "from": "tdm", "to": "minc" },
+      { "from": "tlr2", "to": "cyt" },
+      { "from": "nod2", "to": "cyt" },
+      { "from": "minc", "to": "cyt" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Toll-like receptor — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Toll-like_receptor",
+      "attribution": "Receptor class naming under CC BY-SA. Mtb ligand map is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NOD2 — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/NOD2",
+      "attribution": "NOD2 naming under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Cord factor (TDM) as a named glycolipid",
+      "url": "https://en.wikipedia.org/wiki/Trehalose_dimycolate",
+      "attribution": "Ligand naming; MINCLE teaching is original. Related plate: wiki-cord-factor.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-innate-adaptive",
+    "wiki-lam",
+    "wiki-cord-factor",
+    "tb-cell-envelope",
+    "wiki-macrophage",
+    "tb-host-ifng"
+  ],
+  "example": {
+    "title": "A TLR2 SNP is not TPT",
+    "setup": "A GWAS hits a TLR2 intron in a TB-susceptibility paper. A clinic asks whether to skip TPT in contacts who lack the risk allele.",
+    "steps": [
+      {
+        "title": "Population prior ≠ individual rule",
+        "body": "A modest odds ratio on a receptor SNP is a population association. It does not measure this contact’s macrophage killing and does not replace exposure history."
+      },
+      {
+        "title": "The clinical innate hole you already know",
+        "body": "Anti-TNF, HIV, and MSMD change TPT decisions. A TLR2 genotype does not."
+      },
+      {
+        "title": "Keep the map for reading papers",
+        "body": "When a paper claims “Mtb is not seen by innate immunity,” ask which ligand–receptor pair they actually deleted. This plate is that checklist."
+      }
+    ],
+    "takeaway": "Several receptors see Mtb. None of them is a TPT assay."
+  },
+  "check": [
+    {
+      "id": "prr-lam",
+      "kind": "conceptual",
+      "prompt": "Mannose-capped LAM and some mycobacterial lipoproteins are classically discussed as ligands of:",
+      "choices": [
+        "rpoB",
+        "TLR2",
+        "Xpert probe E",
+        "PncA"
+      ],
+      "answer": "TLR2",
+      "why": "TLR2 is the named PRR on this map for those envelope amphiphiles.",
+      "whyWrong": {
+        "rpoB": "RNAP β, a drug target.",
+        "Xpert probe E": "Cartridge DST.",
+        "PncA": "PZA activation."
+      }
+    },
+    {
+      "id": "prr-tdm",
+      "kind": "calculation",
+      "prompt": "Trehalose dimycolate (cord factor) is mapped on this plate to:",
+      "choices": [
+        "MINCLE (a C-type lectin), not to rrs",
+        "gyrA QRDR",
+        "NAT2",
+        "IS6110 copy number as a receptor"
+      ],
+      "answer": "MINCLE (a C-type lectin), not to rrs",
+      "why": "TDM is the cord-factor ligand; MINCLE is the named lectin here.",
+      "whyWrong": {
+        "gyrA QRDR": "Fluoroquinolone target.",
+        "NAT2": "Host INH acetylation.",
+        "IS6110 copy number as a receptor": "A mobile element, not a PRR."
+      }
+    },
+    {
+      "id": "prr-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, why do three receptor nodes converge on one IL-12/TNF node?",
+      "figureHint": "Right-hand target node.",
+      "choices": [
+        "Because Mtb is recognised by several PRRs that feed a shared cytokine trunk toward the adaptive layer",
+        "Because only TLR2 exists",
+        "Because cytokines are rpoB probes",
+        "Because NOD2 is a second-line drug"
+      ],
+      "answer": "Because Mtb is recognised by several PRRs that feed a shared cytokine trunk toward the adaptive layer",
+      "why": "Redundancy is the teaching point. Knocking out one receptor is not innate blindness.",
+      "whyWrong": {
+        "Because only TLR2 exists": "Three receptors are drawn.",
+        "Because cytokines are rpoB probes": "No.",
+        "Because NOD2 is a second-line drug": "NOD2 is a receptor."
+      }
+    }
+  ]
+}

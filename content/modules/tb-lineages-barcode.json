@@ -1,0 +1,144 @@
+{
+  "id": "tb-lineages-barcode",
+  "title": "MTBC lineages 1–4 as a geographic barcode",
+  "dek": "L1 Indo-Oceanic, L2 East-Asian/Beijing, L3 East-African–Indian, L4 Euro-American are the four common human M. tuberculosis sensu stricto lineages. They are covariates and phylogenetic-SNP traps, not drugs.",
+  "domain": "tb",
+  "aliases": [
+    "lineage 1 2 3 4",
+    "Coll barcode",
+    "Indo-Oceanic lineage",
+    "Euro-American lineage",
+    "East-African-Indian lineage"
+  ],
+  "tags": [
+    "lineage",
+    "barcode",
+    "phylogeny",
+    "L1",
+    "L4"
+  ],
+  "story": [
+    "Coll’s SNP barcode (and later expansions) assigns MTBC to numbered lineages. The four lineages that dominate global human tuberculosis caused by M. tuberculosis sensu stricto are L1 (Indo-Oceanic), L2 (East-Asian, including Beijing families), L3 (East-African–Indian), and L4 (Euro-American). L5 and L6 are M. africanum; L7 is associated with Ethiopia; L8/L9 are rare African lineages added as sampling improved. Animal-adapted ecotypes sit off this four-colour map.",
+    "Lineage is a successful human-adapted clade, not a MIC. L2/Beijing is over-represented in many MDR datasets; that is transmission of resistant clones plus possibly mutation supply — tested on its own plate. L4 is globally scattered with named sublineages (Haarlem, LAM/L4.3, T, X). L1 and L3 have their own phylogenetic markers that naive catalogues once graded as resistance.",
+    "A clinical report should put lineage next to SNP distance and next to known phylogenetic not-associated variants. It should not put lineage in the BDQ column. Sublineage names from old spoligotyping (Beijing, LAM, Haarlem) are coarser than a barcode; map them before comparing papers."
+  ],
+  "deepTitle": "What the barcode is for",
+  "deep": [
+    "Phylogenetic SNPs: some pncA, gidB, and embB alleles are lineage-defining or lineage-associated and not resistance. Version the WHO catalogue; subtract not-associated markers.",
+    "Clock and transmission: within-lineage SNP distances are the clustering object. Between-lineage distances are hundreds of SNPs and are not “household transmission.”",
+    "Reference bias: mapping everything to H37Rv (L4) is usually fine for DST SNPs and less fine for some PE/PPE and structural work in L1/L2. Say the reference.",
+    "M. bovis and BCG are not L1–L4. A urine “MTBC” after bladder BCG is a speciation problem (RD1), not a new Indo-Oceanic outbreak."
+  ],
+  "visual": {
+    "kind": "constellation",
+    "caption": "Four common human Mtb lineages as named stars, plus africanum and rare African leaves that a barcode must still assign. Weight is schematic global burden, not a MIC.",
+    "terms": [
+      { "label": "L4 Euro-American", "weight": 5 },
+      { "label": "L2 Beijing / East-Asian", "weight": 5 },
+      { "label": "L1 Indo-Oceanic", "weight": 4 },
+      { "label": "L3 EAI", "weight": 4 },
+      { "label": "L5/L6 africanum", "weight": 3 },
+      { "label": "L7 Ethiopia", "weight": 2 },
+      { "label": "barcode SNPs", "weight": 3 },
+      { "label": "not a drug", "weight": 4 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Mycobacterium tuberculosis complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Mycobacterium_tuberculosis_complex",
+      "attribution": "Lineage naming under CC BY-SA. Barcode-as-covariate teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO TB lineage / surveillance context (open modules)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Epidemiologic context only; this plate does not copy WHO tables.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": [
+    "tb-mtbc",
+    "tb-lineage-beijing",
+    "tb-h37rv-genome",
+    "stats-population-structure",
+    "tb-who-catalogue",
+    "wiki-m-africanum"
+  ],
+  "example": {
+    "title": "An L1 phylogenetic SNP in a DST column",
+    "setup": "TBProfiler flags an embB change as ethambutol-R. The isolate is L1. EmbB M306 is wild type. The flagged SNP is a known L1 phylogenetic marker graded not-associated in the catalogue version you should have been using.",
+    "steps": [
+      {
+        "title": "Lineage first",
+        "body": "Assign the barcode. L1 is a prior for some not-associated embB/pncA-neighbourhood SNPs. The Beijing plate is the L2 analogue of this reflex."
+      },
+      {
+        "title": "Grade, don’t regex",
+        "body": "“embB mutation” is not a result. “embB M306V, associated, AF 0.99” would be. A phylogenetic SNP should not flip EMB."
+      },
+      {
+        "title": "Distance is still within L1",
+        "body": "Household clustering is still a small SNP distance among L1 isolates, not “they are all L1 so they are one outbreak.”"
+      }
+    ],
+    "takeaway": "L1–L4 are covariates and trapdoors for phylogenetic SNPs. They are not DST."
+  },
+  "check": [
+    {
+      "id": "lin-four",
+      "kind": "conceptual",
+      "prompt": "The four common human M. tuberculosis sensu stricto lineages are:",
+      "choices": [
+        "MAC, kansasii, abscessus, leprae",
+        "L1 Indo-Oceanic, L2 East-Asian/Beijing, L3 East-African–Indian, L4 Euro-American",
+        "RR, MDR, pre-XDR, XDR",
+        "Group A, B, C, and BCG"
+      ],
+      "answer": "L1 Indo-Oceanic, L2 East-Asian/Beijing, L3 East-African–Indian, L4 Euro-American",
+      "why": "That is the barcode most pulmonary-TB genomes fall into. Africanum is L5/L6.",
+      "whyWrong": {
+        "MAC, kansasii, abscessus, leprae": "NTM / M. leprae, not MTBC lineages.",
+        "RR, MDR, pre-XDR, XDR": "Resistance definitions.",
+        "Group A, B, C, and BCG": "WHO drug groups plus a vaccine."
+      }
+    },
+    {
+      "id": "lin-dist",
+      "kind": "calculation",
+      "prompt": "Two isolates, different major lineages (L2 vs L4), 400 SNPs apart. This is most consistent with:",
+      "choices": [
+        "Household transmission last month",
+        "Deep phylogenetic separation, not a recent transmission pair",
+        "Identical BCG lots",
+        "A single TA insertion"
+      ],
+      "answer": "Deep phylogenetic separation, not a recent transmission pair",
+      "why": "Between-lineage distances are large. Recent transmission is a within-lineage handful of SNPs (after masking), not hundreds.",
+      "whyWrong": {
+        "Household transmission last month": "Clock rates do not produce 400 SNPs in a month.",
+        "Identical BCG lots": "BCG is not an L2-versus-L4 pulmonary pair.",
+        "A single TA insertion": "TnSeq, not a distance."
+      }
+    },
+    {
+      "id": "lin-figure",
+      "kind": "figure",
+      "prompt": "On the constellation, “not a drug” is weighted because:",
+      "figureHint": "A high-weight term among lineage names.",
+      "choices": [
+        "Lineage assignment should not be written as a susceptibility call",
+        "L4 is bedaquiline",
+        "Barcodes replace rpoB",
+        "L1 means PZA-R always"
+      ],
+      "answer": "Lineage assignment should not be written as a susceptibility call",
+      "why": "The plate’s hygiene line. L2’s MDR over-representation is epidemiology, not a MIC.",
+      "whyWrong": {
+        "L4 is bedaquiline": "L4 is Euro-American.",
+        "Barcodes replace rpoB": "They do not.",
+        "L1 means PZA-R always": "PZA intrinsic-R is an M. bovis story, not L1."
+      }
+    }
+  ]
+}

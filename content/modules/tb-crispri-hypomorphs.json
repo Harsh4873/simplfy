@@ -1,0 +1,147 @@
+{
+  "id": "tb-crispri-hypomorphs",
+  "title": "CRISPRi hypomorphs when knockouts are lethal",
+  "dek": "dCas9 roadblocks make a titratable knockdown — a hypomorph — of genes TnSeq cannot hit. Essential targets (InhA, gyrase, ATP synthase) are studied this way. A knockdown is not a clinical LOF allele.",
+  "domain": "tb",
+  "aliases": [
+    "CRISPRi Mtb",
+    "dCas9 knockdown",
+    "hypomorph",
+    "sgRNA library tuberculosis",
+    "titratable knockdown"
+  ],
+  "tags": [
+    "CRISPRi",
+    "hypomorph",
+    "essentiality",
+    "chemical genetics"
+  ],
+  "story": [
+    "Himar1 cannot knock out a gene that is required for growth: insertions in those TA sites never make the library. CRISPR interference (CRISPRi) uses a catalytically dead Cas9 (dCas9) plus a small guide RNA to block transcription, often at a promoter or the 5′ end of an ORF. The result is a hypomorph: residual expression, not a clean deletion. That is a feature. You can titrate guide strength or inducer and watch fitness fall as a dose–response.",
+    "Pooled CRISPRi libraries in Mtb (Rock, Bosch and others in the public literature) turn this into a genome-wide chemical-genetic map: which knockdowns synergise with a drug, which phenocopy a target, which are buffered. This is how you study inhA, gyrA, atpE, and rRNA operon biology without waiting for a viable null.",
+    "A clinical frameshift is still not a CRISPRi hypomorph. Knockdown residual protein can keep a complex assembled; a patient LOF may not. Do not equate an sgRNA fitness defect with a WHO catalogue row."
+  ],
+  "deepTitle": "What the method can and cannot claim",
+  "deep": [
+    "Off-target guides and polar operon effects remain. Match phenotypes with a second guide or a rescue plasmid before you name a gene in a paper’s title.",
+    "Hypomorph ≠ inhibitor. A drug can inhibit a protein’s activity without lowering its abundance; CRISPRi does the opposite. Agreement is strong evidence; disagreement is not a failed experiment.",
+    "atpE is essential; bedaquiline’s clinical resistance is more often Rv0678 efflux than atpE missense. CRISPRi of atpE phenocopies target depletion. It does not predict which allele a cavity will choose.",
+    "Essentiality screens and CRISPRi are complementary: TnSeq maps where insertions are allowed; CRISPRi maps how much expression you can remove. Cite both if you argue a target.",
+    "Do not put sgRNA IDs on a clinical DST report."
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "Inducer and sgRNA recruit dCas9 to a promoter or 5′ ORF, lowering transcript and making a hypomorph. Fitness is the readout. A patient LOF allele is a different arrow (DNA change, often zero protein), not a node on this map.",
+    "nodes": [
+      { "id": "ind", "label": "Inducer", "group": "drug", "x": 10, "y": 28, "sub": "titration" },
+      { "id": "dcas", "label": "dCas9 + sgRNA", "group": "enzyme", "x": 36, "y": 28, "sub": "roadblock" },
+      { "id": "prom", "label": "Promoter / 5′ CDS", "group": "target", "x": 64, "y": 28, "sub": "DNA still intact" },
+      { "id": "mrna", "label": "mRNA ↓", "group": "enzyme", "x": 64, "y": 72 },
+      { "id": "fit", "label": "Fitness / CFU", "group": "target", "x": 90, "y": 72, "sub": "hypomorph" }
+    ],
+    "edges": [
+      { "from": "ind", "to": "dcas" },
+      { "from": "dcas", "to": "prom", "label": "binds" },
+      { "from": "prom", "to": "mrna", "label": "block" },
+      { "from": "mrna", "to": "fit" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "CRISPR gene silencing (CRISPRi) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/CRISPR_interference",
+      "attribution": "Glossary-level dCas9 roadblock under CC BY-SA. Mtb hypomorph teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Hypomorph — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hypomorph_(genetics)",
+      "attribution": "Partial-loss-of-function naming under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-essentiality",
+    "tb-tnseq-transit",
+    "tb-h37rv-genome",
+    "tb-atpe",
+    "tb-katg-inha",
+    "tb-gyr-qrdr"
+  ],
+  "example": {
+    "title": "inhA knockdown is not c-15t",
+    "setup": "A CRISPRi guide against inhA drops growth and raises INH sensitivity in broth. A student concludes that inhA promoter-up (c-15t) should behave as the opposite hypomorph and therefore “proves” low-level INH-R in a patient without a catalogue grade.",
+    "steps": [
+      {
+        "title": "Opposite directions",
+        "body": "CRISPRi lowers InhA. c-15t increases inhA transcription. One is a lab hypomorph; the other is a clinical overexpression allele. They are not a paired clinical trial."
+      },
+      {
+        "title": "What still transfers",
+        "body": "Both argue that InhA level modulates INH phenotypic MIC. Catalogue grading of c-15t still comes from genotype–phenotype datasets, not from an sgRNA."
+      },
+      {
+        "title": "Essentiality link",
+        "body": "You can CRISPRi inhA because a complete knockout is not viable on plates. That matches the essentiality plate. It still does not belong in the EMB column of a report."
+      }
+    ],
+    "takeaway": "Hypomorphs titrate essentials. Clinical alleles are a different mutagenesis."
+  },
+  "check": [
+    {
+      "id": "cr-dcas",
+      "kind": "conceptual",
+      "prompt": "CRISPRi in this teaching sense uses dCas9 to:",
+      "choices": [
+        "Cut both DNA strands and delete the gene",
+        "Block transcription, leaving the DNA sequence intact, producing a knockdown (hypomorph)",
+        "Edit rpoB to S450L",
+        "Replace Himar1 TA specificity"
+      ],
+      "answer": "Block transcription, leaving the DNA sequence intact, producing a knockdown (hypomorph)",
+      "why": "Dead Cas9 is a roadblock, not a nuclease in CRISPRi.",
+      "whyWrong": {
+        "Cut both DNA strands and delete the gene": "That is CRISPR cutting, not interference.",
+        "Edit rpoB to S450L": "Not the method.",
+        "Replace Himar1 TA specificity": "Different mutagenesis."
+      }
+    },
+    {
+      "id": "cr-calc",
+      "kind": "calculation",
+      "prompt": "Two guides reduce a target to 20% and 50% of transcript. Fitness is 0.2 and 0.7 relative to uninduced. This pattern is most consistent with:",
+      "choices": [
+        "A binary essential/non-essential TnSeq call and nothing else",
+        "A titratable hypomorph: more knockdown, more fitness cost, without claiming a patient LOF",
+        "Proof that the gene is dispensable on plates",
+        "A WHO BDQ grade"
+      ],
+      "answer": "A titratable hypomorph: more knockdown, more fitness cost, without claiming a patient LOF",
+      "why": "Dose–response is the point of CRISPRi on essentials.",
+      "whyWrong": {
+        "A binary essential/non-essential TnSeq call and nothing else": "You already have graded knockdowns.",
+        "Proof that the gene is dispensable on plates": "Fitness 0.2 argues it is important in this condition.",
+        "A WHO BDQ grade": "Wrong object."
+      }
+    },
+    {
+      "id": "cr-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, why does the promoter node still say “DNA still intact”?",
+      "figureHint": "Target node under dCas9.",
+      "choices": [
+        "Because CRISPRi is a transcriptional knockdown, not a sequence change like a clinical frameshift",
+        "Because dCas9 always mutates the PAM",
+        "Because DNA is irrelevant to CFU",
+        "Because Himar1 sits on the same node"
+      ],
+      "answer": "Because CRISPRi is a transcriptional knockdown, not a sequence change like a clinical frameshift",
+      "why": "The contrast with patient LOF is the clinical hygiene of the plate.",
+      "whyWrong": {
+        "Because dCas9 always mutates the PAM": "dCas9 is catalytically dead.",
+        "Because DNA is irrelevant to CFU": "The block is on DNA.",
+        "Because Himar1 sits on the same node": "Himar1 inserts; it does not sit here."
+      }
+    }
+  ]
+}

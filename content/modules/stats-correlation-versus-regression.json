@@ -1,0 +1,153 @@
+{
+  "id": "stats-correlation-versus-regression",
+  "title": "Correlation is not a regression slope",
+  "dek": "Pearson r is a unit-free covariance. A regression slope is a mean map: how E[Y | X] moves when X moves. Both can be zero for different reasons; neither is a causal effect without a design.",
+  "domain": "stats",
+  "aliases": [
+    "correlation versus regression",
+    "Pearson r versus slope",
+    "r-squared versus beta",
+    "association is not a slope"
+  ],
+  "tags": [
+    "regression",
+    "correlation",
+    "OLS",
+    "association"
+  ],
+  "story": [
+    "Pearson’s r(X,Y) = Cov(X,Y) / (sd(X) sd(Y)) lives in [−1, 1]. It is symmetric: r(X,Y) = r(Y,X). It says nothing about how many MIC units you gain per milligram of drug until you put units back. Two standardised variables can correlate 0.8 while the raw slope is tiny or huge depending on scales.",
+    "A simple linear regression writes E[Y | X = x] = β₀ + β₁ x (or a linear projection if you refuse the conditional-mean story). The slope β₁ = Cov(X,Y)/Var(X) has the units of Y per unit X. Reverse the regression and you get a different slope. r² is the fraction of Y’s variance linearly associated with X in that projection — not a causal R² of “explained biology.”",
+    "The Wikipedia regression category plate is the family name. This plate is the beginner trap: quoting r as if it were β, quoting β as if it were a causal effect, and quoting r = 0 as “no relationship” when a curve is screaming in the scatterplot."
+  ],
+  "deepTitle": "Algebra, then the causal fork",
+  "deep": [
+    "Standardise X and Y to mean 0, variance 1. Then the OLS slope equals r. That is the only world in which the two numbers coincide. Reporting standardised β without saying so is how talks mix r and slope.",
+    "Nonlinear association: Y = X² on a symmetric X can have r ≈ 0 and a useless linear β₁, with a perfect deterministic curve. Always plot.",
+    "Confounding: r and β both move if a common cause U pushes X and Y. DAGs and potential outcomes are other plates. Regression adjustment can close a backdoor or open a collider; correlation coefficients cannot see the difference.",
+    "Attenuation: measurement error in X typically shrinks r and β₁ toward 0. Error in Y inflates residual variance and can shrink r without the same interpretation as error in X.",
+    "Ecological correlation: district-level r between poverty and TB incidence is not the person-level r. The sampling-unit plate applies."
+  ],
+  "formulas": [
+    {
+      "id": "pearson",
+      "label": "Pearson correlation",
+      "expression": "r = Cov(X,Y) / (sd(X) sd(Y))",
+      "note": "Symmetric, unit-free. Not a slope unless X and Y are standardised."
+    },
+    {
+      "id": "slope",
+      "label": "Simple OLS slope",
+      "expression": "β₁ = Cov(X,Y) / Var(X)",
+      "note": "Units of Y per unit X. r = β₁ sd(X)/sd(Y) in the simple linear case."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Correlation is a single standardised covariance. Regression adds a mean map with units (and, in multiple regression, extra covariates). Causal reading is not granted by either box.",
+    "reduced": { "label": "Correlation", "params": ["r ∈ [−1,1]", "symmetric"] },
+    "full": { "label": "Regression mean map", "params": ["E[Y|X]=β₀+β₁x", "units", "± extra x’s"] },
+    "statistic": "r = β₁ sd(X)/sd(Y)  (simple linear)",
+    "reference": "neither box is a DAG"
+  },
+  "sources": [
+    {
+      "title": "Pearson correlation coefficient — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Pearson_correlation_coefficient",
+      "attribution": "Glossary-level r under CC BY-SA. Slope-versus-r teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Simple linear regression — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Simple_linear_regression",
+      "attribution": "Slope algebra under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — linear univariable regression",
+      "url": "https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd141.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "wiki-regression",
+    "stats-ols-geometry",
+    "stats-ols-glm",
+    "stats-confounding",
+    "stats-dag-literacy",
+    "wiki-odds-ratio"
+  ],
+  "example": {
+    "title": "Standardise or don’t, but say which",
+    "setup": "X = milligrams of a companion drug, Y = log MIC. sd(X) = 4, sd(Y) = 0.5, r = 0.40. A slide reports “correlation 0.40, therefore a 40% effect.”",
+    "steps": [
+      {
+        "title": "Recover the slope",
+        "body": "β₁ = r sd(Y)/sd(X) = 0.40 × 0.5 / 4 = 0.05 log-MIC per milligram. That is the mean-map number. It is not 0.40.",
+        "expression": "β₁ = 0.05"
+      },
+      {
+        "title": "What r² said",
+        "body": "r² = 0.16. About 16% of the sample variance of log MIC is linearly associated with dose in this projection. Not a 40% “effect,” and not a fraction of patients cured."
+      },
+      {
+        "title": "Reverse regression",
+        "body": "Regressing X on Y gives a different slope, Cov/Var(Y). Correlation stays 0.40. If the scientific question is “how does mean MIC move with dose?”, you wanted β of Y on X, not r and not the reverse slope."
+      }
+    ],
+    "takeaway": "r is a standardised covariance. The slope carries the units of the question."
+  },
+  "check": [
+    {
+      "id": "cr-sym",
+      "kind": "conceptual",
+      "prompt": "Which statement is true?",
+      "choices": [
+        "The OLS slope of Y on X always equals the slope of X on Y",
+        "Pearson r is symmetric in X and Y; the simple-regression slope is not (unless you standardise)",
+        "r = 0 proves there is no relationship of any kind",
+        "A nonzero r is a causal effect"
+      ],
+      "answer": "Pearson r is symmetric in X and Y; the simple-regression slope is not (unless you standardise)",
+      "why": "β₁ = Cov/Var(X) changes if you swap roles. r does not.",
+      "whyWrong": {
+        "The OLS slope of Y on X always equals the slope of X on Y": "Only in special standardised or equal-variance cases.",
+        "r = 0 proves there is no relationship of any kind": "Linear association can vanish while a curve remains.",
+        "A nonzero r is a causal effect": "Association, not a design."
+      }
+    },
+    {
+      "id": "cr-calc",
+      "kind": "calculation",
+      "prompt": "sd(X)=2, sd(Y)=10, r=0.5. Simple OLS slope of Y on X is:",
+      "choices": ["0.5", "2.5", "4", "10"],
+      "answer": "2.5",
+      "why": "β₁ = r sd(Y)/sd(X) = 0.5 × 10 / 2 = 2.5.",
+      "whyWrong": {
+        "0.5": "That is r, not the slope.",
+        "4": "That is sd(Y)/sd(X) without r, or 0.5×2× something else.",
+        "10": "sd(Y), not the slope."
+      }
+    },
+    {
+      "id": "cr-figure",
+      "kind": "figure",
+      "prompt": "On the nested plate, why is a DAG refused in the reference line?",
+      "figureHint": "Reference: neither box is a DAG.",
+      "choices": [
+        "Because regression cannot be written after a DAG",
+        "Because correlation and a mean map are association objects; closing backdoors is extra causal structure",
+        "Because r already encodes confounding",
+        "Because OLS forbids covariates"
+      ],
+      "answer": "Because correlation and a mean map are association objects; closing backdoors is extra causal structure",
+      "why": "The plate separates standardised covariance, a conditional mean, and a causal reading.",
+      "whyWrong": {
+        "Because regression cannot be written after a DAG": "It can; that is adjusted regression, still not automatic.",
+        "Because r already encodes confounding": "r mixes every path.",
+        "Because OLS forbids covariates": "Multiple regression exists; it still is not a DAG."
+      }
+    }
+  ]
+}

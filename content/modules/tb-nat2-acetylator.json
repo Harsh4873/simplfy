@@ -1,0 +1,153 @@
+{
+  "id": "tb-nat2-acetylator",
+  "title": "NAT2 acetylator status and isoniazid",
+  "dek": "Human NAT2 sets how fast INH is acetylated. Slow acetylators have higher INH exposure and more DILI/neuropathy risk. Rapid acetylators have lower exposure. This is host PK, not katG.",
+  "domain": "tb",
+  "aliases": [
+    "NAT2",
+    "slow acetylator isoniazid",
+    "N-acetyltransferase 2",
+    "INH acetylation",
+    "NAT2*6"
+  ],
+  "tags": [
+    "NAT2",
+    "INH",
+    "PK",
+    "hepatotoxicity",
+    "host genetics"
+  ],
+  "story": [
+    "Isoniazid is cleared in large part by N-acetylation in the liver, catalysed by N-acetyltransferase 2 (NAT2). Common haplotypes (*5, *6, *7 and others) define slow, intermediate, and rapid acetylator phenotypes. Slow acetylators see higher INH area-under-curve at a given mg/kg dose; rapid acetylators see less.",
+    "That PK split shows up as toxicity and, in some studies, as efficacy. Hepatotoxicity and peripheral neuropathy are more common in slow acetylators — which is why pyridoxine and liver monitoring are not optional theatre on HRZE. Some trials of NAT2-guided dosing exist; they are not yet a universal WHO SOP. Standard 5 mg/kg (or 10 mg/kg in children, programme-dependent) remains the labelled starting point unless a protocol says otherwise.",
+    "NAT2 is a human gene. It does not sit in the Mtb BAM. A katG S315T story is bacterial activation. A NAT2*6/*6 story is host clearance. Mixing them is how a DST report grows a rs-number."
+  ],
+  "deepTitle": "What a TB programme actually does with this",
+  "deep": [
+    "Pyridoxine (vitamin B6) to prevent INH neuropathy, especially in pregnancy, malnutrition, diabetes, HIV, and slow acetylators if known.",
+    "DILI: NAT2 is one risk factor among alcohol, PZA, rifampin, viral hepatitis, and pregnancy. The hepatotoxicity plate owns the monitoring grammar.",
+    "TPT regimens that are rifamycin-based (3HP, 4R) change the INH burden. NAT2 still matters if INH is in the recipe (3HR, 6H, 1HP).",
+    "Do not interpret a low plasma INH level as katG without asking about dose, adherence, and acetylator status.",
+    "WGS of the isolate will not call NAT2. Host pharmacogenetics is a different assay."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "Human NAT2 coding sequence (schematic cDNA). Star alleles *5 (341T>C), *6 (590G>A), and *7 (857G>A) are the celebrity slow-haplotype SNPs. This track is not H37Rv and not katG.",
+    "gene": "NAT2 (human)",
+    "start": 1,
+    "end": 870,
+    "unit": "cDNA bp",
+    "regions": [
+      { "start": 1, "end": 870, "label": "NAT2 CDS" }
+    ],
+    "marks": [
+      { "pos": 341, "label": "*5", "note": "341T>C; slow" },
+      { "pos": 590, "label": "*6", "note": "590G>A; slow" },
+      { "pos": 857, "label": "*7", "note": "857G>A; slow" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "NAT2 — Wikipedia / gene card overlay",
+      "url": "https://en.wikipedia.org/wiki/NAT2",
+      "attribution": "Gene and acetylator-phenotype naming under CC BY-SA. TB-dosing teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum — INH adverse effects overlay",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. public-domain INH toxicity framing. NAT2 genetics teaching is original.",
+      "license": "U.S. Government work, public domain"
+    },
+    {
+      "title": "WHO TB treatment modules (dosing as programme grammar, not a NAT2 protocol dump)",
+      "url": "https://tbksp.who.int/",
+      "attribution": "INH as a first-line/TPT drug. Pharmacogenetic protocols are not copied from WHO PDFs.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": [
+    "tb-hepatotoxicity",
+    "tb-isoniazid",
+    "tb-hrze",
+    "tb-tpt",
+    "tb-katg-inha",
+    "wiki-katg-gene"
+  ],
+  "example": {
+    "title": "Neuropathy on standard INH, katG WT",
+    "setup": "Adult on HRZE, katG/inhA wild type, smear converting. Week 6: stocking-glove neuropathy. Someone wants to add ethionamide “for better INH-effect” and skip B6 because “the genome is INH-S.”",
+    "steps": [
+      {
+        "title": "This is host PK, not katG",
+        "body": "INH-S on WGS does not predict NAT2. Slow acetylation plus missing pyridoxine is a classic neuropathy recipe."
+      },
+      {
+        "title": "Do not add a second InhA drug as a reflex",
+        "body": "Ethionamide is not a B6 substitute and shares neuropathy-adjacent misery. Give pyridoxine, look at dose and alcohol, check HIV and diabetes."
+      },
+      {
+        "title": "If you have NAT2",
+        "body": "A slow genotype supports the PK story. It still does not belong in the isolate’s DST table."
+      }
+    ],
+    "takeaway": "NAT2 is human INH clearance. katG is bacterial activation. Pyridoxine is cheaper than a new second-line."
+  },
+  "check": [
+    {
+      "id": "nat-host",
+      "kind": "conceptual",
+      "prompt": "NAT2 acetylator status is:",
+      "choices": [
+        "An Mtb gene next to katG on H37Rv",
+        "A human PK trait affecting INH clearance, not a bacterial DST call",
+        "A synonym for rpoB S450L",
+        "A HIMAR1 insertion site"
+      ],
+      "answer": "A human PK trait affecting INH clearance, not a bacterial DST call",
+      "why": "The plate’s split. You will not find NAT2 in the isolate FASTA.",
+      "whyWrong": {
+        "An Mtb gene next to katG on H37Rv": "NAT2 is human.",
+        "A synonym for rpoB S450L": "Wrong gene kingdom.",
+        "A HIMAR1 insertion site": "TA is bacterial mutagenesis."
+      }
+    },
+    {
+      "id": "nat-slow",
+      "kind": "calculation",
+      "prompt": "At a fixed INH mg/kg dose, slow acetylators relative to rapid acetylators typically have:",
+      "choices": [
+        "Lower INH exposure and less DILI risk, always",
+        "Higher INH exposure and higher risk of DILI/neuropathy",
+        "Zero INH in plasma because katG ate it",
+        "Mandatory BDQ substitution"
+      ],
+      "answer": "Higher INH exposure and higher risk of DILI/neuropathy",
+      "why": "Slower acetylation, more parent INH. Monitoring and B6 follow.",
+      "whyWrong": {
+        "Lower INH exposure and less DILI risk, always": "Opposite.",
+        "Zero INH in plasma because katG ate it": "katG is bacterial.",
+        "Mandatory BDQ substitution": "Not a NAT2 rule."
+      }
+    },
+    {
+      "id": "nat-figure",
+      "kind": "figure",
+      "prompt": "On the gene track, *5/*6/*7 sit on a human CDS because:",
+      "figureHint": "NAT2 (human) with star-allele marks.",
+      "choices": [
+        "Those haplotypes are the celebrity slow-acetylator SNPs on NAT2, not Mtb resistance mutations",
+        "They are rpoB RRDR probes",
+        "They are TA dinucleotides for Himar1",
+        "They grade EMB in the WHO catalogue"
+      ],
+      "answer": "Those haplotypes are the celebrity slow-acetylator SNPs on NAT2, not Mtb resistance mutations",
+      "why": "The caption says this track is not H37Rv and not katG.",
+      "whyWrong": {
+        "They are rpoB RRDR probes": "Wrong species and gene.",
+        "They are TA dinucleotides for Himar1": "Wrong method.",
+        "They grade EMB in the WHO catalogue": "Catalogue is bacterial."
+      }
+    }
+  ]
+}

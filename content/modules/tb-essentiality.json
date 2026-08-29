@@ -1,0 +1,146 @@
+{
+  "id": "tb-essentiality",
+  "title": "Essentiality is condition-dependent",
+  "dek": "A gene required on 7H10 may be dispensable in a mouse, and conversely. Clinical importance (KatG, PncA) is not the same boolean. Lists are priors for interpreting loss-of-function, not DST.",
+  "domain": "tb",
+  "aliases": [
+    "essential genes Mtb",
+    "in vitro essential",
+    "in vivo essential",
+    "conditionally essential",
+    "Griffin essentiality"
+  ],
+  "tags": [
+    "essentiality",
+    "TnSeq",
+    "genome",
+    "fitness"
+  ],
+  "story": [
+    "Essential, in the microbial-genetics sense, means: loss of function is lethal or near-lethal in a named condition. Saturated transposon screens on rich plates mark a few hundred Mtb genes as required for axenic growth. Macrophage, hypoxia, cholesterol, and mouse spleen each move the set. Publishing “the essentialome” without the medium is like publishing a MIC without the drug.",
+    "Clinical importance is a different boolean. katG is dispensable on plates — that is why S315T and LOF exist in patients. inhA is essential in vitro; promoter mutants up-regulate it rather than knocking it out. pncA is dispensable; that is why PZA resistance is a scatter of LOF. An essentiality list is a prior for “this frameshift in a viable isolate is surprising,” not a synonym for “drug target.”",
+    "Computational use: if a viable clinical genome shows a high-quality frameshift in a core-essential gene (rpoB catalytic residues, rrs, an aminoacyl-tRNA synthetase), suspect contamination, mixed mapping, a wrong annotation, or a compensatory duplication — then look at the BAM. Do not silently drop the isolate from a transmission tree as “low quality” without saying why."
+  ],
+  "deepTitle": "Layers of the word",
+  "deep": [
+    "In vitro essential ≈ axenic growth on a stated medium. Griffin, Zhang, DeJesus and later HMM catalogues disagree at the edges; version the list.",
+    "In vivo / infection essential: genes whose insertions drop in mice or macrophages (e.g. some iron-acquisition, gluconeogenesis). These are vaccine and drug-target priors, still not DST.",
+    "Domain essential: a gene can have an essential N-terminus and a dispensable PE repeat tail. Whole-gene calls lie.",
+    "Duplicate pathways: a “non-essential” gene may be essential in a different lineage if a paralogue is absent. H37Rv is not every L1 isolate.",
+    "CRISPRi hypomorphs (next plate) are how you study the essentials you cannot knock out with Himar1."
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "The same gene can sit in different layers depending on the condition. Clinical importance (prodrug activators, sterilizing targets) is a separate column — KatG is the teaching example of dispensable-but-critical.",
+    "layers": [
+      { "title": "Axenic essential (stated medium)", "nodes": ["inhA", "rpoB core", "rrs"] },
+      { "title": "Condition-essential (Mϕ, mouse, hypoxia)", "nodes": ["some DosR", "iron/mycobactin", "gluconeogenesis"] },
+      { "title": "Dispensable on plates, clinically pivotal", "nodes": ["katG", "pncA", "ethA"] },
+      { "title": "Not a DST column", "nodes": ["TnSeq lists", "HMM calls"] }
+    ]
+  },
+  "sources": [
+    {
+      "title": "H37Rv genome annotation / Mycobrowser (public gene names)",
+      "url": "https://mycobrowser.epfl.ch/",
+      "attribution": "Gene names as public identifiers. Essentiality teaching is original Simplfy notes, not a dump of any commercial list.",
+      "license": "Public gene nomenclature; interpretation original"
+    },
+    {
+      "title": "Gene essentiality — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Gene_nomenclature",
+      "attribution": "Background on naming only. Essentiality as a condition-dependent object is original teaching.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO catalogue of mutations (philosophy of grading, not essentiality)",
+      "url": "https://www.who.int/publications/i/item/9789240028173",
+      "attribution": "Reminder that catalogue grades ≠ essentiality lists. CC BY-NC-SA 3.0 IGO.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": [
+    "tb-tnseq-transit",
+    "tb-crispri-hypomorphs",
+    "tb-h37rv-genome",
+    "tb-katg-inha",
+    "tb-pnca",
+    "tb-iron-mycobactin"
+  ],
+  "example": {
+    "title": "katG LOF in a living patient",
+    "setup": "A clinical WGS shows a katG frameshift at AF 0.99, depth 120. The isolate grew in MGIT. A pipeline flags “essential-gene LOF, possible contamination” because an old plate-essential list included katG in error, or a student treated all annotated enzymes as essential.",
+    "steps": [
+      {
+        "title": "Check the biology, not the slogan",
+        "body": "KatG is the INH activator and is dispensable in vitro. High-level INH-R via katG LOF is expected in living bacilli. This is not rrs."
+      },
+      {
+        "title": "When the flag would be right",
+        "body": "A frameshift in rpoB’s catalytic core, or in an aminoacyl-tRNA synthetase, in a pure viable culture is the BAM/contamination alarm. Different layer of the hierarchy."
+      },
+      {
+        "title": "Write the condition",
+        "body": "If you cite essentiality, name the screen (medium, HMM vs Gumbel, paper year). “Essential” without a condition is not a result."
+      }
+    ],
+    "takeaway": "Essentiality is a condition. Clinical importance is another. KatG teaches the split."
+  },
+  "check": [
+    {
+      "id": "ess-katg",
+      "kind": "conceptual",
+      "prompt": "katG is best described as:",
+      "choices": [
+        "Axenically essential, therefore never lost in patients",
+        "Dispensable on plates and a common INH-resistance route, while still clinically pivotal as the activator",
+        "A Himar1 insertion motif",
+        "A WHO Group A drug"
+      ],
+      "answer": "Dispensable on plates and a common INH-resistance route, while still clinically pivotal as the activator",
+      "why": "Essentiality ≠ clinical importance. LOF is the resistance mechanism.",
+      "whyWrong": {
+        "Axenically essential, therefore never lost in patients": "katG is the counterexample.",
+        "A Himar1 insertion motif": "TA is the motif.",
+        "A WHO Group A drug": "KatG is an enzyme, not bedaquiline."
+      }
+    },
+    {
+      "id": "ess-calc",
+      "kind": "calculation",
+      "prompt": "A gene is empty of insertions in a mouse screen but densely inserted on 7H10. The honest label is:",
+      "choices": [
+        "Essential (unqualified)",
+        "Condition-essential in the mouse screen; dispensable on that plate medium",
+        "Proof of contamination",
+        "RIF-R"
+      ],
+      "answer": "Condition-essential in the mouse screen; dispensable on that plate medium",
+      "why": "Two conditions, two boolean answers. The hierarchy plate is this sentence.",
+      "whyWrong": {
+        "Essential (unqualified)": "The plate layer disagrees.",
+        "Proof of contamination": "Opposite pattern from a core-essential LOF in a viable isolate.",
+        "RIF-R": "Wrong object."
+      }
+    },
+    {
+      "id": "ess-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy, why do TnSeq lists sit in “not a DST column”?",
+      "figureHint": "Bottom layer.",
+      "choices": [
+        "Because insertion fitness is not a WHO mutation grade for a named drug",
+        "Because TnSeq replaces rpoB",
+        "Because essentials cannot be sequenced",
+        "Because lists are illegal to cite"
+      ],
+      "answer": "Because insertion fitness is not a WHO mutation grade for a named drug",
+      "why": "Essentiality informs interpretation of LOF in a BAM; it does not fill an S/R cell.",
+      "whyWrong": {
+        "Because TnSeq replaces rpoB": "It does not.",
+        "Because essentials cannot be sequenced": "They can; you just may not insert in them.",
+        "Because lists are illegal to cite": "Cite them with condition and version."
+      }
+    }
+  ]
+}

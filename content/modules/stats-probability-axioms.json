@@ -1,0 +1,164 @@
+{
+  "id": "stats-probability-axioms",
+  "title": "Probability as a finitely additive measure",
+  "dek": "A probability is a number on events that is nonnegative, normalised, and additive on disjoint pieces. Everything later — likelihoods, p-values, posteriors — is a reading of this object, not a replacement for it.",
+  "domain": "stats",
+  "aliases": [
+    "Kolmogorov axioms",
+    "probability axioms",
+    "sample space",
+    "event",
+    "additivity",
+    "complement rule"
+  ],
+  "tags": [
+    "probability",
+    "foundations",
+    "axioms",
+    "measure"
+  ],
+  "story": [
+    "Before a sampling model or a posterior, there is a sample space Ω of outcomes you are willing to treat as the universe of the experiment, a collection of events (subsets of Ω) you will assign numbers to, and a function P that sends those events to [0, 1]. Kolmogorov’s three working rules are: P(A) ≥ 0; P(Ω) = 1; and if A and B are disjoint, P(A ∪ B) = P(A) + P(B). Countable additivity is the same sentence with a countable disjoint union.",
+    "Those rules are not a theory of belief and they are not a theory of long-run frequency. They are the grammar both cultures speak. A p-value is P(discrepancy as large as observed | H₀). A posterior is P(θ in a set | data). A diagnostic predictive value is P(disease | test+). If two numbers refuse to add on a partition, at least one of them is not a probability in this sense.",
+    "In a TB lab the sample space is a modelling choice: isolates in a survey, reads at a site, households in a cluster. Changing Ω changes every probability downstream. “The probability of rifampin resistance” without saying among whom, in which year, under which sampling rule, is a slogan, not an event."
+  ],
+  "deepTitle": "Consequences you actually use",
+  "deep": [
+    "Complement: P(Aᶜ) = 1 − P(A). This is why a test with sensitivity 0.90 still has a 10% false-negative rate among the diseased — that 0.10 is P(T− | D+), not a property of the whole waiting room.",
+    "Inclusion–exclusion for two events: P(A ∪ B) = P(A) + P(B) − P(A ∩ B). Adding two overlapping prevalences as if they were disjoint is how comorbidity slides exceed 100%.",
+    "Monotonicity: A ⊂ B implies P(A) ≤ P(B). A 12-SNP transmission window cannot be more probable than a 5-SNP window on the same data and the same model unless you changed the event.",
+    "Conditional probability is not a fourth axiom. It is a derived construction: P(A | B) := P(A ∩ B)/P(B) when P(B) > 0. Independence is the special case P(A ∩ B) = P(A)P(B). Both live on later plates; they are not extra axioms.",
+    "A density or mass function is a way of specifying P, not a different kind of number. Discrete: P(Y = y) = f(y). Continuous: P(Y ∈ A) = ∫_A f. The axioms constrain the integral or the sum, which is why a “probability” of 1.3 on a pie chart is not a rounding error — it is a broken measure."
+  ],
+  "formulas": [
+    {
+      "id": "kolmogorov",
+      "label": "Working axioms",
+      "expression": "P(A) ≥ 0,   P(Ω) = 1,   A ∩ B = ∅ ⇒ P(A ∪ B) = P(A) + P(B)",
+      "note": "Countable additivity replaces the last line with a countable disjoint union."
+    },
+    {
+      "id": "incl-excl",
+      "label": "Two-event inclusion–exclusion",
+      "expression": "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)",
+      "note": "The intersection is subtracted once because it was counted twice."
+    }
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "From a named sample space to a number on an event. Disjoint pieces add. Overlapping pieces do not. Conditional probability is a later reweighting, not a fourth axiom.",
+    "nodes": [
+      { "id": "omega", "label": "Sample space Ω", "x": 8, "y": 48, "tone": "start", "detail": "outcomes" },
+      { "id": "event", "label": "Event A ⊂ Ω", "x": 32, "y": 48, "tone": "process" },
+      { "id": "add", "label": "Disjoint additivity", "x": 56, "y": 28, "tone": "decision", "detail": "P(A∪B)=P(A)+P(B)" },
+      { "id": "overlap", "label": "Overlap: subtract ∩", "x": 56, "y": 70, "tone": "decision" },
+      { "id": "num", "label": "P(A) ∈ [0,1]", "x": 82, "y": 48, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "omega", "to": "event" },
+      { "from": "event", "to": "add", "label": "partition" },
+      { "from": "event", "to": "overlap", "label": "not disjoint" },
+      { "from": "add", "to": "num" },
+      { "from": "overlap", "to": "num" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Probability axioms — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Probability_axioms",
+      "attribution": "Glossary-level Kolmogorov rules under CC BY-SA. Exposition, TB-lab events, and checks are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST/SEMATECH e-Handbook of Statistical Methods — probability",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Definitional authority for probability language.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "OpenStax Introductory Statistics",
+      "url": "https://openstax.org/books/introductory-statistics/pages/3-introduction",
+      "attribution": "CC BY 4.0 open text. Probability rules only. This plate is original teaching notes, not a publisher-branded derivative.",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "related": [
+    "stats-random-variables",
+    "stats-conditional-probability",
+    "stats-independence",
+    "stats-expectation-variance",
+    "wiki-bayes-theorem"
+  ],
+  "example": {
+    "title": "Two overlapping resistance events",
+    "setup": "In a survey of 200 RR-TB isolates, 40 are FQ-R (event F) and 24 are BDQ-R by catalogue (event B). 10 isolates are both. Someone adds 40/200 + 24/200 and reports a 32% “Group A problem” rate.",
+    "steps": [
+      {
+        "title": "Name the events",
+        "body": "F = FQ-R, B = BDQ-R. They are not disjoint: 10 isolates sit in F ∩ B. Adding P̂(F) + P̂(B) counts those ten twice.",
+        "expression": "P̂(F ∪ B) = (40 + 24 − 10)/200 = 0.27"
+      },
+      {
+        "title": "Check the axioms",
+        "body": "0.27 is in [0, 1] and is smaller than P̂(F) + P̂(B) = 0.32, as monotonicity and inclusion–exclusion require. The 32% figure is not a probability of a union."
+      },
+      {
+        "title": "What the union still is not",
+        "body": "P(F ∪ B) is not pre-XDR prevalence (that needs FQ among MDR/RR) and is not 2021-XDR (that needs FQ plus BDQ or LZD). The axiom only stopped the double count. The WHO definition is a different event."
+      }
+    ],
+    "takeaway": "Additivity is licensed on a partition. Overlap is subtracted, not wished away."
+  },
+  "check": [
+    {
+      "id": "ax-disjoint",
+      "kind": "conceptual",
+      "prompt": "P(A ∪ B) = P(A) + P(B) is guaranteed when:",
+      "choices": [
+        "A and B are any two events in Ω",
+        "A and B are disjoint (cannot occur together)",
+        "n > 30",
+        "A and B are independent"
+      ],
+      "answer": "A and B are disjoint (cannot occur together)",
+      "why": "Additivity is an axiom for disjoint events. Independence is a different relation and does not make the intersection empty.",
+      "whyWrong": {
+        "A and B are any two events in Ω": "Then you must subtract P(A ∩ B).",
+        "n > 30": "Sample size is not an axiom.",
+        "A and B are independent": "Independent events can still overlap; P(A ∩ B) = P(A)P(B) can be positive."
+      }
+    },
+    {
+      "id": "ax-calc",
+      "kind": "calculation",
+      "prompt": "P(A) = 0.40, P(B) = 0.25, P(A ∩ B) = 0.10. What is P(A ∪ B)?",
+      "choices": ["0.65", "0.55", "0.10", "0.75"],
+      "answer": "0.55",
+      "why": "0.40 + 0.25 − 0.10 = 0.55. The intersection is removed once.",
+      "whyWrong": {
+        "0.65": "That adds without subtracting the overlap.",
+        "0.10": "That is the intersection, not the union.",
+        "0.75": "That would require a negative intersection."
+      }
+    },
+    {
+      "id": "ax-figure",
+      "kind": "figure",
+      "prompt": "On the flow plate, why does overlap take a different path from disjoint additivity?",
+      "figureHint": "Two decision nodes after Event A.",
+      "choices": [
+        "Because overlapping events are not allowed in Kolmogorov’s axioms",
+        "Because overlapping pieces were counted twice if you add, so the intersection must be subtracted to get a number in [0,1] that matches the union",
+        "Because conditional probability is a fourth axiom",
+        "Because Ω has probability 0"
+      ],
+      "answer": "Because overlapping pieces were counted twice if you add, so the intersection must be subtracted to get a number in [0,1] that matches the union",
+      "why": "The axioms do not forbid overlap. They forbid treating overlap as a partition.",
+      "whyWrong": {
+        "Because overlapping events are not allowed in Kolmogorov’s axioms": "They are allowed; inclusion–exclusion handles them.",
+        "Because conditional probability is a fourth axiom": "Conditional probability is derived, not axiomatic.",
+        "Because Ω has probability 0": "P(Ω) = 1."
+      }
+    }
+  ]
+}

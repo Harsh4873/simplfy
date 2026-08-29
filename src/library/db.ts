@@ -13,6 +13,15 @@ export type LibraryItem = {
   parseNote?: string;
   blob?: Blob;
   brief?: LabBrief;
+  collectionId?: string;
+  relPath?: string;
+};
+
+export type Collection = {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type RecallCard = {
@@ -24,10 +33,27 @@ export type RecallCard = {
   createdAt: number;
   misses: number;
   lastMissedAt: number;
+  collectionId?: string;
+};
+
+export type StudioKind = "lesson" | "note" | "papers" | "class";
+
+export type StudioCanvas = {
+  id: string;
+  kind: StudioKind;
+  title: string;
+  moduleId?: string;
+  noteId?: string;
+  papersQuery?: string;
+  collectionId?: string;
+  step?: string;
+  pinned: boolean;
+  createdAt: number;
+  updatedAt: number;
 };
 
 const DB_NAME = "simplfy";
-const DB_VERSION = 1;
+const DB_VERSION = 4;
 
 function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -44,22 +70,40 @@ function txDone(tx: IDBTransaction): Promise<void> {
   });
 }
 
+function ensureStores(db: IDBDatabase) {
+  if (!db.objectStoreNames.contains("library")) {
+    db.createObjectStore("library", { keyPath: "id" });
+  }
+  if (!db.objectStoreNames.contains("recall")) {
+    db.createObjectStore("recall", { keyPath: "id" });
+  }
+  if (!db.objectStoreNames.contains("prefs")) {
+    db.createObjectStore("prefs", { keyPath: "key" });
+  }
+  if (!db.objectStoreNames.contains("studios")) {
+    db.createObjectStore("studios", { keyPath: "id" });
+  }
+  if (!db.objectStoreNames.contains("collections")) {
+    db.createObjectStore("collections", { keyPath: "id" });
+  }
+}
+
 export function openStudioDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains("library")) {
-        db.createObjectStore("library", { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains("recall")) {
-        db.createObjectStore("recall", { keyPath: "id" });
-      }
-      if (!db.objectStoreNames.contains("prefs")) {
-        db.createObjectStore("prefs", { keyPath: "key" });
-      }
+      ensureStores(request.result);
     };
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      const db = request.result;
+      db.onversionchange = () => {
+        db.close();
+      };
+      resolve(db);
+    };
+    request.onblocked = () => {
+      reject(new Error("Simplfy database upgrade is blocked by another tab."));
+    };
     request.onerror = () => reject(request.error);
   });
 }
@@ -108,5 +152,50 @@ export async function getPref(db: IDBDatabase, key: string): Promise<string | nu
 export async function setPref(db: IDBDatabase, key: string, value: string): Promise<void> {
   const tx = db.transaction("prefs", "readwrite");
   tx.objectStore("prefs").put({ key, value });
+  await txDone(tx);
+}
+
+export async function listStudios(db: IDBDatabase): Promise<StudioCanvas[]> {
+  if (!db.objectStoreNames.contains("studios")) return [];
+  const items = await requestToPromise(db.transaction("studios").objectStore("studios").getAll());
+  return items.sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.updatedAt - a.updatedAt);
+}
+
+export async function getStudio(db: IDBDatabase, id: string): Promise<StudioCanvas | undefined> {
+  return requestToPromise(db.transaction("studios").objectStore("studios").get(id));
+}
+
+export async function putStudio(db: IDBDatabase, canvas: StudioCanvas): Promise<void> {
+  const tx = db.transaction("studios", "readwrite");
+  tx.objectStore("studios").put(canvas);
+  await txDone(tx);
+}
+
+export async function deleteStudio(db: IDBDatabase, id: string): Promise<void> {
+  const tx = db.transaction("studios", "readwrite");
+  tx.objectStore("studios").delete(id);
+  await txDone(tx);
+}
+
+export async function listCollections(db: IDBDatabase): Promise<Collection[]> {
+  if (!db.objectStoreNames.contains("collections")) return [];
+  const items = await requestToPromise(db.transaction("collections").objectStore("collections").getAll());
+  return items.sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export async function getCollection(db: IDBDatabase, id: string): Promise<Collection | undefined> {
+  if (!db.objectStoreNames.contains("collections")) return undefined;
+  return requestToPromise(db.transaction("collections").objectStore("collections").get(id));
+}
+
+export async function putCollection(db: IDBDatabase, collection: Collection): Promise<void> {
+  const tx = db.transaction("collections", "readwrite");
+  tx.objectStore("collections").put(collection);
+  await txDone(tx);
+}
+
+export async function deleteCollectionRow(db: IDBDatabase, id: string): Promise<void> {
+  const tx = db.transaction("collections", "readwrite");
+  tx.objectStore("collections").delete(id);
   await txDone(tx);
 }

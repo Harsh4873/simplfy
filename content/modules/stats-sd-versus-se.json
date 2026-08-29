@@ -1,0 +1,153 @@
+{
+  "id": "stats-sd-versus-se",
+  "title": "Standard deviation versus standard error",
+  "dek": "SD describes scatter of the observations (or of a named random variable). SE describes scatter of an estimator under replication. One is about Y; the other is about θ̂.",
+  "domain": "stats",
+  "aliases": [
+    "standard error versus standard deviation",
+    "SE vs SD",
+    "standard error of the mean",
+    "sampling SD"
+  ],
+  "tags": [
+    "estimation",
+    "standard error",
+    "variance",
+    "reporting"
+  ],
+  "story": [
+    "The standard deviation of Y is √Var(Y): how far a new draw of the same random variable tends to sit from E[Y]. A lab SD of log MIC describes assay-plus-biology scatter. It does not shrink just because you typed n into software.",
+    "The standard error of an estimator θ̂ is √Var(θ̂), usually estimated. For the iid sample mean, se(Ȳ) = s/√n. Replication shrinks the SE; it does not shrink the SD of a single patient’s MIC. Error bars that hide which of the two you plotted are how “the effect got more precise” becomes “the biology got quieter.”",
+    "A confidence interval uses an SE (or a likelihood root, or a bootstrap SD of θ̂). A reference range uses an SD of Y. Publishing Ȳ ± s as if it were a 95% CI for μ is the classic swap: you have drawn a band that should cover about 68% of new observations, not 95% of the mean."
+  ],
+  "deepTitle": "What to print, and what dependence does to both",
+  "deep": [
+    "s = √(∑ (yᵢ − ȳ)² / (n − 1)) estimates σ = sd(Y), not se(Ȳ). Always divide by √n (and apply a design factor) when the target is the mean.",
+    "Software labels lie. A GLM “Std. Error” is an SE of a coefficient. A column titled SD in a table of district rates might be an SD of ȳⱼ across districts (a between-unit SD) or an SE of one ȳⱼ. Caption the object.",
+    "Clustered data: the SD of Y can stay honest as a descriptive of person-level scatter while the SE of a mean must include the intraclass correlation. Using s/√n on 400 household members from 40 houses understates se(Ȳ).",
+    "Bootstrap and sandwich estimates are recipes for se(θ̂) when a model-based formula is untrusted. They still estimate a sampling SD of an estimator, not sd(Y).",
+    "Bayesian posterior SD is a different third object: a posterior width for θ, not a sampling SE, unless you have a matching Bernstein–von Mises story. Do not caption it as “the SE.”"
+  ],
+  "formulas": [
+    {
+      "id": "sem",
+      "label": "iid SE of the mean",
+      "expression": "se(Ȳ) = s / √n",
+      "note": "s estimates sd(Y). The √n is the whole distinction."
+    }
+  ],
+  "visual": {
+    "kind": "small-multiples",
+    "caption": "Same data, two widths. Left: SD of Y (does not shrink with n). Right: SE of Ȳ at n = 4 versus n = 16 (shrinks like 1/√n). Plotting SD error bars on a mean is a category error.",
+    "yLabel": "schematic width",
+    "panels": [
+      {
+        "title": "sd(Y), n-invariant",
+        "bars": [
+          { "label": "n=4", "value": 10 },
+          { "label": "n=16", "value": 10 }
+        ]
+      },
+      {
+        "title": "se(Ȳ) = s/√n",
+        "bars": [
+          { "label": "n=4", "value": 5 },
+          { "label": "n=16", "value": 2.5 }
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Standard error — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Standard_error",
+      "attribution": "Glossary-level SE definition under CC BY-SA. SD/SE swap teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — what is the standard error?",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda356.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-expectation-variance",
+    "stats-confidence-intervals",
+    "stats-bootstrap",
+    "stats-normal-clt",
+    "stats-population-sample"
+  ],
+  "example": {
+    "title": "Error bars on a four-lab MIC mean",
+    "setup": "Four labs each report one log-MIC for a wild-type QC strain: 0.1, 0.3, 0.0, 0.4. Sample SD s ≈ 0.183. A slide plots ȳ = 0.20 with whiskers ±s. A reviewer asks whether this is a CI for the mean log-MIC.",
+    "steps": [
+      {
+        "title": "Name the two widths",
+        "body": "s ≈ 0.183 is an SD of lab-level Y. se(Ȳ) = 0.183/√4 ≈ 0.091. A crude 95% interval for the mean would use the SE (and a t₃ reference, even), not ±s."
+      },
+      {
+        "title": "What ±s actually covers",
+        "body": "ȳ ± s is a descriptive band for lab scatter, roughly a 68% reference range if Gaussian — not a 95% CI for μ. The slide overstated precision of the mean by a factor of two and mislabelled the object."
+      },
+      {
+        "title": "If labs are the population",
+        "body": "If the scientific target is “how much do these four labs disagree?”, plot the four points and quote s. If the target is “what is the QC mean?”, plot ȳ with an SE or a posterior SD and say which."
+      }
+    ],
+    "takeaway": "Whiskers need a noun: SD of Y, or SE of θ̂. The √n is the test."
+  },
+  "check": [
+    {
+      "id": "sdse-swap",
+      "kind": "conceptual",
+      "prompt": "A standard error is:",
+      "choices": [
+        "The SD of a single new observation Y",
+        "An (estimated) standard deviation of an estimator θ̂ under replication",
+        "Always s, regardless of n",
+        "A posterior probability"
+      ],
+      "answer": "An (estimated) standard deviation of an estimator θ̂ under replication",
+      "why": "SE lives on the sampling law of the estimator. SD lives on Y (or another named random variable).",
+      "whyWrong": {
+        "The SD of a single new observation Y": "That is sd(Y).",
+        "Always s, regardless of n": "s estimates sd(Y); se(Ȳ) divides by √n.",
+        "A posterior probability": "A posterior SD is a third object and is not a probability."
+      }
+    },
+    {
+      "id": "sdse-calc",
+      "kind": "calculation",
+      "prompt": "s = 8, n = 16 iid. se(Ȳ) equals:",
+      "choices": ["8", "2", "0.5", "16"],
+      "answer": "2",
+      "why": "8/√16 = 8/4 = 2.",
+      "whyWrong": {
+        "8": "That is s, the SD.",
+        "0.5": "That is 8/16, dividing by n not √n.",
+        "16": "n, not an SE."
+      }
+    },
+    {
+      "id": "sdse-figure",
+      "kind": "figure",
+      "prompt": "On the small-multiples plate, which width is supposed to shrink when n grows?",
+      "figureHint": "Left panel flat; right panel shorter at n=16.",
+      "choices": [
+        "sd(Y)",
+        "se(Ȳ)",
+        "Both, equally",
+        "Neither; n never enters variance"
+      ],
+      "answer": "se(Ȳ)",
+      "why": "Var(Ȳ) = σ²/n under iid. sd(Y) is a property of one draw of Y.",
+      "whyWrong": {
+        "sd(Y)": "The left panel is drawn n-invariant on purpose.",
+        "Both, equally": "Only the estimator’s sampling SD shrinks like 1/√n.",
+        "Neither; n never enters variance": "n enters Var(Ȳ)."
+      }
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "stats-pvalue-versus-posterior",
+  "title": "p-values are not posterior probabilities",
+  "dek": "P(data this extreme | H₀) is not P(H₀ | data). A confidence interval’s coverage is not a posterior probability that θ sits in today’s interval. Different questions, both legal.",
+  "domain": "stats",
+  "aliases": [
+    "p-value versus posterior",
+    "p is not P(H0)",
+    "confidence versus credible",
+    "inverse probability error"
+  ],
+  "tags": [
+    "inference",
+    "p-value",
+    "Bayes",
+    "confidence"
+  ],
+  "story": [
+    "A p-value answers: if this null sampling model were true, how often would a chosen discrepancy be this large or larger? It conditions on H₀ and randomises over hypothetical data. A posterior probability answers: given these data and a prior on θ (or on hypotheses), how to reweight those hypotheses? It conditions on the data and randomises over θ. Switching the conditioner is the inverse-probability error.",
+    "A 95% confidence interval is a procedure with a coverage claim: in 95% of hypothetical replications, the random interval contains the fixed θ. Today’s interval either contains θ or it does not. A 95% credible interval is a posterior set with probability 0.95 under p(θ | y). Those can numerically coincide in happy Gaussian–Gaussian problems. They are still not the same sentence.",
+    "You may prefer tests, or you may prefer posteriors. What you may not do is caption a p = 0.04 as “4% chance H₀ is true,” or a p > 0.05 as “95% chance the null holds.” The p-value glossary and the credible-interval glossary sit nearby so that this plate can stay a comparison."
+  ],
+  "deepTitle": "When they numerically agree, and when they must not",
+  "deep": [
+    "Lindley’s paradox: in large n, a point-null H₀ can have a large posterior probability while a classical test rejects. Point masses on a precise H₀ and sampling-theory tests are asking different questions at different resolutions.",
+    "Bernstein–von Mises: under regularity, posterior intervals and Wald intervals agree approximately. That is a theorem about limits, not a reason to skip the prior in small n or on a boundary.",
+    "P-values do not use a prior. That is a feature for some regulatory tests and a bug if you actually have a prior (historical FQ-R rates, a catalogue grade). Write the prior if you use it.",
+    "Posterior predictive p-values exist and are not ordinary tail probabilities under a simple H₀. Do not mix the names.",
+    "Reporting both: a likelihood (or LRT) plus a posterior with a named prior is honest. Averaging them into one “significance” is not."
+  ],
+  "formulas": [
+    {
+      "id": "pdef",
+      "label": "p-value (schematic)",
+      "expression": "p = P(T(Y) ≥ T(y_obs) | H₀)",
+      "note": "Condition on H₀; Y is still random."
+    },
+    {
+      "id": "post",
+      "label": "Posterior of a hypothesis",
+      "expression": "P(H₀ | y) ∝ P(y | H₀) P(H₀)",
+      "note": "Condition on y; H₀ needs a prior mass or a prior over a set."
+    }
+  ],
+  "visual": {
+    "kind": "nested-models",
+    "caption": "Two conditioners. The reduced reading holds H₀ fixed and lets data vary (p-value, coverage). The full Bayesian reading holds y fixed and lets θ vary (posterior, credible set). Nested in the picture because they share a likelihood; not nested as procedures.",
+    "reduced": { "label": "Sampling-theory reading", "params": ["H₀ fixed", "Y random", "p-value / CI"] },
+    "full": { "label": "Posterior reading", "params": ["y fixed", "θ random", "prior × likelihood"] },
+    "statistic": "same f(y|θ), opposite freeze",
+    "reference": "p ≠ P(H₀|y)"
+  },
+  "sources": [
+    {
+      "title": "p-value — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/P-value",
+      "attribution": "Tail-probability definition under CC BY-SA. Comparison teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Credible interval — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Credible_interval",
+      "attribution": "Posterior-region definition under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — confidence intervals",
+      "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc14.htm",
+      "attribution": "United States government work, treated as public domain. Coverage language.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "wiki-pvalue",
+    "wiki-credible-interval",
+    "stats-bayesian",
+    "stats-confidence-intervals",
+    "stats-hypothesis-testing",
+    "wiki-bayes-theorem"
+  ],
+  "example": {
+    "title": "p = 0.04 is not 4%",
+    "setup": "A one-sided test of π = 0.10 versus π > 0.10 yields p = 0.04. A reader writes “there is only a 4% chance the true rate is 10%.” A Bayesian colleague had put a Beta(2, 9) prior on π (mean 0.18) and finds P(π ≤ 0.10 | y) ≈ 0.22.",
+    "steps": [
+      {
+        "title": "Translate the p-value",
+        "body": "p = 0.04 says: under π = 0.10, a tail this large happens about 4% of the time. It does not put 4% mass on the point 0.10."
+      },
+      {
+        "title": "Translate the posterior",
+        "body": "P(π ≤ 0.10 | y) ≈ 0.22 uses a prior that already doubted 0.10 a little and the same likelihood. Different question, different number. Neither number is wrong; the caption was."
+      },
+      {
+        "title": "What to print together",
+        "body": "Report π̂, an interval (CI or credible, named), and if you test, the H₀, the tail, and α. Do not convert p into a posterior odds without a prior."
+      }
+    ],
+    "takeaway": "Freeze H₀ and vary Y, or freeze y and vary θ. Do not caption one as the other."
+  },
+  "check": [
+    {
+      "id": "pp-swap",
+      "kind": "conceptual",
+      "prompt": "A p-value of 0.03 means:",
+      "choices": [
+        "P(H₀ | data) = 0.03",
+        "Under the specified H₀ and discrepancy, data this extreme or more would occur about 3% of the time",
+        "The posterior odds of H₀ are 3:97",
+        "The Type II error is 0.03"
+      ],
+      "answer": "Under the specified H₀ and discrepancy, data this extreme or more would occur about 3% of the time",
+      "why": "The conditioner is H₀, not the hypothesis given the data.",
+      "whyWrong": {
+        "P(H₀ | data) = 0.03": "That is a posterior, which needs a prior.",
+        "The posterior odds of H₀ are 3:97": "Odds require priors and a Bayes factor.",
+        "The Type II error is 0.03": "Type II is at an alternative, and is not p."
+      }
+    },
+    {
+      "id": "pp-ci",
+      "kind": "calculation",
+      "prompt": "A 95% CI from a long-run procedure with exact 95% coverage. After seeing (0.10, 0.22), P(θ ∈ (0.10, 0.22) | y) in the sampling-theory reading is:",
+      "choices": [
+        "0.95 by definition of confidence",
+        "either 0 or 1 (the interval hit or missed the fixed θ); 0.95 was a property of the procedure, not of this realised interval",
+        "0.05",
+        "equal to the p-value"
+      ],
+      "answer": "either 0 or 1 (the interval hit or missed the fixed θ); 0.95 was a property of the procedure, not of this realised interval",
+      "why": "Coverage is a probability over hypothetical data, before you freeze y. A posterior would give a number in (0,1) for this interval only after a prior.",
+      "whyWrong": {
+        "0.95 by definition of confidence": "That is the most common caption error.",
+        "0.05": "That is α, not a posterior of this interval.",
+        "equal to the p-value": "Different object."
+      }
+    },
+    {
+      "id": "pp-figure",
+      "kind": "figure",
+      "prompt": "On the nested plate, “same f(y|θ), opposite freeze” means:",
+      "figureHint": "Reduced box freezes H₀; full box freezes y.",
+      "choices": [
+        "Likelihoods are posteriors",
+        "Sampling-theory and Bayesian readings share the sampling model but freeze opposite arguments — data versus parameter",
+        "You must use both at once or neither is valid",
+        "Priors are sampling distributions of Ȳ"
+      ],
+      "answer": "Sampling-theory and Bayesian readings share the sampling model but freeze opposite arguments — data versus parameter",
+      "why": "The likelihood function is the shared bridge. The freeze is the culture.",
+      "whyWrong": {
+        "Likelihoods are posteriors": "Only after × prior and normalising.",
+        "You must use both at once or neither is valid": "Each is valid for its question.",
+        "Priors are sampling distributions of Ȳ": "Priors live on θ; sampling laws live on estimators."
+      }
+    }
+  ]
+}

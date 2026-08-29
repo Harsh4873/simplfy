@@ -7,9 +7,26 @@
     <meta name="color-scheme" content="dark light" />
     <meta
       name="description"
-      content="Simplfy is a visual study studio for research-grade explanations of statistics and Mycobacterium tuberculosis biology."
+      content="Simplfy is a study buddy for statistics and Mycobacterium tuberculosis biology: analogy first, a worked problem, practice, then say it back."
     />
-    <title>Simplfy — visual study studio</title>
+    <title>Simplfy — study buddy</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("simplfy-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

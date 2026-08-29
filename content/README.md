@@ -13,4 +13,6 @@ Each module must follow `StudyModule` in `src/catalog/types.ts`. Required:
 - `example` — worked stepper
 - `check` — at least one conceptual, one calculation or numeric, and one figure item when possible
 
-Voice: research-grade clarity. Write as if a genomics lab member is reading. Cite WHO, NCBI Bookshelf, OpenStax, Wikipedia (CC BY-SA), and original teaching notes.
+Voice: research-grade clarity on the **shelf**. The Learn screens speak more simply: analogy first, then the real term. Flagship tutor scripts live in `src/lesson/overlays.ts` keyed by module id; every other plate still gets Teach / Example / Practice / Say it back / Shelf via `lessonFromModule`.
+
+Cite WHO, NCBI Bookshelf, OpenStax, Wikipedia (CC BY-SA), and original teaching notes.

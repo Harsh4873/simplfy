@@ -1,0 +1,164 @@
+{
+  "id": "stats-conditional-probability",
+  "title": "Conditional probability and the law of total probability",
+  "dek": "P(A | B) reweights A to the world where B occurred. Bayes’ identity is this definition plus a swap of labels. Neither is a posterior until you name the prior event.",
+  "domain": "stats",
+  "aliases": [
+    "conditional probability",
+    "law of total probability",
+    "Bayes rule beginner",
+    "P(A given B)",
+    "partition formula"
+  ],
+  "tags": [
+    "probability",
+    "conditional",
+    "Bayes",
+    "diagnosis"
+  ],
+  "story": [
+    "Once B has probability strictly greater than zero, the conditional probability of A given B is the fraction of B that also sits in A: P(A | B) = P(A ∩ B)/P(B). You have not invented a new kind of uncertainty. You have renormalised the original measure onto the slice B.",
+    "The law of total probability is how you unslices. If {Bⱼ} is a partition of Ω, then P(A) = ∑ P(A | Bⱼ) P(Bⱼ). Diagnostic arithmetic is this sum: prevalence weights the sensitivity and the false-positive rate. Skipping the weights is how a 99% sensitive test is quoted as a 99% chance of disease.",
+    "Bayes’ theorem is the same definition with the intersection expanded the other way: P(B | A) = P(A | B) P(B)/P(A). The Wikipedia identity plate is the algebra. This plate is the construction you need before that identity means anything in a clinic or a parameter model."
+  ],
+  "deepTitle": "Slices, partitions, and two cultures of B",
+  "deep": [
+    "Independence is the special case P(A | B) = P(A), equivalently P(A ∩ B) = P(A)P(B). It is a modelling claim about the joint, not a default. Isolates from one household are the canonical counterexample.",
+    "The chain rule P(A ∩ B ∩ C) = P(A) P(B | A) P(C | A ∩ B) is how directed graphical models factor. Writing the product in the wrong order is a different joint.",
+    "Two different B’s: an observable event (test positive, smear 3+) versus a parameter set (θ in a region). Diagnostic Bayes conditions on a test. Parameter Bayes conditions on a likelihood function times a prior. Same identity, different σ-algebra.",
+    "P(B) = 0 makes the ratio undefined. Continuous parameters need densities and regular conditional distributions; do not divide by P(θ = 0.317) for a continuous prior.",
+    "Likelihood is not P(data | θ) as a number you add up over θ without a dominating measure. After data are observed, f(y | θ) as a function of θ is the likelihood function — own plate — which is not already P(θ | y)."
+  ],
+  "formulas": [
+    {
+      "id": "cond",
+      "label": "Definition",
+      "expression": "P(A | B) = P(A ∩ B) / P(B)    (P(B) > 0)",
+      "note": "Renormalise P onto the slice B."
+    },
+    {
+      "id": "total",
+      "label": "Law of total probability",
+      "expression": "P(A) = ∑ⱼ P(A | Bⱼ) P(Bⱼ)",
+      "note": "{Bⱼ} a partition. Diagnostic PPV uses this in the denominator of Bayes."
+    }
+  ],
+  "visual": {
+    "kind": "mechanism-map",
+    "caption": "B slices the sample space. A ∩ B is the surviving piece of A. Dividing by P(B) is the mechanism. Bayes swaps which slice you condition on; the law of total probability rebuilds the marginal of A from a partition of B-like pieces.",
+    "nodes": [
+      { "id": "omega", "label": "Ω", "group": "target", "x": 10, "y": 50, "sub": "unconditional" },
+      { "id": "b", "label": "slice B", "group": "enzyme", "x": 38, "y": 50, "sub": "condition" },
+      { "id": "ab", "label": "A ∩ B", "group": "drug", "x": 66, "y": 28, "sub": "numerator" },
+      { "id": "condp", "label": "P(A|B)", "group": "target", "x": 90, "y": 28, "sub": "ratio" },
+      { "id": "tot", "label": "P(A) via partition", "group": "enzyme", "x": 66, "y": 74, "sub": "∑ P(A|Bⱼ)P(Bⱼ)" }
+    ],
+    "edges": [
+      { "from": "omega", "to": "b", "label": "restrict" },
+      { "from": "b", "to": "ab" },
+      { "from": "ab", "to": "condp", "label": "÷ P(B)" },
+      { "from": "b", "to": "tot", "label": "unslices" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Conditional probability — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Conditional_probability",
+      "attribution": "Glossary-level definition under CC BY-SA. Diagnostic examples and checks are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Law of total probability — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Law_of_total_probability",
+      "attribution": "Partition formula under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — conditional probability",
+      "url": "https://openstax.org/books/introductory-statistics/pages/3-3-two-basic-rules-of-probability",
+      "attribution": "CC BY 4.0. Rules only; this plate is original teaching notes.",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "related": [
+    "wiki-bayes-theorem",
+    "stats-bayesian",
+    "stats-predictive-values",
+    "stats-independence",
+    "stats-probability-axioms",
+    "stats-se-sp"
+  ],
+  "example": {
+    "title": "Why PPV is not sensitivity",
+    "setup": "Let D = disease, T+ = Ultra positive. Sensitivity P(T+ | D) = 0.90. Specificity P(T− | Dᶜ) = 0.98, so P(T+ | Dᶜ) = 0.02. Prevalence P(D) = 0.05 in this clinic.",
+    "steps": [
+      {
+        "title": "Build the marginal of T+",
+        "body": "P(T+) = 0.90×0.05 + 0.02×0.95 = 0.045 + 0.019 = 0.064. That is the law of total probability on the partition {D, Dᶜ}.",
+        "expression": "P(T+) = 0.064"
+      },
+      {
+        "title": "Condition the other way",
+        "body": "P(D | T+) = P(T+ | D) P(D) / P(T+) = 0.045 / 0.064 ≈ 0.70. Sensitivity was 0.90; PPV is 0.70. The missing 0.20 is the false-positive mass from the 95% who are not diseased.",
+        "expression": "P(D | T+) ≈ 0.70"
+      },
+      {
+        "title": "Change the slice, change the number",
+        "body": "In a community screen with P(D) = 0.005 the same test has PPV ≈ 0.18. The likelihood ratio did not change. The prior event D did."
+      }
+    ],
+    "takeaway": "Conditioning reverses only after you rebuild the marginal. Prevalence is that rebuild."
+  },
+  "check": [
+    {
+      "id": "cp-def",
+      "kind": "conceptual",
+      "prompt": "P(A | B) is best described as:",
+      "choices": [
+        "A new axiom beyond Kolmogorov",
+        "The original probability renormalised to the slice B",
+        "Always equal to P(B | A)",
+        "The p-value of A"
+      ],
+      "answer": "The original probability renormalised to the slice B",
+      "why": "The definition is a ratio of two probabilities already licensed by the axioms. Bayes then swaps labels.",
+      "whyWrong": {
+        "A new axiom beyond Kolmogorov": "It is derived.",
+        "Always equal to P(B | A)": "That is the classic swap error; you need the two priors.",
+        "The p-value of A": "A p-value is a tail under a null, a different object."
+      }
+    },
+    {
+      "id": "cp-calc",
+      "kind": "calculation",
+      "prompt": "P(B) = 0.4, P(A ∩ B) = 0.1. What is P(A | B)?",
+      "choices": ["0.1", "0.4", "0.25", "0.04"],
+      "answer": "0.25",
+      "why": "0.1 / 0.4 = 0.25. That is the definition.",
+      "whyWrong": {
+        "0.1": "The joint, not the conditional.",
+        "0.4": "P(B), the denominator.",
+        "0.04": "That multiplied instead of dividing."
+      }
+    },
+    {
+      "id": "cp-figure",
+      "kind": "figure",
+      "prompt": "On the mechanism map, the arrow into P(A) via partition is there because:",
+      "figureHint": "Lower branch from slice B.",
+      "choices": [
+        "Conditional probabilities cannot be used to recover a marginal",
+        "A partition plus P(A | Bⱼ) and P(Bⱼ) rebuilds the unconditional P(A) — the denominator Bayes will need",
+        "Partitions replace Bayes’ theorem",
+        "P(A) is always 1 after conditioning"
+      ],
+      "answer": "A partition plus P(A | Bⱼ) and P(Bⱼ) rebuilds the unconditional P(A) — the denominator Bayes will need",
+      "why": "Total probability is the rebuild step. Diagnostic PPV is the same rebuild with D versus not-D.",
+      "whyWrong": {
+        "Conditional probabilities cannot be used to recover a marginal": "That is exactly what the law of total probability does.",
+        "Partitions replace Bayes’ theorem": "They feed it.",
+        "P(A) is always 1 after conditioning": "Only P(B | B) = 1."
+      }
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "id": "tb-snp-thresholds",
+  "title": "SNP-distance thresholds are decision rules",
+  "dek": "A 5-SNP or 12-SNP cutoff to call “recent transmission” is a screen, not P(who infected whom). The clock, the mask, within-host diversity, and missing cases all sit between a count and an edge.",
+  "domain": "tb",
+  "aliases": [
+    "5 SNP threshold",
+    "12 SNP cluster",
+    "pairwise SNP distance TB",
+    "transmission cutoff"
+  ],
+  "tags": [
+    "transmission",
+    "SNP distance",
+    "clustering",
+    "clock"
+  ],
+  "story": [
+    "Pairwise SNP distance on a core alignment is a useful integer. It is not a likelihood of a directed transmission event. A threshold — 5 SNPs for “recent,” 12 for a looser cluster — is a decision rule with a false-near and false-far rate that depends on the clock, the mask, mixed infection, and how much of the outbreak you sequenced.",
+    "Published MTBC clocks are typically a fraction of a SNP per genome per year on a masked core, with wide intervals and lineage heterogeneity. Several SNPs can accumulate within a host before diagnosis. A 0-SNP pair can still be two people infected by an unsampled third. A 6-SNP pair can be household transmission plus a mask difference.",
+    "The stats transmission-genomics plate is the full caveat list. This plate is the beginner object: what the integer is, why people pick 5, and why a methods section that omits the mask is not a distance."
+  ],
+  "deepTitle": "How to quote a distance without lying",
+  "deep": [
+    "Always: reference build, mask (PE/PPE, repeats, often DR genes if you do not want treatment to look like phylogeny), mapping quality, mixed-site handling.",
+    "Homoplasy in resistance genes inflates unmasked distances among unrelated RR-TB. Masking DR genes can hide true within-host evolution under treatment. Say which you did.",
+    "Cluster definition (single-linkage at threshold t) is not a tree. Two isolates 4 SNPs from a third and 9 from each other can join one cluster at t = 5 via the third.",
+    "Dated trees and structured coalescents are models. Thresholds are screens to choose pairs for those models, or for epi follow-up."
+  ],
+  "formulas": [
+    {
+      "id": "clock",
+      "label": "Schematic expected SNPs",
+      "expression": "E[d] ≈ 2 λ t_div   (masked core, crude)",
+      "note": "λ a clock in SNPs/genome/year; t_div a divergence time. Not a licence to invert one pair into a date."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic pairwise distances: within-host / household near zero, recent-transmission cloud overlapping a 5-SNP line, and a far within-lineage mound. The threshold is a vertical cut on overlapping densities — a screen, not a posterior edge.",
+    "xLabel": "pairwise core SNPs (schematic)",
+    "curves": [
+      { "id": "hh", "label": "household / within-host", "mean": 1.2, "sd": 0.9 },
+      { "id": "recent", "label": "recent outbreak cloud", "mean": 4.5, "sd": 2.0 },
+      { "id": "far", "label": "same lineage, not recent", "mean": 18, "sd": 4.5 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Molecular epidemiology / SNP distance (Wikipedia phylogenetic overlay)",
+      "url": "https://en.wikipedia.org/wiki/Molecular_epidemiology",
+      "attribution": "Field naming under CC BY-SA. Threshold-as-decision-rule teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC TB genotyping / molecular epi overlay (public domain materials)",
+      "url": "https://www.cdc.gov/tb/php/genotyping/index.html",
+      "attribution": "U.S. public-domain programme language. Numeric clock examples are original teaching, not copied tables.",
+      "license": "U.S. Government work, public domain"
+    }
+  ],
+  "related": [
+    "stats-transmission-genomics",
+    "tb-relapse-reinfection",
+    "tb-core-genome-mask",
+    "tb-h37rv-genome",
+    "stats-molecular-clock",
+    "tb-heteroresistance"
+  ],
+  "example": {
+    "title": "4 SNPs unmasked, 1 SNP masked",
+    "setup": "Two household isolates. Unmasked distance 4, of which 3 SNPs sit in PE_PGRS. Core-masked distance 1. A slide titles this “below the 5-SNP threshold, proven transmission.”",
+    "steps": [
+      {
+        "title": "The integer moved with the mask",
+        "body": "Without the mask, you were counting mapping noise as phylogeny. With the mask, d = 1 is compatible with household transmission and with a shared source. It is not a directed edge."
+      },
+      {
+        "title": "Threshold as screen",
+        "body": "d = 1 passes a 5-SNP screen for follow-up. Proven means epi plus genomics plus (ideally) a model. The screen is the start."
+      },
+      {
+        "title": "Report both if PE SNPs were the story",
+        "body": "If someone wants to argue PE diversity, that is a different, harder alignment. Do not mix it into the transmission integer silently."
+      }
+    ],
+    "takeaway": "A threshold cuts overlapping densities. Name the mask or you did not have a distance."
+  },
+  "check": [
+    {
+      "id": "snp-rule",
+      "kind": "conceptual",
+      "prompt": "A 5-SNP cutoff for “recent transmission” is best described as:",
+      "choices": [
+        "P(directed transmission | data) = 1",
+        "A decision rule / screen whose error rates depend on clock, mask, and sampling",
+        "A WHO critical concentration",
+        "A Bayes factor that does not need a clock"
+      ],
+      "answer": "A decision rule / screen whose error rates depend on clock, mask, and sampling",
+      "why": "Thresholds are not likelihoods of who infected whom.",
+      "whyWrong": {
+        "P(directed transmission | data) = 1": "Distance is not a posterior edge.",
+        "A WHO critical concentration": "That is MIC DST.",
+        "A Bayes factor that does not need a clock": "A BF would need models; a cutoff is not that."
+      }
+    },
+    {
+      "id": "snp-mask",
+      "kind": "calculation",
+      "prompt": "Unmasked d = 12, of which 10 SNPs are in PE/PPE. Masked core d = 2. For a 5-SNP recent-transmission screen you should quote:",
+      "choices": [
+        "12, because more SNPs are more conservative",
+        "The masked distance (2), with the mask named — 12 was inflated by poorly mapped genes",
+        "0, because household is always 0",
+        "400, the between-lineage prior"
+      ],
+      "answer": "The masked distance (2), with the mask named — 12 was inflated by poorly mapped genes",
+      "why": "PE/PPE SNPs are the classic inflation. The screen uses the core integer you defined.",
+      "whyWrong": {
+        "12, because more SNPs are more conservative": "Inflated noise is not conservatism.",
+        "0, because household is always 0": "Not always.",
+        "400, the between-lineage prior": "Wrong comparison."
+      }
+    },
+    {
+      "id": "snp-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, the 5-SNP idea is a cut through overlapping curves. That picture warns that:",
+      "figureHint": "Household, outbreak, and far-lineage mounds overlap.",
+      "choices": [
+        "Thresholds perfectly separate household from non-recent pairs with no errors",
+        "False-near and false-far pairs exist because the clouds overlap; the cut is a screen",
+        "Far-lineage pairs sit at 0 SNPs",
+        "Clock rates are infinite"
+      ],
+      "answer": "False-near and false-far pairs exist because the clouds overlap; the cut is a screen",
+      "why": "Overlapping densities are why a cutoff is not a posterior.",
+      "whyWrong": {
+        "Thresholds perfectly separate household from non-recent pairs with no errors": "The overlap is the lesson.",
+        "Far-lineage pairs sit at 0 SNPs": "They sit to the right.",
+        "Clock rates are infinite": "No."
+      }
+    }
+  ]
+}

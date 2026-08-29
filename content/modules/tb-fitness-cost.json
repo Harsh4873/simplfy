@@ -1,0 +1,138 @@
+{
+  "id": "tb-fitness-cost",
+  "title": "Fitness cost, compensation, and why RR-TB still spreads",
+  "dek": "A resistance mutation can slow growth in broth and still succeed in a cavity and a city if compensation, bottleneck, and transmission repair the cost. Competitive index ≠ a DST column.",
+  "domain": "tb",
+  "aliases": [
+    "fitness cost of resistance",
+    "competitive index Mtb",
+    "compensatory evolution TB",
+    "transmission of resistant clones"
+  ],
+  "tags": [
+    "fitness",
+    "compensation",
+    "evolution",
+    "RR-TB"
+  ],
+  "story": [
+    "Many resistance mutations have a fitness cost in vitro: slower doubling, a smaller competitive index against wild type in mixed culture, fewer insertions in a TnSeq pool. rpoB S450L is costly for RNAP until rpoC/rpoA compensation retunes the enzyme. Some pncA LOF alleles look cheap; some gyrA alleles look expensive. Cost is allele-specific, not a property of the word “resistant.”",
+    "Cost in 7H9 is not cost in a cavity. Mutation supply scales with burden; a small defect can be paid for by a huge population. Once a compensated clone is airborne, epidemiology can dominate broth rankings. That is why S450L lineages are global and why “resistant strains cannot transmit” is a 1990s sentence.",
+    "Computational genomics: fitness is a covariate for which alleles you expect to see, and a reason compensatory RNAP sites belong in outbreak masks or not depending on the question. It is not a reason to down-grade a high-confidence rpoB hit because the strain “looks fit.”"
+  ],
+  "deepTitle": "How cost is measured, and how it is misused",
+  "deep": [
+    "Competitive index: mix WT and mutant, compare ratios before and after outgrowth. A CI of 0.5 is a cost; it is not 50% lower MIC.",
+    "TnSeq fitness (resampling between conditions) is a pool-relative number, not a clinical prognosis.",
+    "Compensation can be epistatic and lineage-dependent. Importing an L4 rpoC story into L2 without looking is a prior, not a result.",
+    "Within-host: a costly allele can still rise under drug pressure. After treatment stops, a fitter revertant or a compensated sister can take over. Serial isolates are the movie; one genome is a still."
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "Schematic growth-rate distributions: wild-type broth, uncompensated S450L shifted left (cost), compensated RR restored toward WT. Transmission success can still follow the compensated mound even if a lab CI looked grim last decade.",
+    "xLabel": "relative growth (schematic)",
+    "curves": [
+      { "id": "wt", "label": "wild-type broth", "mean": 8, "sd": 0.8 },
+      { "id": "cost", "label": "uncompensated RR", "mean": 5.2, "sd": 1.0 },
+      { "id": "comp", "label": "compensated RR", "mean": 7.4, "sd": 0.9 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Fitness (biology) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fitness_(biology)",
+      "attribution": "Fitness as a relative reproductive number under CC BY-SA. TB compensation teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "WHO DR-TB epidemiology overlay (open reports)",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme",
+      "attribution": "Existence of transmitted RR/MDR as a public-health fact. Allele-specific cost teaching is original.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    }
+  ],
+  "related": [
+    "tb-rpoc-compensatory",
+    "tb-resistance",
+    "tb-tnseq-transit",
+    "tb-essentiality",
+    "tb-rifampin",
+    "tb-lineage-beijing"
+  ],
+  "example": {
+    "title": "CI 0.4 and a city outbreak",
+    "setup": "A lab measures competitive index 0.4 for a new rpoB allele versus H37Rv in 7H9. A programme officer concludes the allele cannot cause an outbreak. City WGS already shows a 40-isolate cluster with that allele plus rpoC compensation.",
+    "steps": [
+      {
+        "title": "Broth ≠ city",
+        "body": "CI 0.4 is a real cost in that assay. Compensation and airborne transmission are extra parameters. The cluster is the epidemiologic likelihood."
+      },
+      {
+        "title": "Do not un-call DST",
+        "body": "The rpoB allele still grades R. Fitness is not a susceptibility column."
+      },
+      {
+        "title": "Use cost as a prior for which alleles spread",
+        "body": "Cheap, compensated alleles are the ones you expect to see globally. Expensive, uncompensated alleles may stay in one patient. That is a prior for genomic epi, not a reason to skip contact investigation."
+      }
+    ],
+    "takeaway": "Fitness cost is real, allele-specific, and not a transmission off-switch."
+  },
+  "check": [
+    {
+      "id": "fit-ci",
+      "kind": "conceptual",
+      "prompt": "A competitive index of 0.5 for a resistant mutant versus wild type in broth means:",
+      "choices": [
+        "The MIC is halved",
+        "The mutant was at a growth disadvantage in that assay, not that it cannot transmit in a city",
+        "The isolate is NTM",
+        "Xpert is negative by definition"
+      ],
+      "answer": "The mutant was at a growth disadvantage in that assay, not that it cannot transmit in a city",
+      "why": "CI is an in-vitro ratio. Compensated RR-TB outbreaks exist.",
+      "whyWrong": {
+        "The MIC is halved": "CI is not a MIC.",
+        "The isolate is NTM": "Wrong object.",
+        "Xpert is negative by definition": "No."
+      }
+    },
+    {
+      "id": "fit-s450",
+      "kind": "calculation",
+      "prompt": "rpoB S450L is common worldwide partly because:",
+      "choices": [
+        "It is silent and therefore cost-free always",
+        "It is tolerated relative to some other RRDR alleles and is often paired with compensatory RNAP mutations that restore fitness",
+        "Xpert cannot see it, so it spreads undetected only",
+        "It confers BDQ-R"
+      ],
+      "answer": "It is tolerated relative to some other RRDR alleles and is often paired with compensatory RNAP mutations that restore fitness",
+      "why": "The rpoC plate is this sentence. Cost is not infinite.",
+      "whyWrong": {
+        "It is silent and therefore cost-free always": "S450L is missense and can be costly until compensated.",
+        "Xpert cannot see it, so it spreads undetected only": "Xpert is built around RRDR; S450L is the celebrity hit.",
+        "It confers BDQ-R": "Wrong drug."
+      }
+    },
+    {
+      "id": "fit-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, the compensated-RR curve sits near wild-type to show:",
+      "figureHint": "Three growth-rate mounds.",
+      "choices": [
+        "Compensation can restore growth toward WT without undoing the rpoB resistance mechanism",
+        "Compensation erases rpoB from the genome",
+        "WT cannot grow",
+        "Fitness is a critical concentration"
+      ],
+      "answer": "Compensation can restore growth toward WT without undoing the rpoB resistance mechanism",
+      "why": "Secondary RNAP alleles retune the enzyme. They are not a second RRDR for Xpert.",
+      "whyWrong": {
+        "Compensation erases rpoB from the genome": "Primary RR remains.",
+        "WT cannot grow": "WT is the rightmost/fast mound here.",
+        "Fitness is a critical concentration": "Wrong object."
+      }
+    }
+  ]
+}

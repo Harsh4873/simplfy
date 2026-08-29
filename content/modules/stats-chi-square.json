@@ -1,0 +1,148 @@
+{
+  "id": "stats-chi-square",
+  "title": "The χ² family as a named sampling law",
+  "dek": "χ²_k is the law of a sum of k independent standard Normal squares. It is the reference for many LRTs, Pearson goodness-of-fit statistics, and sample variances — not a test by itself.",
+  "domain": "stats",
+  "aliases": [
+    "chi-square distribution",
+    "chi square law",
+    "gamma with half-integer shape",
+    "Wilks reference"
+  ],
+  "tags": [
+    "probability",
+    "chi-square",
+    "sampling",
+    "LRT"
+  ],
+  "story": [
+    "If Z₁, …, Z_k are iid N(0,1), then Q = ∑ Zⱼ² ~ χ²_k. The mean is k and the variance is 2k. The density is skewed for small k and looks more Normal as k grows (another CLT). This is a sampling law for a statistic, not a model for CFU.",
+    "Why software prints χ²: Wilks’ theorem sends 2Δℓ to χ² with df equal to the number of interior restrictions. Pearson’s X² = ∑ (O − E)²/E is asymptotically χ² under a correctly specified multinomial/Poisson model. A Gaussian sample variance: (n−1)s²/σ² ~ χ²_{n−1} in the iid Normal case. Three different statistics, one named family of references.",
+    "The distribution is not the test. A test is a rejection rule that uses a tail of this (or another) reference. Boundary LRTs, sparse tables, and sandwich-based “Wald χ²” with the wrong df are how the name gets ahead of the regularity."
+  ],
+  "deepTitle": "df, noncentral cousins, and abuse",
+  "deep": [
+    "Degrees of freedom k is not “n − 1” by slogan. It is the rank of a quadratic form, or the number of independent restrictions, or the dimension gap in a nested MLE — say which.",
+    "Noncentral χ² appears in power calculations: if the Zⱼ have nonzero means, Q is noncentral with a noncentrality parameter that grows like n times a signal. Power of an LRT is not 1 − α.",
+    "Sums: independent χ²_a and χ²_b add to χ²_{a+b}. That is why nested deviance gaps add in exponential families when the restrictions stack.",
+    "t_ν is a Normal divided by √(χ²_ν/ν), independent numerator and denominator. z versus t is a Normal-versus-estimated-scale story, not a different philosophy of H₀.",
+    "Pearson X² with tiny expected counts does not wait for the χ² limit. Exact multinomial tests or a likelihood-ratio with simulation exist because the name on the printout is an approximation."
+  ],
+  "formulas": [
+    {
+      "id": "chi-def",
+      "label": "Definition",
+      "expression": "Zⱼ iid N(0,1)  ⇒  ∑_{j=1}^k Zⱼ²  ~  χ²_k",
+      "note": "E[Q] = k, Var(Q) = 2k."
+    },
+    {
+      "id": "wilks-ref",
+      "label": "Wilks reference (regular, interior)",
+      "expression": "2(ℓ̂_full − ℓ̂_red) →d χ²_k",
+      "note": "k = number of restrictions. Own LRT plate for the failures."
+    }
+  ],
+  "visual": {
+    "kind": "density-shift",
+    "caption": "χ²_k as k grows: a right-skewed law at k = 2, a broader law at k = 6, and a more symmetric mound at large k. Mean equals k, so the curves sit farther right as df increase — they are not a single “chi-square test shape.”",
+    "xLabel": "Q (schematic χ² scale)",
+    "curves": [
+      { "id": "k2", "label": "χ²_2 (mean 2)", "mean": 2, "sd": 2 },
+      { "id": "k6", "label": "χ²_6 (mean 6)", "mean": 6, "sd": 3.46 },
+      { "id": "k20", "label": "χ²_20 (mean 20)", "mean": 20, "sd": 6.32 }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Chi-squared distribution — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Chi-squared_distribution",
+      "attribution": "Glossary-level definition under CC BY-SA. LRT/Pearson mapping is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — chi-square distribution",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-lrt",
+    "wiki-wilks",
+    "wiki-anova",
+    "stats-normal-clt",
+    "stats-wald-score",
+    "stats-hypothesis-testing"
+  ],
+  "example": {
+    "title": "Why Λ = 5.3 is not “χ² = 5.3 therefore p < 0.05” without k",
+    "setup": "An LRT gives Λ = 2Δℓ = 5.3. One person looks up a χ²_1 5% point (3.84) and rejects. Another says the full model added two parameters and looks up χ²_2 (5.99) and does not reject.",
+    "steps": [
+      {
+        "title": "Name k",
+        "body": "If the extra terms were two free parameters with interior MLE and nested models, k = 2. P(χ²_2 ≥ 5.3) ≈ 0.07. If only one extra parameter, k = 1 and p ≈ 0.021. The statistic is the same; the reference is not."
+      },
+      {
+        "title": "Regularity",
+        "body": "If one of those parameters was a variance on the boundary, neither χ²_1 nor χ²_2 is the null law. The name on the printout does not repair that."
+      },
+      {
+        "title": "Print df",
+        "body": "A methods line “χ² p < 0.05” without k, without the restriction, and without the statistic is not a result."
+      }
+    ],
+    "takeaway": "χ²_k is a family. The subscript is part of the name."
+  },
+  "check": [
+    {
+      "id": "chi-mean",
+      "kind": "conceptual",
+      "prompt": "For Q ~ χ²_k, E[Q] equals:",
+      "choices": [
+        "2k",
+        "k",
+        "1 regardless of k",
+        "n − 1 always"
+      ],
+      "answer": "k",
+      "why": "A sum of k independent unit-variance Normal squares has mean k. Variance is 2k.",
+      "whyWrong": {
+        "2k": "That is Var(Q), not the mean.",
+        "1 regardless of k": "Only χ²_1 has mean 1.",
+        "n − 1 always": "That is df for an iid Normal sample variance, one use of the family, not the definition."
+      }
+    },
+    {
+      "id": "chi-calc",
+      "kind": "calculation",
+      "prompt": "Z₁, Z₂ iid N(0,1). What is the law of Z₁² + Z₂²?",
+      "choices": ["N(0,2)", "χ²_2", "t_2", "Binomial(2, 1/2)"],
+      "answer": "χ²_2",
+      "why": "Definition of χ² with k = 2. Mean 2, not a Normal on the original scale.",
+      "whyWrong": {
+        "N(0,2)": "The sum of the Z’s (not squares) would be N(0,2).",
+        "t_2": "t needs a Normal divided by an independent χ²-based SD.",
+        "Binomial(2, 1/2)": "Wrong family."
+      }
+    },
+    {
+      "id": "chi-figure",
+      "kind": "figure",
+      "prompt": "On the density plate, why do the curves sit farther right as the label’s k grows?",
+      "figureHint": "Three χ² curves with means 2, 6, 20.",
+      "choices": [
+        "Because larger df shrink the mean toward 0",
+        "Because E[χ²_k] = k, so the sampling law of the sum of more squared Normals is centred farther from 0",
+        "Because χ² is a probability of H₀",
+        "Because software always uses k = 2"
+      ],
+      "answer": "Because E[χ²_k] = k, so the sampling law of the sum of more squared Normals is centred farther from 0",
+      "why": "The plate is teaching a family of laws, not one sacred test shape.",
+      "whyWrong": {
+        "Because larger df shrink the mean toward 0": "Opposite.",
+        "Because χ² is a probability of H₀": "χ² is a sampling law for a statistic.",
+        "Because software always uses k = 2": "k is the restriction count or rank."
+      }
+    }
+  ]
+}

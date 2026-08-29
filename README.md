@@ -1,30 +1,38 @@
 # Simplfy
 
-A visual study studio for turning hard statistical and biological ideas into **research-grade** explanations — figures first, then the actual math or biology, then a check.
+A study buddy for hard statistical and biological ideas. Not a chatbot: a **workbook**. Each topic is a five-screen lesson — analogy and plain speech, a worked problem, practice you actually do, “say it back in your own words,” then the dense reference shelf.
 
-Simplfy is built for a computational-genomics / *Mycobacterium tuberculosis* working memory: likelihoods and hierarchical models on one rail, *rpoB* numbering and gDST catalogues on the other. “Simplify” here means *clarity*, not baby-talk.
+Simplfy is built for a computational-genomics / *Mycobacterium tuberculosis* working memory: likelihoods and hierarchical models on one path, *rpoB* numbering and gDST catalogues on the other.
 
-The app is a static Vite + React + TypeScript site. There is **no backend, no account, and no Firebase**. The local library (uploads, pastes, recall misses) lives in **IndexedDB on this browser / this device**. Refresh keeps it; another machine does not.
+The app is a static Vite + React + TypeScript site. There is **no backend, no account, and no live model**. The local library (uploads, pastes, recall misses) lives in **IndexedDB on this browser / this device**. Refresh keeps it; another machine does not.
 
 Live path on GitHub Pages: `https://<user>.github.io/simplfy/` (base `/simplfy/`).
 
-## Product model
+## How a session works
 
-Three panes, one job:
+1. **Teach** — analogy first, then simple words, then the figure, then the traps.
+2. **Example** — one worked problem, step by step (or show all).
+3. **Practice** — two or three checks, with a scratch box. Misses become recall cards.
+4. **Say it back** — write it in your own words, then reveal a model answer.
+5. **Shelf** — the original research-grade notes, formulas, sources, concept map.
 
-1. **Intake** — drop PDFs and text files, paste a paragraph, or type a keyword. Search covers bundled plates *and* the local library.
-2. **Canvas** — a scientific plate (SVG diagram or grid) plus a tight story. Progressive disclosure opens the real likelihood / the real gene. Sources are listed; copyrighted textbooks are not dumped.
-3. **Check** — conceptual, calculation, and “what does this figure mean” items with immediate why-feedback. Misses become a **recall deck**.
+Eight flagship topics have a full tutor script (LRT, likelihood, foundations, Bayes, OLS/GLM, hierarchical models, rifampin/*rpoB*, granuloma, plus WGS-as-DST). Every other plate still gets the same five screens; the tutor layer is derived from the catalogue so you never start on a wall of jargon.
 
-Serious extras that belong in a studio, not a quiz app:
+Pages:
 
-- **Concept map** of related plates
-- **Worked-example stepper**
-- **Local recall deck**
+- **Home** — how a session works, continue, guided lessons, stats/TB paths
+- **Learn** — the five-step lesson
+- **Shelf** — the encyclopedia of every bundled plate
+- **Recall** — Quizlet-style flip deck of misses
+- **Notes** — drop PDFs / paste markdown; briefs link into lessons
+
+Light and dark themes. The toggle is in the header; the choice is stored in `localStorage`.
 
 ## Bundled knowledge
 
-First-wave modules live in [`content/modules/`](content/modules/) as JSON. The app glob-imports every file in that folder at build time. Add a module by dropping a new JSON file that matches `StudyModule` in `src/catalog/types.ts` — see [`content/README.md`](content/README.md). No app rewrite.
+Modules live in [`content/modules/`](content/modules/) as JSON. The app glob-imports every file in that folder at build time. Add a module by dropping a new JSON file that matches `StudyModule` in `src/catalog/types.ts` — see [`content/README.md`](content/README.md).
+
+Tutor voice for flagship lessons lives in [`src/lesson/overlays.ts`](src/lesson/overlays.ts). Derived lessons (analogy from figure kind, plain speech from the dek and first story paragraph) are in [`src/lesson/fromModule.ts`](src/lesson/fromModule.ts).
 
 Seed coverage:
 
@@ -49,7 +57,7 @@ npm run build
 npm run preview
 ```
 
-Preview serves at `/simplfy/`.
+Preview serves at `/simplfy/`. Hash routes: `#/learn/stats-lrt/teach`, `#/shelf`, `#/recall`, `#/notes`.
 
 ## Persistence
 
@@ -58,7 +66,8 @@ Preview serves at `/simplfy/`.
 | Bundled plates | `content/modules/*.json` in the static build |
 | Uploaded files + extracted text | IndexedDB `simplfy` / `library` |
 | Recall misses | IndexedDB `simplfy` / `recall` |
-| Last open plate | IndexedDB `simplfy` / `prefs` |
+| Last open plate / note | IndexedDB `simplfy` / `prefs` |
+| Light / dark theme | `localStorage` key `simplfy-theme` |
 
 Clearing site data in the browser wipes the library. There is no sync.
 
