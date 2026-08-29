@@ -16,9 +16,13 @@ export const STUDY_PATHS: StudyPath[] = [
       "stats-probability-axioms",
       "stats-expectation-variance",
       "stats-conditional-probability",
+      "stats-bayes-theorem",
       "stats-bernoulli-binomial",
+      "stats-law-of-large-numbers",
       "stats-normal-clt",
+      "stats-t-distribution",
       "stats-sd-versus-se",
+      "stats-qq-plot",
       "stats-hypothesis-testing",
       "stats-pvalue-versus-posterior",
       "stats-chi-square",
@@ -65,7 +69,13 @@ export const STUDY_PATHS: StudyPath[] = [
     title: "Host and lesion",
     dek: "Innate versus adaptive, the PRR cartoon, primary versus post-primary, then the walled city.",
     domain: "tb",
-    ids: ["tb-innate-adaptive", "tb-tlr-nod", "tb-primary-postprimary", "tb-granuloma"],
+    ids: [
+      "tb-innate-adaptive",
+      "tb-tlr-nod",
+      "tb-primary-postprimary",
+      "tb-granuloma",
+      "tb-dormancy-versus-persistence",
+    ],
   },
 ];
 
