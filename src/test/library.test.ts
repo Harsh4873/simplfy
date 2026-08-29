@@ -1,14 +1,34 @@
 import { describe, expect, it } from "vitest";
 import {
   listLibrary,
+  listStudios,
   openStudioDb,
   putLibraryItem,
+  putStudio,
   type LibraryItem,
+  type StudioCanvas,
 } from "../library/db";
 import { parseDroppedFile, mimeForDroppedFile } from "../library/parse";
 import { extractTerms, firstLineTitle } from "../library/fieldNote";
 
 describe("local library", () => {
+  it("round-trips a desk canvas through IndexedDB", async () => {
+    const db = await openStudioDb();
+    const canvas: StudioCanvas = {
+      id: "lesson:tb-tnseq-transit",
+      kind: "lesson",
+      title: "TnSeq and TRANSIT",
+      moduleId: "tb-tnseq-transit",
+      step: "papers",
+      pinned: false,
+      createdAt: 1,
+      updatedAt: 2,
+    };
+    await putStudio(db, canvas);
+    const listed = await listStudios(db);
+    expect(listed.some((row) => row.id === "lesson:tb-tnseq-transit" && row.step === "papers")).toBe(true);
+  });
+
   it("round-trips a pasted note through IndexedDB", async () => {
     const db = await openStudioDb();
     const item: LibraryItem = {

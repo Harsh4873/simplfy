@@ -402,8 +402,9 @@ export function LearnPage({
   const module = api.byId.get(id);
 
   useEffect(() => {
-    if (module) void api.touchLesson(module, step);
-  }, [api.touchLesson, module, step]);
+    if (!api.ready || !module) return;
+    void api.touchLesson(module, step);
+  }, [api.ready, api.touchLesson, module, step]);
 
   if (!module) {
     return (

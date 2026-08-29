@@ -19,8 +19,9 @@ export function PapersPage({
   }, [q]);
 
   useEffect(() => {
+    if (!api.ready) return;
     void api.touchPapers(q ?? "", q ? `Lookup · ${q}` : "Papers lookup");
-  }, [api.touchPapers, q]);
+  }, [api.ready, api.touchPapers, q]);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();

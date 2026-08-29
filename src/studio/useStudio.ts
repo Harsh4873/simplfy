@@ -59,17 +59,30 @@ export function useStudio() {
 
   useEffect(() => {
     let cancelled = false;
+    let database: IDBDatabase | null = null;
     void (async () => {
-      const database = await openStudioDb();
-      if (cancelled) return;
-      await refresh(database);
-      const last = await getPref(database, "lastTopic");
-      if (cancelled) return;
-      setContinueRef(last);
-      setDb(database);
+      try {
+        database = await openStudioDb();
+        if (cancelled) {
+          database.close();
+          return;
+        }
+        await refresh(database);
+        const last = await getPref(database, "lastTopic");
+        if (cancelled) {
+          database.close();
+          return;
+        }
+        setContinueRef(last);
+        setDb(database);
+      } catch (error) {
+        console.error(error);
+        if (!cancelled) setNotice("This browser blocked the local desk. Lessons still run; canvases will not persist.");
+      }
     })();
     return () => {
       cancelled = true;
+      database?.close();
     };
   }, [refresh]);
 
@@ -85,17 +98,22 @@ export function useStudio() {
   const upsertCanvas = useCallback(
     async (partial: Omit<StudioCanvas, "createdAt" | "updatedAt" | "pinned"> & { pinned?: boolean }) => {
       if (!db) return;
-      const existing = await getStudio(db, partial.id);
-      const now = Date.now();
-      const canvas: StudioCanvas = {
-        pinned: existing?.pinned ?? false,
-        createdAt: existing?.createdAt ?? now,
-        ...existing,
-        ...partial,
-        updatedAt: now,
-      };
-      await putStudio(db, canvas);
-      await refresh(db);
+      try {
+        const existing = await getStudio(db, partial.id);
+        const now = Date.now();
+        const canvas: StudioCanvas = {
+          pinned: existing?.pinned ?? false,
+          createdAt: existing?.createdAt ?? now,
+          ...existing,
+          ...partial,
+          updatedAt: now,
+        };
+        await putStudio(db, canvas);
+        await refresh(db);
+      } catch (error) {
+        console.error(error);
+        setNotice("Could not save this canvas to the local desk.");
+      }
     },
     [db, refresh],
   );
