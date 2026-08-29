@@ -15,6 +15,14 @@ describe("class ingest", () => {
     expect(inferCollectionName([fileAt("STAT651/week1/lrt.md"), fileAt("STAT651/week2/clt.md")])).toBe("STAT651");
     expect(inferCollectionName([fileAt("a.md")], "Host immunology")).toBe("Host immunology");
     expect(inferCollectionName([fileAt("lone.md")])).toBe("Inbox");
+    expect(
+      inferCollectionName(
+        [fileAt("update/README.md"), fileAt("update/last-class.md")],
+        "",
+        "# CSCE 627 — update pack (read this folder)\n\nBriefing.",
+      ),
+    ).toBe("CSCE 627");
+    expect(inferCollectionName([fileAt("update/todo.md")])).toBe("Inbox");
   });
 
   it("skips repo junk", () => {
@@ -35,6 +43,17 @@ describe("class ingest", () => {
     ];
     const kept = pickDropFiles(files).map((file) => file.name);
     expect(kept).toEqual(["tnseq.md", "slides.pdf", "pipeline.ts"]);
+  });
+
+  it("drops snapshot files when the living pack is in the same folder", () => {
+    const kept = pickDropFiles([
+      fileAt("update/README.md", "# Course"),
+      fileAt("update/last-class.md", "# Last class"),
+      fileAt("update/snapshots/2026-08-25.md", "# Old"),
+    ]).map((file) => file.name);
+    expect(kept).toEqual(expect.arrayContaining(["README.md", "last-class.md"]));
+    expect(kept).toHaveLength(2);
+    expect(kept.some((name) => /2026-08-25/.test(name))).toBe(false);
   });
 
   it("spawns lessons and gene lookups from filed notes", () => {
@@ -62,5 +81,31 @@ describe("class ingest", () => {
     const plan = spawnPlan(items, modules);
     expect(plan.moduleIds).toContain("tb-tnseq-transit");
     expect(plan.paperQueries).toContain("prpD");
+  });
+
+  it("does not attach catalogue plates just because a note talks about regular languages", () => {
+    const { modules } = loadCatalog();
+    const items: LibraryItem[] = [
+      {
+        id: "n2",
+        kind: "note",
+        name: "DFA",
+        mime: "text/markdown",
+        size: 10,
+        text: "Regular languages and DFAs. Union and concatenation. Finite automata.",
+        createdAt: 1,
+        brief: {
+          version: 1,
+          title: "DFA",
+          dek: "",
+          stripped: "Regular languages and DFAs.",
+          blocks: [],
+          hits: [],
+          links: [],
+        },
+      },
+    ];
+    expect(spawnPlan(items, modules).moduleIds).toEqual([]);
+    expect(spawnPlan(items, modules).paperQueries).toEqual([]);
   });
 });

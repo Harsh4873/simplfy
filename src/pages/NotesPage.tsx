@@ -1,6 +1,6 @@
 import { useRef, type DragEvent, type FormEvent } from "react";
 import { FieldNoteDoc } from "../studio/FieldNoteDoc";
-import { folderOf } from "../library/ingest";
+import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
 import { isLessonStep, libraryNoteRoute, type Route } from "../app/routes";
@@ -8,15 +8,27 @@ import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { cx } from "../ui/cx";
 
+function sortPackFiles(items: LibraryItem[]) {
+  return [...items].sort((a, b) => {
+    const relA = a.relPath ?? a.name;
+    const relB = b.relPath ?? b.name;
+    return packFileRank(relA) - packFileRank(relB) || relA.localeCompare(relB);
+  });
+}
+
 function groupFiles(items: LibraryItem[]) {
   const groups = new Map<string, LibraryItem[]>();
-  for (const item of items) {
+  for (const item of sortPackFiles(items)) {
     const folder = folderOf(item.relPath ?? item.name);
     const list = groups.get(folder) ?? [];
     list.push(item);
     groups.set(folder, list);
   }
   return [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+}
+
+function fileLabel(item: LibraryItem) {
+  return item.relPath?.split("/").pop() || item.name;
 }
 
 export function NotesPage({
@@ -45,10 +57,11 @@ export function NotesPage({
 
   const typedName = () => nameRef.current?.value ?? "";
 
-  const ingest = async (files: File[]) => {
+  const ingest = async (files: File[], replace?: boolean) => {
     const last = await api.addFiles(files, {
       collectionId: collection?.id,
-      collectionName: typedName() || collection?.name,
+      collectionName: typedName(),
+      replace: replace ?? looksLikeFolderDrop(files),
     });
     if (last?.collectionId) {
       navigate({ name: "notes", classId: last.collectionId });
@@ -131,9 +144,9 @@ export function NotesPage({
   }
 
   if (collection) {
-    const spawned = api.studios.filter((row) => row.collectionId === collection.id && row.kind !== "class");
-    const lessons = spawned.filter((row) => row.kind === "lesson");
-    const papers = spawned.filter((row) => row.kind === "papers");
+    const lessons = api.studios.filter((row) => row.collectionId === collection.id && row.kind === "lesson");
+    const papers = api.studios.filter((row) => row.collectionId === collection.id && row.kind === "papers");
+    const noteDeck = api.recall.filter((card) => card.collectionId === collection.id && card.noteId);
     const folders = groupFiles(classItems);
     return (
       <div className="page notes-page">
@@ -144,9 +157,25 @@ export function NotesPage({
             </button>
           </p>
           <h2 className="section-title">{collection.name}</h2>
+          <form
+            className="paste"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const name = String(new FormData(event.currentTarget).get("name") ?? "");
+              void api.renameCollection(collection.id, name);
+            }}
+          >
+            <label htmlFor="rename-class">Rename class</label>
+            <div className="search-row">
+              <input id="rename-class" name="name" defaultValue={collection.name} key={collection.name} autoComplete="off" />
+              <button type="submit" className="ghost" disabled={!api.ready}>
+                Save name
+              </button>
+            </div>
+          </form>
           <div className={cx("drop", api.busy && "is-busy")} {...dropProps}>
-            <p>Drop more lecture notes into this class.</p>
-            <p className="hint">Folders keep their subpaths (week1/tnseq.md).</p>
+            <p>Drop an update folder to replace these files and rebuild the deck.</p>
+            <p className="hint">Add files merges. Add folder / drop a directory replaces this class with that pack.</p>
             <div className="step-nav">
               <button type="button" className="text-btn" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
                 Add files
@@ -162,7 +191,7 @@ export function NotesPage({
               multiple
               aria-label="Choose files"
               onChange={(event) => {
-                void ingest([...(event.target.files ?? [])]);
+                void ingest([...(event.target.files ?? [])], false);
                 event.currentTarget.value = "";
               }}
             />
@@ -175,7 +204,7 @@ export function NotesPage({
               // @ts-expect-error webkitdirectory is the folder picker
               webkitdirectory=""
               onChange={(event) => {
-                void ingest([...(event.target.files ?? [])]);
+                void ingest([...(event.target.files ?? [])], true);
                 event.currentTarget.value = "";
               }}
             />
@@ -187,7 +216,7 @@ export function NotesPage({
               File in the studio
             </button>
           </form>
-          <p className="kicker">Files</p>
+          <p className="kicker">Files in this pack</p>
           {classItems.length === 0 ? (
             <p className="hint">Empty class. Drop a folder of notes.</p>
           ) : (
@@ -195,26 +224,33 @@ export function NotesPage({
               <div key={folder || "(root)"} className="class-folder">
                 {folder ? <p className="muted">{folder}/</p> : null}
                 <ul className="lib-list">
-                  {items.map((item) => (
+                  {items.map((item) => {
+                    const label = fileLabel(item);
+                    const subtitle =
+                      item.brief?.title && item.brief.title.toLowerCase() !== label.toLowerCase()
+                        ? item.brief.title
+                        : item.mime;
+                    return (
                     <li key={item.id}>
                       <button
                         type="button"
                         className="lib-item"
                         onClick={() => navigate(libraryNoteRoute(item.id, collection.id))}
                       >
-                        <span>{item.name}</span>
-                        <span className="muted">{item.relPath?.split("/").pop() || item.mime}</span>
+                        <span>{label}</span>
+                        <span className="muted">{subtitle}</span>
                       </button>
                       <button
                         type="button"
                         className="ghost danger"
                         onClick={() => void api.removeLibrary(item.id)}
-                        aria-label={`Remove ${item.name}`}
+                        aria-label={`Remove ${label}`}
                       >
                         Remove
                       </button>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               </div>
             ))
@@ -224,9 +260,9 @@ export function NotesPage({
           <p className="kicker">Class</p>
           <h1>{collection.name}</h1>
           <p className="lede">
-            A class is a folder: lecture markdown, a repo slice, PDFs. We keep the files, open a note
-            canvas for each, then spin lesson and papers canvases from genes and plates those notes
-            mention. That is how a pile of notes becomes a desk instead of one lonely markdown file.
+            This class is the files you dropped. An update folder replaces the previous pack
+            (leftovers and snapshots are dropped) and rebuilds the recall deck from those notes —
+            last-class, deadlines, todos — not a pile of unrelated catalogue plates.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
@@ -253,10 +289,44 @@ export function NotesPage({
             </button>
           </div>
           <section>
-            <h2 className="section-title">Studios from these notes</h2>
-            {spawned.length === 0 ? (
-              <p className="hint">Drop files with genes, tests, or catalogue terms and canvases will appear.</p>
+            <h2 className="section-title">This pack</h2>
+            {classItems.length === 0 ? (
+              <p className="hint">No files yet. Drop the update folder for this class.</p>
             ) : (
+              <ul className="map-list">
+                {sortPackFiles(classItems).map((item) => (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      className="text-btn"
+                      onClick={() => navigate(libraryNoteRoute(item.id, collection.id))}
+                    >
+                      {fileLabel(item)}
+                    </button>
+                    {item.brief?.title && item.brief.title !== fileLabel(item) ? (
+                      <span className="muted"> — {item.brief.title}</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+          <section>
+            <h2 className="section-title">Deck from these notes</h2>
+            {noteDeck.length === 0 ? (
+              <p className="hint">Drop a markdown pack and we cut recall cards from headings, tables, and todos in those files.</p>
+            ) : (
+              <p className="lede">
+                {noteDeck.length} card{noteDeck.length === 1 ? "" : "s"} built from this class’s files.{" "}
+                <button type="button" className="text-btn" onClick={() => navigate({ name: "recall", classId: collection.id })}>
+                  Recall this class
+                </button>
+              </p>
+            )}
+          </section>
+          {lessons.length || papers.length ? (
+          <section>
+            <h2 className="section-title">Catalogue plates these notes name</h2>
               <ul className="desk-grid">
                 {lessons.map((canvas) => (
                   <li key={canvas.id} className="desk-card">
@@ -288,8 +358,8 @@ export function NotesPage({
                   </li>
                 ))}
               </ul>
-            )}
           </section>
+          ) : null}
         </div>
       </div>
     );
@@ -300,7 +370,7 @@ export function NotesPage({
       <aside className="notes-rail">
         <p className="kicker">Classes</p>
         {api.collections.length === 0 ? (
-          <p className="hint">No classes yet. Name one, or drop a folder and the folder name becomes the class.</p>
+          <p className="hint">No classes yet. Name one, or drop an update folder — README title or folder name becomes the class.</p>
         ) : (
           <ul className="lib-list">
             {api.collections.map((row) => {
@@ -323,10 +393,10 @@ export function NotesPage({
         <p className="kicker">Topic / class folders</p>
         <h1>Drop a pile, not one file</h1>
         <p className="lede">
-          Name the class (STAT 651, Ioerger lab, host immunology). Drop the whole lecture folder or a
-          slice of a repo. Each markdown/PDF becomes a note canvas; matching catalogue plates and
-          genes become lessons and paper lookups on the desk, grouped under that class — not one
-          global deck.
+          Name the class, or drop an update folder. A folder named “update” still becomes the course
+          on the README title (CSCE 627, STAT 651). That drop <em>is</em> the class: we replace the
+          previous pack, keep those files, and cut a recall deck from the notes — not a pile of
+          unrelated catalogue plates.
         </p>
         <form
           className="paste"
@@ -349,10 +419,10 @@ export function NotesPage({
           </div>
         </form>
         <div className={cx("drop drop-large", api.busy && "is-busy")} {...dropProps}>
-          <p>Drop a folder of lecture notes, a repo directory, or a bunch of markdown files.</p>
+          <p>Drop a folder of lecture notes or an update pack.</p>
           <p className="hint">
-            Skips .git, node_modules, images. First 80 files. Folder name is the class if you left the
-            name blank.
+            Skips .git, node_modules, images. First 80 files. Generic folder names like “update”
+            use the README heading. Dropping a folder replaces that class’s files.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => folderRef.current?.click()} disabled={!api.ready}>
@@ -369,7 +439,7 @@ export function NotesPage({
             multiple
             aria-label="Choose files"
             onChange={(event) => {
-              void ingest([...(event.target.files ?? [])]);
+              void ingest([...(event.target.files ?? [])], false);
               event.currentTarget.value = "";
             }}
           />
@@ -382,7 +452,7 @@ export function NotesPage({
             // @ts-expect-error webkitdirectory is the folder picker
             webkitdirectory=""
             onChange={(event) => {
-              void ingest([...(event.target.files ?? [])]);
+              void ingest([...(event.target.files ?? [])], true);
               event.currentTarget.value = "";
             }}
           />

@@ -1,6 +1,6 @@
 import type { StudyModule } from "../catalog/types";
-import { searchCatalog } from "../catalog/search";
 import type { LibraryItem } from "./db";
+import { spawnWorthyLink } from "./ingest";
 
 const STOP = new Set([
   "the",
@@ -58,32 +58,20 @@ export function extractTerms(text: string, limit = 12): { label: string; weight:
     .map(([label, weight]) => ({ label, weight }));
 }
 
-export function relatedFromText(text: string, modules: StudyModule[]): StudyModule[] {
-  const query = extractTerms(text, 8)
-    .map((term) => term.label)
-    .join(" ");
-  if (!query) return [];
-  return searchCatalog(query, modules)
-    .filter((hit) => hit.kind === "module")
-    .slice(0, 5)
-    .map((hit) => hit.module);
-}
-
 export function relatedForLibraryItem(item: LibraryItem, modules: StudyModule[]): StudyModule[] {
-  if (item.brief?.links.length) {
-    const byId = new Map(modules.map((module) => [module.id, module]));
-    const out: StudyModule[] = [];
-    const seen = new Set<string>();
-    for (const link of item.brief.links) {
-      if (seen.has(link.moduleId)) continue;
-      const module = byId.get(link.moduleId);
-      if (!module) continue;
-      seen.add(module.id);
-      out.push(module);
-    }
-    return out;
+  if (!item.brief?.links.length) return [];
+  const byId = new Map(modules.map((module) => [module.id, module]));
+  const out: StudyModule[] = [];
+  const seen = new Set<string>();
+  for (const link of item.brief.links) {
+    if (!spawnWorthyLink(link.text)) continue;
+    if (seen.has(link.moduleId)) continue;
+    const module = byId.get(link.moduleId);
+    if (!module) continue;
+    seen.add(module.id);
+    out.push(module);
   }
-  return relatedFromText(`${item.name} ${item.brief?.stripped ?? item.text}`, modules);
+  return out;
 }
 
 export function firstLineTitle(text: string, fallback: string): string {

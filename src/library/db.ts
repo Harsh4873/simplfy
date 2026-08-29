@@ -34,6 +34,8 @@ export type RecallCard = {
   misses: number;
   lastMissedAt: number;
   collectionId?: string;
+  answer?: string;
+  noteId?: string;
 };
 
 export type StudioKind = "lesson" | "note" | "papers" | "class";

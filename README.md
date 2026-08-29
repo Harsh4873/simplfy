@@ -27,7 +27,7 @@ Pages:
 - **Shelf** — the encyclopedia of every bundled plate
 - **Papers** — gene and method lookup, Ioerger first when he wrote on it
 - **Recall** — Quizlet-style flip deck, including a deck per class
-- **Classes** — drop a lecture folder or repo slice; files become notes and spawn lessons/papers on the desk
+- **Classes** — drop an update folder; rename the class; the pack is the source of truth and the recall deck is cut from those notes
 
 Light and dark themes. The toggle is in the header; the choice is stored in `localStorage`.
 

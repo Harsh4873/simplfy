@@ -6,6 +6,11 @@ import type { RecallCard } from "../library/db";
 import { cx } from "../ui/cx";
 
 function cardAnswer(api: StudioApi, card: RecallCard): { title: string; answer: string; why: string } {
+  if (card.answer) {
+    const note = card.noteId ? api.library.find((item) => item.id === card.noteId) : undefined;
+    const label = note?.relPath?.split("/").pop() || note?.name || "From notes";
+    return { title: label, answer: card.answer, why: "" };
+  }
   const module = api.byId.get(card.moduleId);
   if (!module) return { title: "Unknown plate", answer: "This plate is no longer in the catalogue.", why: "" };
   if (card.checkId === "say-back") {
@@ -44,8 +49,8 @@ export function RecallPage({
         <h1>{currentClass ? `${currentClass.name} is empty` : "Deck empty"}</h1>
         <p className="lede">
           {currentClass
-            ? "Drop lecture notes into this class and we park say-it-back cards from the plates those notes hit. Misses from practice also land here."
-            : "Misses from practice, and anything you parked from “say it back,” land here. Work a lesson and get a few wrong on purpose if you want to see the loop. Classes get their own deck when you drop a folder of notes."}
+            ? "Drop an update folder into this class. We cut recall cards from those notes. Misses from catalogue practice also land here."
+            : "Misses from practice, cards cut from a class pack, and anything you parked from “say it back” land here."}
         </p>
         <button type="button" className="solid" onClick={() => navigate({ name: "home" })}>
           Pick a lesson
@@ -137,11 +142,16 @@ export function RecallPage({
           type="button"
           className="ghost"
           onClick={() => {
+            if (card.noteId) {
+              const note = api.library.find((item) => item.id === card.noteId);
+              navigate(note?.collectionId ? { name: "notes", classId: note.collectionId, id: note.id } : { name: "notes", id: card.noteId });
+              return;
+            }
             const module = api.byId.get(card.moduleId);
             if (module) navigate({ name: "learn", id: module.id, step: "teach" });
           }}
         >
-          Open lesson
+          {card.noteId ? "Open note" : "Open lesson"}
         </button>
       </div>
     </div>

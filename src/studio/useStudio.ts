@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { indexModules, loadCatalog } from "../catalog/loadCatalog";
 import { searchStudio, type SearchHit } from "../catalog/search";
 import type { CheckItem, StudyModule } from "../catalog/types";
@@ -26,7 +26,16 @@ import {
   type StudioCanvas,
 } from "../library/db";
 import { withBrief } from "../library/hydrate";
-import { inferCollectionName, MAX_DROP_FILES, pickDropFiles, relPathOf } from "../library/ingest";
+import {
+  inferCollectionNameFromFiles,
+  itemKey,
+  looksLikeFolderDrop,
+  MAX_DROP_FILES,
+  pickDropFiles,
+  relPathOf,
+  stripGenericRoot,
+  titleFromReadme,
+} from "../library/ingest";
 import { seedClassStudios } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
@@ -44,6 +53,7 @@ export function useStudio() {
   const [continueRef, setContinueRef] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const ingestLock = useRef(Promise.resolve());
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
@@ -190,14 +200,14 @@ export function useStudio() {
   );
 
   const ensureCollection = useCallback(
-    async (name: string, existingId?: string) => {
+    async (name: string, existingId?: string, silent = false) => {
       if (!db) return null;
       if (existingId) {
         const row = await getCollection(db, existingId);
         if (row) {
           const next = { ...row, name: name.trim() || row.name, updatedAt: Date.now() };
           await putCollection(db, next);
-          await refresh(db);
+          if (!silent) await refresh(db);
           return next;
         }
       }
@@ -205,7 +215,7 @@ export function useStudio() {
       const match = collections.find((row) => row.name.toLowerCase() === title.toLowerCase());
       if (match) {
         await putCollection(db, { ...match, updatedAt: Date.now() });
-        await refresh(db);
+        if (!silent) await refresh(db);
         return match;
       }
       const row: Collection = {
@@ -215,15 +225,25 @@ export function useStudio() {
         updatedAt: Date.now(),
       };
       await putCollection(db, row);
-      await refresh(db);
+      if (!silent) await refresh(db);
       return row;
     },
     [collections, db, refresh],
   );
 
   const addFiles = useCallback(
-    async (files: File[], opts?: { collectionId?: string; collectionName?: string }) => {
+    async (
+      files: File[],
+      opts?: { collectionId?: string; collectionName?: string; replace?: boolean },
+    ) => {
       if (!db) return null;
+      let release = () => {};
+      const wait = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      const prev = ingestLock.current;
+      ingestLock.current = prev.then(() => wait);
+      await prev;
       setBusy(true);
       try {
         const batch = pickDropFiles(files);
@@ -232,27 +252,38 @@ export function useStudio() {
           return null;
         }
         const truncated = files.length > batch.length;
-        const folder = await ensureCollection(inferCollectionName(batch, opts?.collectionName), opts?.collectionId);
+        const replace = opts?.replace ?? looksLikeFolderDrop(batch);
+        const typed = opts?.collectionName?.trim() ?? "";
+        const inferred =
+          typed ||
+          (opts?.collectionId && !replace ? "" : await inferCollectionNameFromFiles(batch, ""));
+        const folder = await ensureCollection(inferred, opts?.collectionId, true);
         if (!folder) return null;
 
         const filed: LibraryItem[] = [];
-        const inClass = library.filter((item) => item.collectionId === folder.id);
+        const inClass = (await listLibrary(db)).filter((item) => item.collectionId === folder.id);
         for (const file of batch) {
           if (file.size > MAX_FILE_BYTES) {
             setNotice(`${file.name} exceeds the 12 MB studio limit.`);
             continue;
           }
-          const rel = relPathOf(file);
+          const rel = stripGenericRoot(relPathOf(file));
+          const key = itemKey(rel);
           const parsed = await parseDroppedFile(file);
           const mime = mimeForDroppedFile(file);
-          const brief = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
+          const base = rel.split("/").pop() ?? file.name;
+          const heading = parsed.text.trim() ? titleFromReadme(parsed.text) : null;
+          const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
+          const brief = composed
+            ? { ...composed, title: heading || base }
+            : undefined;
           const prior =
-            inClass.find((item) => (item.relPath || item.name) === rel) ??
-            filed.find((item) => (item.relPath || item.name) === rel);
+            inClass.find((item) => itemKey(item.relPath || item.name) === key) ??
+            filed.find((item) => itemKey(item.relPath || item.name) === key);
           const item: LibraryItem = {
             id: prior?.id ?? crypto.randomUUID(),
             kind: "file",
-            name: brief?.title ?? file.name,
+            name: base,
             mime,
             size: file.size,
             text: parsed.text,
@@ -272,22 +303,43 @@ export function useStudio() {
           filed.push(item);
         }
 
-        const plan = await seedClassStudios(db, folder, filed, loaded.modules, byId);
+        if (replace) {
+          const keep = new Set(filed.map((item) => itemKey(item.relPath || item.name)));
+          for (const item of [...inClass]) {
+            if (keep.has(itemKey(item.relPath || item.name))) continue;
+            await deleteLibraryItem(db, item.id);
+            await deleteStudio(db, `note:${item.id}`);
+            for (const card of await listRecall(db)) {
+              if (card.noteId === item.id) await deleteRecallCard(db, card.id);
+            }
+            const idx = inClass.findIndex((row) => row.id === item.id);
+            if (idx >= 0) inClass.splice(idx, 1);
+          }
+        }
+
+        const classItems = inClass.filter((item) => item.collectionId === folder.id);
+        const plan = await seedClassStudios(db, folder, classItems, loaded.modules, byId);
 
         await refresh(db);
         const last = filed[filed.length - 1] ?? null;
         if (last) await remember(`library:${last.id}`);
-        const bits = [`Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`];
-        if (plan.moduleIds.length) bits.push(`${plan.moduleIds.length} lesson${plan.moduleIds.length === 1 ? "" : "s"}`);
+        const bits = [
+          replace
+            ? `Updated ${folder.name} with ${filed.length} file${filed.length === 1 ? "" : "s"}`
+            : `Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`,
+        ];
+        if (plan.noteCards) bits.push(`${plan.noteCards} recall card${plan.noteCards === 1 ? "" : "s"} from the notes`);
+        if (plan.moduleIds.length) bits.push(`${plan.moduleIds.length} catalogue lesson${plan.moduleIds.length === 1 ? "" : "s"}`);
         if (plan.paperQueries.length) bits.push(`${plan.paperQueries.length} paper lookup${plan.paperQueries.length === 1 ? "" : "s"}`);
         if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
-        setNotice(`${bits.join(". ")}. They are on the desk, grouped under the class.`);
+        setNotice(`${bits.join(". ")}.`);
         return last;
       } finally {
+        release();
         setBusy(false);
       }
     },
-    [byId, db, ensureCollection, library, loaded.modules, refresh, remember],
+    [byId, db, ensureCollection, loaded.modules, refresh, remember],
   );
 
   const addNote = useCallback(
@@ -311,12 +363,13 @@ export function useStudio() {
       };
       await putLibraryItem(db, item);
       await remember(`library:${item.id}`);
-      await seedClassStudios(db, folder, [item], loaded.modules, byId);
+      const classItems = [...library.filter((row) => row.collectionId === folder.id && row.id !== item.id), item];
+      await seedClassStudios(db, folder, classItems, loaded.modules, byId);
       await refresh(db);
       setNotice(`Note kept in the local library (${folder.name}).`);
       return item;
     },
-    [byId, db, ensureCollection, loaded.modules, refresh, remember],
+    [byId, db, ensureCollection, library, loaded.modules, refresh, remember],
   );
 
   const removeLibrary = useCallback(
@@ -324,12 +377,15 @@ export function useStudio() {
       if (!db) return;
       await deleteLibraryItem(db, id);
       await deleteStudio(db, `note:${id}`);
+      for (const card of recall.filter((row) => row.noteId === id)) {
+        await deleteRecallCard(db, card.id);
+      }
       await refresh(db);
       if (continueRef === `library:${id}`) {
         await remember("");
       }
     },
-    [continueRef, db, refresh, remember],
+    [continueRef, db, recall, refresh, remember],
   );
 
   const removeCollection = useCallback(
@@ -350,6 +406,22 @@ export function useStudio() {
       await refresh(db);
     },
     [db, library, recall, refresh, studios],
+  );
+
+  const renameCollection = useCallback(
+    async (id: string, name: string) => {
+      if (!db) return;
+      const title = name.trim();
+      if (!title) return;
+      const row = await getCollection(db, id);
+      if (!row) return;
+      await putCollection(db, { ...row, name: title, updatedAt: Date.now() });
+      const canvas = await getStudio(db, `class:${id}`);
+      if (canvas) await putStudio(db, { ...canvas, title, updatedAt: Date.now() });
+      await refresh(db);
+      setNotice(`Class renamed to ${title}.`);
+    },
+    [db, refresh],
   );
 
   const missCheck = useCallback(
@@ -422,6 +494,7 @@ export function useStudio() {
     addNote,
     removeLibrary,
     removeCollection,
+    renameCollection,
     ensureCollection,
     missCheck,
     bumpRecall,

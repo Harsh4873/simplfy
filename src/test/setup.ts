@@ -19,7 +19,13 @@ if (!window.matchMedia) {
     }) as MediaQueryList;
 }
 
-afterEach(() => {
+afterEach(async () => {
   cleanup();
   window.location.hash = "";
+  await new Promise<void>((resolve) => {
+    const req = indexedDB.deleteDatabase("simplfy");
+    req.onsuccess = () => resolve();
+    req.onerror = () => resolve();
+    req.onblocked = () => resolve();
+  });
 });
