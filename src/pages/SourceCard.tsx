@@ -43,16 +43,11 @@ export function SourceCard({
   const noteCards = canvas.noteId ? api.recall.filter((card) => card.noteId === canvas.noteId).length : 0;
   const classCards =
     canvas.kind === "class" && canvas.collectionId
-      ? api.recall.filter((card) => card.collectionId === canvas.collectionId).length
+      ? api.recall.filter((card) => card.collectionId === canvas.collectionId && card.noteId).length
       : 0;
   const paper = note ? isPaperItem(note) : false;
-  const lesson =
-    canvas.kind === "class" && canvas.collectionId
-      ? api.studios.find((row) => row.collectionId === canvas.collectionId && row.kind === "lesson")
-      : canvas.kind === "lesson"
-        ? canvas
-        : undefined;
-  const related = note ? relatedForLibraryItem(note, api.modules)[0] : undefined;
+  const lesson = canvas.kind === "lesson" ? canvas : undefined;
+  const related = note && !canvas.collectionId ? relatedForLibraryItem(note, api.modules)[0] : undefined;
   const learnId = lesson?.moduleId ?? related?.id;
   const learnStep = lesson?.step && isLessonStep(lesson.step) ? lesson.step : "teach";
   const kindLabel =

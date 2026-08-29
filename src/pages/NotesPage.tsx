@@ -4,7 +4,7 @@ import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
 import { isPaperItem } from "../library/paperText";
-import { isLessonStep, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
+import { libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { cx } from "../ui/cx";
@@ -54,7 +54,7 @@ export function NotesPage({
         ? api.library.find((item) => item.id === id)
         : undefined;
   const classItems = collection ? api.library.filter((item) => item.collectionId === collection.id) : [];
-  const related = file ? relatedForLibraryItem(file, api.modules) : [];
+  const related = file && !file.collectionId ? relatedForLibraryItem(file, api.modules) : [];
 
   const typedName = () => nameRef.current?.value ?? "";
 
@@ -136,7 +136,7 @@ export function NotesPage({
                 type="button"
                 className="ghost"
                 onClick={() => {
-                  void api.touchLesson(related[0]!, "teach", file.collectionId);
+                  void api.touchLesson(related[0]!, "teach");
                   navigate({ name: "learn", id: related[0]!.id, step: "teach" });
                 }}
               >
@@ -188,13 +188,13 @@ export function NotesPage({
             item={file}
             modules={api.modules}
             onOpen={(module) => {
-              void api.touchLesson(module, "teach", file.collectionId);
+              void api.touchLesson(module, "teach");
               navigate({ name: "learn", id: module.id, step: "teach" });
             }}
           />
           {related.length ? (
             <section className="related">
-              <p className="kicker">Nearby lessons</p>
+              <p className="kicker">Also in the Simplfy catalogue</p>
               <ul className="map-list">
                 {related.map((module) => (
                   <li key={module.id}>
@@ -202,7 +202,7 @@ export function NotesPage({
                       type="button"
                       className="text-btn"
                       onClick={() => {
-                        void api.touchLesson(module, "teach", file.collectionId);
+                        void api.touchLesson(module, "teach");
                         navigate({ name: "learn", id: module.id, step: "teach" });
                       }}
                     >
@@ -219,8 +219,6 @@ export function NotesPage({
   }
 
   if (collection) {
-    const lessons = api.studios.filter((row) => row.collectionId === collection.id && row.kind === "lesson");
-    const papers = api.studios.filter((row) => row.collectionId === collection.id && row.kind === "papers");
     const noteDeck = api.recall.filter((card) => card.collectionId === collection.id && card.noteId);
     const folders = groupFiles(classItems);
     return (
@@ -339,27 +337,14 @@ export function NotesPage({
           <p className="kicker">Class</p>
           <h1>{collection.name}</h1>
           <p className="lede">
-            This class is the files you dropped. An update folder replaces the previous pack
-            (leftovers and snapshots are dropped) and rebuilds the recall deck from those notes —
-            last-class, deadlines, todos, and any PDFs you attached. Pin the class to Home. Open in
-            Learn jumps to a catalogue plate these notes named.
+            This class is only the files in the pack. An update folder replaces the previous files
+            and rebuilds flip cards from those notes. The TB/stats tutor stays under Learn — it
+            never joins this pack. Pin the class to Home.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => navigate({ name: "recall", classId: collection.id })}>
               Recall this class
             </button>
-            {lessons[0]?.moduleId ? (
-              <button
-                type="button"
-                className="ghost"
-                onClick={() => {
-                  const step = lessons[0]!.step && isLessonStep(lessons[0]!.step) ? lessons[0]!.step : "teach";
-                  navigate({ name: "learn", id: lessons[0]!.moduleId!, step });
-                }}
-              >
-                Open in Learn
-              </button>
-            ) : null}
             <button
               type="button"
               className="ghost"
@@ -422,42 +407,6 @@ export function NotesPage({
               </p>
             )}
           </section>
-          {lessons.length || papers.length ? (
-          <section>
-            <h2 className="section-title">Catalogue plates these notes name</h2>
-              <ul className="desk-grid">
-                {lessons.map((canvas) => (
-                  <li key={canvas.id} className="desk-card">
-                    <button
-                      type="button"
-                      className="desk-open"
-                      onClick={() => {
-                        if (canvas.moduleId) {
-                          const step = canvas.step && isLessonStep(canvas.step) ? canvas.step : "teach";
-                          navigate({ name: "learn", id: canvas.moduleId, step });
-                        }
-                      }}
-                    >
-                      <span className="kicker">Lesson</span>
-                      <span className="hit-title">{canvas.title}</span>
-                    </button>
-                  </li>
-                ))}
-                {papers.map((canvas) => (
-                  <li key={canvas.id} className="desk-card">
-                    <button
-                      type="button"
-                      className="desk-open"
-                      onClick={() => navigate({ name: "papers", q: canvas.papersQuery })}
-                    >
-                      <span className="kicker">Papers</span>
-                      <span className="hit-title">{canvas.title}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-          </section>
-          ) : null}
         </div>
       </div>
     );
@@ -505,8 +454,8 @@ export function NotesPage({
         <h1>Classes</h1>
         <p className="lede">
           Drop a lecture folder or an update pack. README title or the folder name becomes the
-          class. That drop replaces the previous pack and cuts a recall deck from those notes. Pin
-          the class to Home. Paste dumps live under Decks; PDFs live under Papers.
+          class. Flip cards come from those files only. Learn is the bundled tutor; it does not
+          mix into a class. Paste dumps live under Decks; PDFs live under Papers.
         </p>
         <form
           className="paste"

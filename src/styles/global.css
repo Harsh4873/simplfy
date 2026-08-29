@@ -8,6 +8,8 @@
   --accent: #d64555;
   --ok: #7fbf9a;
   --paper: #f7f3ea;
+  --solid-face: #ece9e2;
+  --solid-ink: #101114;
   --shadow: 0 18px 40px color-mix(in srgb, #000 35%, transparent);
 
   --display: "Newsreader", "Iowan Old Style", Georgia, serif;
@@ -52,6 +54,8 @@ html[data-theme="dark"] {
   --accent: #d64555;
   --ok: #7fbf9a;
   --paper: #f7f3ea;
+  --solid-face: #ece9e2;
+  --solid-ink: #101114;
   --shadow: 0 18px 40px color-mix(in srgb, #000 35%, transparent);
 }
 
@@ -65,7 +69,9 @@ html[data-theme="light"] {
   --line: #e2d8c6;
   --accent: #c23a4a;
   --ok: #2f7a56;
-  --paper: #fffdf8;
+  --paper: #fffcf6;
+  --solid-face: #1c1914;
+  --solid-ink: #fffcf6;
   --shadow: 0 16px 36px color-mix(in srgb, #1c1914 10%, transparent);
 }
 
@@ -93,10 +99,32 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 button {
   cursor: pointer;
+  background: transparent;
+  background-image: none;
+  border: none;
+}
+
+input,
+textarea,
+select {
+  background: var(--bg);
+  color: var(--fg);
+  color-scheme: inherit;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--fg);
+  caret-color: var(--fg);
+  box-shadow: 0 0 0 1000px var(--card) inset;
+  transition: background-color 99999s ease-out 0s;
 }
 
 button:disabled {
@@ -137,8 +165,9 @@ a:hover {
   position: absolute;
   left: 12px;
   top: -48px;
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--solid-face);
+  color: var(--solid-ink);
+  -webkit-text-fill-color: var(--solid-ink);
   padding: 8px 12px;
   z-index: 40;
   font-size: var(--fs-2);
@@ -813,7 +842,9 @@ kbd {
   width: 100%;
   height: auto;
   display: block;
-  background: var(--paper);
+  background: var(--card);
+  color: var(--fg);
+  border: 1px solid var(--line);
   border-radius: 8px;
 }
 
@@ -869,6 +900,37 @@ kbd {
   margin-top: 0;
 }
 
+.source-lanes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 0;
+  font-size: var(--fs-2);
+  color: var(--muted);
+}
+
+.source-lanes span {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--muted);
+}
+
+.source-lanes strong {
+  color: var(--fg);
+  font-weight: 600;
+  margin-right: 0;
+}
+
+.source-lanes-note {
+  margin: 8px 0 0;
+  font-size: var(--fs-2);
+  color: var(--muted);
+}
+
 .sources-shell .page-head {
   padding-top: 12px;
 }
@@ -885,18 +947,28 @@ kbd {
   background: transparent;
   padding: 4px 10px;
   color: var(--fg);
+  -webkit-text-fill-color: var(--fg);
   border-radius: 999px;
 }
 
-.chip:hover,
-.chip.is-active {
+.chip:hover {
   border-color: var(--fg);
 }
 
+.chip.is-active {
+  background: var(--solid-face);
+  background-image: none;
+  color: var(--solid-ink);
+  -webkit-text-fill-color: var(--solid-ink);
+  border-color: var(--solid-face);
+}
+
 .solid {
-  border: 1px solid var(--fg);
-  background: var(--fg);
-  color: var(--bg);
+  border: 1px solid var(--solid-face);
+  background: var(--solid-face);
+  background-image: none;
+  color: var(--solid-ink);
+  -webkit-text-fill-color: var(--solid-ink);
   padding: 10px 14px;
   border-radius: 999px;
   justify-self: start;
@@ -904,7 +976,10 @@ kbd {
 
 .solid.quiet {
   background: transparent;
+  background-image: none;
   color: var(--fg);
+  -webkit-text-fill-color: var(--fg);
+  box-shadow: none;
 }
 
 .ghost {
@@ -1260,6 +1335,10 @@ kbd {
   .nav-link {
     padding: 6px 8px;
     letter-spacing: 0.04em;
+  }
+
+  .source-lanes {
+    grid-template-columns: 1fr;
   }
 }
 

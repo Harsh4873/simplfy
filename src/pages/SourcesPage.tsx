@@ -50,6 +50,23 @@ export function SourcesPage({
             </button>
           ))}
         </div>
+        <p className="source-lanes">
+          <span>
+            <strong>Decks</strong>
+            one markdown dump, one flip deck
+          </span>
+          <span>
+            <strong>Classes</strong>
+            a course folder — cards from those files only
+          </span>
+          <span>
+            <strong>Papers</strong>
+            a PDF or paper text, not the tutor catalogue
+          </span>
+        </p>
+        <p className="source-lanes-note">
+          Learn is the bundled TB/stats tutor. Filing a class pack does not attach those plates.
+        </p>
       </div>
       {route.name === "desk" ? <DeskPage api={api} navigate={navigate} /> : null}
       {route.name === "notes" ? <NotesPage api={api} id={route.id} classId={route.classId} navigate={navigate} /> : null}

@@ -1,9 +1,8 @@
-import type { StudyModule } from "../catalog/types";
-import { sayBackItem } from "../lesson/fromModule";
 import {
   deleteRecallCard,
   deleteStudio,
   getStudio,
+  listCollections,
   listRecall,
   listStudios,
   putRecallCard,
@@ -11,7 +10,7 @@ import {
   type Collection,
   type LibraryItem,
 } from "./db";
-import { spawnPlan, type SpawnPlan } from "./ingest";
+import type { SpawnPlan } from "./ingest";
 import { cardsFromClassNotes, cardsFromNoteText } from "./noteCards";
 
 export type SeedResult = SpawnPlan & { noteCards: number };
@@ -70,18 +69,39 @@ export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<
   return built.length;
 }
 
+/** Catalogue tutor plates and lookups never belong on a class pack. */
+export async function isolateClassFromCatalogue(db: IDBDatabase, folderId: string): Promise<void> {
+  const now = Date.now();
+  for (const canvas of await listStudios(db)) {
+    if (canvas.collectionId !== folderId) continue;
+    if (canvas.kind !== "lesson" && canvas.kind !== "papers") continue;
+    await putStudio(db, { ...canvas, collectionId: undefined, updatedAt: now });
+  }
+  for (const card of await listRecall(db)) {
+    if (card.collectionId !== folderId || card.noteId) continue;
+    if (card.misses > 0) {
+      await putRecallCard(db, { ...card, collectionId: undefined });
+      continue;
+    }
+    await deleteRecallCard(db, card.id);
+  }
+}
+
+export async function isolateAllClasses(db: IDBDatabase): Promise<void> {
+  for (const folder of await listCollections(db)) {
+    await isolateClassFromCatalogue(db, folder.id);
+  }
+}
+
 export async function seedClassStudios(
   db: IDBDatabase,
   folder: Collection,
   items: LibraryItem[],
-  modules: StudyModule[],
-  byId: Map<string, StudyModule>,
 ): Promise<SeedResult> {
-  const plan = spawnPlan(items, modules);
   const now = Date.now();
   const itemIds = new Set(items.map((item) => item.id));
-  const lessonIds = new Set(plan.moduleIds.map((id) => `lesson:${id}`));
-  const paperIds = new Set(plan.paperQueries.map((query) => `papers:${query.toLowerCase()}`));
+
+  await isolateClassFromCatalogue(db, folder.id);
 
   const classRow = await getStudio(db, `class:${folder.id}`);
   await putStudio(db, {
@@ -99,14 +119,6 @@ export async function seedClassStudios(
     if (canvas.kind === "class") continue;
     if (canvas.kind === "note" && canvas.noteId && !itemIds.has(canvas.noteId)) {
       await deleteStudio(db, canvas.id);
-      continue;
-    }
-    if (canvas.kind === "lesson" && !lessonIds.has(canvas.id) && !canvas.pinned) {
-      await putStudio(db, { ...canvas, collectionId: undefined, updatedAt: now });
-      continue;
-    }
-    if (canvas.kind === "papers" && !paperIds.has(canvas.id) && !canvas.pinned) {
-      await putStudio(db, { ...canvas, collectionId: undefined, updatedAt: now });
     }
   }
 
@@ -124,51 +136,16 @@ export async function seedClassStudios(
     });
   }
 
-  for (const moduleId of plan.moduleIds) {
-    const module = byId.get(moduleId);
-    if (!module) continue;
-    const existing = await getStudio(db, `lesson:${module.id}`);
-    await putStudio(db, {
-      id: `lesson:${module.id}`,
-      kind: "lesson",
-      title: module.title,
-      moduleId: module.id,
-      step: existing?.step ?? "teach",
-      collectionId: folder.id,
-      pinned: existing?.pinned ?? false,
-      createdAt: existing?.createdAt ?? now,
-      updatedAt: now,
-    });
-  }
-
-  for (const query of plan.paperQueries) {
-    const existing = await getStudio(db, `papers:${query.toLowerCase()}`);
-    await putStudio(db, {
-      id: `papers:${query.toLowerCase()}`,
-      kind: "papers",
-      title: `Lookup · ${query}`,
-      papersQuery: query,
-      collectionId: folder.id,
-      pinned: existing?.pinned ?? false,
-      createdAt: existing?.createdAt ?? now,
-      updatedAt: now,
-    });
-  }
-
-  const keepKeys = new Set<string>();
-  for (const moduleId of plan.moduleIds) {
-    const module = byId.get(moduleId);
-    if (!module) continue;
-    const seed = sayBackItem(module);
-    keepKeys.add(`${module.id}:${seed.id}`);
-  }
-  for (const card of cardsFromClassNotes(items)) {
-    keepKeys.add(`${card.moduleId}:${card.checkId}`);
-  }
+  const built = cardsFromClassNotes(items);
+  const keepKeys = new Set(built.map((card) => `${card.moduleId}:${card.checkId}`));
 
   for (const card of await listRecall(db)) {
     if (card.collectionId !== folder.id) continue;
-    if (card.noteId && !itemIds.has(card.noteId)) {
+    if (!card.noteId || !itemIds.has(card.noteId)) {
+      if (!card.noteId && card.misses > 0) {
+        await putRecallCard(db, { ...card, collectionId: undefined });
+        continue;
+      }
       await deleteRecallCard(db, card.id);
       continue;
     }
@@ -177,29 +154,6 @@ export async function seedClassStudios(
     if (!keepKeys.has(key)) await deleteRecallCard(db, card.id);
   }
 
-  const existingRecall = await listRecall(db);
-  for (const moduleId of plan.moduleIds) {
-    const module = byId.get(moduleId);
-    if (!module) continue;
-    const seed = sayBackItem(module);
-    const already = existingRecall.find(
-      (card) => card.moduleId === module.id && card.checkId === seed.id && card.collectionId === folder.id,
-    );
-    if (already) continue;
-    await putRecallCard(db, {
-      id: crypto.randomUUID(),
-      moduleId: module.id,
-      checkId: seed.id,
-      prompt: seed.prompt,
-      kind: seed.kind,
-      createdAt: now,
-      misses: 0,
-      lastMissedAt: now,
-      collectionId: folder.id,
-    });
-  }
-
-  const built = cardsFromClassNotes(items);
   let stamp = now;
   const recallNow = await listRecall(db);
   for (const card of built) {
@@ -228,5 +182,5 @@ export async function seedClassStudios(
     stamp -= 1;
   }
 
-  return { ...plan, noteCards: built.length };
+  return { moduleIds: [], paperQueries: [], noteCards: built.length };
 }

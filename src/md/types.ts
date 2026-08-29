@@ -1,6 +1,6 @@
 import type { VisualSpec } from "../catalog/types";
 
-export const BRIEF_VERSION = 1;
+export const BRIEF_VERSION = 2;
 
 export type InlineSpan =
   | { kind: "text"; text: string; strong?: boolean }

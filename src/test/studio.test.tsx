@@ -147,6 +147,10 @@ describe("studio shell", () => {
     expect(screen.getAllByText("README.md").length).toBeGreaterThan(0);
     expect(screen.getAllByText(/last-class\.md/i).length).toBeGreaterThan(0);
     expect(screen.queryByRole("heading", { name: /tnseq/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /catalogue plates/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/also in the simplfy catalogue/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/ioerger/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/does not attach those plates/i)).toBeInTheDocument();
     expect(screen.getByText(/recall card from the notes/i)).toBeInTheDocument();
     await user.click(screen.getAllByRole("button", { name: /^recall this class$/i })[0]);
     expect(await screen.findAllByText(/5-tuple/i)).not.toHaveLength(0);
@@ -261,7 +265,7 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.upload(choose, paper);
     expect(await screen.findByRole("button", { name: /study this deck/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1, name: /toy assay for counting colonies/i })).toBeInTheDocument();
-    expect(screen.getByText(/paper · fig/i)).toBeInTheDocument();
+    expect(screen.getByText(/^paper$/i)).toBeInTheDocument();
     expect(screen.queryByRole("heading", { level: 1, name: /toy-assay/i })).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /study this deck/i }));
     expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();

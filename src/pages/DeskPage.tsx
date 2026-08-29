@@ -43,8 +43,8 @@ export function DeskPage({
         <h1>Decks</h1>
         <p className="lede">
           Paste a lecture dump or drop markdown / txt. Headings and bold names become flip cards.
-          Study opens Learn’s quizlet. Pin to Home. A PDF belongs on Papers; a folder pack belongs
-          on Classes.
+          One file, one deck — not a course folder. PDFs belong on Papers; a folder pack belongs
+          on Classes. The bundled tutor stays under Learn.
         </p>
       </header>
       <form className="paste" onSubmit={(event) => void onPaste(event)}>

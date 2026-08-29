@@ -41,7 +41,7 @@ export function RecallPage({
   const cards = noteId
     ? api.recall.filter((card) => card.noteId === noteId)
     : classId
-      ? api.recall.filter((card) => card.collectionId === classId)
+      ? api.recall.filter((card) => card.collectionId === classId && card.noteId)
       : api.recall;
   const card = cards[Math.min(index, Math.max(cards.length - 1, 0))];
   const currentClass = classId ? api.collections.find((row) => row.id === classId) : undefined;

@@ -1,4 +1,5 @@
 import type { StudyModule } from "../catalog/types";
+import { GENERIC_CATALOGUE_PHRASE } from "../library/ingest";
 import type { InlineSpan, PlateLink } from "./types";
 
 const STOP_PHRASE = new Set([
@@ -31,6 +32,7 @@ const STOP_PHRASE = new Set([
   "comparison",
   "experiments",
   "experiment",
+  ...GENERIC_CATALOGUE_PHRASE,
 ]);
 
 const EXTRA: Record<string, string[]> = {
@@ -76,7 +78,10 @@ function usablePhrase(phrase: string): boolean {
   const trimmed = phrase.trim();
   if (!trimmed) return false;
   if (STOP_PHRASE.has(trimmed.toLowerCase())) return false;
-  if (trimmed.length >= 3) return true;
+  if (isGeneLike(trimmed)) return true;
+  if (/^[A-Z]{2,12}$/.test(trimmed)) return true;
+  if (trimmed.includes(" ") && trimmed.length >= 6) return true;
+  if (trimmed.length >= 4) return true;
   return /[χΧΔℓ²³]/.test(trimmed);
 }
 
@@ -99,19 +104,14 @@ function phrasesFor(module: StudyModule): { phrase: string; weight: number }[] {
 
   add(module.title, 6);
   for (const alias of module.aliases) add(alias, 8);
-  add(module.id.replaceAll("-", " "), 3);
-  const tail = module.id.split("-").pop() ?? "";
-  if (tail.length >= 2 && tail.length <= 5) add(tail, 7);
   for (const tag of module.tags) {
     if (!isGeneLike(tag) && !/^[A-Z0-9-]{2,8}$/.test(tag)) continue;
     add(tag, 4);
   }
   if (module.visual.kind === "gene-track") add(module.visual.gene, 9);
-  const hay = [module.title, module.dek, module.aliases.join(" "), module.tags.join(" "), module.story.join(" ")].join(
-    " ",
-  );
+  const hay = [module.title, module.aliases.join(" "), module.tags.join(" ")].join(" ");
   for (const token of geneTokensFrom(hay)) add(token, 7);
-  for (const extra of EXTRA[module.id] ?? []) add(extra, 9);
+  for (const extra of EXTRA[module.id] ?? []) out.push({ phrase: extra, weight: 9 });
   return out;
 }
 

@@ -4,6 +4,7 @@ import { linkifyMarkdown } from "../md/linkify";
 import type { InlineSpan, LabBrief } from "../md/types";
 import type { StudyModule } from "../catalog/types";
 import type { LibraryItem } from "../library/db";
+import { catalogForItem } from "../library/hydrate";
 
 function renderSpans(
   spans: InlineSpan[],
@@ -102,21 +103,22 @@ export function FieldNoteDoc({
   modules: StudyModule[];
   onOpen: (module: StudyModule) => void;
 }) {
-  const brief = item.brief ?? (item.text.trim() ? composeBrief(item.text, modules) : null);
+  const brief = item.brief ?? (item.text.trim() ? composeBrief(item.text, catalogForItem(item, modules)) : null);
+  const catalog = catalogForItem(item, modules);
   return (
     <>
       <header className="stage-head">
         <p className="kicker">
           <span className="domain library">Local</span>{" "}
-          {item.kind === "paper" ? "Paper" : "Field note"} · Fig. L
+          {item.kind === "paper" ? "Paper" : item.collectionId ? "Class file" : "Deck"}
         </p>
         <h1>{brief?.title ?? item.name}</h1>
         <p className="dek">
-          {brief ? renderSpans(linkifyMarkdown(brief.dek, modules), modules, onOpen) : item.parseNote}
+          {brief ? renderSpans(linkifyMarkdown(brief.dek, catalog), catalog, onOpen) : item.parseNote}
         </p>
       </header>
       {brief ? (
-        <BriefBody brief={brief} modules={modules} onOpen={onOpen} />
+        <BriefBody brief={brief} modules={catalog} onOpen={onOpen} />
       ) : (
         <p className="dek">No extractable text. The blob is still in the library.</p>
       )}

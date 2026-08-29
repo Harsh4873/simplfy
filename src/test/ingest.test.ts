@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { pickDropFiles, inferCollectionName, shouldSkipRelPath, spawnPlan } from "../library/ingest";
+import { pickDropFiles, inferCollectionName, shouldSkipRelPath, spawnPlan, spawnWorthyLink } from "../library/ingest";
 import type { LibraryItem } from "../library/db";
 import { loadCatalog } from "../catalog/loadCatalog";
+import { composeBrief } from "../md/compose";
 
 function fileAt(rel: string, body = "x"): File {
   const name = rel.split("/").pop() ?? rel;
@@ -85,6 +86,16 @@ describe("class ingest", () => {
 
   it("does not attach catalogue plates just because a note talks about regular languages", () => {
     const { modules } = loadCatalog();
+    const text = `# Last class
+
+## DFA 5-tuple
+
+A DFA is the 5-tuple (Q, Sigma, delta, q0, F). Accept states may be empty or many.
+
+Error states and parse trees show up in the pumping lemma proof. Union and concatenation. Finite automata.
+`;
+    const brief = composeBrief(text, modules);
+    expect(brief.links).toEqual([]);
     const items: LibraryItem[] = [
       {
         id: "n2",
@@ -92,20 +103,16 @@ describe("class ingest", () => {
         name: "DFA",
         mime: "text/markdown",
         size: 10,
-        text: "Regular languages and DFAs. Union and concatenation. Finite automata.",
+        text,
         createdAt: 1,
-        brief: {
-          version: 1,
-          title: "DFA",
-          dek: "",
-          stripped: "Regular languages and DFAs.",
-          blocks: [],
-          hits: [],
-          links: [],
-        },
+        brief,
       },
     ];
     expect(spawnPlan(items, modules).moduleIds).toEqual([]);
     expect(spawnPlan(items, modules).paperQueries).toEqual([]);
+    expect(spawnWorthyLink("error")).toBe(false);
+    expect(spawnWorthyLink("tree")).toBe(false);
+    expect(spawnWorthyLink("TRANSIT")).toBe(true);
+    expect(spawnWorthyLink("prpD")).toBe(true);
   });
 });

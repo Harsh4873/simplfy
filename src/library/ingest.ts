@@ -114,14 +114,106 @@ export function packFileRank(rel: string): number {
   return 10;
 }
 
+/** Everyday words that also appear as module-id tails or aliases. Never treat them as catalogue hits. */
+export const GENERIC_CATALOGUE_PHRASE = new Set([
+  "error",
+  "line",
+  "tree",
+  "trees",
+  "plot",
+  "fast",
+  "power",
+  "clock",
+  "mask",
+  "cost",
+  "rate",
+  "bias",
+  "event",
+  "coverage",
+  "variance",
+  "density",
+  "diagnosis",
+  "projection",
+  "topology",
+  "residuals",
+  "influence",
+  "sandwich",
+  "blocking",
+  "prior",
+  "risk",
+  "ratio",
+  "acid",
+  "gene",
+  "class",
+  "link",
+  "test",
+  "tests",
+  "stat",
+  "art",
+  "info",
+  "score",
+  "empty",
+  "state",
+  "states",
+  "accept",
+  "reject",
+  "string",
+  "language",
+  "finite",
+  "regular",
+  "union",
+  "proof",
+  "type",
+  "form",
+  "set",
+  "map",
+  "node",
+  "path",
+  "mean",
+  "data",
+  "file",
+  "note",
+  "pack",
+  "update",
+  "course",
+  "week",
+  "last",
+  "next",
+  "start",
+  "end",
+  "model",
+  "models",
+  "figure",
+  "story",
+  "plate",
+  "drug",
+  "inference",
+  "secretion",
+  "glossary",
+  "wikipedia",
+  "comparison",
+  "experiment",
+  "experiments",
+  "interaction",
+  "regression",
+  "dx",
+  "tx",
+  "se",
+  "sp",
+  "tb",
+]);
+
 export function spawnWorthyGene(gene: string): boolean {
   return /[a-z][A-Z]/.test(gene) || /\d/.test(gene) || /_/.test(gene);
 }
 
 export function spawnWorthyLink(text: string): boolean {
   const t = text.trim();
-  if (t.length >= 6 && /[A-Za-z]/.test(t)) return true;
-  return spawnWorthyGene(t);
+  if (!t || GENERIC_CATALOGUE_PHRASE.has(t.toLowerCase())) return false;
+  if (spawnWorthyGene(t)) return true;
+  if (/^[A-Z]{2,12}$/.test(t)) return true;
+  if (t.length >= 8 && /[A-Za-z]/.test(t)) return true;
+  return false;
 }
 
 export function looksLikeFolderDrop(files: File[]): boolean {

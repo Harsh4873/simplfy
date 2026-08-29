@@ -76,6 +76,10 @@ describe("lab brief pipeline", () => {
     expect(css).toMatch(/\[data-theme="dark"\]/);
     expect(css).toMatch(/\.stage\s*\{/);
     expect(css).toMatch(/background:\s*var\(--bg\)/);
+    expect(css).toMatch(/--solid-face/);
+    expect(css).toMatch(/-webkit-appearance:\s*none/);
+    expect(css).toMatch(/-webkit-text-fill-color:\s*var\(--solid-ink\)/);
+    expect(css).toMatch(/\.viz\s*,/);
     for (const token of CREAM_STAGE) {
       expect(css).not.toContain(`--well: ${token}`);
       expect(css).not.toContain(`--plate: ${token}`);

@@ -26,7 +26,7 @@ import {
   type RecallCard,
   type StudioCanvas,
 } from "../library/db";
-import { withBrief } from "../library/hydrate";
+import { catalogForItem, withBrief } from "../library/hydrate";
 import {
   inferCollectionNameFromFiles,
   itemKey,
@@ -37,7 +37,7 @@ import {
   stripGenericRoot,
   titleFromReadme,
 } from "../library/ingest";
-import { seedClassStudios, seedNoteDeck } from "../library/spawn";
+import { isolateAllClasses, seedClassStudios, seedNoteDeck } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
 import { titleFromDroppedText } from "../library/noteCards";
@@ -61,6 +61,7 @@ export function useStudio() {
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
+      await isolateAllClasses(database);
       const [items, cards, canvases, folders, last] = await Promise.all([
         listLibrary(database),
         listRecall(database),
@@ -128,7 +129,7 @@ export function useStudio() {
           createdAt: existing?.createdAt ?? now,
           ...existing,
           ...partial,
-          collectionId: partial.collectionId ?? existing?.collectionId,
+          collectionId: "collectionId" in partial ? partial.collectionId : existing?.collectionId,
           updatedAt: now,
         };
         await putStudio(db, canvas);
@@ -338,7 +339,9 @@ export function useStudio() {
           const heading = parsed.text.trim()
             ? titleFromReadme(parsed.text) || titleFromDroppedText(parsed.text, base, mime)
             : null;
-          const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
+          const composed = parsed.text.trim()
+            ? composeBrief(parsed.text, catalogForItem({ collectionId: folder.id }, loaded.modules))
+            : undefined;
           const brief = composed
             ? { ...composed, title: heading || base }
             : undefined;
@@ -384,7 +387,7 @@ export function useStudio() {
         }
 
         const classItems = inClass.filter((item) => item.collectionId === folder.id);
-        const plan = await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+        const plan = await seedClassStudios(db, folder, classItems);
 
         await refresh(db);
         const last = filed[filed.length - 1] ?? null;
@@ -395,8 +398,6 @@ export function useStudio() {
             : `Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`,
         ];
         if (plan.noteCards) bits.push(`${plan.noteCards} recall card${plan.noteCards === 1 ? "" : "s"} from the notes`);
-        if (plan.moduleIds.length) bits.push(`${plan.moduleIds.length} catalogue lesson${plan.moduleIds.length === 1 ? "" : "s"}`);
-        if (plan.paperQueries.length) bits.push(`${plan.paperQueries.length} paper lookup${plan.paperQueries.length === 1 ? "" : "s"}`);
         if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
         setNotice(`${bits.join(". ")}.`);
         return last;
@@ -419,10 +420,10 @@ export function useStudio() {
       const name = titleFromDroppedText(body, "Pasted note");
       const kind =
         intent === "paper" ? "paper" : libraryKindForSource({ text: body, pasted: true, mime: "text/markdown" });
-      const composed = composeBrief(body, loaded.modules);
-      const brief = { ...composed, title: name };
       const folder = collectionId ? await ensureCollection("", collectionId, true) : null;
       if (collectionId && !folder) return null;
+      const composed = composeBrief(body, catalogForItem({ collectionId: folder?.id }, loaded.modules));
+      const brief = { ...composed, title: name };
       const item: LibraryItem = {
         id: crypto.randomUUID(),
         kind,
@@ -443,7 +444,7 @@ export function useStudio() {
       if (folder) {
         const stored = await listLibrary(db);
         const classItems = stored.filter((row) => row.collectionId === folder.id);
-        await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+        await seedClassStudios(db, folder, classItems);
       }
       await refresh(db);
       const bits = [
@@ -539,7 +540,13 @@ export function useStudio() {
       const fromId = item.collectionId;
       const nextId = collectionId || undefined;
       if (fromId === nextId) return;
-      const next: LibraryItem = { ...item, collectionId: nextId };
+      const next: LibraryItem = {
+        ...item,
+        collectionId: nextId,
+        brief: item.text.trim()
+          ? { ...composeBrief(item.text, catalogForItem({ collectionId: nextId }, loaded.modules)), title: item.name }
+          : item.brief,
+      };
       await putLibraryItem(db, next);
       await seedNoteDeck(db, next);
       const resync = async (folderId: string | undefined) => {
@@ -548,7 +555,7 @@ export function useStudio() {
         if (!folder) return;
         const stored = await listLibrary(db);
         const classItems = stored.filter((row) => row.collectionId === folderId);
-        await seedClassStudios(db, folder, classItems, loaded.modules, byId);
+        await seedClassStudios(db, folder, classItems);
       };
       if (fromId) await resync(fromId);
       if (nextId) await resync(nextId);
@@ -567,27 +574,22 @@ export function useStudio() {
     async (moduleId: string, item: CheckItem) => {
       if (!db) return;
       const seed = recallFromMiss(moduleId, item);
-      const fromClass = studios.find((row) => row.kind === "lesson" && row.moduleId === moduleId)?.collectionId;
       const existing = recall.find(
-        (card) =>
-          card.moduleId === moduleId &&
-          card.checkId === item.id &&
-          (fromClass ? card.collectionId === fromClass : true),
+        (card) => card.moduleId === moduleId && card.checkId === item.id && !card.noteId,
       );
       const card: RecallCard = existing
-        ? { ...existing, misses: existing.misses + 1, lastMissedAt: Date.now(), prompt: item.prompt }
+        ? { ...existing, misses: existing.misses + 1, lastMissedAt: Date.now(), prompt: item.prompt, collectionId: undefined }
         : {
             id: crypto.randomUUID(),
             ...seed,
             createdAt: Date.now(),
             misses: 1,
             lastMissedAt: Date.now(),
-            collectionId: fromClass,
           };
       await putRecallCard(db, card);
       await refresh(db);
     },
-    [db, recall, refresh, studios],
+    [db, recall, refresh],
   );
 
   const bumpRecall = useCallback(

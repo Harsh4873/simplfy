@@ -61,9 +61,9 @@ export function PapersPage({
         <p className="kicker">Sources</p>
         <h1>Papers</h1>
         <p className="lede">
-          Drop a PDF with a text layer, or paste markdown of a paper. Abstract / Introduction /
-          Results become flip cards. Catalogue lookup (Ioerger first) is below — that is not the
-          same as a paper you filed.
+          Drop a PDF with a text layer, or paste markdown of a paper. Filed papers live in this
+          list. The gene/drug lookup below is the bundled catalogue, not your files, and a folder
+          pack belongs on Classes.
         </p>
       </header>
       <form className="paste" onSubmit={(event) => void onPaste(event)}>
