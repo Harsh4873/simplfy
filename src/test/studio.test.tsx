@@ -112,6 +112,25 @@ describe("studio shell", () => {
     expect(await screen.findByRole("button", { name: /tb methods/i })).toBeInTheDocument();
   });
 
+  it("spawns class studios from a pasted lecture paragraph", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await user.type(screen.getByLabelText(/name this class/i), "Host immunology");
+    await user.click(screen.getByRole("button", { name: /open empty class/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /host immunology/i })).toBeInTheDocument();
+    const submit = await screen.findByRole("button", { name: /file in the studio/i });
+    await waitFor(() => expect(submit).toBeEnabled());
+    await user.type(
+      screen.getByLabelText(/paste a paragraph into this class/i),
+      "Himar1 TnSeq with TRANSIT. Essentiality calls on cholesterol, prpD.",
+    );
+    await user.click(submit);
+    expect(await screen.findByText(/note kept in the local library/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    expect(await screen.findByRole("button", { name: /host immunology/i })).toBeInTheDocument();
+  });
+
   it("switches between light and dark themes", async () => {
     const user = userEvent.setup();
     render(<Studio />);

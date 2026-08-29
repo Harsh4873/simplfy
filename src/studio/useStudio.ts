@@ -26,11 +26,11 @@ import {
   type StudioCanvas,
 } from "../library/db";
 import { withBrief } from "../library/hydrate";
-import { inferCollectionName, MAX_DROP_FILES, pickDropFiles, relPathOf, spawnPlan } from "../library/ingest";
+import { inferCollectionName, MAX_DROP_FILES, pickDropFiles, relPathOf } from "../library/ingest";
+import { seedClassStudios } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
 import { recallFromMiss } from "../quiz/grade";
-import { sayBackItem } from "../lesson/fromModule";
 
 export function useStudio() {
   const loaded = useMemo(() => loadCatalog(), []);
@@ -272,75 +272,7 @@ export function useStudio() {
           filed.push(item);
         }
 
-        const plan = spawnPlan(filed, loaded.modules);
-        const now = Date.now();
-        await putStudio(db, {
-          id: `class:${folder.id}`,
-          kind: "class",
-          title: folder.name,
-          collectionId: folder.id,
-          pinned: false,
-          createdAt: now,
-          updatedAt: now,
-        });
-        for (const item of filed) {
-          await putStudio(db, {
-            id: `note:${item.id}`,
-            kind: "note",
-            title: item.name,
-            noteId: item.id,
-            collectionId: folder.id,
-            pinned: false,
-            createdAt: now,
-            updatedAt: now,
-          });
-        }
-        for (const moduleId of plan.moduleIds) {
-          const module = byId.get(moduleId);
-          if (!module) continue;
-          const existing = await getStudio(db, `lesson:${module.id}`);
-          await putStudio(db, {
-            id: `lesson:${module.id}`,
-            kind: "lesson",
-            title: module.title,
-            moduleId: module.id,
-            step: existing?.step ?? "teach",
-            collectionId: folder.id,
-            pinned: existing?.pinned ?? false,
-            createdAt: existing?.createdAt ?? now,
-            updatedAt: now,
-          });
-          const seed = sayBackItem(module);
-          const already = (await listRecall(db)).find(
-            (card) => card.moduleId === module.id && card.checkId === seed.id && card.collectionId === folder.id,
-          );
-          if (!already) {
-            await putRecallCard(db, {
-              id: crypto.randomUUID(),
-              moduleId: module.id,
-              checkId: seed.id,
-              prompt: seed.prompt,
-              kind: seed.kind,
-              createdAt: now,
-              misses: 0,
-              lastMissedAt: now,
-              collectionId: folder.id,
-            });
-          }
-        }
-        for (const query of plan.paperQueries) {
-          const existing = await getStudio(db, `papers:${query.toLowerCase()}`);
-          await putStudio(db, {
-            id: `papers:${query.toLowerCase()}`,
-            kind: "papers",
-            title: `Lookup · ${query}`,
-            papersQuery: query,
-            collectionId: folder.id,
-            pinned: existing?.pinned ?? false,
-            createdAt: existing?.createdAt ?? now,
-            updatedAt: now,
-          });
-        }
+        const plan = await seedClassStudios(db, folder, filed, loaded.modules, byId);
 
         await refresh(db);
         const last = filed[filed.length - 1] ?? null;
@@ -363,7 +295,7 @@ export function useStudio() {
       if (!db || !raw.trim()) return null;
       const body = raw.trim();
       const brief = composeBrief(body, loaded.modules);
-      const folder = await ensureCollection("Inbox", collectionId);
+      const folder = await ensureCollection(collectionId ? "" : "Inbox", collectionId);
       if (!folder) return null;
       const item: LibraryItem = {
         id: crypto.randomUUID(),
@@ -379,24 +311,12 @@ export function useStudio() {
       };
       await putLibraryItem(db, item);
       await remember(`library:${item.id}`);
-      await upsertCanvas({
-        id: `note:${item.id}`,
-        kind: "note",
-        title: item.name,
-        noteId: item.id,
-        collectionId: folder.id,
-      });
-      await upsertCanvas({
-        id: `class:${folder.id}`,
-        kind: "class",
-        title: folder.name,
-        collectionId: folder.id,
-      });
+      await seedClassStudios(db, folder, [item], loaded.modules, byId);
       await refresh(db);
       setNotice(`Note kept in the local library (${folder.name}).`);
       return item;
     },
-    [db, ensureCollection, loaded.modules, refresh, remember, upsertCanvas],
+    [byId, db, ensureCollection, loaded.modules, refresh, remember],
   );
 
   const removeLibrary = useCallback(
