@@ -21,13 +21,11 @@ Eight flagship topics have a full tutor script (LRT, likelihood, foundations, Ba
 
 Pages:
 
-- **Home** — how a session works, continue, guided lessons, stats/TB paths
-- **Decks** — canvases from this device; click a pasted dump to **Study** its flip cards
-- **Learn** — the six-step lesson
+- **Home** — how a session works, pinned decks/classes/papers only, guided lessons, stats/TB paths
+- **Sources** — three tabs: **Decks** (paste or drop markdown), **Classes** (drop a folder pack), **Papers** (PDF or paper markdown, plus catalogue lookup). Pin what you want on Home. Study / Open in Learn from any of them.
+- **Learn** — the six-step lesson, separate from filing sources
 - **Shelf** — the encyclopedia of every bundled plate
-- **Papers** — gene and method lookup, Ioerger first when he wrote on it
 - **Recall** — Quizlet-style flip deck, including a deck per class and per pasted note
-- **Classes** — drop an update folder; paste markdown to make a deck; rename the class
 
 Light and dark themes. The toggle is in the header; the choice is stored in `localStorage`.
 
@@ -60,7 +58,7 @@ npm run build
 npm run preview
 ```
 
-Preview serves at `/simplfy/`. Hash routes: `#/learn/stats-lrt/teach`, `#/desk`, `#/shelf`, `#/papers`, `#/recall`, `#/notes`.
+Preview serves at `/simplfy/`. Hash routes: `#/learn/stats-lrt/teach`, `#/sources/decks`, `#/sources/classes`, `#/sources/papers`, `#/shelf`, `#/recall`.
 
 ## Persistence
 

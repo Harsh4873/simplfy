@@ -55,7 +55,8 @@ describe("paper ranking", () => {
 describe("paper routes", () => {
   it("round-trips a gene lookup hash", () => {
     expect(parseHash("#/papers/rpoB")).toEqual({ name: "papers", q: "rpoB" });
-    expect(toHash({ name: "papers", q: "rpoB" })).toBe("#/papers/rpoB");
+    expect(parseHash("#/sources/papers/rpoB")).toEqual({ name: "papers", q: "rpoB" });
+    expect(toHash({ name: "papers", q: "rpoB" })).toBe("#/sources/papers/rpoB");
     expect(parseHash("#/desk")).toEqual({ name: "desk" });
   });
 });

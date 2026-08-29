@@ -794,6 +794,18 @@ kbd {
   margin-top: 10px;
 }
 
+.source-tabs-wrap {
+  padding: 4px 0 0;
+}
+
+.source-tabs {
+  margin-top: 0;
+}
+
+.sources-shell .page-head {
+  padding-top: 12px;
+}
+
 .chip,
 .ghost,
 .solid,

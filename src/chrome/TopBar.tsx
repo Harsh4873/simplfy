@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { libraryNoteRoute, toHash, type Route } from "../app/routes";
+import { libraryNoteRoute, isSourcesRoute, toHash, type Route } from "../app/routes";
 import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
@@ -50,7 +50,7 @@ export function TopBar({
 
   const nav: { route: Route; label: string; match: boolean }[] = [
     { route: { name: "home" }, label: "Home", match: route.name === "home" },
-    { route: { name: "desk" }, label: "Decks", match: route.name === "desk" },
+    { route: { name: "desk" }, label: "Sources", match: isSourcesRoute(route) },
     {
       route: api.continueModule
         ? { name: "learn", id: api.continueModule.id, step: "teach" }
@@ -59,9 +59,7 @@ export function TopBar({
       match: route.name === "learn",
     },
     { route: { name: "shelf" }, label: "Shelf", match: route.name === "shelf" },
-    { route: { name: "papers" }, label: "Papers", match: route.name === "papers" },
     { route: { name: "recall" }, label: "Recall", match: route.name === "recall" },
-    { route: { name: "notes" }, label: "Classes", match: route.name === "notes" },
   ];
 
   return (
@@ -94,13 +92,14 @@ export function TopBar({
             href={toHash(item.route)}
             onClick={(event) => {
               event.preventDefault();
+              if (item.label === "Sources" && isSourcesRoute(route)) return;
               navigate(item.route);
             }}
           >
             {item.label}
-            {item.label === "Decks" && api.studios.length ? (
+            {item.label === "Sources" && (api.library.length || api.collections.length) ? (
               <span className="badge quiet" aria-hidden="true">
-                {api.studios.length}
+                {api.library.length + api.collections.length}
               </span>
             ) : null}
             {item.label === "Recall" && api.recall.length ? (

@@ -1,9 +1,10 @@
 import { FEATURED_IDS, STUDY_PATHS } from "../lesson/paths";
 import { lessonFromModule } from "../lesson/fromModule";
 import type { StudyModule } from "../catalog/types";
-import { LESSON_STEPS, libraryNoteRoute, STEP_META, type Route } from "../app/routes";
+import { LESSON_STEPS, STEP_META, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import { ModuleCard } from "./ModuleCard";
+import { SourceCard } from "./SourceCard";
 
 export function HomePage({
   api,
@@ -20,6 +21,11 @@ export function HomePage({
   const featured = FEATURED_IDS.map((id) => api.byId.get(id)).filter((row): row is StudyModule => Boolean(row));
   const statsCount = api.modules.filter((module) => module.domain === "stats").length;
   const tbCount = api.modules.filter((module) => module.domain === "tb").length;
+  const pinned = api.studios.filter(
+    (row) => row.pinned && (row.kind === "note" || row.kind === "class" || row.kind === "papers"),
+  );
+  const collectionName = (id: string | undefined) =>
+    id ? api.collections.find((row) => row.id === id)?.name : undefined;
 
   return (
     <div className="page home-page">
@@ -29,12 +35,8 @@ export function HomePage({
           Simple words. One worked problem. Then it is your turn.
         </h1>
         <p className="lede">
-          Pick a topic. The lesson walks you the way a good study buddy does: analogy first, a demo,
-          two or three problems, then “say it back in your own words.” The dense notes stay on the
-          shelf until you ask for them. Search is always up top — press <kbd>/</kbd>. Or dump a
-          whole lecture folder under Classes. Paste a markdown dump or drop a research PDF and it
-          becomes its own flip deck — study it from Decks. A folder pack is a class; a single paper
-          stays a paper unless you file it into a class.
+          Pick a topic in Learn, or file material under Sources — decks, classes, and papers — then
+          pin only what you want here. Search is always up top — press <kbd>/</kbd>.
         </p>
         <div className="hero-stats">
           <span>
@@ -51,36 +53,52 @@ export function HomePage({
           </span>
         </div>
         <div className="step-nav">
-          <button type="button" className="solid" onClick={() => navigate({ name: "notes" })}>
-            Drop a class folder
+          <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
+            Open Sources
+          </button>
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              if (api.continueModule) {
+                open(api.continueModule);
+                return;
+              }
+              navigate({ name: "shelf" });
+            }}
+          >
+            Open Learn
           </button>
         </div>
       </section>
 
-      {api.continueModule || api.continueNote || api.studios.length ? (
-        <section className="continue-strip" aria-label="Continue">
-          <p className="kicker">This device</p>
+      {pinned.length || api.continueModule ? (
+        <section className="continue-strip" aria-label="Pinned">
+          <p className="kicker">On Home</p>
           {api.continueModule ? (
             <button type="button" className="solid" onClick={() => open(api.continueModule!)}>
               Resume {api.continueModule.title}
             </button>
           ) : null}
-          {api.continueNote ? (
-            <button
-              type="button"
-              className="ghost"
-              onClick={() => navigate(libraryNoteRoute(api.continueNote!.id, api.continueNote!.collectionId))}
-            >
-              Open note: {api.continueNote.name}
-            </button>
-          ) : null}
-          {api.studios.length ? (
-            <button type="button" className="ghost" onClick={() => navigate({ name: "desk" })}>
-              Open decks · {api.studios.length} canvas{api.studios.length === 1 ? "" : "es"}
-            </button>
-          ) : null}
+          {pinned.length ? (
+            <ul className="desk-grid">
+              {pinned.map((canvas) => (
+                <SourceCard
+                  key={canvas.id}
+                  canvas={canvas}
+                  api={api}
+                  navigate={navigate}
+                  collectionName={collectionName(canvas.collectionId)}
+                />
+              ))}
+            </ul>
+          ) : (
+            <p className="hint">Pin a deck, class, or paper from Sources and it shows up here.</p>
+          )}
         </section>
-      ) : null}
+      ) : (
+        <p className="hint">Pin a deck, class, or paper from Sources so Home stays quiet.</p>
+      )}
 
       <section aria-labelledby="how-heading">
         <h2 id="how-heading" className="section-title">

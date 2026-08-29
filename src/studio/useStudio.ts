@@ -237,7 +237,7 @@ export function useStudio() {
   const addFiles = useCallback(
     async (
       files: File[],
-      opts?: { collectionId?: string; collectionName?: string; replace?: boolean },
+      opts?: { collectionId?: string; collectionName?: string; replace?: boolean; intent?: "deck" | "paper" | "class" },
     ) => {
       if (!db) return null;
       let release = () => {};
@@ -258,7 +258,11 @@ export function useStudio() {
         const replace = opts?.replace ?? looksLikeFolderDrop(batch);
         const typed = opts?.collectionName?.trim() ?? "";
         const folderDrop = replace || looksLikeFolderDrop(batch);
-        const standalone = !opts?.collectionId && !typed && !folderDrop;
+        const intent = opts?.intent;
+        const standalone =
+          intent === "deck" ||
+          intent === "paper" ||
+          (!intent && !opts?.collectionId && !typed && !folderDrop);
 
         if (standalone) {
           const filed: LibraryItem[] = [];
@@ -272,7 +276,10 @@ export function useStudio() {
             const parsed = await parseDroppedFile(file);
             const mime = mimeForDroppedFile(file);
             const base = rel.split("/").pop() ?? file.name;
-            const kind = libraryKindForSource({ mime, name: base, text: parsed.text });
+            const kind =
+              intent === "paper"
+                ? "paper"
+                : libraryKindForSource({ mime, name: base, text: parsed.text });
             const name = parsed.text.trim() ? titleFromDroppedText(parsed.text, base, mime) : base;
             const composed = parsed.text.trim() ? composeBrief(parsed.text, loaded.modules) : undefined;
             const item: LibraryItem = {
@@ -305,7 +312,7 @@ export function useStudio() {
                 : `Filed ${filed.length} deck${filed.length === 1 ? "" : "s"}`,
           ];
           if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"}`);
-          bits.push("Study them under Decks");
+          bits.push("Study them from Sources, or pin to Home");
           if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
           setNotice(`${bits.join(". ")}.`);
           return last;
@@ -403,13 +410,16 @@ export function useStudio() {
   );
 
   const addNote = useCallback(
-    async (raw: string, collectionId?: string) => {
+    async (raw: string, collectionId?: string, intent?: "deck" | "paper") => {
       if (!db || !raw.trim()) return null;
       const incoming = raw.trim();
       const body =
-        !/^#{1,3}\s+/m.test(incoming) && looksLikePaperText(incoming) ? paperToMarkdown(incoming) : incoming;
+        !/^#{1,3}\s+/m.test(incoming) && (intent === "paper" || looksLikePaperText(incoming))
+          ? paperToMarkdown(incoming)
+          : incoming;
       const name = titleFromDroppedText(body, "Pasted note");
-      const kind = libraryKindForSource({ text: body, pasted: true, mime: "text/markdown" });
+      const kind =
+        intent === "paper" ? "paper" : libraryKindForSource({ text: body, pasted: true, mime: "text/markdown" });
       const composed = composeBrief(body, loaded.modules);
       const brief = { ...composed, title: name };
       const folder = collectionId ? await ensureCollection("", collectionId, true) : null;
@@ -442,7 +452,7 @@ export function useStudio() {
           ? `Paper kept as its own deck${folder ? ` in ${folder.name}` : ""}`
           : `Note kept in the local library${folder ? ` (${folder.name})` : ""}`,
       ];
-      if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"} — Study this deck under Decks`);
+      if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"} — Study from Sources or pin to Home`);
       setNotice(`${bits.join(". ")}.`);
       return item;
     },
@@ -497,6 +507,27 @@ export function useStudio() {
       if (canvas) await putStudio(db, { ...canvas, title, updatedAt: Date.now() });
       await refresh(db);
       setNotice(`Class renamed to ${title}.`);
+    },
+    [db, refresh],
+  );
+
+  const touchClass = useCallback(
+    async (collectionId: string) => {
+      if (!db) return;
+      const folder = await getCollection(db, collectionId);
+      if (!folder) return;
+      const existing = await getStudio(db, `class:${collectionId}`);
+      const now = Date.now();
+      await putStudio(db, {
+        id: `class:${collectionId}`,
+        kind: "class",
+        title: folder.name,
+        collectionId,
+        pinned: existing?.pinned ?? false,
+        createdAt: existing?.createdAt ?? now,
+        updatedAt: now,
+      });
+      await refresh(db);
     },
     [db, refresh],
   );
@@ -611,6 +642,7 @@ export function useStudio() {
     clearRecall,
     remember,
     touchLesson,
+    touchClass,
     touchPapers,
     pinStudio,
     removeStudio,

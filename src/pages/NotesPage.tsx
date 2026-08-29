@@ -63,6 +63,7 @@ export function NotesPage({
       collectionId: collection?.id,
       collectionName: typedName(),
       replace: replace ?? looksLikeFolderDrop(files),
+      intent: "class",
     });
     if (last?.collectionId) {
       navigate({ name: "notes", classId: last.collectionId });
@@ -104,11 +105,15 @@ export function NotesPage({
             <button
               type="button"
               className="text-btn"
-              onClick={() =>
-                navigate(file.collectionId ? { name: "notes", classId: file.collectionId } : { name: "desk" })
-              }
+              onClick={() => {
+                if (file.collectionId) {
+                  navigate({ name: "notes", classId: file.collectionId });
+                  return;
+                }
+                navigate(isPaperItem(file) ? { name: "papers" } : { name: "desk" });
+              }}
             >
-              ← {collection?.name ?? "Decks"}
+              ← {collection?.name ?? (isPaperItem(file) ? "Papers" : "Decks")}
             </button>
           </p>
           <p className="muted">{file.relPath || file.name}</p>
@@ -126,6 +131,25 @@ export function NotesPage({
                   : "Add ## headings or longer paragraphs and we will cut a flip deck from this dump."}
               </p>
             )}
+            {related[0] ? (
+              <button
+                type="button"
+                className="ghost"
+                onClick={() => {
+                  void api.touchLesson(related[0]!, "teach", file.collectionId);
+                  navigate({ name: "learn", id: related[0]!.id, step: "teach" });
+                }}
+              >
+                Open in Learn
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="ghost"
+              onClick={() => void api.pinStudio(`note:${file.id}`, !api.studios.find((row) => row.id === `note:${file.id}`)?.pinned)}
+            >
+              {api.studios.find((row) => row.id === `note:${file.id}`)?.pinned ? "Unpin from Home" : "Pin to Home"}
+            </button>
           </div>
           {api.collections.length ? (
             <form
@@ -317,19 +341,37 @@ export function NotesPage({
           <p className="lede">
             This class is the files you dropped. An update folder replaces the previous pack
             (leftovers and snapshots are dropped) and rebuilds the recall deck from those notes —
-            last-class, deadlines, todos, and any PDFs you attached. A paper can live here or as
-            its own deck under Decks.
+            last-class, deadlines, todos, and any PDFs you attached. Pin the class to Home. Open in
+            Learn jumps to a catalogue plate these notes named.
           </p>
           <div className="step-nav">
-            <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
-              Open decks
+            <button type="button" className="solid" onClick={() => navigate({ name: "recall", classId: collection.id })}>
+              Recall this class
             </button>
+            {lessons[0]?.moduleId ? (
+              <button
+                type="button"
+                className="ghost"
+                onClick={() => {
+                  const step = lessons[0]!.step && isLessonStep(lessons[0]!.step) ? lessons[0]!.step : "teach";
+                  navigate({ name: "learn", id: lessons[0]!.moduleId!, step });
+                }}
+              >
+                Open in Learn
+              </button>
+            ) : null}
             <button
               type="button"
               className="ghost"
-              onClick={() => navigate({ name: "recall", classId: collection.id })}
+              onClick={() => {
+                const canvas = api.studios.find((row) => row.id === `class:${collection.id}`);
+                void (async () => {
+                  await api.touchClass(collection.id);
+                  await api.pinStudio(`class:${collection.id}`, !canvas?.pinned);
+                })();
+              }}
             >
-              Recall this class
+              {api.studios.find((row) => row.id === `class:${collection.id}`)?.pinned ? "Unpin from Home" : "Pin to Home"}
             </button>
             <button
               type="button"
@@ -439,6 +481,19 @@ export function NotesPage({
                       {count} file{count === 1 ? "" : "s"}
                     </span>
                   </button>
+                  <button
+                    type="button"
+                    className="ghost"
+                    onClick={() => {
+                      const canvas = api.studios.find((item) => item.id === `class:${row.id}`);
+                      void (async () => {
+                        await api.touchClass(row.id);
+                        await api.pinStudio(`class:${row.id}`, !canvas?.pinned);
+                      })();
+                    }}
+                  >
+                    {api.studios.find((item) => item.id === `class:${row.id}`)?.pinned ? "Unpin" : "Pin"}
+                  </button>
                 </li>
               );
             })}
@@ -447,12 +502,11 @@ export function NotesPage({
       </aside>
       <div className="notes-stage">
         <p className="kicker">Topic / class folders</p>
-        <h1>Classes, decks, or a paper</h1>
+        <h1>Classes</h1>
         <p className="lede">
-          A folder drop is a class pack (README title or the folder name). A single PDF or markdown
-          file — including a research paper — stays its own deck under Decks, with flip cards from
-          Abstract / Introduction / Results when we can read the text. Name a class first if you
-          want that paper sitting next to lecture notes instead.
+          Drop a lecture folder or an update pack. README title or the folder name becomes the
+          class. That drop replaces the previous pack and cuts a recall deck from those notes. Pin
+          the class to Home. Paste dumps live under Decks; PDFs live under Papers.
         </p>
         <form
           className="paste"
@@ -475,10 +529,10 @@ export function NotesPage({
           </div>
         </form>
         <div className={cx("drop drop-large", api.busy && "is-busy")} {...dropProps}>
-          <p>Drop a class folder, or a PDF / markdown file for its own deck.</p>
+          <p>Drop a folder of lecture notes or an update pack.</p>
           <p className="hint">
-            Folder pack → class (generic names like “update” use the README heading). Loose PDF or
-            .md → its own study deck. Skips .git, node_modules, images. First 80 files.
+            Skips .git, node_modules, images. First 80 files. Generic folder names like “update”
+            use the README heading. Dropping a folder replaces that class’s files.
           </p>
           <div className="step-nav">
             <button type="button" className="solid" onClick={() => folderRef.current?.click()} disabled={!api.ready}>
@@ -514,18 +568,6 @@ export function NotesPage({
             }}
           />
         </div>
-        <form className="paste" onSubmit={(event) => void onPaste(event)}>
-          <label htmlFor="note">Paste markdown to make a deck</label>
-          <textarea
-            id="note"
-            name="note"
-            rows={5}
-            placeholder="Lecture dump, or a paper with Abstract / Introduction…"
-          />
-          <button type="submit" className="solid" disabled={!api.ready}>
-            File in the studio
-          </button>
-        </form>
       </div>
     </div>
   );

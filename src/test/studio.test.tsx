@@ -4,6 +4,13 @@ import { describe, expect, it } from "vitest";
 import { Studio } from "../studio/Studio";
 import { TOY_PAPER_TEXT } from "./toyPaper";
 
+async function openSources(user: ReturnType<typeof userEvent.setup>, tab: "decks" | "classes" | "papers" = "decks") {
+  await user.click(screen.getByRole("link", { name: /^sources$/i }));
+  if (tab !== "decks") {
+    await user.click(screen.getByRole("tab", { name: new RegExp(`^${tab}$`, "i") }));
+  }
+}
+
 describe("studio shell", () => {
   it("opens a guided lesson for likelihood ratio test and rifampin", async () => {
     const user = userEvent.setup();
@@ -29,7 +36,7 @@ describe("studio shell", () => {
   it("files a pasted note in the library", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user);
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste markdown/i);
@@ -42,7 +49,7 @@ describe("studio shell", () => {
   it("keeps a filed note after the studio remounts", async () => {
     const user = userEvent.setup();
     const view = render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user);
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     await user.type(screen.getByLabelText(/paste markdown/i), "Heteroresistance is not a pipeline filter.");
@@ -65,9 +72,10 @@ describe("studio shell", () => {
     expect(await screen.findByRole("heading", { level: 1, name: /tnseq and transit/i })).toBeInTheDocument();
     await user.click(screen.getByRole("tab", { name: /papers/i }));
     expect(await screen.findByText(/ioerger lab/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    await user.clear(search);
+    await openSources(user);
     expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
-    expect(await screen.findByText(/tnseq and transit/i)).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /tnseq and transit/i })).not.toBeInTheDocument();
   });
 
   it("opens a papers lookup onto the desk from search", async () => {
@@ -82,7 +90,9 @@ describe("studio shell", () => {
     expect(screen.getByText(/griffin/i)).toBeInTheDocument();
     expect(screen.queryByText(/^people he writes with$/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/level 1/i)).not.toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    expect(await screen.findByText(/lookup · prpd/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /pin to home/i }));
+    await user.click(screen.getByRole("link", { name: /^home$/i }));
     expect(await screen.findByText(/lookup · prpd/i)).toBeInTheDocument();
   });
 
@@ -100,7 +110,7 @@ describe("studio shell", () => {
   it("files a dropped lecture folder as a class and spawns desk canvases", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     await user.type(screen.getByLabelText(/name this class/i), "TB methods");
     const input = await screen.findByLabelText(/^choose files$/i);
     const a = new File(["# TRANSIT\n\nHimar1 TnSeq essentiality."], "tnseq.md", { type: "text/markdown" });
@@ -109,14 +119,12 @@ describe("studio shell", () => {
     Object.defineProperty(b, "webkitRelativePath", { value: "TB651/week1/rpob.md" });
     await user.upload(input, [a, b]);
     expect(await screen.findByRole("heading", { level: 1, name: /tb methods/i })).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
-    expect(await screen.findByRole("button", { name: /tb methods/i })).toBeInTheDocument();
   });
 
   it("names an update folder from the README and builds a deck from those notes", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     const chooseFolder = await screen.findByRole("button", { name: /choose folder/i });
     await waitFor(() => expect(chooseFolder).toBeEnabled());
     const folder = screen.getByLabelText(/^choose folder$/i);
@@ -147,7 +155,7 @@ describe("studio shell", () => {
   it("replaces leftover class files when you drop an update folder", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     await user.type(screen.getByLabelText(/name this class/i), "Temp name");
     const open = await screen.findByRole("button", { name: /open empty class/i });
     await waitFor(() => expect(open).toBeEnabled());
@@ -182,7 +190,7 @@ describe("studio shell", () => {
   it("renames a class", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     await user.type(screen.getByLabelText(/name this class/i), "Temp name");
     const open = await screen.findByRole("button", { name: /open empty class/i });
     await waitFor(() => expect(open).toBeEnabled());
@@ -198,7 +206,7 @@ describe("studio shell", () => {
   it("spawns class studios from a pasted lecture paragraph", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     await user.type(screen.getByLabelText(/name this class/i), "Host immunology");
     await user.click(screen.getByRole("button", { name: /open empty class/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /host immunology/i })).toBeInTheDocument();
@@ -210,14 +218,13 @@ describe("studio shell", () => {
     );
     await user.click(submit);
     expect(await screen.findByText(/note kept in the local library/i)).toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
-    expect(await screen.findByRole("button", { name: /host immunology/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /host immunology/i })).toBeInTheDocument();
   });
 
   it("turns pasted markdown into a studyable deck on Decks", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user);
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
     const area = screen.getByLabelText(/paste markdown/i);
@@ -233,16 +240,22 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.click(screen.getByRole("button", { name: /study this deck/i }));
     expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
     expect(screen.getAllByText(/picture|rho/i).length).toBeGreaterThan(0);
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
+    await user.click(screen.getByRole("link", { name: /^sources$/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^home$/i }));
+    expect(screen.queryByRole("button", { name: /^study$/i })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^sources$/i }));
+    await user.click(screen.getByRole("button", { name: /pin to home/i }));
+    await user.click(screen.getByRole("link", { name: /^home$/i }));
+    expect(await screen.findByRole("button", { name: /^study$/i })).toBeInTheDocument();
   });
 
   it("turns a dropped research paper into a studyable deck, not a class", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
-    const choose = await screen.findByLabelText(/^choose files$/i);
+    await openSources(user, "papers");
+    const choose = await screen.findByLabelText(/^choose paper files$/i);
     await waitFor(() => expect(screen.getByRole("button", { name: /choose files/i })).toBeEnabled());
     const paper = new File([TOY_PAPER_TEXT], "toy-assay.txt", { type: "text/plain" });
     await user.upload(choose, paper);
@@ -253,8 +266,9 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.click(screen.getByRole("button", { name: /study this deck/i }));
     expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
     expect(screen.getAllByText(/abstract/i).length).toBeGreaterThan(0);
-    await user.click(screen.getByRole("link", { name: /^decks$/i }));
-    expect(await screen.findByRole("heading", { name: /dropped papers/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^sources$/i }));
+    await user.click(screen.getByRole("tab", { name: /^papers$/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /^papers$/i })).toBeInTheDocument();
     expect(screen.getByText(/paper ·/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
   });
@@ -262,14 +276,14 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
   it("files a paper deck into a class without turning the PDF into the whole pack", async () => {
     const user = userEvent.setup();
     render(<Studio />);
-    await user.click(screen.getByRole("link", { name: /^classes$/i }));
+    await openSources(user, "classes");
     await user.type(screen.getByLabelText(/name this class/i), "Host immunology");
     await user.click(screen.getByRole("button", { name: /open empty class/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /host immunology/i })).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /all classes/i }));
+    await user.click(screen.getByRole("tab", { name: /^papers$/i }));
     const submit = await screen.findByRole("button", { name: /file in the studio/i });
     await waitFor(() => expect(submit).toBeEnabled());
-    await user.click(screen.getByLabelText(/paste markdown to make a deck/i));
+    await user.click(screen.getByLabelText(/paste markdown text of a paper/i));
     await user.paste(TOY_PAPER_TEXT);
     await user.click(submit);
     expect(await screen.findByRole("button", { name: /study this deck/i })).toBeInTheDocument();

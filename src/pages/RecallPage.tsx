@@ -66,9 +66,9 @@ export function RecallPage({
         <button
           type="button"
           className="solid"
-          onClick={() => navigate(currentNote ? libraryNoteRoute(currentNote.id, currentNote.collectionId) : { name: "notes" })}
+          onClick={() => navigate(currentNote ? libraryNoteRoute(currentNote.id, currentNote.collectionId) : { name: "desk" })}
         >
-          {currentNote ? "Open source" : "Paste a dump"}
+          {currentNote ? "Open source" : "Open Sources"}
         </button>
       </div>
     );

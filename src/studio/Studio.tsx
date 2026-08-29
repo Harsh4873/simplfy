@@ -1,13 +1,12 @@
 import { TopBar } from "../chrome/TopBar";
 import { useRoute } from "../app/useRoute";
 import { useTheme } from "../app/useTheme";
-import { DeskPage } from "../pages/DeskPage";
+import { SourcesPage } from "../pages/SourcesPage";
 import { HomePage } from "../pages/HomePage";
 import { LearnPage } from "../pages/LearnPage";
-import { NotesPage } from "../pages/NotesPage";
-import { PapersPage } from "../pages/PapersPage";
 import { RecallPage } from "../pages/RecallPage";
 import { ShelfPage } from "../pages/ShelfPage";
+import { isSourcesRoute } from "../app/routes";
 import { useStudio } from "./useStudio";
 
 export function Studio() {
@@ -33,17 +32,13 @@ export function Studio() {
       ) : null}
       <main id="main" className="stage">
         {route.name === "home" ? <HomePage api={api} navigate={navigate} /> : null}
-        {route.name === "desk" ? <DeskPage api={api} navigate={navigate} /> : null}
+        {isSourcesRoute(route) ? <SourcesPage api={api} route={route} navigate={navigate} /> : null}
         {route.name === "learn" ? (
           <LearnPage api={api} id={route.id} step={route.step} navigate={navigate} />
         ) : null}
         {route.name === "shelf" ? <ShelfPage api={api} id={route.id} navigate={navigate} /> : null}
-        {route.name === "papers" ? <PapersPage api={api} q={route.q} navigate={navigate} /> : null}
         {route.name === "recall" ? (
           <RecallPage api={api} classId={route.classId} noteId={route.noteId} navigate={navigate} />
-        ) : null}
-        {route.name === "notes" ? (
-          <NotesPage api={api} id={route.id} classId={route.classId} navigate={navigate} />
         ) : null}
       </main>
     </div>
