@@ -43,6 +43,7 @@ import { composeBrief } from "../md/compose";
 import { titleFromDroppedText } from "../library/noteCards";
 import { libraryKindForSource, looksLikePaperText, paperToMarkdown } from "../library/paperText";
 import { recallFromMiss } from "../quiz/grade";
+import { useSimplfySync } from "../useSimplfySync";
 
 export function useStudio() {
   const loaded = useMemo(() => loadCatalog(), []);
@@ -60,22 +61,24 @@ export function useStudio() {
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
-      const [items, cards, canvases, folders] = await Promise.all([
+      const [items, cards, canvases, folders, last] = await Promise.all([
         listLibrary(database),
         listRecall(database),
         listStudios(database),
         listCollections(database),
+        getPref(database, "lastTopic"),
       ]);
       const hydrated: LibraryItem[] = [];
       for (const item of items) {
         const next = withBrief(item, loaded.modules);
-        if (next !== item) await putLibraryItem(database, next);
+        if (next !== item) await putLibraryItem(database, next, false);
         hydrated.push(next);
       }
       setLibrary(hydrated);
       setRecall(cards);
       setStudios(canvases);
       setCollections(folders);
+      setContinueRef(last);
     },
     [loaded.modules],
   );
@@ -91,12 +94,6 @@ export function useStudio() {
           return;
         }
         await refresh(database);
-        const last = await getPref(database, "lastTopic");
-        if (cancelled) {
-          database.close();
-          return;
-        }
-        setContinueRef(last);
         setDb(database);
       } catch (error) {
         console.error(error);
@@ -108,6 +105,8 @@ export function useStudio() {
       database?.close();
     };
   }, [refresh]);
+
+  const sync = useSimplfySync(db, refresh);
 
   const remember = useCallback(
     async (value: string) => {
@@ -651,6 +650,7 @@ export function useStudio() {
     continueModule,
     continueNote,
     ready: Boolean(db),
+    sync,
   };
 }
 

@@ -4,7 +4,7 @@ A study buddy for hard statistical and biological ideas. Not a chatbot: a **work
 
 Simplfy is built for a computational-genomics / *Mycobacterium tuberculosis* working memory: likelihoods and hierarchical models on one path, *rpoB* numbering and gDST catalogues on the other.
 
-The app is a static Vite + React + TypeScript site. There is **no backend, no account, and no live model**. The local library (uploads, pastes, recall misses) lives in **IndexedDB on this browser / this device**. Refresh keeps it; another machine does not.
+The app is a static Vite + React + TypeScript site with no live model. The study desk is local-first in IndexedDB. Optional Google sign-in syncs extracted source text, classes, canvases, recall cards, and the resume pointer through the private shared Firestore owner vault. Original uploaded file blobs never leave the device.
 
 Live: [harsh.bet/simplfy](https://harsh.bet/simplfy/) (GitHub Pages, base `/simplfy/`).
 
@@ -65,12 +65,15 @@ Preview serves at `/simplfy/`. Hash routes: `#/learn/stats-lrt/teach`, `#/source
 | What | Where |
 | --- | --- |
 | Bundled plates | `content/modules/*.json` in the static build |
-| Uploaded files + extracted text | IndexedDB `simplfy` / `library` |
-| Recall misses | IndexedDB `simplfy` / `recall` |
-| Last open plate / note | IndexedDB `simplfy` / `prefs` |
+| Uploaded files + extracted text | IndexedDB `simplfy` / `library`; extracted text optionally syncs |
+| Recall misses | IndexedDB `simplfy` / `recall`; optionally syncs |
+| Classes and study canvases | IndexedDB `simplfy`; optionally syncs |
+| Last open plate / note | IndexedDB `simplfy` / `prefs`; optionally syncs |
 | Light / dark theme | `localStorage` key `simplfy-theme` |
 
-Clearing site data in the browser wipes the library. There is no sync.
+Without sign-in, the study desk stays only on this device. Signed-in changes merge record by record across devices. Deletions are synced as tombstones so an offline device cannot resurrect removed material. Signing out first waits for pending writes and then clears this device's private IndexedDB copy; the cloud copy remains available to other signed-in devices.
+
+Simplfy shares the `pickledgerpro` Firebase project and canonical private owner vault with the other private harsh.bet apps. `firestore.rules` is the complete shared project policy because deploying one rules file replaces every app's rules. Keep it byte-identical across the sibling repositories.
 
 ## Deploy
 

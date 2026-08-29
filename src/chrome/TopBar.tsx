@@ -5,6 +5,15 @@ import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
 
+const SYNC_LABELS = {
+  connecting: "Connecting",
+  syncing: "Syncing",
+  synced: "Synced",
+  offline: "Offline",
+  "signed-out": "Sign in",
+  "action-needed": "Sync issue",
+} as const;
+
 export function TopBar({
   api,
   route,
@@ -186,15 +195,49 @@ export function TopBar({
           </ul>
         ) : null}
       </div>
-      <button
-        type="button"
-        className="ghost theme-toggle"
-        onClick={onToggleTheme}
-        aria-pressed={theme === "dark"}
-        aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      >
-        {theme === "dark" ? "Light" : "Dark"}
-      </button>
+      <div className="top-actions">
+        <details className="sync-menu">
+          <summary className={`ghost sync-trigger sync-${api.sync.status}`}>
+            <span className="sync-dot" aria-hidden="true" />
+            {SYNC_LABELS[api.sync.status]}
+          </summary>
+          <div className="sync-popover">
+            <strong>{api.sync.user ? "Private cloud sync" : "Sync this study desk"}</strong>
+            {api.sync.user ? (
+              <p>{api.sync.user.displayName || api.sync.user.email || "Signed in with Google"}</p>
+            ) : null}
+            <p>{api.sync.message || "Sources, classes, canvases, recall cards, and your resume point are up to date."}</p>
+            {api.sync.user ? (
+              <button
+                type="button"
+                className="ghost"
+                disabled={api.sync.signingOut}
+                onClick={() => {
+                  const confirmed = window.confirm(
+                    "Sign out of Simplfy on this device? Simplfy will finish syncing, then remove its private local study desk here. Other signed-in devices keep the synced copy.",
+                  );
+                  if (confirmed) void api.sync.signOut();
+                }}
+              >
+                {api.sync.signingOut ? "Finishing sync…" : "Sign out"}
+              </button>
+            ) : (
+              <button type="button" className="solid" onClick={() => void api.sync.signIn()}>
+                Sign in with Google
+              </button>
+            )}
+          </div>
+        </details>
+        <button
+          type="button"
+          className="ghost theme-toggle"
+          onClick={onToggleTheme}
+          aria-pressed={theme === "dark"}
+          aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
+        >
+          {theme === "dark" ? "Light" : "Dark"}
+        </button>
+      </div>
     </header>
   );
 }

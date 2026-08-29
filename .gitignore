@@ -7,3 +7,4 @@ coverage
 .vscode
 .idea
 *.tsbuildinfo
+firestore-debug.log

@@ -343,6 +343,73 @@ kbd {
   white-space: nowrap;
 }
 
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-menu {
+  position: relative;
+}
+
+.sync-menu summary {
+  list-style: none;
+}
+
+.sync-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.sync-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.sync-synced .sync-dot {
+  background: var(--ok);
+}
+
+.sync-syncing .sync-dot,
+.sync-connecting .sync-dot {
+  background: var(--accent);
+}
+
+.sync-action-needed .sync-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.sync-popover {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(320px, calc(100vw - 32px));
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  z-index: 50;
+}
+
+.sync-popover p {
+  margin: 6px 0 12px;
+  color: var(--muted);
+  font-size: var(--fs-2);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 .banner {
   display: flex;
   justify-content: space-between;

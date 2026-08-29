@@ -55,7 +55,38 @@ export type StudioCanvas = {
 };
 
 const DB_NAME = "simplfy";
-const DB_VERSION = 4;
+const DB_VERSION = 5;
+
+export const SYNC_STORES = ["library", "recall", "studios", "collections", "prefs"] as const;
+export type SyncStore = (typeof SYNC_STORES)[number];
+
+export type SyncMetadata = {
+  key: string;
+  store: SyncStore;
+  id: string;
+  updatedAtMs: number;
+  clientId: string;
+  deleted: boolean;
+};
+
+export type StudioMutation = {
+  store: SyncStore;
+  id: string;
+  value: Record<string, unknown> | null;
+  updatedAtMs: number;
+};
+
+const mutationListeners = new Set<(mutation: StudioMutation) => void>();
+
+function emitMutation(store: SyncStore, id: string, value: Record<string, unknown> | null) {
+  const mutation = { store, id, value, updatedAtMs: Date.now() };
+  mutationListeners.forEach((listener) => listener(mutation));
+}
+
+export function subscribeStudioMutations(listener: (mutation: StudioMutation) => void) {
+  mutationListeners.add(listener);
+  return () => mutationListeners.delete(listener);
+}
 
 function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -88,6 +119,9 @@ function ensureStores(db: IDBDatabase) {
   if (!db.objectStoreNames.contains("collections")) {
     db.createObjectStore("collections", { keyPath: "id" });
   }
+  if (!db.objectStoreNames.contains("syncMeta")) {
+    db.createObjectStore("syncMeta", { keyPath: "key" });
+  }
 }
 
 export function openStudioDb(): Promise<IDBDatabase> {
@@ -119,16 +153,18 @@ export async function getLibraryItem(db: IDBDatabase, id: string): Promise<Libra
   return requestToPromise(db.transaction("library").objectStore("library").get(id));
 }
 
-export async function putLibraryItem(db: IDBDatabase, item: LibraryItem): Promise<void> {
+export async function putLibraryItem(db: IDBDatabase, item: LibraryItem, notify = true): Promise<void> {
   const tx = db.transaction("library", "readwrite");
   tx.objectStore("library").put(item);
   await txDone(tx);
+  if (notify) emitMutation("library", item.id, item as unknown as Record<string, unknown>);
 }
 
 export async function deleteLibraryItem(db: IDBDatabase, id: string): Promise<void> {
   const tx = db.transaction("library", "readwrite");
   tx.objectStore("library").delete(id);
   await txDone(tx);
+  emitMutation("library", id, null);
 }
 
 export async function listRecall(db: IDBDatabase): Promise<RecallCard[]> {
@@ -140,12 +176,14 @@ export async function putRecallCard(db: IDBDatabase, card: RecallCard): Promise<
   const tx = db.transaction("recall", "readwrite");
   tx.objectStore("recall").put(card);
   await txDone(tx);
+  emitMutation("recall", card.id, card as unknown as Record<string, unknown>);
 }
 
 export async function deleteRecallCard(db: IDBDatabase, id: string): Promise<void> {
   const tx = db.transaction("recall", "readwrite");
   tx.objectStore("recall").delete(id);
   await txDone(tx);
+  emitMutation("recall", id, null);
 }
 
 export async function getPref(db: IDBDatabase, key: string): Promise<string | null> {
@@ -157,8 +195,10 @@ export async function getPref(db: IDBDatabase, key: string): Promise<string | nu
 
 export async function setPref(db: IDBDatabase, key: string, value: string): Promise<void> {
   const tx = db.transaction("prefs", "readwrite");
-  tx.objectStore("prefs").put({ key, value });
+  const row = { key, value };
+  tx.objectStore("prefs").put(row);
   await txDone(tx);
+  emitMutation("prefs", key, row);
 }
 
 export async function listStudios(db: IDBDatabase): Promise<StudioCanvas[]> {
@@ -175,12 +215,14 @@ export async function putStudio(db: IDBDatabase, canvas: StudioCanvas): Promise<
   const tx = db.transaction("studios", "readwrite");
   tx.objectStore("studios").put(canvas);
   await txDone(tx);
+  emitMutation("studios", canvas.id, canvas as unknown as Record<string, unknown>);
 }
 
 export async function deleteStudio(db: IDBDatabase, id: string): Promise<void> {
   const tx = db.transaction("studios", "readwrite");
   tx.objectStore("studios").delete(id);
   await txDone(tx);
+  emitMutation("studios", id, null);
 }
 
 export async function listCollections(db: IDBDatabase): Promise<Collection[]> {
@@ -198,10 +240,70 @@ export async function putCollection(db: IDBDatabase, collection: Collection): Pr
   const tx = db.transaction("collections", "readwrite");
   tx.objectStore("collections").put(collection);
   await txDone(tx);
+  emitMutation("collections", collection.id, collection as unknown as Record<string, unknown>);
 }
 
 export async function deleteCollectionRow(db: IDBDatabase, id: string): Promise<void> {
   const tx = db.transaction("collections", "readwrite");
   tx.objectStore("collections").delete(id);
+  await txDone(tx);
+  emitMutation("collections", id, null);
+}
+
+export function syncMetadataKey(store: SyncStore, id: string) {
+  return `${store}:${id}`;
+}
+
+export async function listSyncStoreRows(
+  db: IDBDatabase,
+  store: SyncStore,
+): Promise<Record<string, unknown>[]> {
+  return requestToPromise(
+    db.transaction(store).objectStore(store).getAll() as IDBRequest<Record<string, unknown>[]>,
+  );
+}
+
+export async function listSyncMetadata(db: IDBDatabase): Promise<SyncMetadata[]> {
+  if (!db.objectStoreNames.contains("syncMeta")) return [];
+  return requestToPromise(
+    db.transaction("syncMeta").objectStore("syncMeta").getAll() as IDBRequest<SyncMetadata[]>,
+  );
+}
+
+export async function getSyncMetadata(
+  db: IDBDatabase,
+  store: SyncStore,
+  id: string,
+): Promise<SyncMetadata | undefined> {
+  if (!db.objectStoreNames.contains("syncMeta")) return undefined;
+  return requestToPromise(
+    db.transaction("syncMeta").objectStore("syncMeta").get(syncMetadataKey(store, id)) as IDBRequest<SyncMetadata | undefined>,
+  );
+}
+
+export async function putSyncMetadata(db: IDBDatabase, metadata: SyncMetadata): Promise<void> {
+  const tx = db.transaction("syncMeta", "readwrite");
+  tx.objectStore("syncMeta").put(metadata);
+  await txDone(tx);
+}
+
+export async function applyRemoteSyncRecord(
+  db: IDBDatabase,
+  store: SyncStore,
+  id: string,
+  value: Record<string, unknown> | null,
+  metadata: SyncMetadata,
+): Promise<void> {
+  const tx = db.transaction([store, "syncMeta"], "readwrite");
+  if (value) tx.objectStore(store).put(value);
+  else tx.objectStore(store).delete(id);
+  tx.objectStore("syncMeta").put(metadata);
+  await txDone(tx);
+}
+
+export async function clearStudioData(db: IDBDatabase): Promise<void> {
+  const stores = [...SYNC_STORES, "syncMeta"];
+  const tx = db.transaction(stores, "readwrite");
+  stores.forEach((store) => tx.objectStore(store).clear());
   await txDone(tx);
 }

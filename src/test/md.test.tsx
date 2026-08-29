@@ -24,7 +24,7 @@ describe("lab brief pipeline", () => {
     const file = new File([GOLDEN_LRT_NOTE], "lrt-note.md", { type: "text/plain" });
     expect(mimeForDroppedFile(file)).toBe("text/markdown");
     const parsed = await parseDroppedFile(file);
-    expect(parsed.text).toContain("/Users/harshdave");
+    expect(parsed.text).toContain("/workspace/canvases");
     expect(parsed.text).toContain(".canvas.tsx");
 
     const brief = composeBrief(parsed.text, modules);
@@ -67,7 +67,7 @@ describe("lab brief pipeline", () => {
     const lrtLinks = screen.getAllByRole("button").filter((node) => node.classList.contains("plate-link") && /LRT/i.test(node.textContent ?? ""));
     expect(lrtLinks.length).toBeGreaterThan(0);
     expect(document.querySelector(".plate")).toBeTruthy();
-    expect(document.querySelector(".raw-dump pre")?.textContent).toContain("/Users/harshdave");
+    expect(document.querySelector(".raw-dump pre")?.textContent).toContain("/workspace/canvases");
   });
 
   it("defines light and dark themes without the old cream chassis tokens", () => {

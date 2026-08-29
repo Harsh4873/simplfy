@@ -1,4 +1,4 @@
-/** Golden AI lab dump used as the studio fixture. Keep the original wording. */
+/** Golden lab dump used as the studio fixture. Keep the original wording. */
 export const GOLDEN_LRT_NOTE = `There are **16 LRT workbooks** now, not 7: 4 one-term mains, 6 pairwise interactions, 6 joint (drop two mains, χ² df=2). Monday’s calls still hold. Two of the new pairwise sheets actually add biology.
 
 **New, and clean: medium × propionate is prpRDC.** prpD is #1 (2ΔLL 44.7), prpR #3, prpC #5. The hole is solid+propionate in both strains, which is why they never ranked as strain × propionate (prpD is still rank 3726 there). prpC even missed the propionate-main list (p ≈ 0.06) because averaging liquid and solid washes a solid-only drop.
@@ -9,4 +9,4 @@ export const GOLDEN_LRT_NOTE = `There are **16 LRT workbooks** now, not 7: 4 one
 
 Rif × propionate is as weak as S×P (max 2ΔLL 24, unnamed/vapB/PE_PGRS). Park it.
 
-The full 16-row table, a dropdown into each test’s top genes, and the prpD / cmaA2 bars are in [LRT results](/Users/harshdave/.cursor/projects/Users-harshdave-Research-RifTnSeq/canvases/lrt-results.canvas.tsx) beside the chat`;
+The full 16-row table, a dropdown into each test’s top genes, and the prpD / cmaA2 bars are in [LRT results](/workspace/canvases/lrt-results.canvas.tsx) beside the discussion`;

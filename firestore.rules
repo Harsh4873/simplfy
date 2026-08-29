@@ -1,0 +1,1158 @@
+rules_version = '2';
+
+// Complete Firestore ruleset for every private harsh.bet app in the shared
+// `pickledgerpro` Firebase project. Deploying one rules file replaces the
+// project rules, so this file must stay identical in Gym, Daymark, Slate,
+// Fare, Notes, Research, Degree, Radar, Goals, Recipes, and Simplfy. The retired Studies
+// namespace remains here for recovery. Approved verified Google
+// identities resolve through a private membership document to one shared
+// owner vault. Legacy UID roots remain readable recovery archives; migration
+// can keep their writes open briefly through `legacyWritesEnabled`.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isVerifiedGoogleAccount() {
+      return request.auth != null
+        && request.auth.token.email is string
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+
+    function membershipPath() {
+      return /databases/$(database)/documents/owner_vault_members/$(request.auth.uid);
+    }
+
+    function hasOwnerMembership() {
+      return isVerifiedGoogleAccount()
+        && exists(membershipPath())
+        && get(membershipPath()).data.schemaVersion == 1
+        && get(membershipPath()).data.vaultId is string
+        && get(membershipPath()).data.status in ['migrating', 'active'];
+    }
+
+    function hasVaultAccess(vaultId) {
+      return hasOwnerMembership()
+        && get(membershipPath()).data.vaultId == vaultId;
+    }
+
+    function canReadPrivateData(dataOwnerId) {
+      return hasVaultAccess(dataOwnerId)
+        || (hasOwnerMembership() && request.auth.uid == dataOwnerId);
+    }
+
+    function canWritePrivateData(dataOwnerId) {
+      return hasVaultAccess(dataOwnerId)
+        || (
+          hasOwnerMembership()
+          && request.auth.uid == dataOwnerId
+          && get(membershipPath()).data.legacyWritesEnabled == true
+        );
+    }
+
+    match /owner_vault_members/{memberId} {
+      allow read: if isVerifiedGoogleAccount() && request.auth.uid == memberId;
+      allow write: if false;
+    }
+
+    match /owner_vaults/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow write: if false;
+
+      match /recovery/{snapshotId} {
+        allow read: if hasVaultAccess(vaultId);
+        allow write: if false;
+      }
+    }
+
+    // Gym (strength training log) ---------------------------------
+    function ownsGymData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidGymLog(date) {
+      return request.resource.data.schemaVersion == 1
+        && request.resource.data.date == date
+        && request.resource.data.deleted is bool
+        && request.resource.data.updatedAt is string
+        && request.resource.data.updatedAtMs is int
+        && request.resource.data.clientId is string;
+    }
+
+    function isValidGymCoreUpdate() {
+      let changed = request.resource.data.diff(resource.data).affectedKeys();
+      let programIsCurrent = !changed.hasAny(['program'])
+        || !resource.data.keys().hasAll(['programUpdatedAtMs'])
+        || request.resource.data.programUpdatedAtMs >= resource.data.programUpdatedAtMs;
+      let preferencesAreCurrent = !changed.hasAny(['preferences'])
+        || !resource.data.keys().hasAll(['preferencesUpdatedAtMs'])
+        || request.resource.data.preferencesUpdatedAtMs >= resource.data.preferencesUpdatedAtMs;
+      return programIsCurrent && preferencesAreCurrent;
+    }
+
+    match /users/{userId}/gym/core {
+      allow read: if canReadPrivateData(userId);
+      allow create: if ownsGymData(userId)
+        && request.resource.data.schemaVersion == 1;
+      allow update: if ownsGymData(userId)
+        && request.resource.data.schemaVersion == 1
+        && isValidGymCoreUpdate();
+      allow delete: if false;
+    }
+
+    match /users/{userId}/logs/{date} {
+      allow read: if canReadPrivateData(userId);
+      allow create: if ownsGymData(userId) && isValidGymLog(date);
+      allow update: if ownsGymData(userId)
+        && isValidGymLog(date)
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+      // Workout clears are tombstones. Physical deletes could let an old
+      // offline client upload a stale workout again.
+      allow delete: if false;
+    }
+
+    // Daymark (habit tracker) ---------------------------------------
+    function ownsDaymarkData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function hasConsistentGeneration() {
+      return request.resource.data.generationId is string
+        && request.resource.data.profileGenerationId == request.resource.data.generationId;
+    }
+
+    match /daymark_users/{userId} {
+      allow read: if canReadPrivateData(userId);
+      allow create, update: if ownsDaymarkData(userId) && hasConsistentGeneration();
+
+      match /habits/{habitId} {
+        allow read: if canReadPrivateData(userId);
+        allow write: if ownsDaymarkData(userId);
+      }
+
+      match /entries/{entryId} {
+        allow read: if canReadPrivateData(userId);
+        allow write: if ownsDaymarkData(userId);
+      }
+    }
+
+    // Slate (schedule + to-do) -------------------------------------
+    function ownsSlateData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    match /slate_users/{userId} {
+      allow read: if canReadPrivateData(userId);
+      allow create, update: if ownsSlateData(userId)
+        && request.resource.data.schemaVersion == 1;
+
+      match /sections/{sectionId} {
+        allow read: if canReadPrivateData(userId);
+        allow write: if ownsSlateData(userId);
+      }
+
+      match /tasks/{taskId} {
+        allow read: if canReadPrivateData(userId);
+        allow write: if ownsSlateData(userId);
+      }
+
+      match /blocks/{blockId} {
+        allow read: if canReadPrivateData(userId);
+        allow write: if ownsSlateData(userId);
+      }
+    }
+
+    // Fare (calorie + nutrition tracker) ---------------------------
+    function ownsFareData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidFareSingleton(documentId) {
+      return documentId == 'current'
+        && request.resource.data.updatedAt is string;
+    }
+
+    function isValidFareEntity(entityId) {
+      return request.resource.data.id == entityId
+        && request.resource.data.updatedAt is string
+        && (
+          (!('deleted' in request.resource.data) && !('deletedAt' in request.resource.data))
+          || (request.resource.data.deleted == true && request.resource.data.deletedAt is string)
+        );
+    }
+
+    function keepsFareTombstone() {
+      return !('deleted' in resource.data)
+        || resource.data.deleted != true
+        || (('deleted' in request.resource.data) && request.resource.data.deleted == true);
+    }
+
+    match /fare_users/{userId} {
+      // Fare has no root document. Explicit subcollection rules below are
+      // intentionally the only access path.
+      match /profile/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /targets/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /settings/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create, update: if ownsFareData(userId) && isValidFareSingleton(documentId);
+      }
+
+      match /foods/{foodId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(foodId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(foodId) && keepsFareTombstone();
+      }
+
+      match /meals/{mealId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(mealId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(mealId) && keepsFareTombstone();
+      }
+
+      match /entries/{entryId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsFareData(userId) && isValidFareEntity(entryId);
+        allow update: if ownsFareData(userId) && isValidFareEntity(entryId) && keepsFareTombstone();
+      }
+    }
+
+    // Sift (research paper workspace) -------------------------------
+    function ownsResearchData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidResearchTombstone() {
+      return (
+        !('deleted' in request.resource.data)
+        && !('deletedAt' in request.resource.data)
+      ) || (
+        request.resource.data.deleted == true
+        && ('deletedAt' in request.resource.data)
+        && request.resource.data.deletedAt is string
+      );
+    }
+
+    function advancesResearchSingleton() {
+      return request.resource.data.updatedAt >= resource.data.updatedAt;
+    }
+
+    function isValidResearchEntity(entityId) {
+      return request.resource.data.id == entityId
+        && request.resource.data.createdAt is string
+        && request.resource.data.updatedAt is string
+        && isValidResearchTombstone();
+    }
+
+    function keepsResearchEntityHistory() {
+      return request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt >= resource.data.updatedAt
+        && (
+          !('deleted' in resource.data)
+          || resource.data.deleted != true
+          || (('deleted' in request.resource.data) && request.resource.data.deleted == true)
+        );
+    }
+
+    function isValidResearchProfile(documentId) {
+      return documentId == 'current'
+        && request.resource.data.keys().hasAll([
+          'email', 'displayName', 'onboardingComplete', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'email', 'displayName', 'photoURL', 'onboardingComplete', 'updatedAt'
+        ])
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.displayName is string
+        && request.resource.data.onboardingComplete is bool
+        && request.resource.data.updatedAt is string
+        && (!('photoURL' in request.resource.data) || request.resource.data.photoURL is string);
+    }
+
+    function isValidResearchSettings(documentId) {
+      return documentId == 'current'
+        && request.resource.data.keys().hasAll([
+          'theme', 'readerWidth', 'defaultZoom', 'autoAnalyze', 'rememberChat', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'theme', 'readerWidth', 'defaultZoom', 'autoAnalyze', 'rememberChat', 'updatedAt'
+        ])
+        && request.resource.data.theme in ['system', 'light', 'dark']
+        && request.resource.data.readerWidth in ['comfortable', 'wide', 'full']
+        && request.resource.data.defaultZoom is number
+        && request.resource.data.defaultZoom >= 0.5
+        && request.resource.data.defaultZoom <= 4
+        && request.resource.data.autoAnalyze is bool
+        && request.resource.data.rememberChat is bool
+        && request.resource.data.updatedAt is string;
+    }
+
+    function isValidResearchFile(paperId) {
+      return request.resource.data.file is map
+        && request.resource.data.file.keys().hasAll([
+          'storageKey', 'name', 'sizeBytes', 'mimeType'
+        ])
+        && request.resource.data.file.keys().hasOnly([
+          'storageKey', 'name', 'sizeBytes', 'mimeType', 'sha256'
+        ])
+        && request.resource.data.file.storageKey == paperId
+        && request.resource.data.file.name is string
+        && request.resource.data.file.sizeBytes is int
+        && request.resource.data.file.sizeBytes > 0
+        && request.resource.data.file.sizeBytes <= 52428800
+        && request.resource.data.file.mimeType == 'application/pdf'
+        && (!('sha256' in request.resource.data.file) || (
+          request.resource.data.file.sha256 is string
+          && request.resource.data.file.sha256.matches('^[A-Fa-f0-9]{64}$')
+        ));
+    }
+
+    function isValidResearchAnalysisLease() {
+      return !('analysisLease' in request.resource.data) || (
+        request.resource.data.analysisLease is map
+        && request.resource.data.analysisLease.keys().hasAll([
+          'runId', 'ownerId', 'mode', 'heartbeatAt'
+        ])
+        && request.resource.data.analysisLease.keys().hasOnly([
+          'runId', 'ownerId', 'mode', 'heartbeatAt'
+        ])
+        && request.resource.data.analysisLease.runId is string
+        && request.resource.data.analysisLease.runId.size() > 0
+        && request.resource.data.analysisLease.runId.size() <= 240
+        && request.resource.data.analysisLease.runId.matches('^[A-Za-z0-9][A-Za-z0-9._:-]*$')
+        && request.resource.data.analysisLease.ownerId is string
+        && request.resource.data.analysisLease.ownerId.size() > 0
+        && request.resource.data.analysisLease.ownerId.size() <= 240
+        && request.resource.data.analysisLease.ownerId.matches('^[A-Za-z0-9][A-Za-z0-9._:-]*$')
+        && request.resource.data.analysisLease.mode in ['local', 'ai']
+        && request.resource.data.analysisLease.heartbeatAt is string
+        && request.resource.data.analysisLease.heartbeatAt.size() > 0
+        && request.resource.data.analysisLease.heartbeatAt.size() <= 64
+        && request.resource.data.analysisLease.heartbeatAt.matches(
+          '^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,9})?Z$'
+        )
+      );
+    }
+
+    function changesResearchAnalysisState() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasAny([
+        'analysisStatus', 'analysisProgress', 'analysisError', 'analysisModel',
+        'analysisCompletedAt', 'analysisLease', 'openaiFileId', 'summary',
+        'analysisUpdatedAt', 'analysisRunId'
+      ]);
+    }
+
+    function protectsResearchAnalysisState() {
+      return (
+        ('analysisUpdatedAt' in resource.data)
+        && ('analysisUpdatedAt' in request.resource.data)
+        && request.resource.data.analysisUpdatedAt >= resource.data.analysisUpdatedAt
+        && (
+          request.resource.data.analysisUpdatedAt > resource.data.analysisUpdatedAt
+          || !changesResearchAnalysisState()
+        )
+      ) || (
+        !('analysisUpdatedAt' in resource.data)
+        && (
+          !('analysisLease' in resource.data)
+          || !changesResearchAnalysisState()
+          || ('analysisUpdatedAt' in request.resource.data)
+        )
+      );
+    }
+
+    function isValidResearchPaper(paperId) {
+      return isValidResearchEntity(paperId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'title', 'authors', 'file', 'tags',
+          'favorite', 'archived', 'analysisStatus'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'title',
+          'authors', 'year', 'venue', 'doi', 'sourceUrl', 'abstract',
+          'pageCount', 'file', 'tags', 'favorite', 'archived', 'lastOpenedAt',
+          'analysisStatus', 'analysisProgress', 'analysisError', 'analysisModel',
+          'analysisCompletedAt', 'analysisUpdatedAt', 'analysisRunId', 'analysisLease',
+          'openaiFileId', 'summary'
+        ])
+        && request.resource.data.title is string
+        && request.resource.data.authors is list
+        && request.resource.data.tags is list
+        && request.resource.data.favorite is bool
+        && request.resource.data.archived is bool
+        && request.resource.data.analysisStatus in [
+          'local', 'queued', 'uploading', 'analyzing', 'ready', 'error'
+        ]
+        && (!('year' in request.resource.data) || request.resource.data.year is int)
+        && (!('venue' in request.resource.data) || request.resource.data.venue is string)
+        && (!('doi' in request.resource.data) || request.resource.data.doi is string)
+        && (!('sourceUrl' in request.resource.data) || request.resource.data.sourceUrl is string)
+        && (!('abstract' in request.resource.data) || request.resource.data.abstract is string)
+        && (!('pageCount' in request.resource.data) || request.resource.data.pageCount is int)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress is number)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress >= 0)
+        && (!('analysisProgress' in request.resource.data) || request.resource.data.analysisProgress <= 100)
+        && (!('analysisError' in request.resource.data) || request.resource.data.analysisError is string)
+        && (!('analysisModel' in request.resource.data) || request.resource.data.analysisModel is string)
+        && (!('analysisCompletedAt' in request.resource.data) || request.resource.data.analysisCompletedAt is string)
+        && (!('analysisUpdatedAt' in request.resource.data) || (
+          request.resource.data.analysisUpdatedAt is string
+          && request.resource.data.analysisUpdatedAt.size() > 0
+          && request.resource.data.analysisUpdatedAt.size() <= 64
+          && request.resource.data.analysisUpdatedAt.matches(
+            '^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,9})?Z$'
+          )
+        ))
+        && (!('analysisRunId' in request.resource.data) || (
+          request.resource.data.analysisRunId is string
+          && request.resource.data.analysisRunId.size() > 0
+          && request.resource.data.analysisRunId.size() <= 240
+          && request.resource.data.analysisRunId.matches('^[A-Za-z0-9][A-Za-z0-9._:-]*$')
+        ))
+        && (!('openaiFileId' in request.resource.data) || request.resource.data.openaiFileId is string)
+        && (!('lastOpenedAt' in request.resource.data) || request.resource.data.lastOpenedAt is string)
+        && (!('summary' in request.resource.data) || request.resource.data.summary is map)
+        && isValidResearchAnalysisLease()
+        && isValidResearchFile(paperId);
+    }
+
+    function isValidResearchNote(noteId) {
+      return isValidResearchEntity(noteId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'paperId', 'body', 'color'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'paperId',
+          'page', 'section', 'body', 'color'
+        ])
+        && request.resource.data.paperId is string
+        && request.resource.data.body is string
+        && request.resource.data.color in ['amber', 'blue', 'green', 'rose']
+        && (!('page' in request.resource.data) || request.resource.data.page is int)
+        && (!('section' in request.resource.data) || request.resource.data.section is string);
+    }
+
+    function isValidResearchMessage(messageId) {
+      return isValidResearchEntity(messageId)
+        && request.resource.data.keys().hasAll([
+          'id', 'createdAt', 'updatedAt', 'paperId', 'role', 'content',
+          'context', 'citations'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'createdAt', 'updatedAt', 'deleted', 'deletedAt', 'paperId',
+          'role', 'content', 'context', 'citations', 'grounded',
+          'uncertainty', 'responseId', 'model'
+        ])
+        && request.resource.data.paperId is string
+        && request.resource.data.role in ['user', 'assistant']
+        && request.resource.data.content is string
+        && request.resource.data.context is map
+        && request.resource.data.context.keys().hasAll(['tab'])
+        && request.resource.data.context.keys().hasOnly([
+          'tab', 'page', 'section', 'selectedText'
+        ])
+        && request.resource.data.context.tab in [
+          'brief', 'sections', 'visuals', 'equations', 'ledger', 'notes', 'sources'
+        ]
+        && (!('page' in request.resource.data.context) || request.resource.data.context.page is int)
+        && (!('section' in request.resource.data.context) || request.resource.data.context.section is string)
+        && (!('selectedText' in request.resource.data.context) || request.resource.data.context.selectedText is string)
+        && request.resource.data.citations is list
+        && (!('grounded' in request.resource.data) || request.resource.data.grounded is bool)
+        && (!('uncertainty' in request.resource.data) || request.resource.data.uncertainty is string)
+        && (!('responseId' in request.resource.data) || request.resource.data.responseId is string)
+        && (!('model' in request.resource.data) || request.resource.data.model is string);
+    }
+
+    match /research_users/{userId} {
+      // Sift has no readable root document and never stores original PDF bytes.
+      match /profile/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create: if ownsResearchData(userId) && isValidResearchProfile(documentId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchProfile(documentId)
+          && advancesResearchSingleton();
+      }
+
+      match /settings/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create: if ownsResearchData(userId) && isValidResearchSettings(documentId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchSettings(documentId)
+          && advancesResearchSingleton();
+      }
+
+      match /papers/{paperId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchPaper(paperId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchPaper(paperId)
+          && keepsResearchEntityHistory()
+          && protectsResearchAnalysisState();
+      }
+
+      match /notes/{noteId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchNote(noteId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchNote(noteId)
+          && keepsResearchEntityHistory();
+      }
+
+      match /messages/{messageId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsResearchData(userId) && isValidResearchMessage(messageId);
+        allow update: if ownsResearchData(userId)
+          && isValidResearchMessage(messageId)
+          && keepsResearchEntityHistory();
+      }
+    }
+
+    // Notes (private synced notes) ---------------------------------
+    function ownsNotesData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidNotesId(value) {
+      return value is string
+        && value.size() > 0
+        && value.size() <= 128
+        && value.matches('^[A-Za-z0-9_-]+$');
+    }
+
+    function isValidNotesLabelAt(labels, index) {
+      return labels.size() <= index || (
+        labels[index] is string
+        && labels[index].size() > 0
+        && labels[index].size() <= 48
+        && labels[index].matches('.*\\S.*')
+      );
+    }
+
+    function isValidNotesLabels(labels) {
+      return labels is list
+        && labels.size() <= 12
+        && labels.toSet().size() == labels.size()
+        && isValidNotesLabelAt(labels, 0)
+        && isValidNotesLabelAt(labels, 1)
+        && isValidNotesLabelAt(labels, 2)
+        && isValidNotesLabelAt(labels, 3)
+        && isValidNotesLabelAt(labels, 4)
+        && isValidNotesLabelAt(labels, 5)
+        && isValidNotesLabelAt(labels, 6)
+        && isValidNotesLabelAt(labels, 7)
+        && isValidNotesLabelAt(labels, 8)
+        && isValidNotesLabelAt(labels, 9)
+        && isValidNotesLabelAt(labels, 10)
+        && isValidNotesLabelAt(labels, 11);
+    }
+
+    function hasNotesCreateTimestamps() {
+      return request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function hasNotesUpdateTimestamps() {
+      return request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function isTrashedNotesTombstone(noteData) {
+      return ('deleted' in noteData)
+        && noteData.deleted == true
+        && ('deletedAt' in noteData)
+        && noteData.deletedAt is timestamp;
+    }
+
+    // Notes uses a recoverable trash. A note is either untrashed (neither
+    // tombstone field present) or trashed (deleted == true with a timestamp).
+    // Restoring removes both fields again, so a restored note is byte-shaped
+    // exactly like one that was never trashed.
+    function isValidNotesTombstone(noteData) {
+      return (
+        !('deleted' in noteData)
+        && !('deletedAt' in noteData)
+      ) || isTrashedNotesTombstone(noteData);
+    }
+
+    function isValidNotesNote(noteData, noteId) {
+      return noteData.keys().hasAll([
+          'id', 'title', 'content', 'contentText', 'richBackup', 'format',
+          'folderId', 'labels', 'pinned', 'revision', 'createdAt', 'updatedAt'
+        ])
+        && noteData.keys().hasOnly([
+          'id', 'title', 'content', 'contentText', 'richBackup', 'format',
+          'folderId', 'labels', 'pinned', 'revision', 'createdAt', 'updatedAt',
+          'deleted', 'deletedAt'
+        ])
+        && isValidNotesTombstone(noteData)
+        && noteData.id == noteId
+        && isValidNotesId(noteData.id)
+        && noteData.title is string
+        && noteData.title.size() <= 240
+        && noteData.content is string
+        && noteData.content.size() <= 600000
+        && noteData.contentText is string
+        && noteData.contentText.size() <= 200000
+        && noteData.richBackup is string
+        && noteData.richBackup.size() <= 600000
+        && noteData.content.size()
+          + noteData.contentText.size()
+          + noteData.richBackup.size() <= 850000
+        && noteData.format in ['rich', 'plain']
+        && noteData.folderId is string
+        && noteData.folderId.size() <= 128
+        && (
+          noteData.folderId.size() == 0
+          || isValidNotesId(noteData.folderId)
+        )
+        && isValidNotesLabels(noteData.labels)
+        && noteData.pinned is bool
+        && noteData.revision is int
+        && noteData.revision >= 0
+        && noteData.revision <= 2147483647;
+    }
+
+    function hasNotesCreateRevision() {
+      return request.resource.data.revision == 0;
+    }
+
+    function hasNotesUpdateRevision() {
+      return resource.data.revision is int
+        && request.resource.data.revision == resource.data.revision + 1;
+    }
+
+    function isValidNotesFolder(folderId) {
+      return request.resource.data.keys().hasAll([
+          'id', 'name', 'color', 'order', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'name', 'color', 'order', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.id == folderId
+        && isValidNotesId(request.resource.data.id)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.name.matches('.*\\S.*')
+        && request.resource.data.color is string
+        && request.resource.data.color.size() > 0
+        && request.resource.data.color.size() <= 32
+        && request.resource.data.color.matches(
+          '^(#[A-Fa-f0-9]{6}|[a-z][a-z0-9-]{0,31})$'
+        )
+        && request.resource.data.order is int
+        && request.resource.data.order >= 0
+        && request.resource.data.order <= 10000;
+    }
+
+    function isValidNotesSettings(documentId) {
+      return documentId == 'current'
+        && request.resource.data.keys().hasAll([
+          'theme', 'smartFormatting', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'theme', 'smartFormatting', 'updatedAt'
+        ])
+        && request.resource.data.theme in ['system', 'light', 'dark']
+        && request.resource.data.smartFormatting is bool
+        && request.resource.data.updatedAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    match /notes_users/{userId} {
+      // Notes has no root document. Only these explicit, owner-scoped
+      // subcollections are readable or writable.
+      match /notes/{noteId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsNotesData(userId)
+          && isValidNotesNote(request.resource.data, noteId)
+          && hasNotesCreateRevision()
+          && hasNotesCreateTimestamps();
+        allow update: if ownsNotesData(userId)
+          && isValidNotesNote(request.resource.data, noteId)
+          && hasNotesUpdateRevision()
+          && hasNotesUpdateTimestamps();
+        // Permanent deletion is an explicit second step from Trash. Live or
+        // malformed notes cannot skip the tombstone transition.
+        allow delete: if ownsNotesData(userId)
+          && isValidNotesNote(resource.data, noteId)
+          && isTrashedNotesTombstone(resource.data);
+      }
+
+      match /folders/{folderId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsNotesData(userId)
+          && isValidNotesFolder(folderId)
+          && hasNotesCreateTimestamps();
+        allow update: if ownsNotesData(userId)
+          && isValidNotesFolder(folderId)
+          && hasNotesUpdateTimestamps();
+      }
+
+      match /settings/{documentId} {
+        allow read: if canReadPrivateData(userId) && documentId == 'current';
+        allow create, update: if ownsNotesData(userId)
+          && isValidNotesSettings(documentId);
+      }
+    }
+
+    // Recall (markdown study guide, lives at /research/) -----------
+    function ownsRecallData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidRecallId(value) {
+      return value is string
+        && value.size() > 0
+        && value.size() <= 128
+        && value.matches('^[A-Za-z0-9_-]+$');
+    }
+
+    // A study set is either live (no tombstone fields) or deleted
+    // (deleted == true with an int millisecond timestamp).
+    function isValidRecallTombstone() {
+      return (
+        !('deleted' in request.resource.data)
+        && !('deletedAt' in request.resource.data)
+      ) || (
+        request.resource.data.deleted == true
+        && ('deletedAt' in request.resource.data)
+        && request.resource.data.deletedAt is int
+      );
+    }
+
+    function isValidRecallSet(setId) {
+      return request.resource.data.keys().hasAll([
+          'id', 'title', 'markdown', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id', 'title', 'markdown', 'createdAt', 'updatedAt', 'deleted', 'deletedAt'
+        ])
+        && request.resource.data.id == setId
+        && isValidRecallId(request.resource.data.id)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 240
+        && request.resource.data.markdown is string
+        && request.resource.data.markdown.size() <= 600000
+        && request.resource.data.createdAt is int
+        && request.resource.data.updatedAt is int
+        && isValidRecallTombstone();
+    }
+
+    function keepsRecallSetHistory() {
+      return request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt >= resource.data.updatedAt;
+    }
+
+    function isValidRecallProgress(setId) {
+      return request.resource.data.keys().hasAll(['setId', 'cards', 'updatedAt'])
+        && request.resource.data.keys().hasOnly([
+          'setId', 'cards', 'updatedAt', 'bestMatchMs'
+        ])
+        && request.resource.data.setId == setId
+        && isValidRecallId(request.resource.data.setId)
+        && request.resource.data.cards is map
+        && request.resource.data.updatedAt is int
+        && (
+          !('bestMatchMs' in request.resource.data)
+          || (request.resource.data.bestMatchMs is int && request.resource.data.bestMatchMs > 0)
+        );
+    }
+
+    match /recall_users/{userId} {
+      // Recall has no root document. Sets are removed via tombstones so
+      // deletions propagate between devices; progress docs may be deleted
+      // outright once their set is tombstoned.
+      match /sets/{setId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsRecallData(userId) && isValidRecallSet(setId);
+        allow update: if ownsRecallData(userId)
+          && isValidRecallSet(setId)
+          && keepsRecallSetHistory();
+      }
+
+      match /progress/{setId} {
+        allow read: if canReadPrivateData(userId);
+        allow create: if ownsRecallData(userId) && isValidRecallProgress(setId);
+        allow update: if ownsRecallData(userId)
+          && isValidRecallProgress(setId)
+          && request.resource.data.updatedAt >= resource.data.updatedAt;
+        allow delete: if ownsRecallData(userId);
+      }
+    }
+
+    // Degree Canvas (MSCS degree planner) --------------------------
+    function ownsDegreeData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    // Degree Canvas keeps one document per account: the whole planner board
+    // resolved last-write-wins on `updatedAtMs`, which never moves backwards.
+    function isValidDegreePlan() {
+      return request.resource.data.keys().hasAll([
+          'schemaVersion', 'planner', 'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'schemaVersion', 'planner', 'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.planner is map
+        && request.resource.data.planner.keys().hasAll(['terms', 'completedBreadth'])
+        && request.resource.data.planner.keys().hasOnly(['terms', 'completedBreadth'])
+        && request.resource.data.planner.terms is list
+        && request.resource.data.planner.terms.size() <= 40
+        && request.resource.data.planner.completedBreadth is map
+        && request.resource.data.updatedAt is string
+        && request.resource.data.updatedAtMs is int
+        && request.resource.data.clientId is string
+        && request.resource.data.clientId.size() > 0
+        && request.resource.data.clientId.size() <= 128;
+    }
+
+    match /degree_users/{userId} {
+      allow read: if canReadPrivateData(userId);
+      allow create: if ownsDegreeData(userId) && isValidDegreePlan();
+      allow update: if ownsDegreeData(userId)
+        && isValidDegreePlan()
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+    }
+
+    // Simplfy (local-first study workspace) ------------------------
+    function ownsSimplfyData(userId) {
+      return canWritePrivateData(userId);
+    }
+
+    function isValidSimplfyStore(store) {
+      return store in ['library', 'recall', 'studios', 'collections', 'prefs'];
+    }
+
+    function isValidSimplfyRecord() {
+      return request.resource.data.keys().hasAll([
+          'schemaVersion', 'id', 'updatedAtMs', 'clientId', 'deleted'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'schemaVersion', 'id', 'updatedAtMs', 'clientId', 'deleted', 'data'
+        ])
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.id is string
+        && request.resource.data.id.size() > 0
+        && request.resource.data.id.size() <= 800
+        && request.resource.data.updatedAtMs is int
+        && request.resource.data.updatedAtMs >= 0
+        && request.resource.data.clientId is string
+        && request.resource.data.clientId.size() >= 8
+        && request.resource.data.clientId.size() <= 128
+        && request.resource.data.clientId.matches('^[A-Za-z0-9_-]+$')
+        && request.resource.data.deleted is bool
+        && (
+          (request.resource.data.deleted == true && !('data' in request.resource.data))
+          || (request.resource.data.deleted == false && request.resource.data.data is map)
+        );
+    }
+
+    match /simplfy_users/{userId}/{store}/{recordId} {
+      allow read: if canReadPrivateData(userId) && isValidSimplfyStore(store);
+      allow create: if ownsSimplfyData(userId)
+        && isValidSimplfyStore(store)
+        && isValidSimplfyRecord();
+      allow update: if ownsSimplfyData(userId)
+        && isValidSimplfyStore(store)
+        && isValidSimplfyRecord()
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+      // Deletions are tombstones so an offline device cannot resurrect a
+      // removed source, class, canvas, preference, or recall card.
+      allow delete: if false;
+    }
+
+
+    // Studies (paid participant-study preferences) ----------------
+    function isValidStudiesVault() {
+      return request.resource.data.keys().hasAll([
+          'schemaVersion', 'profile', 'saved', 'dismissed', 'filters',
+          'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'schemaVersion', 'profile', 'saved', 'dismissed', 'filters',
+          'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.profile is map
+        && request.resource.data.profile.keys().hasAll([
+          'age', 'rightHanded', 'mriSafe', 'hasCardiovascularCondition',
+          'isPregnant', 'hasSeizureHistory', 'sex', 'willingToFast',
+          'isTamuStudent'
+        ])
+        && request.resource.data.profile.keys().hasOnly([
+          'age', 'rightHanded', 'mriSafe', 'hasCardiovascularCondition',
+          'isPregnant', 'hasSeizureHistory', 'sex', 'willingToFast',
+          'isTamuStudent'
+        ])
+        && (request.resource.data.profile.age == null
+          || (request.resource.data.profile.age is int
+            && request.resource.data.profile.age >= 0
+            && request.resource.data.profile.age <= 120))
+        && (request.resource.data.profile.rightHanded == null || request.resource.data.profile.rightHanded is bool)
+        && (request.resource.data.profile.mriSafe == null || request.resource.data.profile.mriSafe is bool)
+        && (request.resource.data.profile.hasCardiovascularCondition == null || request.resource.data.profile.hasCardiovascularCondition is bool)
+        && (request.resource.data.profile.isPregnant == null || request.resource.data.profile.isPregnant is bool)
+        && (request.resource.data.profile.hasSeizureHistory == null || request.resource.data.profile.hasSeizureHistory is bool)
+        && (request.resource.data.profile.sex == null || request.resource.data.profile.sex in ['male', 'female', 'other'])
+        && (request.resource.data.profile.willingToFast == null || request.resource.data.profile.willingToFast is bool)
+        && (request.resource.data.profile.isTamuStudent == null || request.resource.data.profile.isTamuStudent is bool)
+        && request.resource.data.saved is list
+        && request.resource.data.saved.size() <= 2000
+        && request.resource.data.dismissed is list
+        && request.resource.data.dismissed.size() <= 2000
+        && request.resource.data.filters is map
+        && request.resource.data.filters.keys().hasAll([
+          'query', 'minRate', 'minTotal', 'maxHours', 'mode', 'sort',
+          'tags', 'eligibleOnly', 'showDismissed'
+        ])
+        && request.resource.data.filters.keys().hasOnly([
+          'query', 'minRate', 'minTotal', 'maxHours', 'mode', 'sort',
+          'tags', 'eligibleOnly', 'showDismissed'
+        ])
+        && request.resource.data.filters.query is string
+        && request.resource.data.filters.query.size() <= 300
+        && request.resource.data.filters.minRate is string
+        && request.resource.data.filters.minTotal is string
+        && request.resource.data.filters.maxHours is string
+        && request.resource.data.filters.mode in ['any', 'online', 'inperson']
+        && request.resource.data.filters.sort in ['rate', 'total', 'time', 'new']
+        && request.resource.data.filters.tags is list
+        && request.resource.data.filters.tags.size() <= 100
+        && request.resource.data.filters.eligibleOnly is bool
+        && request.resource.data.filters.showDismissed is bool
+        && request.resource.data.updatedAtMs is int
+        && request.resource.data.clientId is string
+        && request.resource.data.clientId.size() > 0
+        && request.resource.data.clientId.size() <= 128;
+    }
+
+    match /studies_vaults/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow create: if hasVaultAccess(vaultId) && isValidStudiesVault();
+      allow update: if hasVaultAccess(vaultId)
+        && isValidStudiesVault()
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+      allow delete: if false;
+    }
+
+    // Radar (private discovery state; public feed stays static) ----
+    function isValidRadarVault() {
+      return request.resource.data.keys().hasAll([
+          'schemaVersion', 'state', 'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'schemaVersion', 'state', 'updatedAtMs', 'clientId'
+        ])
+        && request.resource.data.schemaVersion == 1
+        && request.resource.data.state is map
+        && request.resource.data.state.keys().hasAll([
+          'lastVisit', 'saved', 'dismissed', 'tracked', 'feedback',
+          'authors', 'companies', 'signalBias'
+        ])
+        && request.resource.data.state.keys().hasOnly([
+          'lastVisit', 'saved', 'dismissed', 'tracked', 'feedback',
+          'authors', 'companies', 'signalBias', 'attending',
+          'preferredCategories', 'campusInterests', 'followedOrganizers'
+        ])
+        && request.resource.data.state.saved is list
+        && request.resource.data.state.saved.size() <= 5000
+        && request.resource.data.state.dismissed is list
+        && request.resource.data.state.dismissed.size() <= 5000
+        && request.resource.data.state.tracked is list
+        && request.resource.data.state.tracked.size() <= 5000
+        && request.resource.data.state.feedback is map
+        && request.resource.data.state.feedback.size() <= 5000
+        && request.resource.data.state.authors is list
+        && request.resource.data.state.authors.size() <= 1000
+        && request.resource.data.state.companies is list
+        && request.resource.data.state.companies.size() <= 1000
+        && request.resource.data.state.signalBias is map
+        && request.resource.data.state.signalBias.size() <= 1000
+        && (!('attending' in request.resource.data.state)
+          || (request.resource.data.state.attending is list
+            && request.resource.data.state.attending.size() <= 5000))
+        && (!('preferredCategories' in request.resource.data.state)
+          || (request.resource.data.state.preferredCategories is list
+            && request.resource.data.state.preferredCategories.size() <= 100))
+        && (!('campusInterests' in request.resource.data.state)
+          || (request.resource.data.state.campusInterests is list
+            && request.resource.data.state.campusInterests.size() <= 1000))
+        && (!('followedOrganizers' in request.resource.data.state)
+          || (request.resource.data.state.followedOrganizers is list
+            && request.resource.data.state.followedOrganizers.size() <= 1000))
+        && (request.resource.data.state.lastVisit == null
+          || (request.resource.data.state.lastVisit is string
+            && request.resource.data.state.lastVisit.size() <= 64))
+        && request.resource.data.updatedAtMs is int
+        && request.resource.data.clientId is string
+        && request.resource.data.clientId.size() > 0
+        && request.resource.data.clientId.size() <= 128;
+    }
+
+    match /radar_vaults/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow create: if hasVaultAccess(vaultId) && isValidRadarVault();
+      allow update: if hasVaultAccess(vaultId)
+        && isValidRadarVault()
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+      allow delete: if false;
+    }
+
+    // Recipes (private pantry + recipe workspace) ------------------
+    function isValidRecipesVault() {
+      let data = request.resource.data;
+      let state = data.state;
+      let settings = state.settings;
+      return data.keys().hasAll([
+          'schemaVersion', 'state', 'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && data.keys().hasOnly([
+          'schemaVersion', 'state', 'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && data.schemaVersion == 1
+        && state is map
+        && state.keys().hasAll([
+          'version', 'settings', 'pantry', 'recipes', 'shopping',
+          'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && state.keys().hasOnly([
+          'version', 'settings', 'pantry', 'recipes', 'shopping',
+          'updatedAt', 'updatedAtMs', 'clientId'
+        ])
+        && state.version == 1
+        && settings is map
+        && settings.keys().hasAll([
+          'theme', 'calorieTarget', 'proteinTargetG', 'maxCookMinutes',
+          'eggsAllowed', 'updatedAt'
+        ])
+        && settings.keys().hasOnly([
+          'theme', 'calorieTarget', 'proteinTargetG', 'maxCookMinutes',
+          'eggsAllowed', 'updatedAt'
+        ])
+        && settings.theme in ['dark', 'light', 'system']
+        && settings.calorieTarget is number
+        && settings.calorieTarget >= 100
+        && settings.calorieTarget <= 2000
+        && settings.proteinTargetG is number
+        && settings.proteinTargetG >= 0
+        && settings.proteinTargetG <= 200
+        && settings.maxCookMinutes is number
+        && settings.maxCookMinutes >= 5
+        && settings.maxCookMinutes <= 240
+        && settings.eggsAllowed == true
+        && settings.updatedAt is string
+        && settings.updatedAt.size() > 0
+        && settings.updatedAt.size() <= 64
+        && state.pantry is list
+        && state.pantry.size() <= 2000
+        && state.recipes is list
+        && state.recipes.size() <= 1000
+        && state.shopping is list
+        && state.shopping.size() <= 5000
+        && data.updatedAt is string
+        && data.updatedAt.size() > 0
+        && data.updatedAt.size() <= 64
+        && data.updatedAt.matches(
+          '^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]([.][0-9]{1,9})?Z$'
+        )
+        && data.updatedAtMs is int
+        && data.updatedAtMs > 0
+        && data.updatedAtMs <= 253402300799999
+        && data.clientId is string
+        && data.clientId.size() > 0
+        && data.clientId.size() <= 128
+        && state.updatedAt == data.updatedAt
+        && state.updatedAtMs == data.updatedAtMs
+        && state.clientId == data.clientId;
+    }
+
+    match /recipes_vaults/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow create: if hasVaultAccess(vaultId) && isValidRecipesVault();
+      allow update: if hasVaultAccess(vaultId)
+        && isValidRecipesVault()
+        && request.resource.data.updatedAt >= resource.data.updatedAt
+        && request.resource.data.updatedAtMs >= resource.data.updatedAtMs;
+      allow delete: if false;
+    }
+
+    // Goals (encrypted personal campaign vault) --------------------
+    function isValidGoalsVault() {
+      let data = request.resource.data;
+      let envelope = data.envelope;
+      return data.keys().hasAll([
+          'schemaVersion', 'envelope', 'updatedAt', 'updatedAtMs',
+          'clientId', 'syncedAt'
+        ])
+        && data.keys().hasOnly([
+          'schemaVersion', 'envelope', 'updatedAt', 'updatedAtMs',
+          'clientId', 'syncedAt'
+        ])
+        && data.schemaVersion == 1
+        && data.updatedAt is string
+        && data.updatedAt.size() <= 64
+        && data.updatedAtMs is int
+        && data.updatedAtMs > 0
+        && data.clientId is string
+        && data.clientId.size() > 0
+        && data.clientId.size() <= 128
+        && data.syncedAt == request.time
+        && envelope is map
+        && envelope.keys().hasAll([
+          'format', 'version', 'algorithm', 'kdf', 'iterations',
+          'salt', 'iv', 'ciphertext'
+        ])
+        && envelope.keys().hasOnly([
+          'format', 'version', 'algorithm', 'kdf', 'iterations',
+          'salt', 'iv', 'ciphertext'
+        ])
+        && envelope.format == 'goals-vault'
+        && envelope.version == 1
+        && envelope.algorithm == 'AES-GCM'
+        && envelope.kdf == 'PBKDF2-SHA-256'
+        && envelope.iterations == 310000
+        && envelope.salt is string
+        && envelope.salt.size() > 0
+        && envelope.salt.size() <= 128
+        && envelope.iv is string
+        && envelope.iv.size() > 0
+        && envelope.iv.size() <= 64
+        && envelope.ciphertext is string
+        && envelope.ciphertext.size() > 0
+        && envelope.ciphertext.size() <= 900000;
+    }
+
+    match /goals_vaults/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow create: if hasVaultAccess(vaultId) && isValidGoalsVault();
+      allow update: if hasVaultAccess(vaultId)
+        && isValidGoalsVault()
+        && request.resource.data.updatedAtMs > resource.data.updatedAtMs;
+      allow delete: if false;
+    }
+
+    match /goals_baselines/{vaultId} {
+      allow read: if hasVaultAccess(vaultId);
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

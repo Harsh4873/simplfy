@@ -17,4 +17,13 @@ export default defineConfig({
     globals: false,
     restoreMocks: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          return id.includes("/firebase/") || id.includes("/@firebase/") ? "firebase" : undefined;
+        },
+      },
+    },
+  },
 });
