@@ -1,0 +1,158 @@
+{
+  "id": "stats-odds-versus-probability",
+  "title": "Odds are not a probability",
+  "dek": "A probability π lives in [0, 1]. Odds π/(1−π) live in (0, ∞). Log-odds are what logistic regression actually moves. Saying “three times more likely” without saying which is how talks lie.",
+  "domain": "stats",
+  "aliases": [
+    "odds versus probability",
+    "odds vs risk",
+    "logit scale",
+    "chance versus odds"
+  ],
+  "tags": [
+    "probability",
+    "odds",
+    "logit",
+    "reporting"
+  ],
+  "story": [
+    "If π = P(event), the odds are π/(1−π). Probability 0.20 is odds 1:4, or 0.25. Probability 0.80 is odds 4:1, or 4. The map is one-to-one on (0,1), so nothing is lost — but the numbers are not interchangeable in a sentence. “Twenty percent” and “four to one against” are the same event; “odds of 0.20” is a different event (π ≈ 0.17).",
+    "Relative risk is a ratio of probabilities. An odds ratio is a ratio of odds. They nearly agree when both π’s are small and diverge as π grows. Logistic regression reports log odds ratios. Captioning exp(β) as a risk ratio because it is “easier for clinicians” is a specification error, not a courtesy.",
+    "Diagnostic Bayes is often cleaner in odds: posterior odds = likelihood ratio × prior odds. That identity is why likelihood ratios appear on the Se/Sp plate. It is still not a licence to call PPV an odds."
+  ],
+  "deepTitle": "Maps you can invert",
+  "deep": [
+    "π = odds / (1 + odds). Always invert before you quote a percentage from a logistic prediction on the logit scale.",
+    "A doubling of odds is not a doubling of probability except in the rare-event limit. Odds from 0.01 to 0.02 (π from ~0.01 to ~0.02) is almost a doubled risk. Odds from 1 to 2 is π from 0.50 to 0.67, not 100%.",
+    "Log-binomial and identity-binomial models exist when the scientific target is a risk ratio or a risk difference. Use them (and their numerical fuss) instead of misreading a logit.",
+    "Gambling language (“3 to 1”) is odds. Epidemiology “risk” is usually a probability. Do not mix the dialects in one abstract.",
+    "Hazard ratios are neither odds ratios nor risk ratios; they are ratios of instantaneous rates. Own later plates if you model time-to-conversion."
+  ],
+  "formulas": [
+    {
+      "id": "odds",
+      "label": "Odds and the inverse",
+      "expression": "odds = π/(1−π),   π = o/(1+o)",
+      "note": "One-to-one on (0,1). Not a synonym for π."
+    },
+    {
+      "id": "or-rr",
+      "label": "Rare-event agreement",
+      "expression": "OR ≈ RR  when π is small in both groups",
+      "note": "Otherwise OR is farther from 1 than RR for the same two π’s."
+    }
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "π is the Bernoulli mean (observed-data scale). Odds are a deterministic transform. Logistic regression’s linear predictor lives on log-odds. Forgetting the inverse leaves you quoting logits as percentages.",
+    "plates": [
+      { "id": "i", "label": "i = 1…n trials", "x": 22, "y": 16, "w": 58, "h": 68 }
+    ],
+    "nodes": [
+      { "id": "pi", "label": "π", "x": 38, "y": 38, "shape": "param" },
+      { "id": "o", "label": "o", "x": 58, "y": 38, "shape": "det" },
+      { "id": "eta", "label": "η", "x": 78, "y": 38, "shape": "det" },
+      { "id": "y", "label": "y", "x": 58, "y": 62, "shape": "obs" }
+    ],
+    "edges": [
+      { "from": "pi", "to": "o" },
+      { "from": "o", "to": "eta" },
+      { "from": "pi", "to": "y" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Odds (probability) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Odds_(probability)",
+      "attribution": "Glossary-level odds definition under CC BY-SA. Reporting traps are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "Odds ratio — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Odds_ratio",
+      "attribution": "OR versus risk-ratio distinction under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "OpenStax Introductory Statistics",
+      "url": "https://openstax.org/books/introductory-statistics/pages/3-introduction",
+      "attribution": "CC BY 4.0. Probability language only.",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "related": [
+    "wiki-odds-ratio",
+    "stats-logit",
+    "wiki-relative-risk",
+    "stats-predictive-values",
+    "stats-bernoulli-binomial",
+    "stats-se-sp"
+  ],
+  "example": {
+    "title": "OR = 3 is not “three times the risk”",
+    "setup": "Baseline risk π₀ = 0.40. An exposure has OR = 3. A slide says “three times more likely to fail culture conversion.”",
+    "steps": [
+      {
+        "title": "Invert the baseline",
+        "body": "Odds₀ = 0.40/0.60 = 2/3. New odds = 3 × 2/3 = 2. Then π₁ = 2/(1+2) = 2/3 ≈ 0.67.",
+        "expression": "π₁ = 0.67"
+      },
+      {
+        "title": "The risk ratio",
+        "body": "RR = 0.67/0.40 ≈ 1.67, not 3. The relative risk is a 67% increase, not a tripling. At π₀ = 0.40 the rare-event approximation is already dead."
+      },
+      {
+        "title": "If the baseline had been 0.02",
+        "body": "Odds₀ ≈ 0.0204, new odds ≈ 0.061, π₁ ≈ 0.058, RR ≈ 2.9 — close to 3. The approximation is a small-π story, not a slogan that survives cavitary-TB event rates."
+      }
+    ],
+    "takeaway": "Convert odds to π before you say “likely.” OR ≈ RR only when both risks are small."
+  },
+  "check": [
+    {
+      "id": "op-def",
+      "kind": "conceptual",
+      "prompt": "If π = 0.5, the odds equal:",
+      "choices": ["0.5", "1", "2", "0"],
+      "answer": "1",
+      "why": "0.5/0.5 = 1, even odds. The probability is 0.5; the odds are 1.",
+      "whyWrong": {
+        "0.5": "That is π, not the odds.",
+        "2": "That would be π = 2/3.",
+        "0": "Odds are 0 only as π → 0."
+      }
+    },
+    {
+      "id": "op-calc",
+      "kind": "calculation",
+      "prompt": "π = 0.20. What are the odds?",
+      "choices": ["0.20", "0.25", "0.80", "4"],
+      "answer": "0.25",
+      "why": "0.20/0.80 = 0.25, or 1:4. Probability 0.20 is not odds 0.20.",
+      "whyWrong": {
+        "0.20": "That is the probability.",
+        "0.80": "That is 1−π.",
+        "4": "That is the odds if π = 0.80, or the inverse “4 to 1 against” spoken as a number without the ratio."
+      }
+    },
+    {
+      "id": "op-figure",
+      "kind": "figure",
+      "prompt": "On the plate diagram, why is o drawn as a deterministic node between π and η?",
+      "figureHint": "Diamond o sits between π and η.",
+      "choices": [
+        "Because odds are an extra random error term",
+        "Because odds and log-odds are determined once π is named; the Bernoulli draw is y, not the odds",
+        "Because y is a parameter",
+        "Because π is observed and y is not"
+      ],
+      "answer": "Because odds and log-odds are determined once π is named; the Bernoulli draw is y, not the odds",
+      "why": "Transforms of a mean are deterministic. The randomness sits in y given π.",
+      "whyWrong": {
+        "Because odds are an extra random error term": "No extra noise is added by taking π/(1−π).",
+        "Because y is a parameter": "y is the observation.",
+        "Because π is observed and y is not": "Opposite: y is observed; π is the mean parameter."
+      }
+    }
+  ]
+}

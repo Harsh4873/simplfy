@@ -1,0 +1,148 @@
+{
+  "id": "stats-population-sample",
+  "title": "Population, sample, and the sampling unit",
+  "dek": "A population is the finite or superpopulation set you claim to describe. A sample is the subset you actually saw. The sampling unit — isolate, patient, household, SNP — is the decision that makes every later n honest or fake.",
+  "domain": "stats",
+  "aliases": [
+    "population versus sample",
+    "census versus sample",
+    "sampling unit",
+    "superpopulation",
+    "finite population"
+  ],
+  "tags": [
+    "sampling",
+    "population",
+    "survey",
+    "design"
+  ],
+  "story": [
+    "A population mean μ is a property of a defined set of units: every notified RR-TB patient in a province in 2024, or a superpopulation of future patients exchangeable with those. A sample mean ȳ is a property of the units you measured. Estimation is the act of using ȳ (and a sampling model or a design) to say something about μ. Mixing the two words is how a convenience cohort becomes “the prevalence.”",
+    "The sampling unit is not the row of the spreadsheet by default. Twenty colonies from one patient are not twenty independent people. Four hundred thousand SNPs in one outbreak are not n = 400,000 for a scientific parameter about transmission. If you cannot name the unit you would redraw under hypothetical replication, you do not yet have a sampling distribution.",
+    "Design-based inference treats the finite population as fixed and the sample indicators as random (survey weights, clustering, strata). Model-based inference treats the observed y as a draw from a superpopulation law. Both are legal. Pretending a hospital series is a simple random sample of a country is neither."
+  ],
+  "deepTitle": "Units, frames, and two kinds of population",
+  "deep": [
+    "Sampling frame: the list you could have drawn from. Missing private-sector patients, missing smear-negative disease, missing unsequenced isolates — those are frame errors, not a smaller standard error.",
+    "Simple random sample: every subset of size n equally likely. Then ȳ is unbiased for the finite-population mean and Var(ȳ) involves (1 − n/N) σ²/n. The finite-population correction vanishes when n ≪ N; it does not license ignoring clusters.",
+    "Convenience and leftover samples (whoever had WGS this month) need a scientific story about exchangeability. A hierarchical model can still be useful; a 95% CI captioned as “national prevalence” is a category error.",
+    "In WGS–DST, the usual scientific unit is the isolate (or the patient), not the nucleotide. Catalogue association grades are about variants as predictors, which is a different sampling claim again — isolates with a mutation, not sites in a genome.",
+    "The sampling-distribution plate is what happens after you have named the unit. This plate is the political act of saying who counts as one."
+  ],
+  "formulas": [
+    {
+      "id": "fpc",
+      "label": "SRS mean, finite population",
+      "expression": "Var(ȳ) = (1 − n/N) σ² / n",
+      "note": "Without replacement from N units. Clusters replace this with a design variance."
+    }
+  ],
+  "visual": {
+    "kind": "hierarchy",
+    "caption": "Who is one? Country, district, patient, isolate, read. Each level can be a population you describe or a sample you drew. n at the wrong level is how SNP-wise p-values impersonate a survey.",
+    "layers": [
+      { "title": "Target population", "nodes": ["province-year", "or superpopulation"] },
+      { "title": "Sampling frame", "nodes": ["notified", "sequenced", "cultured"] },
+      { "title": "Drawn units", "nodes": ["patients / isolates"] },
+      { "title": "Measurements (not extra n)", "nodes": ["SNPs", "reads", "MIC wells"] }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Sampling (statistics) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Sampling_(statistics)",
+      "attribution": "Glossary-level population/sample distinction under CC BY-SA. Unit-of-analysis teaching is original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — process or population sampling",
+      "url": "https://www.itl.nist.gov/div898/handbook/ppc/section3/ppc33.htm",
+      "attribution": "United States government work, treated as public domain.",
+      "license": "U.S. public domain"
+    },
+    {
+      "title": "OpenStax Introductory Statistics — sampling and data",
+      "url": "https://openstax.org/books/introductory-statistics/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+      "attribution": "CC BY 4.0. Sampling language only; this plate is original teaching notes.",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "related": [
+    "stats-sampling-distribution",
+    "stats-survey-error",
+    "stats-randomization",
+    "stats-sd-versus-se",
+    "stats-population-structure"
+  ],
+  "example": {
+    "title": "n = 80,000 SNPs or n = 40 isolates?",
+    "setup": "A methods section reports a “genome-wide association” of 80,000 core SNPs with FQ resistance in 40 isolates, 12 of them FQ-R. Software prints 80,000 p-values. A slide titles this n = 80,000.",
+    "steps": [
+      {
+        "title": "Name the scientific parameter",
+        "body": "If the target is “does this lineage-tagging SNP associate with FQ-R in this collection?”, the draws under replication are isolates (or lineages), not nucleotides."
+      },
+      {
+        "title": "What n = 80,000 would mean",
+        "body": "That would be a claim that SNPs are iid sampling units for one scientific mean — the same error as treating reads as patients. Multiple-testing corrections address the 80,000 tests; they do not create 80,000 independent people."
+      },
+      {
+        "title": "Write the unit in the caption",
+        "body": "n = 40 isolates, 12 events, relatedness unmodelled unless a mixed model or a kinship term says so. The population is this sequenced convenience set until a frame is argued."
+      }
+    ],
+    "takeaway": "n is the number of redrawable units for the parameter you named — not the number of columns."
+  },
+  "check": [
+    {
+      "id": "ps-unit",
+      "kind": "conceptual",
+      "prompt": "For a prevalence of RR-TB among notified patients, the honest sampling unit is usually:",
+      "choices": [
+        "Each SNP in the reference genome",
+        "Each notified patient (or isolate, if one per patient) actually drawn from a named frame",
+        "Each sequencing read",
+        "Each day of the calendar"
+      ],
+      "answer": "Each notified patient (or isolate, if one per patient) actually drawn from a named frame",
+      "why": "Prevalence is a person- or isolate-level mean. Reads and SNPs are measurements on those units.",
+      "whyWrong": {
+        "Each SNP in the reference genome": "Nucleotides are not people.",
+        "Each sequencing read": "Depth is a measurement, not a survey draw.",
+        "Each day of the calendar": "Time can be a stratum; it is not the default unit for prevalence."
+      }
+    },
+    {
+      "id": "ps-fpc",
+      "kind": "calculation",
+      "prompt": "SRS of n = 50 from N = 50 (a census). The finite-population factor (1 − n/N) in Var(ȳ) equals:",
+      "choices": ["1", "0", "0.5", "50"],
+      "answer": "0",
+      "why": "1 − 50/50 = 0. A census has no sampling variance for the finite-population mean. Superpopulation variance is a different model.",
+      "whyWrong": {
+        "1": "That is n/N, or the factor when n is negligible.",
+        "0.5": "That would be n = N/2.",
+        "50": "That is n, not the factor."
+      }
+    },
+    {
+      "id": "ps-figure",
+      "kind": "figure",
+      "prompt": "On the hierarchy plate, why do SNPs and reads sit below isolates rather than beside the target population?",
+      "figureHint": "Bottom layer labelled measurements.",
+      "choices": [
+        "Because SNPs are the population of interest in every TB survey",
+        "Because they are measurements on the drawn units; treating them as extra sampled people inflates n",
+        "Because reads cannot be modelled",
+        "Because the frame is made of nucleotides"
+      ],
+      "answer": "Because they are measurements on the drawn units; treating them as extra sampled people inflates n",
+      "why": "The plate’s point is the unit of redraw. Measurements multiply columns, not independent draws of the scientific target.",
+      "whyWrong": {
+        "Because SNPs are the population of interest in every TB survey": "Only if you redefined the target to be sites, which this prevalence story did not.",
+        "Because reads cannot be modelled": "They can; they are still not the survey unit here.",
+        "Because the frame is made of nucleotides": "Frames are lists of people or isolates."
+      }
+    }
+  ]
+}

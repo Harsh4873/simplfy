@@ -14,7 +14,7 @@ export function HomePage({
   navigate: (route: Route) => void;
 }) {
   const open = (module: StudyModule) => {
-    void api.remember(`module:${module.id}`);
+    void api.touchLesson(module, "teach");
     navigate({ name: "learn", id: module.id, step: "teach" });
   };
 
@@ -50,9 +50,9 @@ export function HomePage({
         </div>
       </section>
 
-      {api.continueModule || api.continueNote ? (
+      {api.continueModule || api.continueNote || api.studios.length ? (
         <section className="continue-strip" aria-label="Continue">
-          <p className="kicker">Continue</p>
+          <p className="kicker">This device</p>
           {api.continueModule ? (
             <button type="button" className="solid" onClick={() => open(api.continueModule!)}>
               Resume {api.continueModule.title}
@@ -65,6 +65,11 @@ export function HomePage({
               onClick={() => navigate({ name: "notes", id: api.continueNote!.id })}
             >
               Open note: {api.continueNote.name}
+            </button>
+          ) : null}
+          {api.studios.length ? (
+            <button type="button" className="ghost" onClick={() => navigate({ name: "desk" })}>
+              Open desk · {api.studios.length} canvas{api.studios.length === 1 ? "" : "es"}
             </button>
           ) : null}
         </section>
@@ -91,9 +96,9 @@ export function HomePage({
         </h2>
         <p className="section-dek">
           Flagship topics have a full tutor script: a real analogy, plain speech, traps, and a model
-          answer for “say it back.” Everything else on the shelf still runs the same five screens —
+          answer for “say it back.” Everything else on the shelf still runs the same six steps —
           the tutor layer is derived from the plate so you are never dropped into a wall of jargon
-          first.
+          first. Papers sit last: Ioerger first when he wrote on it.
         </p>
         <div className="card-grid">
           {featured.map((module) => (

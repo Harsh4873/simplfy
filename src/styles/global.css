@@ -441,7 +441,7 @@ kbd {
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
 }
 
@@ -518,9 +518,74 @@ kbd {
   color: var(--muted);
 }
 
+.badge.quiet {
+  background: var(--line);
+  color: var(--fg);
+}
+
+.paper-list,
+.look-links,
+.desk-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.paper-card,
+.desk-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.paper-card a {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+.paper-card a:hover {
+  color: var(--accent);
+}
+
+.paper-meta {
+  margin: 6px 0;
+  font-size: var(--fs-2);
+  color: var(--muted);
+}
+
+.look-links li {
+  margin-bottom: 6px;
+}
+
+.lookup-form {
+  max-width: 640px;
+}
+
+.desk-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.desk-open {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 0 0 10px;
+}
+
+.desk-card.is-pinned {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
 .path-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
 }
 
@@ -586,7 +651,7 @@ kbd {
 
 .step-track {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 6px;
   margin: 0 0 28px;
   position: sticky;

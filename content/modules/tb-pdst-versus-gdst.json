@@ -1,0 +1,150 @@
+{
+  "id": "tb-pdst-versus-gdst",
+  "title": "Phenotypic versus genotypic DST as two windows",
+  "dek": "Phenotypic DST asks whether the isolate grows at a critical concentration. Genotypic DST infers MIC from graded mutations. They disagree where catalogues are incomplete, at borderline alleles, and in mixed samples. The algorithm uses both.",
+  "domain": "tb",
+  "aliases": [
+    "phenotypic versus genotypic DST",
+    "pDST vs gDST",
+    "molecular versus MGIT DST",
+    "WGS DST versus culture"
+  ],
+  "tags": [
+    "DST",
+    "pDST",
+    "gDST",
+    "catalogue"
+  ],
+  "story": [
+    "Phenotypic DST (pDST) is a growth assay: does this culture grow at a WHO-specified critical concentration in a named medium? It sees whatever mechanism is present — including ones not yet in a catalogue — and it can miss minorities that the susceptible majority outgrows. It is slow, medium-dependent, and historically noisy for EMB and PZA.",
+    "Genotypic DST (gDST) from a cartridge, targeted NGS, or WGS infers resistance from graded mutations. It is fast on the rifampin window, scalable to many drugs, and only as complete as the catalogue and the depth. New efflux alleles, unknown gyrase mutations, and phylogenetic look-alikes are the failure modes.",
+    "The working algorithm is not a contest. NAAT first for MTBC + RRDR. Follow-on tNGS/WGS for INH, FQ, BDQ, LZD and friends. pDST (and MIC) when the catalogue is silent, when the allele is uncertain, when you need a new drug’s phenotype, or when assays disagree. The individual pDST and WGS plates own the machinery; this plate is the comparison."
+  ],
+  "deepTitle": "Discordance is data",
+  "deep": [
+    "Xpert R / MGIT S: heteroresistance, disputed rpoB, or a silent probe issue. Do not average. Sequence.",
+    "Xpert S / MGIT R: I491F and other non-RRDR rpoB, or mixed samples. WGS outside the cartridge window.",
+    "Catalogue “uncertain” plus a clear MIC shift: believe the MIC for that patient and feed the allele back to the catalogue process. Do not wait for a PDF to treat.",
+    "BDQ and LZD: MIC methods plus full-gene Rv0678/rplC beat a single blunt CC and a hotspot panel.",
+    "Speciation first. gDST catalogues on an NTM MGIT are theatre."
+  ],
+  "visual": {
+    "kind": "flow-map",
+    "caption": "Two windows on the same isolate. NAAT opens RRDR. gDST (tNGS/WGS) grades the rest. pDST/MIC sits beside, not below, for uncertain alleles and new mechanisms. Discordance is a decision, not a mean.",
+    "nodes": [
+      { "id": "iso", "label": "Isolate / sputum", "x": 8, "y": 48, "tone": "start" },
+      { "id": "naat", "label": "NAAT RRDR", "x": 30, "y": 28, "tone": "process" },
+      { "id": "gdst", "label": "tNGS / WGS gDST", "x": 30, "y": 70, "tone": "process" },
+      { "id": "agree", "label": "Concordant", "x": 56, "y": 28, "tone": "end" },
+      { "id": "disc", "label": "Discordant / uncertain", "x": 56, "y": 70, "tone": "decision" },
+      { "id": "mic", "label": "MIC / pDST / BAM", "x": 82, "y": 70, "tone": "end" }
+    ],
+    "edges": [
+      { "from": "iso", "to": "naat" },
+      { "from": "iso", "to": "gdst" },
+      { "from": "naat", "to": "agree", "label": "match" },
+      { "from": "gdst", "to": "agree" },
+      { "from": "naat", "to": "disc" },
+      { "from": "gdst", "to": "disc" },
+      { "from": "disc", "to": "mic" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "WHO Module 3 — diagnosis (WRD and DST algorithms, paraphrase)",
+      "url": "https://tbksp.who.int/",
+      "attribution": "Algorithm philosophy from WHO open modules; teaching paraphrase, not a guideline dump.",
+      "license": "CC BY-NC-SA 3.0 IGO"
+    },
+    {
+      "title": "Antibiotic sensitivity testing — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Antibiotic_sensitivity_testing",
+      "attribution": "pDST as a growth assay under CC BY-SA.",
+      "license": "CC BY-SA 4.0"
+    }
+  ],
+  "related": [
+    "tb-dst-phenotypic",
+    "tb-wgs-dst",
+    "tb-who-catalogue",
+    "tb-diagnosis",
+    "tb-tngs",
+    "tb-xpert-ultra"
+  ],
+  "example": {
+    "title": "Catalogue silent, MIC up 8-fold",
+    "setup": "RR-TB, WGS: no high-confidence BDQ variant. MGIT CC BDQ susceptible. Broth MIC 0.5 mg/L where wild-type in this lab is 0.06. A new Rv0678 missense, catalogue uncertain, AF 0.99.",
+    "steps": [
+      {
+        "title": "Do not call BDQ-S from “no catalogue hit”",
+        "body": "gDST is incomplete by construction. An 8-fold MIC shift is a phenotypic fact. Uncertain + MIC is a clinical BDQ problem, not a voting exercise."
+      },
+      {
+        "title": "pDST CC can still say S",
+        "body": "If the CC sits above this MIC, MGIT S and MIC-up coexist. That is why MIC methods were asked for BDQ. The CC plate already growled."
+      },
+      {
+        "title": "Feed the allele back",
+        "body": "Report the missense, AF, MIC, and the uncertainty grade. Do not wait for the next catalogue PDF to notice the patient."
+      }
+    ],
+    "takeaway": "gDST is a graded inference. pDST/MIC sees the organism. Discordance is the meeting."
+  },
+  "check": [
+    {
+      "id": "pg-see",
+      "kind": "conceptual",
+      "prompt": "A mechanism not yet in the mutation catalogue is more likely to be caught first by:",
+      "choices": [
+        "A hotspot cartridge that does not target it",
+        "Phenotypic DST or an MIC, which do not require a named allele",
+        "Spoligotype",
+        "IGRA"
+      ],
+      "answer": "Phenotypic DST or an MIC, which do not require a named allele",
+      "why": "Growth assays see the phenotype. gDST needs a graded variant.",
+      "whyWrong": {
+        "A hotspot cartridge that does not target it": "That is how gDST misses new mechanisms.",
+        "Spoligotype": "Lineage, not DST.",
+        "IGRA": "Host assay."
+      }
+    },
+    {
+      "id": "pg-xpert",
+      "kind": "calculation",
+      "prompt": "Xpert RIF-S, MGIT RIF-R, WGS rpoB I491F. The honest synthesis is:",
+      "choices": [
+        "Average to “intermediate” because two of three assays say S",
+        "Non-RRDR resistance the cartridge was not built to see; gDST outside RRDR plus pDST agree",
+        "Proof that pDST is always wrong",
+        "Proof that I491F is synonymous"
+      ],
+      "answer": "Non-RRDR resistance the cartridge was not built to see; gDST outside RRDR plus pDST agree",
+      "why": "I491F is the teaching Xpert-miss. Two windows beat a mean of letters.",
+      "whyWrong": {
+        "Average to “intermediate” because two of three assays say S": "Xpert S is expected; do not vote.",
+        "Proof that pDST is always wrong": "Here pDST was the clue.",
+        "Proof that I491F is synonymous": "It is missense."
+      }
+    },
+    {
+      "id": "pg-figure",
+      "kind": "figure",
+      "prompt": "On the flow map, MIC/pDST/BAM is the end of the discordance branch because:",
+      "figureHint": "Right-hand end node from Discordant.",
+      "choices": [
+        "Discordant or uncertain gDST/NAAT calls should be resolved with phenotype and by looking at the actual alleles in the BAM, not by averaging letters",
+        "BAM files replace culture forever",
+        "MIC is an IGRA",
+        "Concordant calls must always go to MIC"
+      ],
+      "answer": "Discordant or uncertain gDST/NAAT calls should be resolved with phenotype and by looking at the actual alleles in the BAM, not by averaging letters",
+      "why": "The algorithm uses both windows. Discordance is a decision node.",
+      "whyWrong": {
+        "BAM files replace culture forever": "pDST still exists.",
+        "MIC is an IGRA": "No.",
+        "Concordant calls must always go to MIC": "Concordant high-confidence alleles often do not wait on MIC."
+      }
+    }
+  ]
+}

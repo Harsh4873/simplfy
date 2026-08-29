@@ -199,4 +199,92 @@ export const LESSON_OVERLAYS: Record<string, LessonOverlay> = {
     sayBackModel:
       "A graded mutation catalogue, a variant caller / pipeline, and a leftover disagreement with phenotypic DST. The caller is a bioinformatic decision about a BAM; phenotype is a growth experiment. Concordance is high for some drugs and not others, and mixed infection plus catalogue holes are why the residual is part of the result.",
   },
+  "tb-tnseq-transit": {
+    analogy: {
+      title: "A library of broken keys, then a count of which doors still open",
+      body: "You smash a transposon into as many genes as you can — each mutant is a key with one tooth filed off. Grow the pool. Sequence the insertions. Genes you never recover were doors that had to stay locked (essential). Genes that vanish only on cholesterol, or only with a drug, are conditionally essential. TRANSIT is the software that turns those counts into calls: Gumbel, an HMM along the chromosome, or a resampling test between two conditions. Ioerger’s lab wrote that stack with Sassetti. Start there before a random TnSeq blog post.",
+    },
+    plain: [
+      "Himar1 inserts at TA sites. A .wig file is a histogram of how often each TA was seen. Saturation is ‘what fraction of TA sites have at least one insertion?’ Thin libraries lie.",
+      "Essentiality is not a gene property in the abstract. It is a property of this strain, this medium, this time point. Cholesterol vs glycerol is the textbook fork.",
+      "TRANSIT’s resampling test is a permutation/bootstrap cousin: it asks whether the insertion counts in a gene moved between conditions more than you’d expect if you shuffled the labels.",
+    ],
+    whyItMatters:
+      "This is the Ioerger-shaped object in a TB computational lab. If you are reading a 2ΔLL hit list from a TnSeq GLM, you still need to know whether the gene was even callable (enough TA sites, enough saturation) before you write a story.",
+    watchFor: [
+      "Genes with 0–2 TA sites are barely analyzable. Short genes look essential because luck, not biology.",
+      "N- and C-termini often tolerate insertions. Calling a whole ORF essential from a hole in one domain is a cartoon.",
+      "The tool is TRANSIT. The biology is the library. Do not quote a call without the condition.",
+    ],
+    sayBackPrompt:
+      "In your own words: what does a TnSeq .wig file record, what does ‘essential’ mean, and what is TRANSIT for?",
+    sayBackModel:
+      "A .wig is insertion counts at TA sites from a transposon library. Essential means the mutants were not recovered in that condition — not that the gene is sacred in every medium. TRANSIT is Ioerger/Sassetti software that turns those counts into essentiality and conditional-essentiality calls (Gumbel, HMM, resampling).",
+  },
+  "tb-essentiality": {
+    analogy: {
+      title: "Required for this kitchen, not for every kitchen",
+      body: "A blender is ‘essential’ if you are making a smoothie. It is junk in a kitchen that only boils eggs. katG is the opposite gag: you can live without the blender on plates, but the patient’s isoniazid recipe needed it. Essentiality is a kitchen. Clinical importance is a different cookbook.",
+    },
+    plain: [
+      "Essential means loss of function is lethal or near-lethal in a named condition — this medium, this mouse, this time point. An ‘essentialome’ without the condition is a slogan.",
+      "katG is dispensable on plates and still the isoniazid activator. pncA is dispensable and still the pyrazinamide activator. inhA is essential, so INH-R prefers promoter up-regulation over knockout. Those are different booleans.",
+      "A frameshift in a core-essential catalytic gene in a viable isolate is a BAM / contamination / annotation alarm. A frameshift in katG is Tuesday.",
+    ],
+    whyItMatters:
+      "Pipelines that auto-flag ‘essential-gene LOF’ will either cry wolf on katG or miss a ruined rpoB. Version the list, name the screen, then look at the BAM.",
+    watchFor: [
+      "Griffin, Zhang, DeJesus HMM catalogues disagree at the edges. Cite the year and the method.",
+      "Domain essentiality: a cold N-terminus and a hot PE tail are not one gene-level boolean.",
+      "H37Rv is not every lineage. A paralogue can make a ‘non-essential’ gene essential elsewhere.",
+    ],
+    sayBackPrompt:
+      "In your own words: what does ‘essential’ mean, and why isn’t katG a counterexample that breaks the idea?",
+    sayBackModel:
+      "Essential means you could not recover loss-of-function mutants in that condition. katG is dispensable in vitro and still clinically pivotal because it activates INH — that is a different boolean, not a broken definition. Quote the medium, then the gene.",
+  },
+  "stats-normal-clt": {
+    analogy: {
+      title: "A crowd of dice, not each die looking like a bell",
+      body: "One ugly die can be lopsided. Roll thirty of them and add up the faces, and the total starts looking like a smooth hill. The central limit theorem is about that hill of averages, not a promise that your twelve CFU counts were already Gaussian. Confusing the two is how people ‘transform to Normal’ and think the theorem blessed the raw data.",
+    },
+    plain: [
+      "A Normal is a two-parameter location-scale density. Standard Normal is μ = 0, σ = 1; everything else is a shift and a stretch. Linear combinations of independent Normals stay Normal.",
+      "The CLT says: iid draws with finite mean and variance have a sample mean whose sampling law becomes approximately Normal as n grows. The parent can be skewed. The theorem is about Ȳ, order 1/√n.",
+      "Wald intervals, z-tests, and many ‘the estimate is ±1.96 SE’ lines are CLT-plus-plug-in. They fail when nπ is tiny, tails are heavy, or the rows are clustered so that n is a vanity number.",
+    ],
+    whyItMatters:
+      "A TB proportion of 3/80 is not a reason to print a textbook Normal interval and walk away. Name the finite-n object. The CLT is a license for the mean, not a personality of the histogram.",
+    watchFor: [
+      "Law of large numbers (Ȳ → μ) is not the CLT. Consistency of the mean ≠ bell-shaped data.",
+      "No finite variance, strong dependence, or maxima (not means) and the classical CLT may not apply.",
+      "68–95–99.7 is a Normal mnemonic. Chebyshev only gives 1/k². If you need the 0.003 tail, you assumed a shape.",
+    ],
+    sayBackPrompt:
+      "In your own words: what is a Normal, what does the CLT actually claim, and what does it not claim about your raw data?",
+    sayBackModel:
+      "A Normal is a location-scale bell indexed by μ and σ². The CLT says that sample means of iid finite-variance draws become approximately Normal — the parent need not be. It does not say your raw CFU or MIC list was Gaussian, and a Wald interval still needs enough n and a variance that exists.",
+  },
+  "tb-cholesterol-catabolism": {
+    analogy: {
+      title: "A restaurant that only shows its wine cellar on Tuesdays",
+      body: "Feed the library glycerol and the cholesterol staff sit idle — insertions in those genes still grow, so they look optional. Switch the menu to cholesterol and the same staff become the only people who can serve. prpD is a waiter you never notice until propionate (the over-reduced wine) starts poisoning the kitchen.",
+    },
+    plain: [
+      "Host cholesterol is a carbon source, not a personality of the bacillus. Mce4 helps bring it in. Breakdown dumps propionyl-CoA. The methylcitrate genes (prpRDC) are the relief valve.",
+      "Griffin 2011 — Sassetti, Ioerger, DeJesus — is the teaching screen: glycerol versus cholesterol Himar1 libraries. Genes that vanish only on cholesterol are conditionally essential. TRANSIT resampling is the later software for that comparison.",
+      "A clinical prpD frameshift is not DST. It is a carbon-source prior. Quote the medium before you write a virulence sentence.",
+    ],
+    whyItMatters:
+      "This is the cleanest Ioerger-lab object after TRANSIT itself: a two-condition fitness map whose first paper is already in his circle. Read that before a random ‘TB eats lipids’ review.",
+    watchFor: [
+      "Glycerol hides the pathway. A 7H10 essentiality list will call prpD dispensable and be right — for glycerol.",
+      "Propionate toxicity can masquerade as ‘cholesterol essentiality.’",
+      "mce / PE-PPE neighbourhoods are messy to map. Confirm before a transporter story from one cold TA.",
+    ],
+    sayBackPrompt:
+      "In your own words: why can prpD look dispensable on glycerol and required on cholesterol, and which papers do you read first?",
+    sayBackModel:
+      "Cholesterol breakdown makes propionyl-CoA; methylcitrate genes handle that stress. Glycerol never builds the pile, so insertions in prpD still grow. Griffin 2011 and the Ioerger/DeJesus TRANSIT papers are the first ring; a sterol encyclopedia page is not the evidence.",
+  },
 };

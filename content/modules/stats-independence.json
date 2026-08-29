@@ -1,0 +1,153 @@
+{
+  "id": "stats-independence",
+  "title": "Independence is a factorisation, not a vibe",
+  "dek": "A and B are independent when P(A ∩ B) = P(A)P(B). Random variables are independent when the joint density factors. Uncorrelated is weaker. A spreadsheet with one row per row is not a licence.",
+  "domain": "stats",
+  "aliases": [
+    "statistical independence",
+    "independent events",
+    "iid",
+    "independent versus uncorrelated",
+    "product likelihood"
+  ],
+  "tags": [
+    "probability",
+    "independence",
+    "iid",
+    "dependence"
+  ],
+  "story": [
+    "Independence is a statement about a joint law. Events: P(A ∩ B) = P(A)P(B), equivalently P(A | B) = P(A) when P(B) > 0. Random variables: f_{U,V}(u,v) = f_U(u) f_V(v). The iid working model is this factorisation n times. If you write a product likelihood, you have claimed independence given the parameters — not “we randomised,” not “n is large,” not “the columns look unrelated on a PCA plot.”",
+    "Uncorrelated means Cov(U,V) = 0. Independent (with finite variances) implies uncorrelated. The converse is false in general: a mean-zero symmetric X and Y = X² can have covariance zero and be deterministically dependent. Joint Normal is the famous exception where uncorrelated does imply independent. Most DST indicators are not jointly Normal.",
+    "TB data fail independence on purpose: household contacts, serial isolates, SNPs in linkage, reads from one library, districts in a survey. The repair is a different joint — mixed models, sandwich, copulas, trees — not a smaller α."
+  ],
+  "deepTitle": "Conditional independence is the grown-up version",
+  "deep": [
+    "Conditional independence U ⊥ V | W means f(u,v | w) = f(u | w) f(v | w). DAGs encode this. Two smear results can be dependent and still independent given a shared household exposure U.",
+    "iid is independent and identically distributed. Independent but not identical (different πᵢ) is a Bernoulli GLM. Identical but not independent is a cluster of copies. Both adjectives have to be earned.",
+    "Randomisation justifies an assignment mechanism. It does not make potential outcomes independent of unmeasured shared reagents after you condition on lab day.",
+    "Exchangeability is weaker than iid and is the hierarchical modelling claim: the unit labels do not matter. Partial pooling uses it. It is still a joint, not a mood.",
+    "A permutation test that shuffles labels assumes exchangeability under H₀. If the dependence you did not model is still in the residuals, the permutation does not repair it."
+  ],
+  "formulas": [
+    {
+      "id": "indep-ev",
+      "label": "Independent events",
+      "expression": "P(A ∩ B) = P(A) P(B)",
+      "note": "Equivalent to P(A | B) = P(A) when P(B) > 0."
+    },
+    {
+      "id": "factor",
+      "label": "Independent random variables",
+      "expression": "f(u,v) = f(u) f(v)",
+      "note": "The product likelihood is this claim n-fold."
+    }
+  ],
+  "visual": {
+    "kind": "model-plate",
+    "caption": "iid plate: each yᵢ depends on a shared π and not on the other y’s. Drawing a dependence arrow between y’s (household, lab, tree) is a different joint — the product likelihood is then the wrong model, not a robust SE waiting to happen.",
+    "plates": [
+      { "id": "n", "label": "i = 1…n  (iid claim)", "x": 28, "y": 18, "w": 50, "h": 64 }
+    ],
+    "nodes": [
+      { "id": "pi", "label": "π", "x": 12, "y": 48, "shape": "param" },
+      { "id": "y", "label": "yᵢ", "x": 50, "y": 48, "shape": "obs" }
+    ],
+    "edges": [
+      { "from": "pi", "to": "y" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "Independence (probability theory) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Independence_(probability_theory)",
+      "attribution": "Glossary-level factorisation under CC BY-SA. TB-lab dependence examples are original Simplfy notes.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "NIST e-Handbook — independence",
+      "url": "https://www.itl.nist.gov/div898/handbook/",
+      "attribution": "United States government work, treated as public domain. Independence-versus-uncorrelated teaching is original.",
+      "license": "U.S. public domain"
+    }
+  ],
+  "related": [
+    "stats-random-variables",
+    "stats-probability-axioms",
+    "stats-conditional-probability",
+    "stats-dag-literacy",
+    "stats-bernoulli-binomial",
+    "stats-permutation"
+  ],
+  "example": {
+    "title": "Uncorrelated is not the iid licence",
+    "setup": "A student standardises 200 SNPs, notes that off-diagonal sample correlations are near 0 after a PCA rotation, and writes a product Bernoulli likelihood across SNPs for one isolate’s resistance.",
+    "steps": [
+      {
+        "title": "What near-zero correlation said",
+        "body": "Pairwise sample correlations close to 0 are compatible with uncorrelated coordinates in that rotation. They do not prove the joint factors, and they do not make 200 SNPs in one genome 200 independent isolates."
+      },
+      {
+        "title": "What the scientific unit was",
+        "body": "The resistance phenotype is one isolate-level outcome. Treating SNPs as iid trials of π is the wrong Ω. A GLM with one row per isolate, or a structured random effect for relatedness, is the joint that matches the question."
+      },
+      {
+        "title": "When a product is licensed",
+        "body": "If the rows are 200 isolates from different outbreaks and you model one SNP’s presence as Bernoulli given covariates, the product across isolates can be the working independence model. The product across SNPs in one person was never that model."
+      }
+    ],
+    "takeaway": "Independence is a joint density factorising. PCA scatter is not that lemma."
+  },
+  "check": [
+    {
+      "id": "ind-unc",
+      "kind": "conceptual",
+      "prompt": "Independent random variables with finite variance are uncorrelated. The converse is:",
+      "choices": [
+        "Always true",
+        "True in general, and also the reason PCA licences a product likelihood",
+        "Not true in general; joint Normal is a notable case where uncorrelated does imply independent",
+        "True only for Bernoulli"
+      ],
+      "answer": "Not true in general; joint Normal is a notable case where uncorrelated does imply independent",
+      "why": "Uncorrelated is a second-moment fact. Independence is a full factorisation. Gaussians are the celebrity exception.",
+      "whyWrong": {
+        "Always true": "Counterexamples exist (e.g. Y = X² with symmetric X).",
+        "True in general, and also the reason PCA licences a product likelihood": "PCA does not grant independence.",
+        "True only for Bernoulli": "Bernoulli can be uncorrelated and still dependent in multivariate binary models."
+      }
+    },
+    {
+      "id": "ind-calc",
+      "kind": "calculation",
+      "prompt": "P(A)=0.3, P(B)=0.5. If A and B are independent, P(A ∩ B) equals:",
+      "choices": ["0.8", "0.15", "0.2", "0"],
+      "answer": "0.15",
+      "why": "Product of the marginals: 0.3×0.5 = 0.15.",
+      "whyWrong": {
+        "0.8": "That is P(A)+P(B), a disjoint-union mistake.",
+        "0.2": "A guess at an overlap.",
+        "0": "That would be disjointness, which is not independence (unless one probability is 0)."
+      }
+    },
+    {
+      "id": "ind-figure",
+      "kind": "figure",
+      "prompt": "On the plate diagram, why is there no arrow between replicated yᵢ nodes (they share only π)?",
+      "figureHint": "One parameter π pointing into yᵢ inside an iid plate.",
+      "choices": [
+        "Because iid means the observations are independent given π, so the joint factors as a product",
+        "Because parameters cannot point at data",
+        "Because n = 1 always",
+        "Because independence forbids a shared π"
+      ],
+      "answer": "Because iid means the observations are independent given π, so the joint factors as a product",
+      "why": "Shared parameters are allowed. Dependence among the y’s given π would need extra edges (or a random effect inside the plate).",
+      "whyWrong": {
+        "Because parameters cannot point at data": "That is exactly a sampling model.",
+        "Because n = 1 always": "The plate is n-fold.",
+        "Because independence forbids a shared π": "iid shares the law; it does not share residual noise."
+      }
+    }
+  ]
+}

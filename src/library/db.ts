@@ -26,8 +26,23 @@ export type RecallCard = {
   lastMissedAt: number;
 };
 
+export type StudioKind = "lesson" | "note" | "papers";
+
+export type StudioCanvas = {
+  id: string;
+  kind: StudioKind;
+  title: string;
+  moduleId?: string;
+  noteId?: string;
+  papersQuery?: string;
+  step?: string;
+  pinned: boolean;
+  createdAt: number;
+  updatedAt: number;
+};
+
 const DB_NAME = "simplfy";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 function requestToPromise<T>(request: IDBRequest<T>): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -57,6 +72,9 @@ export function openStudioDb(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains("prefs")) {
         db.createObjectStore("prefs", { keyPath: "key" });
+      }
+      if (!db.objectStoreNames.contains("studios")) {
+        db.createObjectStore("studios", { keyPath: "id" });
       }
     };
     request.onsuccess = () => resolve(request.result);
@@ -108,5 +126,26 @@ export async function getPref(db: IDBDatabase, key: string): Promise<string | nu
 export async function setPref(db: IDBDatabase, key: string, value: string): Promise<void> {
   const tx = db.transaction("prefs", "readwrite");
   tx.objectStore("prefs").put({ key, value });
+  await txDone(tx);
+}
+
+export async function listStudios(db: IDBDatabase): Promise<StudioCanvas[]> {
+  const items = await requestToPromise(db.transaction("studios").objectStore("studios").getAll());
+  return items.sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.updatedAt - a.updatedAt);
+}
+
+export async function getStudio(db: IDBDatabase, id: string): Promise<StudioCanvas | undefined> {
+  return requestToPromise(db.transaction("studios").objectStore("studios").get(id));
+}
+
+export async function putStudio(db: IDBDatabase, canvas: StudioCanvas): Promise<void> {
+  const tx = db.transaction("studios", "readwrite");
+  tx.objectStore("studios").put(canvas);
+  await txDone(tx);
+}
+
+export async function deleteStudio(db: IDBDatabase, id: string): Promise<void> {
+  const tx = db.transaction("studios", "readwrite");
+  tx.objectStore("studios").delete(id);
   await txDone(tx);
 }

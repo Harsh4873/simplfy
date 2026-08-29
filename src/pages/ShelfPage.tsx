@@ -29,12 +29,12 @@ export function ShelfPage({
   }, [api.hits, api.modules, api.query, domain]);
 
   const open = (module: StudyModule) => {
-    void api.remember(`module:${module.id}`);
+    void api.touchLesson(module, "teach");
     navigate({ name: "shelf", id: module.id });
   };
 
   const start = (module: StudyModule) => {
-    void api.remember(`module:${module.id}`);
+    void api.touchLesson(module, "teach");
     navigate({ name: "learn", id: module.id, step: "teach" });
   };
 

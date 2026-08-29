@@ -8,6 +8,7 @@ import type { StudioApi } from "../studio/useStudio";
 import { CheckCard } from "../quiz/CheckCard";
 import { ConceptMap } from "../studio/ConceptMap";
 import { sayBackItem } from "../lesson/fromModule";
+import { PapersBoard } from "../papers/PapersBoard";
 import { cx } from "../ui/cx";
 
 function StepNav({
@@ -289,10 +290,12 @@ function ShelfStep({
   module,
   api,
   onOpen,
+  onPapers,
 }: {
   module: StudyModule;
   api: StudioApi;
   onOpen: (module: StudyModule) => void;
+  onPapers: () => void;
 }) {
   return (
     <div className="lesson-body shelf-step">
@@ -336,6 +339,51 @@ function ShelfStep({
           ))}
         </ul>
       </footer>
+      <button type="button" className="solid" onClick={onPapers}>
+        Papers for this topic
+      </button>
+    </div>
+  );
+}
+
+function PapersStep({
+  module,
+  onLookup,
+}: {
+  module: StudyModule;
+  onLookup: (q: string) => void;
+}) {
+  const [draft, setDraft] = useState("");
+  const gene = module.visual.kind === "gene-track" ? module.visual.gene : "";
+  return (
+    <div className="lesson-body">
+      <p className="kicker">Papers for this plate</p>
+      <h2>What to read</h2>
+      <p className="section-dek">
+        Ranked for this topic: Ioerger first if he wrote on it, then people he writes with, then the
+        TB field, then other papers, then explainers. A ring with nothing in it stays hidden.
+      </p>
+      <form
+        className="paste lookup-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (draft.trim()) onLookup(draft.trim());
+        }}
+      >
+        <label htmlFor="lesson-paper-q">Narrow or jump to a gene lookup</label>
+        <div className="search-row">
+          <input
+            id="lesson-paper-q"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            placeholder={gene ? `${gene}, or another locus…` : "gene, drug, method…"}
+          />
+          <button type="submit" className="ghost">
+            Open lookup
+          </button>
+        </div>
+      </form>
+      <PapersBoard query="" module={module} />
     </div>
   );
 }
@@ -354,8 +402,8 @@ export function LearnPage({
   const module = api.byId.get(id);
 
   useEffect(() => {
-    if (module) void api.remember(`module:${module.id}`);
-  }, [api, module]);
+    if (module) void api.touchLesson(module, step);
+  }, [api.touchLesson, module, step]);
 
   if (!module) {
     return (
@@ -390,7 +438,18 @@ export function LearnPage({
       {step === "example" ? <ExampleStep module={module} onNext={() => go("practice")} /> : null}
       {step === "practice" ? <PracticeStep module={module} api={api} onNext={() => go("say-back")} /> : null}
       {step === "say-back" ? <SayBackStep module={module} api={api} onNext={() => go("shelf")} /> : null}
-      {step === "shelf" ? <ShelfStep module={module} api={api} onOpen={openRelated} /> : null}
+      {step === "shelf" ? (
+        <ShelfStep module={module} api={api} onOpen={openRelated} onPapers={() => go("papers")} />
+      ) : null}
+      {step === "papers" ? (
+        <PapersStep
+          module={module}
+          onLookup={(q) => {
+            void api.touchPapers(q);
+            navigate({ name: "papers", q });
+          }}
+        />
+      ) : null}
     </article>
   );
 }

@@ -39,7 +39,7 @@ export function TopBar({
     if (!first) return;
     api.setQuery("");
     if (first.kind === "module") {
-      void api.remember(`module:${first.module.id}`);
+      void api.touchLesson(first.module, "teach");
       navigate({ name: "learn", id: first.module.id, step: "teach" });
     } else {
       void api.remember(`library:${first.item.id}`);
@@ -49,6 +49,7 @@ export function TopBar({
 
   const nav: { route: Route; label: string; match: boolean }[] = [
     { route: { name: "home" }, label: "Home", match: route.name === "home" },
+    { route: { name: "desk" }, label: "Desk", match: route.name === "desk" },
     {
       route: api.continueModule
         ? { name: "learn", id: api.continueModule.id, step: "teach" }
@@ -57,6 +58,7 @@ export function TopBar({
       match: route.name === "learn",
     },
     { route: { name: "shelf" }, label: "Shelf", match: route.name === "shelf" },
+    { route: { name: "papers" }, label: "Papers", match: route.name === "papers" },
     { route: { name: "recall" }, label: "Recall", match: route.name === "recall" },
     { route: { name: "notes" }, label: "Notes", match: route.name === "notes" },
   ];
@@ -95,8 +97,15 @@ export function TopBar({
             }}
           >
             {item.label}
+            {item.label === "Desk" && api.studios.length ? (
+              <span className="badge quiet" aria-hidden="true">
+                {api.studios.length}
+              </span>
+            ) : null}
             {item.label === "Recall" && api.recall.length ? (
-              <span className="badge">{api.recall.length}</span>
+              <span className="badge" aria-hidden="true">
+                {api.recall.length}
+              </span>
             ) : null}
           </a>
         ))}
@@ -115,7 +124,7 @@ export function TopBar({
             onKeyDown={(event) => {
               if (event.key === "Enter") openTopHit();
             }}
-            placeholder="LRT, rpoB, PZA…"
+            placeholder="TnSeq, prpD, CLT…"
             autoComplete="off"
             aria-autocomplete="list"
           />
@@ -123,6 +132,21 @@ export function TopBar({
         </div>
         {api.query.trim() ? (
           <ul className="search-pop" role="listbox" aria-label="Search hits">
+            <li>
+              <button
+                type="button"
+                className="hit"
+                onClick={() => {
+                  const q = api.query.trim();
+                  void api.touchPapers(q);
+                  api.setQuery("");
+                  navigate({ name: "papers", q });
+                }}
+              >
+                <span className="domain library">Papers</span>
+                <span className="hit-title">Look up {api.query.trim()}</span>
+              </button>
+            </li>
             {api.hits.slice(0, 8).map((hit) =>
               hit.kind === "module" ? (
                 <li key={`m-${hit.module.id}`}>
@@ -130,7 +154,7 @@ export function TopBar({
                     type="button"
                     className="hit"
                     onClick={() => {
-                      void api.remember(`module:${hit.module.id}`);
+                      void api.touchLesson(hit.module, "teach");
                       api.setQuery("");
                       navigate({ name: "learn", id: hit.module.id, step: "teach" });
                     }}

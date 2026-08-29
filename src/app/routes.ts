@@ -1,11 +1,13 @@
-export const LESSON_STEPS = ["teach", "example", "practice", "say-back", "shelf"] as const;
+export const LESSON_STEPS = ["teach", "example", "practice", "say-back", "shelf", "papers"] as const;
 
 export type LessonStep = (typeof LESSON_STEPS)[number];
 
 export type Route =
   | { name: "home" }
+  | { name: "desk" }
   | { name: "learn"; id: string; step: LessonStep }
   | { name: "shelf"; id?: string }
+  | { name: "papers"; q?: string }
   | { name: "recall" }
   | { name: "notes"; id?: string };
 
@@ -15,6 +17,7 @@ export const STEP_META: Record<LessonStep, { n: number; label: string; hint: str
   practice: { n: 3, label: "Practice", hint: "You try two or three" },
   "say-back": { n: 4, label: "Say it back", hint: "Explain it in your own words" },
   shelf: { n: 5, label: "Shelf", hint: "The dense notes when you are ready" },
+  papers: { n: 6, label: "Papers", hint: "Ioerger first, then the field, then explainers" },
 };
 
 export function parseHash(hash: string): Route {
@@ -27,6 +30,11 @@ export function parseHash(hash: string): Route {
     return { name: "learn", id, step: next };
   }
   if (head === "shelf") return { name: "shelf", id };
+  if (head === "papers") {
+    const q = parts.slice(1).map((part) => decodeURIComponent(part)).join("/").trim();
+    return { name: "papers", q: q || undefined };
+  }
+  if (head === "desk") return { name: "desk" };
   if (head === "recall") return { name: "recall" };
   if (head === "notes") return { name: "notes", id };
   return { name: "home" };
@@ -36,10 +44,14 @@ export function toHash(route: Route): string {
   switch (route.name) {
     case "home":
       return "#/";
+    case "desk":
+      return "#/desk";
     case "learn":
       return `#/learn/${route.id}/${route.step}`;
     case "shelf":
       return route.id ? `#/shelf/${route.id}` : "#/shelf";
+    case "papers":
+      return route.q ? `#/papers/${encodeURIComponent(route.q)}` : "#/papers";
     case "recall":
       return "#/recall";
     case "notes":

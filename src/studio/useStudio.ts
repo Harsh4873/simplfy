@@ -5,15 +5,20 @@ import type { CheckItem, StudyModule } from "../catalog/types";
 import {
   deleteLibraryItem,
   deleteRecallCard,
+  deleteStudio,
   getPref,
+  getStudio,
   listLibrary,
   listRecall,
+  listStudios,
   openStudioDb,
   putLibraryItem,
   putRecallCard,
+  putStudio,
   setPref,
   type LibraryItem,
   type RecallCard,
+  type StudioCanvas,
 } from "../library/db";
 import { withBrief } from "../library/hydrate";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
@@ -26,6 +31,7 @@ export function useStudio() {
   const [db, setDb] = useState<IDBDatabase | null>(null);
   const [library, setLibrary] = useState<LibraryItem[]>([]);
   const [recall, setRecall] = useState<RecallCard[]>([]);
+  const [studios, setStudios] = useState<StudioCanvas[]>([]);
   const [query, setQuery] = useState("");
   const [continueRef, setContinueRef] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -33,7 +39,11 @@ export function useStudio() {
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
-      const [items, cards] = await Promise.all([listLibrary(database), listRecall(database)]);
+      const [items, cards, canvases] = await Promise.all([
+        listLibrary(database),
+        listRecall(database),
+        listStudios(database),
+      ]);
       const hydrated: LibraryItem[] = [];
       for (const item of items) {
         const next = withBrief(item, loaded.modules);
@@ -42,6 +52,7 @@ export function useStudio() {
       }
       setLibrary(hydrated);
       setRecall(cards);
+      setStudios(canvases);
     },
     [loaded.modules],
   );
@@ -69,6 +80,72 @@ export function useStudio() {
       await setPref(db, "lastTopic", value);
     },
     [db],
+  );
+
+  const upsertCanvas = useCallback(
+    async (partial: Omit<StudioCanvas, "createdAt" | "updatedAt" | "pinned"> & { pinned?: boolean }) => {
+      if (!db) return;
+      const existing = await getStudio(db, partial.id);
+      const now = Date.now();
+      const canvas: StudioCanvas = {
+        pinned: existing?.pinned ?? false,
+        createdAt: existing?.createdAt ?? now,
+        ...existing,
+        ...partial,
+        updatedAt: now,
+      };
+      await putStudio(db, canvas);
+      await refresh(db);
+    },
+    [db, refresh],
+  );
+
+  const touchLesson = useCallback(
+    async (module: StudyModule, step?: string) => {
+      await remember(`module:${module.id}`);
+      await upsertCanvas({
+        id: `lesson:${module.id}`,
+        kind: "lesson",
+        title: module.title,
+        moduleId: module.id,
+        step,
+      });
+    },
+    [remember, upsertCanvas],
+  );
+
+  const touchPapers = useCallback(
+    async (query: string, title?: string) => {
+      const q = query.trim();
+      const id = q ? `papers:${q.toLowerCase()}` : "papers:";
+      await upsertCanvas({
+        id,
+        kind: "papers",
+        title: title ?? (q ? `Lookup · ${q}` : "Papers lookup"),
+        papersQuery: q,
+      });
+    },
+    [upsertCanvas],
+  );
+
+  const pinStudio = useCallback(
+    async (id: string, pinned: boolean) => {
+      if (!db) return;
+      const existing = await getStudio(db, id);
+      if (!existing) return;
+      await putStudio(db, { ...existing, pinned, updatedAt: Date.now() });
+      await refresh(db);
+    },
+    [db, refresh],
+  );
+
+  const removeStudio = useCallback(
+    async (id: string) => {
+      if (!db) return;
+      await deleteStudio(db, id);
+      await refresh(db);
+    },
+    [db, refresh],
   );
 
   const hits: SearchHit[] = useMemo(
@@ -113,6 +190,12 @@ export function useStudio() {
         await refresh(db);
         if (last) {
           await remember(`library:${last.id}`);
+          await upsertCanvas({
+            id: `note:${last.id}`,
+            kind: "note",
+            title: last.name,
+            noteId: last.id,
+          });
           setNotice(`Filed ${last.name} in the local library.`);
         }
         return last;
@@ -120,7 +203,7 @@ export function useStudio() {
         setBusy(false);
       }
     },
-    [db, loaded.modules, refresh, remember],
+    [db, loaded.modules, refresh, remember, upsertCanvas],
   );
 
   const addNote = useCallback(
@@ -142,10 +225,16 @@ export function useStudio() {
       await putLibraryItem(db, item);
       await refresh(db);
       await remember(`library:${item.id}`);
+      await upsertCanvas({
+        id: `note:${item.id}`,
+        kind: "note",
+        title: item.name,
+        noteId: item.id,
+      });
       setNotice("Note kept in the local library.");
       return item;
     },
-    [db, loaded.modules, refresh, remember],
+    [db, loaded.modules, refresh, remember, upsertCanvas],
   );
 
   const removeLibrary = useCallback(
@@ -226,6 +315,11 @@ export function useStudio() {
     bumpRecall,
     clearRecall,
     remember,
+    touchLesson,
+    touchPapers,
+    pinStudio,
+    removeStudio,
+    studios,
     continueModule,
     continueNote,
     ready: Boolean(db),

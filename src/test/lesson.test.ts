@@ -14,6 +14,7 @@ describe("hash routes", () => {
     });
     expect(parseHash("#/learn/stats-lrt")).toEqual({ name: "learn", id: "stats-lrt", step: "teach" });
     expect(toHash({ name: "notes", id: "abc" })).toBe("#/notes/abc");
+    expect(toHash({ name: "desk" })).toBe("#/desk");
   });
 });
 
@@ -21,13 +22,14 @@ describe("lessons", () => {
   it("uses authored tutor scripts for flagship plates", () => {
     const { modules } = loadCatalog();
     const lrt = modules.find((module) => module.id === "stats-lrt")!;
-    const lesson = lessonFromModule(lrt);
-    expect(lesson.featured).toBe(true);
-    expect(lesson.overlay.analogy.title).toMatch(/pizza/i);
-    expect(lesson.overlay.sayBackModel).toMatch(/nested/i);
+    const tnseq = modules.find((module) => module.id === "tb-tnseq-transit")!;
+    const clt = modules.find((module) => module.id === "stats-normal-clt")!;
+    expect(lessonFromModule(lrt).overlay.analogy.title).toMatch(/pizza/i);
+    expect(lessonFromModule(tnseq).overlay.analogy.title).toMatch(/broken keys/i);
+    expect(lessonFromModule(clt).overlay.analogy.title).toMatch(/dice/i);
   });
 
-  it("derives a five-beat lesson for every other plate", () => {
+  it("derives a lesson spine for every other plate", () => {
     const { modules } = loadCatalog();
     for (const module of modules) {
       const lesson = lessonFromModule(module);

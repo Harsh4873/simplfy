@@ -1,0 +1,145 @@
+{
+  "id": "tb-core-genome-mask",
+  "title": "Core-genome masks for SNP distances",
+  "dek": "A transmission distance is an alignment after you drop PE/PPE, repeats, and sometimes DR genes. Changing the mask changes the integer. Unmasked H37Rv-to-isolate “SNPs” are not a cluster definition.",
+  "domain": "tb",
+  "aliases": [
+    "core genome alignment TB",
+    "PE PPE mask",
+    "repetitive region filter",
+    "SNP mask Mtb"
+  ],
+  "tags": [
+    "mask",
+    "PE/PPE",
+    "core genome",
+    "alignment"
+  ],
+  "story": [
+    "H37Rv is 4.4 Mb of coordinates, not a core alignment. For pairwise distances you keep the regions where short reads map uniquely and where you do not want treatment or mapping error to impersonate phylogeny. Standard masks drop PE/PPE families, GC-rich repeats, IS elements, and often a list of known resistance loci if the scientific target is transmission rather than DST.",
+    "The remaining “core” is still not identical across pipelines. Different BED files, different mapping quality cuts, and different handling of heterozygous sites produce different integers on the same FASTQs. A 5-SNP threshold imported from a paper that used another mask is a different test.",
+    "DST and phylogeny can share a BAM and must not share a thoughtless VCF. Catalogue grading wants pncA and Rv0678 included. A household cluster wants them optionally excluded so that acquired RR does not pull unrelated patients together via homoplasy. Write two variant lists if you need two jobs."
+  ],
+  "deepTitle": "Practical hygiene",
+  "deep": [
+    "Version the mask in the methods the way you version the WHO catalogue. Changing PE_PGRS handling moves outbreak membership.",
+    "Long reads recover some PE structure. Do not mix an Illumina-masked distance with an unmasked Nanopore PE distance in one table.",
+    "Coverage holes in GC-rich genes can look like SNPs if the caller is naive. Depth filters belong with the mask.",
+    "Essentiality and CRISPRi lists are not a mask. They are priors for interpreting LOF, a different plate."
+  ],
+  "visual": {
+    "kind": "gene-track",
+    "caption": "Schematic genome window: a unique core CDS kept for distance, a PE_PGRS block dropped, an rpoB RRDR that you may keep for DST and drop for clustering. The mask is a set of intervals, not a vibe.",
+    "gene": "schematic H37Rv window",
+    "start": 0,
+    "end": 12000,
+    "unit": "bp",
+    "regions": [
+      { "start": 500, "end": 2800, "label": "core CDS (kept)" },
+      { "start": 4000, "end": 7800, "label": "PE_PGRS (masked)" }
+    ],
+    "marks": [
+      { "pos": 1600, "label": "SNP kept", "note": "distance" },
+      { "pos": 5900, "label": "masked SNP", "note": "not a cluster count" },
+      { "pos": 10200, "label": "rpoB", "note": "DST vs mask choice" }
+    ]
+  },
+  "sources": [
+    {
+      "title": "PE/PPE families as mapping problems (Simplfy PE plate + Wikipedia overlay)",
+      "url": "https://en.wikipedia.org/wiki/PE/PPE_family",
+      "attribution": "Family naming under CC BY-SA where available. Mask teaching is original.",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "H37Rv NC_000962 public reference",
+      "url": "https://www.ncbi.nlm.nih.gov/nuccore/NC_000962.3",
+      "attribution": "Public reference coordinates. Mask intervals in the visual are schematic, not a dumped BED.",
+      "license": "U.S. government / INSDC public sequence"
+    }
+  ],
+  "related": [
+    "tb-h37rv-genome",
+    "tb-pe-ppe",
+    "tb-is6110",
+    "tb-snp-thresholds",
+    "tb-relapse-reinfection",
+    "tb-resistance"
+  ],
+  "example": {
+    "title": "Two distances, one FASTQ pair",
+    "setup": "Pipeline A (mask PE/PPE + repeats, keep DR genes): d = 7. Pipeline B (also drop DR genes): d = 2, because 5 SNPs were in rpoB/rpoC. Both claim a 5-SNP rule.",
+    "steps": [
+      {
+        "title": "They are different tests",
+        "body": "A’s 7 includes acquired RNAP evolution. B’s 2 asks a transmission question with DR masked. Neither is wrong. Importing “5 SNPs” from a B-style paper into an A-style VCF is the error."
+      },
+      {
+        "title": "Pick the job",
+        "body": "Household follow-up: B-style or a tree that down-weights homoplasic DR sites. Relapse with acquired RR: keep rpoB in view, but do not call a citywide outbreak from S450L homoplasy."
+      },
+      {
+        "title": "Print the BED",
+        "body": "A methods section without a mask version has no distance."
+      }
+    ],
+    "takeaway": "The core is defined by the mask. Thresholds do not travel without it."
+  },
+  "check": [
+    {
+      "id": "mask-pe",
+      "kind": "conceptual",
+      "prompt": "PE/PPE genes are commonly masked for transmission distances because:",
+      "choices": [
+        "They are the only resistance genes",
+        "They are GC-rich and repeat-rich, so short-read SNPs there are often mapping artefacts rather than phylogeny",
+        "WHO requires PE SNPs for BDQ",
+        "They contain RRDR"
+      ],
+      "answer": "They are GC-rich and repeat-rich, so short-read SNPs there are often mapping artefacts rather than phylogeny",
+      "why": "That is the mapping story on the PE plate. Immunology still lives in those genes; clustering does not.",
+      "whyWrong": {
+        "They are the only resistance genes": "They are mostly not DST loci.",
+        "WHO requires PE SNPs for BDQ": "False.",
+        "They contain RRDR": "RRDR is in rpoB."
+      }
+    },
+    {
+      "id": "mask-calc",
+      "kind": "calculation",
+      "prompt": "Five of seven pairwise SNPs sit in rpoB/rpoC after a shared RR ancestor. For a transmission screen you should:",
+      "choices": [
+        "Always use 7, because DR genes are the most trustworthy SNPs",
+        "Decide explicitly whether DR sites are in the mask; homoplasy can join unrelated RR-TB if you keep them",
+        "Drop the isolates from the species",
+        "Convert SNPs to a MIC"
+      ],
+      "answer": "Decide explicitly whether DR sites are in the mask; homoplasy can join unrelated RR-TB if you keep them",
+      "why": "DR homoplasy is the reason some pipelines mask those loci for clustering.",
+      "whyWrong": {
+        "Always use 7, because DR genes are the most trustworthy SNPs": "They are trustworthy for DST, not as neutral clocks.",
+        "Drop the isolates from the species": "No.",
+        "Convert SNPs to a MIC": "Wrong object."
+      }
+    },
+    {
+      "id": "mask-figure",
+      "kind": "figure",
+      "prompt": "On the gene track, rpoB is marked “DST vs mask choice” because:",
+      "figureHint": "Right-hand mark at rpoB.",
+      "choices": [
+        "You may keep RRDR for resistance grading and still drop or down-weight those sites when the integer is a transmission distance",
+        "rpoB must always be masked for DST",
+        "PE_PGRS is rpoB",
+        "Masks are illegal in WGS"
+      ],
+      "answer": "You may keep RRDR for resistance grading and still drop or down-weight those sites when the integer is a transmission distance",
+      "why": "Two jobs, two variant lists. The track is that fork.",
+      "whyWrong": {
+        "rpoB must always be masked for DST": "DST needs rpoB.",
+        "PE_PGRS is rpoB": "Different interval on the track.",
+        "Masks are illegal in WGS": "They are standard."
+      }
+    }
+  ]
+}

@@ -54,6 +54,48 @@ describe("studio shell", () => {
     ).toBeInTheDocument();
   });
 
+  it("opens a TnSeq lesson onto the desk", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    const search = await screen.findByLabelText(/name a term/i);
+    await user.clear(search);
+    await user.type(search, "TRANSIT");
+    await user.keyboard("{Enter}");
+    expect(await screen.findByRole("heading", { level: 1, name: /tnseq and transit/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("tab", { name: /papers/i }));
+    expect(await screen.findByText(/ioerger lab/i)).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /desk/i })).toBeInTheDocument();
+    expect(await screen.findByText(/tnseq and transit/i)).toBeInTheDocument();
+  });
+
+  it("opens a papers lookup onto the desk from search", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    const search = await screen.findByLabelText(/name a term/i);
+    await user.clear(search);
+    await user.type(search, "prpD");
+    await user.click(screen.getByRole("button", { name: /look up prpd/i }));
+    expect(await screen.findByRole("heading", { level: 1, name: /^papers$/i })).toBeInTheDocument();
+    expect(screen.getByText(/^ioerger lab$/i)).toBeInTheDocument();
+    expect(screen.getByText(/griffin/i)).toBeInTheDocument();
+    expect(screen.queryByText(/^people he writes with$/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/level 1/i)).not.toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /^desk$/i }));
+    expect(await screen.findByText(/lookup · prpd/i)).toBeInTheDocument();
+  });
+
+  it("teaches the central limit theorem instead of recycling the LRT pizza", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    const search = await screen.findByLabelText(/name a term/i);
+    await user.clear(search);
+    await user.type(search, "central limit theorem");
+    await user.keyboard("{Enter}");
+    expect(await screen.findByRole("heading", { level: 1, name: /normal law and the central limit theorem/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /crowd of dice/i })).toBeInTheDocument();
+  });
+
   it("switches between light and dark themes", async () => {
     const user = userEvent.setup();
     render(<Studio />);

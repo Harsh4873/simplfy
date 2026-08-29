@@ -99,7 +99,7 @@ export function NotesPage({
               item={selected}
               modules={api.modules}
               onOpen={(module) => {
-                void api.remember(`module:${module.id}`);
+                void api.touchLesson(module, "teach");
                 navigate({ name: "learn", id: module.id, step: "teach" });
               }}
             />
@@ -113,7 +113,7 @@ export function NotesPage({
                         type="button"
                         className="text-btn"
                         onClick={() => {
-                          void api.remember(`module:${module.id}`);
+                          void api.touchLesson(module, "teach");
                           navigate({ name: "learn", id: module.id, step: "teach" });
                         }}
                       >

@@ -1,0 +1,140 @@
+{
+  "id": "tb-primary-postprimary",
+  "title": "Primary versus post-primary (adult-type) TB",
+  "dek": "Primary disease is the Ghon-complex chapter: first-infection pneumonia, nodes, possible miliary seed. Post-primary (adult-type) disease is apical cavitation and the airborne engine. They are chapters, not two species.",
+  "domain": "tb",
+  "aliases": [
+    "primary tuberculosis",
+    "post-primary TB",
+    "adult-type TB",
+    "secondary TB",
+    "reactivation versus primary"
+  ],
+  "tags": [
+    "pathogenesis",
+    "Ghon",
+    "cavity",
+    "radiology"
+  ],
+  "story": [
+    "Primary tuberculosis is the first-infection sequence: droplet nucleus to mid-zone or lower-zone pneumonitis, draining nodes, a Ghon focus that may calcify as a Ranke complex. In immunologically naive hosts — young children, HIV with low CD4 — this chapter can progress (primary progressive disease, miliary, meningeal) instead of quieting.",
+    "Post-primary, also called adult-type or “secondary” TB, is the apical-posterior cavitary pattern that dominates infectious smear-positive disease in immunocompetent adolescents and adults. It can follow remote primary infection (reactivation) or reinfection. The radiology and the aerosol output are the point, not a moral about who was “careless.”",
+    "The Ghon glossary plate owns the eponym. This plate is the chapter split so that “primary” is not used as a synonym for “pediatric” or for “smear-negative,” and so that an upper-lobe cavity is not called a Ghon focus."
+  ],
+  "deepTitle": "What the split changes in practice",
+  "deep": [
+    "Infectiousness: cavitary post-primary disease is the classic high-output source. Primary nodes in a toddler are usually not the engine; the adult source is.",
+    "IGRA/TST: both chapters can be IGRA-positive. The test does not name the chapter.",
+    "HIV: low CD4 blurs the adult-type pattern toward primary-progressive and disseminated disease. Smear can be negative with high burden.",
+    "Genomics: relapse versus reinfection is a strain fork, not a synonym for post-primary versus primary. An adult cavity can be reinfection."
+  ],
+  "visual": {
+    "kind": "layered-section",
+    "caption": "Two chapters in one lung cartoon: a mid-zone Ghon/node primary complex versus an apical cavitary post-primary lesion that seeds droplet nuclei. Same organism, different anatomy and infectiousness.",
+    "layers": [
+      { "id": "apex", "label": "Apex / posterior upper lobe", "detail": "post-primary cavitation; smear-positive engine", "tone": "space" },
+      { "id": "mid", "label": "Mid-zone Ghon focus", "detail": "primary pneumonitis that may calcify", "tone": "core" },
+      { "id": "node", "label": "Hilar / mediastinal nodes", "detail": "Ranke complex when paired with Ghon", "tone": "membrane" },
+      { "id": "seed", "label": "Hematogenous seed", "detail": "miliary / extra-pulmonary from progressive primary", "tone": "wall" }
+    ],
+    "annotation": "Cavity ≠ Ghon. Child nodes ≠ adult source."
+  },
+  "sources": [
+    {
+      "title": "Ghon focus / Ranke complex — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Ghon's_complex",
+      "attribution": "Eponym naming under CC BY-SA. Chapter split is original Simplfy notes (see also wiki-ghon).",
+      "license": "CC BY-SA 4.0"
+    },
+    {
+      "title": "CDC Core Curriculum — pathogenesis and clinical pictures",
+      "url": "https://www.cdc.gov/tb/hcp/education/core-curriculum-on-tuberculosis.html",
+      "attribution": "U.S. public-domain clinical overlay.",
+      "license": "U.S. Government work, public domain"
+    }
+  ],
+  "related": [
+    "wiki-ghon",
+    "tb-pathogenesis",
+    "tb-granuloma",
+    "tb-transmission",
+    "tb-miliary",
+    "tb-relapse-reinfection"
+  ],
+  "example": {
+    "title": "Upper-lobe cavity labelled “Ghon”",
+    "setup": "A 28-year-old, smear 3+, right apical cavity. The radiology report says “Ghon complex.” Contact investigation is deprioritised because “primary TB in adults is not infectious.”",
+    "steps": [
+      {
+        "title": "Wrong eponym",
+        "body": "An apical cavity is adult-type / post-primary disease until proven otherwise. Ghon is a primary-focus word, usually mid-zone plus node."
+      },
+      {
+        "title": "Infectiousness follows anatomy",
+        "body": "This is the droplet-nucleus engine. Infection control and contacts are urgent. Pediatric primary nodes would have pointed you at an adult source, not away from isolation."
+      },
+      {
+        "title": "Strain story is separate",
+        "body": "Whether this cavity is reactivation or reinfection is a WGS question against any old isolate, not a caption on the CXR."
+      }
+    ],
+    "takeaway": "Primary is the first-infection chapter. Cavities are the adult-type engine. Do not mix eponyms."
+  },
+  "check": [
+    {
+      "id": "pp-ghon",
+      "kind": "conceptual",
+      "prompt": "A Ghon focus is part of:",
+      "choices": [
+        "The primary-infection complex (often with a node as Ranke)",
+        "Every upper-lobe cavity in adults",
+        "A WHO Group A drug",
+        "A Himar1 TA site"
+      ],
+      "answer": "The primary-infection complex (often with a node as Ranke)",
+      "why": "Ghon is a primary-chapter eponym. Cavities are a different layer on the plate.",
+      "whyWrong": {
+        "Every upper-lobe cavity in adults": "That is post-primary anatomy.",
+        "A WHO Group A drug": "No.",
+        "A Himar1 TA site": "TnSeq."
+      }
+    },
+    {
+      "id": "pp-infect",
+      "kind": "calculation",
+      "prompt": "Relative airborne infectiousness is typically highest for:",
+      "choices": [
+        "A smear-negative toddler with isolated hilar nodes and no adult source considered",
+        "Smear-positive apical cavitary (post-primary) pulmonary disease",
+        "A calcified Ranke complex from childhood, IGRA-positive, normal CXR, on TPT",
+        "Latent infection as defined by IGRA alone"
+      ],
+      "answer": "Smear-positive apical cavitary (post-primary) pulmonary disease",
+      "why": "Anatomy plus smear grade is the source-strength story on the transmission plate.",
+      "whyWrong": {
+        "A smear-negative toddler with isolated hilar nodes and no adult source considered": "The child is usually not the engine.",
+        "A calcified Ranke complex from childhood, IGRA-positive, normal CXR, on TPT": "Not an airborne source.",
+        "Latent infection as defined by IGRA alone": "Not disease, not quanta."
+      }
+    },
+    {
+      "id": "pp-figure",
+      "kind": "figure",
+      "prompt": "On the layered section, why is the apex labelled as the smear-positive engine?",
+      "figureHint": "Top layer.",
+      "choices": [
+        "Because post-primary cavitation into an airway produces droplet nuclei; a Ghon focus is not that lesion",
+        "Because Ghon foci always sit at the apex",
+        "Because nodes are Group A drugs",
+        "Because miliary seed is the only infectious form"
+      ],
+      "answer": "Because post-primary cavitation into an airway produces droplet nuclei; a Ghon focus is not that lesion",
+      "why": "The annotation is “cavity ≠ Ghon.”",
+      "whyWrong": {
+        "Because Ghon foci always sit at the apex": "Ghon is typically mid-zone.",
+        "Because nodes are Group A drugs": "No.",
+        "Because miliary seed is the only infectious form": "Miliary is dissemination; cavities drive cough aerosols."
+      }
+    }
+  ]
+}
