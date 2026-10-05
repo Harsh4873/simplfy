@@ -2,6 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { Studio } from "../studio/Studio";
+import { listLibrary, listRecall, listStudios, openStudioDb } from "../library/db";
+import { MAX_FILE_BYTES } from "../library/parse";
 import { TOY_PAPER_TEXT } from "./toyPaper";
 
 async function openSources(user: ReturnType<typeof userEvent.setup>, tab: "decks" | "classes" | "papers" = "decks") {
@@ -196,6 +198,98 @@ describe("studio shell", () => {
     await waitFor(() => expect(screen.getAllByText("README.md").length).toBeGreaterThan(0));
     expect(screen.getAllByText(/last-class\.md/i).length).toBeGreaterThan(0);
     expect(screen.queryAllByText("leftover.md")).toHaveLength(0);
+  });
+
+  it("keeps omitted originals when a replacement update exceeds the file cap", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await openSources(user, "classes");
+    await user.type(screen.getByLabelText(/name this class/i), "Temp name");
+    const open = await screen.findByRole("button", { name: /open empty class/i });
+    await waitFor(() => expect(open).toBeEnabled());
+    await user.click(open);
+    expect(await screen.findByRole("heading", { level: 1, name: /temp name/i })).toBeInTheDocument();
+    const leftoverBody =
+      "# Leftover\n\n## DFA 5-tuple\n\nA DFA is the 5-tuple (Q, Sigma, delta, q0, F). Accept states may be empty or many.\n";
+    await user.upload(
+      screen.getByLabelText(/^choose files$/i),
+      [new File([leftoverBody], "leftover.md", { type: "text/markdown" })],
+    );
+    expect((await screen.findAllByText("leftover.md")).length).toBeGreaterThan(0);
+    await waitFor(() => expect(screen.queryByText(/filed 1 note/i)).toBeInTheDocument());
+
+    let db = await openStudioDb();
+    const leftoverRow = (await listLibrary(db)).find((row) => row.name === "leftover.md");
+    expect(leftoverRow).toBeDefined();
+    const leftoverId = leftoverRow!.id;
+    const cardsBefore = (await listRecall(db)).filter((card) => card.noteId === leftoverId);
+    expect(cardsBefore.length).toBeGreaterThan(0);
+    expect((await listStudios(db)).some((canvas) => canvas.id === `note:${leftoverId}`)).toBe(true);
+    db.close();
+
+    const bulk: File[] = Array.from({ length: 81 }, (_, i) => {
+      const name = `file-${String(i + 1).padStart(3, "0")}.md`;
+      const file = new File(["# stub\n"], name, { type: "text/markdown" });
+      Object.defineProperty(file, "webkitRelativePath", { value: `update/${name}` });
+      return file;
+    });
+    await user.upload(screen.getByLabelText(/^choose folder$/i), bulk);
+    await waitFor(() => expect(screen.queryByText(/partial import/i)).toBeInTheDocument());
+    expect((await screen.findAllByText("leftover.md")).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText("file-001.md")).length).toBeGreaterThan(0);
+
+    db = await openStudioDb();
+    const kept = (await listLibrary(db)).find((row) => row.id === leftoverId);
+    expect(kept).toBeDefined();
+    expect(kept!.text).toBe(leftoverBody);
+    const cardsAfter = (await listRecall(db)).filter((card) => card.noteId === leftoverId);
+    expect(cardsAfter.length).toBe(cardsBefore.length);
+    expect((await listStudios(db)).some((canvas) => canvas.id === `note:${leftoverId}`)).toBe(true);
+    db.close();
+  }, 30000);
+
+  it("keeps omitted originals when a replacement update skips an oversized file", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await openSources(user, "classes");
+    await user.type(screen.getByLabelText(/name this class/i), "Temp name");
+    const open = await screen.findByRole("button", { name: /open empty class/i });
+    await waitFor(() => expect(open).toBeEnabled());
+    await user.click(open);
+    expect(await screen.findByRole("heading", { level: 1, name: /temp name/i })).toBeInTheDocument();
+    const leftoverBody =
+      "# Leftover\n\n## DFA 5-tuple\n\nA DFA is the 5-tuple (Q, Sigma, delta, q0, F). Accept states may be empty or many.\n";
+    await user.upload(
+      screen.getByLabelText(/^choose files$/i),
+      [new File([leftoverBody], "leftover.md", { type: "text/markdown" })],
+    );
+    expect((await screen.findAllByText("leftover.md")).length).toBeGreaterThan(0);
+    await waitFor(() => expect(screen.queryByText(/filed 1 note/i)).toBeInTheDocument());
+
+    let db = await openStudioDb();
+    const leftoverId = (await listLibrary(db)).find((row) => row.name === "leftover.md")!.id;
+    const cardsBefore = (await listRecall(db)).filter((card) => card.noteId === leftoverId);
+    expect(cardsBefore.length).toBeGreaterThan(0);
+    db.close();
+
+    const next = new File(["# stub\n"], "new.md", { type: "text/markdown" });
+    Object.defineProperty(next, "webkitRelativePath", { value: "update/new.md" });
+    const big = new File(["# Big\n\nShould be skipped.\n"], "big.md", { type: "text/markdown" });
+    Object.defineProperty(big, "webkitRelativePath", { value: "update/big.md" });
+    Object.defineProperty(big, "size", { value: MAX_FILE_BYTES + 1, configurable: true });
+    await user.upload(screen.getByLabelText(/^choose folder$/i), [next, big]);
+    await waitFor(() => expect(screen.queryByText(/partial import/i)).toBeInTheDocument());
+    expect(screen.queryByText(/12 mb studio limit/i)).toBeInTheDocument();
+    expect((await screen.findAllByText("leftover.md")).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText("new.md")).length).toBeGreaterThan(0);
+    expect(screen.queryAllByText("big.md")).toHaveLength(0);
+
+    db = await openStudioDb();
+    const kept = (await listLibrary(db)).find((row) => row.id === leftoverId);
+    expect(kept?.text).toBe(leftoverBody);
+    expect((await listRecall(db)).filter((card) => card.noteId === leftoverId)).toHaveLength(cardsBefore.length);
+    expect((await listStudios(db)).some((canvas) => canvas.id === `note:${leftoverId}`)).toBe(true);
+    db.close();
   });
 
   it("renames a class", async () => {

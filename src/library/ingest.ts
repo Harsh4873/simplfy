@@ -83,7 +83,7 @@ export function rankForDrop(rel: string): number {
   return 2;
 }
 
-export function pickDropFiles(files: File[]): File[] {
+export function usableDropFiles(files: File[]): File[] {
   const usable = [...files].filter((file) => !shouldSkipRelPath(relPathOf(file)));
   const livingNotes = usable.some((file) => {
     const rel = relPathOf(file);
@@ -91,8 +91,15 @@ export function pickDropFiles(files: File[]): File[] {
   });
   return usable
     .filter((file) => !(livingNotes && isSnapshotRel(relPathOf(file))))
-    .sort((a, b) => rankForDrop(relPathOf(a)) - rankForDrop(relPathOf(b)) || relPathOf(a).localeCompare(relPathOf(b)))
-    .slice(0, MAX_DROP_FILES);
+    .sort((a, b) => rankForDrop(relPathOf(a)) - rankForDrop(relPathOf(b)) || relPathOf(a).localeCompare(relPathOf(b)));
+}
+
+export function pickDropFiles(files: File[]): File[] {
+  return usableDropFiles(files).slice(0, MAX_DROP_FILES);
+}
+
+export function dropHitsFileCap(files: File[]): boolean {
+  return usableDropFiles(files).length > MAX_DROP_FILES;
 }
 
 export function fileBaseName(relOrName: string): string {

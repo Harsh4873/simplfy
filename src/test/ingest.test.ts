@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pickDropFiles, inferCollectionName, shouldSkipRelPath, spawnPlan, spawnWorthyLink } from "../library/ingest";
+import { pickDropFiles, dropHitsFileCap, inferCollectionName, shouldSkipRelPath, spawnPlan, spawnWorthyLink } from "../library/ingest";
 import type { LibraryItem } from "../library/db";
 import { loadCatalog } from "../catalog/loadCatalog";
 import { composeBrief } from "../md/compose";
@@ -44,6 +44,17 @@ describe("class ingest", () => {
     ];
     const kept = pickDropFiles(files).map((file) => file.name);
     expect(kept).toEqual(["tnseq.md", "slides.pdf", "pipeline.ts"]);
+  });
+
+  it("detects the file cap from usable files, not raw drops", () => {
+    const eighty = Array.from({ length: 80 }, (_, i) => fileAt(`pack/note-${i}.md`, "# Note"));
+    expect(dropHitsFileCap(eighty)).toBe(false);
+    expect(pickDropFiles(eighty)).toHaveLength(80);
+    const eightyOne = [...eighty, fileAt("pack/note-80.md", "# Note")];
+    expect(dropHitsFileCap(eightyOne)).toBe(true);
+    expect(pickDropFiles(eightyOne)).toHaveLength(80);
+    const junky = [...eighty, fileAt("pack/fig.png", "binary"), fileAt("pack/.git/config", "x")];
+    expect(dropHitsFileCap(junky)).toBe(false);
   });
 
   it("drops snapshot files when the living pack is in the same folder", () => {

@@ -28,6 +28,7 @@ import {
 } from "../library/db";
 import { catalogForItem, withBrief } from "../library/hydrate";
 import {
+  dropHitsFileCap,
   inferCollectionNameFromFiles,
   itemKey,
   looksLikeFolderDrop,
@@ -255,6 +256,7 @@ export function useStudio() {
           return null;
         }
         const truncated = files.length > batch.length;
+        const capped = dropHitsFileCap(files);
         const replace = opts?.replace ?? looksLikeFolderDrop(batch);
         const typed = opts?.collectionName?.trim() ?? "";
         const folderDrop = replace || looksLikeFolderDrop(batch);
@@ -326,53 +328,60 @@ export function useStudio() {
 
         const filed: LibraryItem[] = [];
         const inClass = (await listLibrary(db)).filter((item) => item.collectionId === folder.id);
+        let skippedOversize = 0;
+        let skippedUnreadable = 0;
         for (const file of batch) {
           if (file.size > MAX_FILE_BYTES) {
-            setNotice(`${file.name} exceeds the 12 MB studio limit.`);
+            skippedOversize += 1;
             continue;
           }
-          const rel = stripGenericRoot(relPathOf(file));
-          const key = itemKey(rel);
-          const parsed = await parseDroppedFile(file);
-          const mime = mimeForDroppedFile(file);
-          const base = rel.split("/").pop() ?? file.name;
-          const heading = parsed.text.trim()
-            ? titleFromReadme(parsed.text) || titleFromDroppedText(parsed.text, base, mime)
-            : null;
-          const composed = parsed.text.trim()
-            ? composeBrief(parsed.text, catalogForItem({ collectionId: folder.id }, loaded.modules))
-            : undefined;
-          const brief = composed
-            ? { ...composed, title: heading || base }
-            : undefined;
-          const prior =
-            inClass.find((item) => itemKey(item.relPath || item.name) === key) ??
-            filed.find((item) => itemKey(item.relPath || item.name) === key);
-          const kind = libraryKindForSource({ mime, name: base, text: parsed.text });
-          const item: LibraryItem = {
-            id: prior?.id ?? crypto.randomUUID(),
-            kind,
-            name: base,
-            mime,
-            size: file.size,
-            text: parsed.text,
-            parseNote: parsed.parseNote,
-            createdAt: prior?.createdAt ?? Date.now(),
-            blob: file,
-            brief,
-            collectionId: folder.id,
-            relPath: rel,
-          };
-          await putLibraryItem(db, item);
-          if (!prior) inClass.push(item);
-          else {
-            const idx = inClass.findIndex((row) => row.id === prior.id);
-            if (idx >= 0) inClass[idx] = item;
+          try {
+            const rel = stripGenericRoot(relPathOf(file));
+            const key = itemKey(rel);
+            const parsed = await parseDroppedFile(file);
+            const mime = mimeForDroppedFile(file);
+            const base = rel.split("/").pop() ?? file.name;
+            const heading = parsed.text.trim()
+              ? titleFromReadme(parsed.text) || titleFromDroppedText(parsed.text, base, mime)
+              : null;
+            const composed = parsed.text.trim()
+              ? composeBrief(parsed.text, catalogForItem({ collectionId: folder.id }, loaded.modules))
+              : undefined;
+            const brief = composed
+              ? { ...composed, title: heading || base }
+              : undefined;
+            const prior =
+              inClass.find((item) => itemKey(item.relPath || item.name) === key) ??
+              filed.find((item) => itemKey(item.relPath || item.name) === key);
+            const kind = libraryKindForSource({ mime, name: base, text: parsed.text });
+            const item: LibraryItem = {
+              id: prior?.id ?? crypto.randomUUID(),
+              kind,
+              name: base,
+              mime,
+              size: file.size,
+              text: parsed.text,
+              parseNote: parsed.parseNote,
+              createdAt: prior?.createdAt ?? Date.now(),
+              blob: file,
+              brief,
+              collectionId: folder.id,
+              relPath: rel,
+            };
+            await putLibraryItem(db, item);
+            if (!prior) inClass.push(item);
+            else {
+              const idx = inClass.findIndex((row) => row.id === prior.id);
+              if (idx >= 0) inClass[idx] = item;
+            }
+            filed.push(item);
+          } catch {
+            skippedUnreadable += 1;
           }
-          filed.push(item);
         }
 
-        if (replace) {
+        const complete = !capped && skippedOversize === 0 && skippedUnreadable === 0;
+        if (replace && complete) {
           const keep = new Set(filed.map((item) => itemKey(item.relPath || item.name)));
           for (const item of [...inClass]) {
             if (keep.has(itemKey(item.relPath || item.name))) continue;
@@ -398,7 +407,18 @@ export function useStudio() {
             : `Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`,
         ];
         if (plan.noteCards) bits.push(`${plan.noteCards} recall card${plan.noteCards === 1 ? "" : "s"} from the notes`);
+        if (skippedOversize) {
+          bits.push(
+            `${skippedOversize} file${skippedOversize === 1 ? "" : "s"} exceeded the 12 MB studio limit and ${skippedOversize === 1 ? "was" : "were"} skipped`,
+          );
+        }
+        if (skippedUnreadable) {
+          bits.push(
+            `${skippedUnreadable} file${skippedUnreadable === 1 ? "" : "s"} could not be read and ${skippedUnreadable === 1 ? "was" : "were"} skipped`,
+          );
+        }
         if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
+        if (replace && !complete) bits.push("partial import — existing files omitted from this update were kept");
         setNotice(`${bits.join(". ")}.`);
         return last;
       } finally {
