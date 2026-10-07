@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WAC teleprompter: two plans</title>
+<title>Discussion teleprompter</title>
 <style>
   :root {
     --bg: #0a0a12;
@@ -25,38 +25,22 @@
     min-height: 100vh;
   }
   .top {
-    max-width: 1600px;
+    max-width: 820px;
     margin: 0 auto 20px;
     text-align: center;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
   }
   .top h1 { font-size: 22px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
-  .top .meta { font-size: 14px; color: var(--dim); }
-  .top button {
-    margin-top: 12px;
-    margin-right: 8px;
-    background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font: inherit;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  .windows { max-width: 1600px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-  body.only-a #planB, body.only-b #planA { display: none; }
-  body.only-a .windows, body.only-b .windows { grid-template-columns: 1fr; max-width: 900px; }
-  .window-title { font-size: 18px; color: var(--orange); margin-bottom: 8px; }
-  .window-note { font-size: 14px; color: var(--dim); margin-bottom: 18px; }
+  .top .meta { font-size: 14px; color: var(--dim); margin-top: 4px; }
+  .script { max-width: 820px; margin: 0 auto; }
   .section { margin-bottom: 28px; padding: 18px 22px; border: 1px solid var(--border); border-radius: 12px; background: rgba(15, 19, 28, 0.7); }
   .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
   .scenario-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); background: rgba(40, 44, 58, 0.6); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; }
-  .who { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--green); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; }
   .section h2 { font-size: 18px; color: var(--accent); font-weight: 500; }
-  .sub { font-size: 13px; color: var(--dim); margin-bottom: 12px; }
+  .sub { font-size: 15px; color: var(--dim); margin-top: 12px; margin-bottom: 0; }
   p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
   .highlight { color: var(--orange); }
   .question { color: var(--green); }
   .controls { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 18, 0.95); border-top: 1px solid var(--border); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--dim); }
@@ -65,134 +49,66 @@
   #settingsPanel label { font-size: 13px; display: block; margin-bottom: 8px; }
   #settingsPanel input[type="range"] { width: 100%; }
   hr { border: 0; border-top: 1px solid var(--border); margin: 16px 0; }
-  @media (max-width: 1100px) { .windows { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
 <div class="top">
-  <h1>Workload Aware Calendar, two ways to run it</h1>
-  <div class="meta">Thu Sept 24 · 6 minutes including questions · about 10 teams</div>
-  <div class="meta">Plan A is the full talk. Plan B is only Harsh, slides 5, 8, 9, and 10.</div>
-  <button type="button" id="popA">Open Plan A in its own window</button>
-  <button type="button" id="popB">Open Plan B in its own window</button>
+  <h1>How Participatory Design Works</h1>
+  <div class="meta">Thu Oct 8 · after the summary · about 3 to 4 minutes, then groups</div>
+  <div class="meta">Big text is what you say. A line marked Cue stays quiet.</div>
 </div>
 
-<div class="windows">
-
-<section id="planA">
-  <div class="window-title">Plan A. Whole team, one table</div>
-  <p class="window-note">Full pass. About five minutes of talking, then questions. Do not read the slide word for word.</p>
+<div class="script">
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 1 · 20 sec</span><h2>Title</h2></div>
-    <p>We're Group 0. Harsh, Advait, Xianshun, and Mariano. This is Workload Aware Calendar, September 24.</p>
-    <p>The line under the title is the project. <span class="highlight">Make student workload visible alongside the deadline.</span> Right now a calendar tells you the day. It does not tell you how big the work is. That's what we're trying to add.</p>
+    <div class="section-header"><span class="scenario-tag">Before you talk</span><h2>How the room goes</h2></div>
+    <p class="sub">Cue. The summary comes first. Do not summarize the paper again. About three minutes for the opening and these four questions. Groups of about four, one question each. Ask for two answers that do not match, and the part of the paper each answer is using. Ask someone who has not spoken before going back to the same people. If a comment leaves the paper, ask whether you are talking about the product or about what people still have.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 2 · 15 sec</span><h2>Contents</h2></div>
-    <p class="sub">Skip if the clock is tight.</p>
-    <p>We'll cover the project, the users, the cognitive and social issues, the design concept, the user study, and the timeline. Six things, then questions.</p>
+    <div class="section-header"><span class="scenario-tag">Say this · about 1 min</span><h2>Opening</h2></div>
+    <p>The authors argue that participatory design is <span class="highlight">not the activity itself</span>. A workshop can look the same in participatory design and in co-design. What they think is different is why you run it, and <span class="highlight">what people still have when you leave</span>. They call that reason a <span class="highlight">mechanism</span>: mutual learning, who gets a say, and a group that can keep the work going. They lay the full set of activities out as an ideal, and they say <span class="highlight">almost no real project does every piece</span>. I am not going to retell the paper. I want us to argue about what still counts.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 3 · 30 sec</span><h2>Purpose</h2></div>
-    <p>Students can already see <span class="highlight">when</span> something is due. Canvas has the date. The calendar has the date. What they cannot see is <span class="highlight">how much effort</span> that date actually takes.</p>
-    <p>Think about a Friday with a quiz and a lab report. On the calendar those are two bars of the same size. One might be half an hour. The other might be most of a weekend. The grid does not say which.</p>
-    <p>WAC is meant to make that load visible, so a student can spread the heavy work across the week instead of discovering it the night before.</p>
+    <div class="section-header"><span class="scenario-tag">Question 1</span><h2>Future Workshop</h2></div>
+    <p>A Future Workshop runs in three steps: people name what is broken, they imagine a future with the limits turned off, then they make a plan that could actually happen. The authors say that shared vision only works if the designers cannot already see the ending.</p>
+    <p class="question">If we walk in with the design already picked, what is left for the people in the room to decide?</p>
+    <p class="sub">Cue. If the room agrees too fast, ask whether people still learned something when the ending was already picked, and whether that learning is enough to count.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 4 · 35 sec</span><h2>What it would do</h2></div>
-    <p>The mission is to reduce that uncertainty, so the planning decision is based on the work, not only the date.</p>
-    <p>Show estimated effort next to the deadline. Help someone recognize when the week is actually heavy. Encourage them to start the larger assignment earlier, while there is still room. Support planning the whole week, not just surviving each due date one at a time.</p>
-    <p>The last line is the one we have <span class="highlight">not</span> tested. Does putting that information on the calendar actually change how people plan? That is the study. It is not a result we have.</p>
+    <div class="section-header"><span class="scenario-tag">Question 2</span><h2>Field study</h2></div>
+    <p>They say what you learn in a field study is for the people who live that work, and the designers learn it with them.</p>
+    <p class="question">If those people never see the writeup, what did they get out of being studied?</p>
+    <p class="sub">Cue. If the room says they can just read the report later, ask whether the paper wants them deciding what the study means, not only reading it afterward. Then ask a second group what those people walked away with.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 5 · 40 sec</span><h2>Who it is for</h2></div>
-    <p>Before we can begin designing the project that we have in mind, we need to think about who our main users would be.</p>
-    <p>The main user is a <span class="highlight">TAMU student who already keeps deadlines</span> somewhere. Google Calendar, Canvas, or a list on paper. We are not designing for someone who has never planned a week.</p>
-    <p>What they need is to see how big the tasks actually are, so they stop stacking assignments with no information. What gets in the way is the due date itself. It hides the hours. And a bad guess does not stay on that one task. It penalizes the rest of that student's life: other classes, sleep, and anyone who planned around them.</p>
-    <p>We have not interviewed them. So the question on the slide is the next step. <span class="question">How do you want to see the work?</span> Who it helps most is the student with a packed week, and the teammate stuck with that student's number.</p>
+    <div class="section-header"><span class="scenario-tag">Question 3</span><h2>After the researchers leave</h2></div>
+    <p>In fablab@school.dk the team spent time on a community of teachers, and on talking with people from pupils up to politicians, so the work would still be there after the researchers left.</p>
+    <p class="question">If a project ends and the only thing left is the technology, what did it fail to build?</p>
+    <p class="sub">Cue. Ask one group to defend the technology as the result, and another to defend the community of teachers as the result. Get both answers in the room before you pick.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 6 · 30 sec</span><h2>Plus signs in the title</h2></div>
-    <p class="sub">Point. Don't narrate every date on the 21st through the 25th.</p>
-    <p>Same week, twice. In one picture the deadlines are just names, and the blue bars are the same length. In the other, the load is in the title: one plus, two pluses, or three. Class stays a small dot, 10am or 4pm, so color can still mean class.</p>
-    <p>You can read +++ without a legend. This is one design, not the decision. Color is not doing the work on this slide.</p>
+    <div class="section-header"><span class="scenario-tag">Question 4</span><h2>What counts as success</h2></div>
+    <p>They call this whole picture an ideal, and they say almost no real project does every piece. Hertzum and Simonsen score a project by whether it did what the stakeholders asked for at the start. They look at effects in real use.</p>
+    <p class="question">When the prototype works and the people in the room cannot name anything they gained, what should we count as success?</p>
+    <p class="sub">Cue. If the room slides into usability, ask what Hertzum and Simonsen actually measured. Then ask whether a working prototype with no personal gain is a failed project, or an incomplete one, since the authors say almost nobody hits the full ideal.</p>
   </div>
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 7 · 30 sec</span><h2>The block grows, or it gets heavier</h2></div>
-    <p>Different idea. Here the long task takes the afternoon. That milestone runs from morning to evening, and the block is tall. The shorter tasks are not. The size of the block is the size of the work.</p>
-    <p>The other picture keeps the clock the same, around 6 to 7, and makes the heavier task darker. We would be careful with that one. <span class="highlight">Color already means event type</span> for a lot of people. If we reuse it for workload, we fight the legend they already have.</p>
+    <div class="section-header"><span class="scenario-tag">Wrap-up · about 2 min</span><h2>Stop</h2></div>
+    <p>The last two minutes are for one disagreement we did not settle.</p>
+    <p class="sub">Cue. Isaac can bring a different question then.</p>
   </div>
-
-  <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 8 · 45 sec</span><h2>Cognitive and social</h2></div>
-    <p>Three problems, and they sit on top of each other.</p>
-    <p><span class="highlight">Estimation bias.</span> Students misjudge the hours. They look at a clean deadline instead of the real effort. I'll start Thursday. That first brief guess hardens. Once it is typed onto the calendar, it looks like an official estimate.</p>
-    <p><span class="highlight">The group.</span> One optimistic number anchors everyone else. If I say two hours, my teammates plan around two hours. The person who knew it was eight now looks slow, and their own week gets squeezed.</p>
-    <p><span class="highlight">The screen.</span> Exact hours on every event is a lot to read. Low, medium, and high is something you can see without studying the square. Color can make that clearer, and it can also confuse people, depending on what their calendar color already means.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 9 · 30 sec</span><h2>What's next</h2></div>
-    <p>Today, September 24, is this topic talk. October 15 is the literature review presentation. October 29 is the design, and we have to say why each choice exists. November 19 is the implementation, something we can actually show. December 3 is the final presentation.</p>
-    <p>The slide jumps from 2 to 4. In between, <span class="highlight">October 11, each of us turns in seven papers.</span> The written review is October 18. The report and the video are December 4. Those are real dates. They just are not printed on this slide.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="scenario-tag">Slide 10 · questions</span><h2>Stop</h2></div>
-    <p>That's the talk. The picture is asking you to ask us.</p>
-    <p class="question">Who did we leave out?</p>
-    <p class="question">Plus signs in the title, or should the block grow?</p>
-    <p class="question">Should the rest of a group see one person's guess?</p>
-  </div>
-</section>
-
-<section id="planB">
-  <div class="window-title">Plan B. Harsh only. Slides 5, 8, 9, 10</div>
-  <p class="window-note">If the room splits and you are the one staying for these four. Same words as Plan A for your slides.</p>
-
-  <div class="section">
-    <div class="section-header"><span class="who">Harsh</span><span class="scenario-tag">Slide 5 · 40 sec</span><h2>Who it is for</h2></div>
-    <p>Before we can begin designing the project that we have in mind, we need to think about who our main users would be.</p>
-    <p>The main user is a <span class="highlight">TAMU student who already keeps deadlines</span> somewhere. Google Calendar, Canvas, or a list on paper. We are not designing for someone who has never planned a week.</p>
-    <p>What they need is to see how big the tasks actually are, so they stop stacking assignments with no information. What gets in the way is the due date itself. It hides the hours. And a bad guess does not stay on that one task. It penalizes the rest of that student's life: other classes, sleep, and anyone who planned around them.</p>
-    <p>We have not interviewed them. So the question on the slide is the next step. <span class="question">How do you want to see the work?</span> Who it helps most is the student with a packed week, and the teammate stuck with that student's number.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="who">Harsh</span><span class="scenario-tag">Slide 8 · 45 sec</span><h2>Cognitive and social</h2></div>
-    <p>Three problems, and they sit on top of each other.</p>
-    <p><span class="highlight">Estimation bias.</span> Students misjudge the hours. They look at a clean deadline instead of the real effort. I'll start Thursday. That first brief guess hardens. Once it is typed onto the calendar, it looks like an official estimate.</p>
-    <p><span class="highlight">The group.</span> One optimistic number anchors everyone else. If I say two hours, my teammates plan around two hours. The person who knew it was eight now looks slow, and their own week gets squeezed.</p>
-    <p><span class="highlight">The screen.</span> Exact hours on every event is a lot to read. Low, medium, and high is something you can see without studying the square. Color can make that clearer, and it can also confuse people, depending on what their calendar color already means.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="who">Harsh</span><span class="scenario-tag">Slide 9 · 30 sec</span><h2>What's next</h2></div>
-    <p>Today, September 24, is this topic talk. October 15 is the literature review presentation. October 29 is the design, and we have to say why each choice exists. November 19 is the implementation, something we can actually show. December 3 is the final presentation.</p>
-    <p>The slide jumps from 2 to 4. In between, <span class="highlight">October 11, each of us turns in seven papers.</span> The written review is October 18. The report and the video are December 4. Those are real dates. They just are not printed on this slide.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="who">Harsh</span><span class="scenario-tag">Slide 10</span><h2>Stop</h2></div>
-    <p>That's the talk. The picture is asking you to ask us.</p>
-    <p class="question">Who did we leave out?</p>
-    <p class="question">Plus signs in the title, or should the block grow?</p>
-    <p class="question">Should the rest of a group see one person's guess?</p>
-  </div>
-</section>
 
 </div>
 
 <div class="controls">
-  <div><span class="key">S</span> settings &nbsp; <span class="key">R</span> reset scroll &nbsp; <span class="key">1</span> plan A only &nbsp; <span class="key">2</span> plan B only &nbsp; <span class="key">0</span> both</div>
+  <div><span class="key">S</span> settings &nbsp; <span class="key">R</span> reset scroll</div>
   <div>Font: <span id="fontSize">22</span>px</div>
 </div>
 
@@ -215,14 +131,6 @@ const settingsPanel = document.getElementById('settingsPanel');
 const autoScrollChk = document.getElementById('autoScroll');
 let autoTimer = null;
 
-function applyView() {
-  const v = new URLSearchParams(location.search).get('view');
-  document.body.classList.remove('only-a', 'only-b');
-  if (v === 'a') document.body.classList.add('only-a');
-  if (v === 'b') document.body.classList.add('only-b');
-}
-applyView();
-
 fsSlider.addEventListener('input', () => {
   const sz = parseInt(fsSlider.value, 10);
   document.body.style.fontSize = sz + 'px';
@@ -230,13 +138,6 @@ fsSlider.addEventListener('input', () => {
   fsVal.textContent = sz;
 });
 asSpeed.addEventListener('input', () => { asVal.textContent = asSpeed.value; });
-
-function pop(view) {
-  const url = location.pathname + '?view=' + view;
-  window.open(url, 'wac-' + view, 'width=820,height=900');
-}
-document.getElementById('popA').addEventListener('click', () => pop('a'));
-document.getElementById('popB').addEventListener('click', () => pop('b'));
 
 document.addEventListener('keydown', (e) => {
   if (e.target.tagName === 'INPUT') return;
@@ -249,9 +150,6 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  if (k === '1') { document.body.classList.add('only-a'); document.body.classList.remove('only-b'); }
-  if (k === '2') { document.body.classList.add('only-b'); document.body.classList.remove('only-a'); }
-  if (k === '0') { document.body.classList.remove('only-a', 'only-b'); }
 });
 autoScrollChk.addEventListener('change', () => {
   if (autoScrollChk.checked) {
