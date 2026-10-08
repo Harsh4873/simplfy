@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Discussion teleprompter</title>
+<title>Discussion notes</title>
 <style>
   :root {
     --bg: #0a0a12;
@@ -43,20 +43,6 @@
   p:last-child { margin-bottom: 0; }
   .highlight { color: var(--orange); }
   .question { color: var(--green); }
-  .expand-wrap { max-width: 820px; margin: 8px auto 36px; }
-  .expand-btn {
-    width: 100%;
-    background: transparent;
-    color: var(--orange);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 18px;
-    font: inherit;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  #expandPanel { display: none; margin-top: 18px; }
-  #expandPanel.open { display: block; }
   .controls { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 18, 0.95); border-top: 1px solid var(--border); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--dim); }
   .key { background: rgba(136, 160, 255, 0.1); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 12px; color: var(--accent); }
   #settingsPanel { display: none; position: fixed; top: 60px; right: 20px; background: rgba(15, 19, 28, 0.95); border: 1px solid var(--border); border-radius: 10px; padding: 16px; z-index: 100; max-width: 260px; }
@@ -69,84 +55,42 @@
 
 <div class="top">
   <h1>How Participatory Design Works</h1>
-  <div class="meta">Thu Oct 8 · after the summary · about 3 to 4 minutes, then groups</div>
-  <div class="meta">Big text is what you say. A line marked Cue stays quiet.</div>
+  <div class="meta">Thu Oct 8 · walking notes for the three questions</div>
+  <div class="meta">For you only. Don't leave this open on the projector.</div>
 </div>
 
 <div class="script">
 
   <div class="section">
-    <div class="section-header"><span class="scenario-tag">Before you talk</span><h2>How the room goes</h2></div>
-    <p class="sub">Cue. The summary comes first so don't do it again, about three minutes for the opening and the three questions, then groups of about four with one question each, and get two answers that don't match plus the part of the paper behind each one. Go to someone who hasn't spoken before going back to the same people, and if a comment drifts off the paper then ask whether it's about the product or about what people walked away with.</p>
-  </div>
-
-  <div class="section">
-    <div class="section-header"><span class="scenario-tag">Say this · about 1 min</span><h2>Opening</h2></div>
-    <p>The paper says participatory design <span class="highlight">isn't the workshop or the prototype</span>, because the same workshop can happen in co-design and look exactly the same. What makes it participatory is why you run it and <span class="highlight">what people walk away with</span>, they learn together and get a real say and the group can keep going after you leave, and the full version is laid out as an ideal that <span class="highlight">almost no real project actually pulls off</span>.</p>
+    <div class="section-header"><span class="scenario-tag">For you</span><h2>While you walk around</h2></div>
+    <p>The paper's side is under each question, and if a group has a real second answer then let it stand and ask which part of the paper they're using.</p>
+    <p>Quick words in case a group asks: the activity is the workshop or the study or the prototype, the mechanism is why that activity is supposed to matter (who gets a say, learning together, a group that stays), the output is the thing you can point at that day, and the outcome is what people got out of it after.</p>
   </div>
 
   <div class="section">
     <div class="section-header"><span class="scenario-tag">Question 1</span><h2>Future Workshop</h2></div>
-    <p>A Future Workshop runs in three steps where people say what's broken and then picture a future with no limits and then build a plan that could really happen, and the paper says the shared vision at the end only counts if the designers couldn't have guessed it beforehand since it has to come from the people in the room.</p>
     <p class="question">So if the team already picked the design before walking in then what's left for anyone to decide?</p>
-    <p class="sub">Cue. If the room agrees too fast then ask whether people still learned anything with the ending already fixed, and whether that's enough to call it participatory design.</p>
+    <p>The paper's answer is comments but not the ending, because a Future Workshop runs critique where people say what's broken and then fantasy where they picture a future with no limits and then implementation where they build a plan that could really happen, and the shared vision only counts if the designers couldn't have guessed it since it's supposed to come from what each person brings in. The authors call that balancing power, and the mutual learning they want out of it depends on the designers actually handling who has power in the room, so if the design was already picked then the workshop can still happen but that mechanism didn't.</p>
+    <p>Say: "They can still comment but they can't change the result, so could anyone in that room have stopped the design?"</p>
+    <p>If they say people still learned something: learning with a fixed ending is thinner, though it's not nothing, so ask whether they'd still call that participatory design or just a meeting about a decision that was already made.</p>
   </div>
 
   <div class="section">
     <div class="section-header"><span class="scenario-tag">Question 2</span><h2>After the researchers leave</h2></div>
-    <p>In fablab@school.dk the team put digital fabrication tools (things like 3D printers) in schools and built a group of teachers around them, and they worked with everyone from pupils to politicians so the whole thing would keep going after they left.</p>
     <p class="question">So if a project ends and all that's left is the technology then what did it fail to build?</p>
-    <p class="sub">Cue. Get one group to argue the technology is the result and another to argue the group of teachers is, and hear both before anyone picks.</p>
+    <p>The paper's answer is the group that keeps it going, because fablab@school.dk put fabrication tools in schools but the team didn't just leave the lab, they worked with people from pupils up to politicians and tried to leave a group of teachers who'd keep the work in the schools. The authors call the loose bunch of people a knotwork and the version that lasts a network, and a lot of that work is unglamorous stuff like phone calls and hearings and meetings between the workshops, so if only the technology is left then that network is what they failed to build, since the machines can still be there while nobody's job is to keep them in use.</p>
+    <p>Say: "Who turns it on next year if the researchers are gone?"</p>
+    <p>If they defend the technology as the result: the authors care about the product too but they say most HCI stops there, and this project spent the extra time on the people who stay, so ask which one the paper treats as the thing that makes the work last.</p>
   </div>
 
   <div class="section">
     <div class="section-header"><span class="scenario-tag">Question 3</span><h2>What counts as success</h2></div>
-    <p>The paper calls the full picture an ideal that almost no real project fully pulls off, and Hertzum and Simonsen judge a project by whether the final result matched what people asked for at the start.</p>
     <p class="question">So when the prototype works but nobody in the room can name anything they personally got out of it then what should actually count as success?</p>
-    <p class="sub">Cue. If they slide into usability then ask what Hertzum and Simonsen actually judged, and whether a working prototype with no personal gain is a failed project or just an incomplete one.</p>
+    <p>The paper's answer is to count what people got and not just whether the prototype works, because a working prototype is an output (the thing you can point at) while Hertzum and Simonsen judge the project by whether real use matched what people asked for at the start, which is effects in actual use and not a usability test. The discussion also counts personal gains like a say in the project or a new skill and sometimes even a change in someone's later work or training, which they cite Bossen and coauthors for, so if the prototype works and nobody can name a gain then the product can be a success while the participatory design is still weak. And since the full picture is an ideal that almost nobody hits, a missing piece is incomplete and not an automatic fail, so the move is to name which piece you actually got.</p>
+    <p>Say: "The prototype works, so what did a person in the room gain that they can point at?"</p>
+    <p>If they only talk usability: Hertzum and Simonsen weren't judging how easy the system was, they were judging whether use matched the effect people asked for at the start.</p>
   </div>
 
-  <div class="section">
-    <div class="section-header"><span class="scenario-tag">Wrap-up · about 2 min</span><h2>Stop</h2></div>
-    <p>The last two minutes are for the one disagreement we never settled.</p>
-    <p class="sub">Cue. Isaac can bring a different question then.</p>
-  </div>
-
-</div>
-
-<div class="expand-wrap">
-  <button type="button" class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="expandPanel">Expand</button>
-  <div id="expandPanel">
-    <div class="section">
-      <div class="section-header"><span class="scenario-tag">For you</span><h2>While you walk around</h2></div>
-      <p class="sub">Not the speech, so don't leave this open on the projector. The paper's side is under each question, and if a group has a real second answer then let it stand and ask which part of the paper they're using.</p>
-      <p>Quick words in case a group asks: the activity is the workshop or the study or the prototype, the mechanism is why that activity is supposed to matter (who gets a say, learning together, a group that stays), the output is the thing you can point at that day, and the outcome is what people got out of it after.</p>
-    </div>
-
-    <div class="section">
-      <div class="section-header"><span class="scenario-tag">Question 1</span><h2>Future Workshop</h2></div>
-      <p class="question">So if the team already picked the design before walking in then what's left for anyone to decide?</p>
-      <p>The paper's answer is comments but not the ending, because a Future Workshop runs critique where people say what's broken and then fantasy where they picture a future with no limits and then implementation where they build a plan that could really happen, and the shared vision only counts if the designers couldn't have guessed it since it's supposed to come from what each person brings in. The authors call that balancing power, and the mutual learning they want out of it depends on the designers actually handling who has power in the room, so if the design was already picked then the workshop can still happen but that mechanism didn't.</p>
-      <p>Say: "They can still comment but they can't change the result, so could anyone in that room have stopped the design?"</p>
-      <p>If they say people still learned something: learning with a fixed ending is thinner, though it's not nothing, so ask whether they'd still call that participatory design or just a meeting about a decision that was already made.</p>
-    </div>
-
-    <div class="section">
-      <div class="section-header"><span class="scenario-tag">Question 2</span><h2>After the researchers leave</h2></div>
-      <p class="question">So if a project ends and all that's left is the technology then what did it fail to build?</p>
-      <p>The paper's answer is the group that keeps it going, because fablab@school.dk put fabrication tools in schools but the team didn't just leave the lab, they worked with people from pupils up to politicians and tried to leave a group of teachers who'd keep the work in the schools. The authors call the loose bunch of people a knotwork and the version that lasts a network, and a lot of that work is unglamorous stuff like phone calls and hearings and meetings between the workshops, so if only the technology is left then that network is what they failed to build, since the machines can still be there while nobody's job is to keep them in use.</p>
-      <p>Say: "Who turns it on next year if the researchers are gone?"</p>
-      <p>If they defend the technology as the result: the authors care about the product too but they say most HCI stops there, and this project spent the extra time on the people who stay, so ask which one the paper treats as the thing that makes the work last.</p>
-    </div>
-
-    <div class="section">
-      <div class="section-header"><span class="scenario-tag">Question 3</span><h2>What counts as success</h2></div>
-      <p class="question">So when the prototype works but nobody in the room can name anything they personally got out of it then what should actually count as success?</p>
-      <p>The paper's answer is to count what people got and not just whether the prototype works, because a working prototype is an output (the thing you can point at) while Hertzum and Simonsen judge the project by whether real use matched what people asked for at the start, which is effects in actual use and not a usability test. The discussion also counts personal gains like a say in the project or a new skill and sometimes even a change in someone's later work or training, which they cite Bossen and coauthors for, so if the prototype works and nobody can name a gain then the product can be a success while the participatory design is still weak. And since the full picture is an ideal that almost nobody hits, a missing piece is incomplete and not an automatic fail, so the move is to name which piece you actually got.</p>
-      <p>Say: "The prototype works, so what did a person in the room gain that they can point at?"</p>
-      <p>If they only talk usability: Hertzum and Simonsen weren't judging how easy the system was, they were judging whether use matched the effect people asked for at the start.</p>
-    </div>
-  </div>
 </div>
 
 <div class="controls">
@@ -171,16 +115,7 @@ const asVal = document.getElementById('asVal');
 const asSpeed = document.getElementById('autoSpeed');
 const settingsPanel = document.getElementById('settingsPanel');
 const autoScrollChk = document.getElementById('autoScroll');
-const expandBtn = document.getElementById('expandBtn');
-const expandPanel = document.getElementById('expandPanel');
 let autoTimer = null;
-
-expandBtn.addEventListener('click', () => {
-  const open = expandPanel.classList.toggle('open');
-  expandBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  expandBtn.textContent = open ? 'Hide' : 'Expand';
-  if (open) expandPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
 
 fsSlider.addEventListener('input', () => {
   const sz = parseInt(fsSlider.value, 10);
