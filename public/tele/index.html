@@ -43,6 +43,20 @@
   p:last-child { margin-bottom: 0; }
   .highlight { color: var(--orange); }
   .question { color: var(--green); }
+  .expand-wrap { max-width: 820px; margin: 8px auto 36px; }
+  .expand-btn {
+    width: 100%;
+    background: transparent;
+    color: var(--orange);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font: inherit;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  #expandPanel { display: none; margin-top: 18px; }
+  #expandPanel.open { display: block; }
   .controls { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 18, 0.95); border-top: 1px solid var(--border); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--dim); }
   .key { background: rgba(136, 160, 255, 0.1); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 12px; color: var(--accent); }
   #settingsPanel { display: none; position: fixed; top: 60px; right: 20px; background: rgba(15, 19, 28, 0.95); border: 1px solid var(--border); border-radius: 10px; padding: 16px; z-index: 100; max-width: 260px; }
@@ -107,6 +121,49 @@
 
 </div>
 
+<div class="expand-wrap">
+  <button type="button" class="expand-btn" id="expandBtn" aria-expanded="false" aria-controls="expandPanel">Expand</button>
+  <div id="expandPanel">
+    <div class="section">
+      <div class="section-header"><span class="scenario-tag">For you</span><h2>While you walk around</h2></div>
+      <p class="sub">Not the speech. Do not leave this open on the projector. The paper's side is below. If a group has a real second answer, let it stand and ask which part of the paper they are using.</p>
+      <p>An activity is the workshop, the study, or the prototype. A mechanism is why that activity is supposed to matter: who gets a say, learning together, or a group that stays. An output is the thing you can point at that day. An outcome is what people gained after that.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><span class="scenario-tag">Question 1</span><h2>Future Workshop</h2></div>
+      <p class="question">If we walk in with the design already picked, what is left for the people in the room to decide?</p>
+      <p>The paper's answer: comments, not the ending. A Future Workshop has three phases. Critique is naming what is broken. Fantasy is imagining a future with the limits turned off. Implementation is a plan that could actually happen. The shared vision only counts if the designers cannot already see the ending, because the ending is supposed to come from what each person puts in. The authors call that balancing power. Mutual learning is what they want out of the workshop, and they tie it to the designers actually handling who has power in the room. If the design was already picked, the workshop can still happen. That mechanism did not.</p>
+      <p>Say: "They can still comment. They cannot change the result. Could anyone in that room have stopped the design?"</p>
+      <p>If the group says people still learned something: learning with a fixed ending is thinner. It is not nothing. Ask whether they would still call that participatory design, or just a meeting about a decision that was already made.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><span class="scenario-tag">Question 2</span><h2>Field study</h2></div>
+      <p class="question">If those people never see the writeup, what did they get out of being studied?</p>
+      <p>The paper's answer: they got observed. What you learn about the work is supposed to be for the people who live it, not only notes for the designers. The example is the Video Card Game. Short clips from the study get printed on cards, and the people in the footage help decide what the clips mean, so the researcher is not the authority on someone else's life. If the designers go home and write it up alone, those people were a source of data. They did not help interpret it, and they did not get the reflection the authors count as the result. A better product later is the designers' output. It is not what the studied person walked away with that week.</p>
+      <p>Say: "What can the person who was studied name that they gained, besides being in the room?"</p>
+      <p>If the group says a report they can read later is enough: the paper wants them deciding what the study means, not only receiving a document afterward.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><span class="scenario-tag">Question 3</span><h2>After the researchers leave</h2></div>
+      <p class="question">If a project ends and the only thing left is the technology, what did it fail to build?</p>
+      <p>The paper's answer: the group that keeps it going. fablab@school.dk is digital fabrication in schools. The team did not only leave the lab. They worked with people from pupils up to politicians, and they tried to leave a community of teachers who would keep the work in the schools. The authors call the loose bunch of people a knotwork, and the version that lasts a network. A lot of that work is unglamorous: phone calls, hearings, and meetings between the workshops. If only the technology is left, that network is what they failed to build. The machines can still be there. Nobody's job is to keep them in use.</p>
+      <p>Say: "Who turns it on next year if the researchers are gone?"</p>
+      <p>If the group defends the technology as the result: the authors care about the product too. They say most HCI stops there. This project spent the extra time on the people who stay. Ask which one the paper treats as the thing that makes the work last.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><span class="scenario-tag">Question 4</span><h2>What counts as success</h2></div>
+      <p class="question">When the prototype works and the people in the room cannot name anything they gained, what should we count as success?</p>
+      <p>The paper's answer: count what people gained, not only whether the prototype works. A working prototype is an output, the thing you can point at. Hertzum and Simonsen score the project by whether real use matched what the stakeholders said they wanted at the start. That is effects in actual use, not a usability test. The discussion also counts personal gains: a say in the project, a new skill, and sometimes a change in someone's later work or training. They cite Bossen and coauthors for that. If the prototype works and nobody can name a gain, the product can be a success and the participatory design can still be weak. They also call the full picture an ideal, a best case, and they say almost no real project does every piece. A missing piece is incomplete. It is not an automatic fail. Name which piece you actually got.</p>
+      <p>Say: "The prototype works. What did a person in the room gain that they can point at?"</p>
+      <p>If the group only talks about usability: Hertzum and Simonsen were not scoring how easy the system was. They were scoring whether use matched the effect people asked for at the start.</p>
+    </div>
+  </div>
+</div>
+
 <div class="controls">
   <div><span class="key">S</span> settings &nbsp; <span class="key">R</span> reset scroll</div>
   <div>Font: <span id="fontSize">22</span>px</div>
@@ -129,7 +186,16 @@ const asVal = document.getElementById('asVal');
 const asSpeed = document.getElementById('autoSpeed');
 const settingsPanel = document.getElementById('settingsPanel');
 const autoScrollChk = document.getElementById('autoScroll');
+const expandBtn = document.getElementById('expandBtn');
+const expandPanel = document.getElementById('expandPanel');
 let autoTimer = null;
+
+expandBtn.addEventListener('click', () => {
+  const open = expandPanel.classList.toggle('open');
+  expandBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  expandBtn.textContent = open ? 'Hide' : 'Expand';
+  if (open) expandPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 fsSlider.addEventListener('input', () => {
   const sz = parseInt(fsSlider.value, 10);
