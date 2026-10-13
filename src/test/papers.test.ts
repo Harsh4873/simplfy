@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseHash, toHash } from "../app/routes";
+import { loadCatalog } from "../catalog/loadCatalog";
 import { RING_ORDER, ringFor } from "../papers/authors";
 import { lookupPapers } from "../papers/lookup";
 
@@ -35,6 +36,19 @@ describe("paper ranking", () => {
     const hits = lookupPapers("NAT2 acetylator");
     expect(hits.some((hit) => hit.ring === "ioerger")).toBe(false);
     expect(hits.some((hit) => hit.paper.id === "wiki-nat2")).toBe(true);
+  });
+
+  it("stays empty until there is a query", () => {
+    expect(lookupPapers("")).toEqual([]);
+    expect(lookupPapers("   ")).toEqual([]);
+    expect(lookupPapers("a")).toEqual([]);
+  });
+
+  it("still ranks a lesson when the extra query is blank", () => {
+    const transit = loadCatalog().modules.find((module) => module.id === "tb-tnseq-transit");
+    if (!transit) throw new Error("missing tb-tnseq-transit");
+    expect(lookupPapers("", transit).length).toBeGreaterThan(0);
+    expect(lookupPapers("   ", transit).length).toBeGreaterThan(0);
   });
 
   it("keeps explainers last", () => {

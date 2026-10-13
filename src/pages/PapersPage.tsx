@@ -88,7 +88,7 @@ export function PapersPage({
       >
         <p>Drop a PDF or a markdown file of a paper.</p>
         <p className="hint">Image-only scans store the blob but cannot cut cards. Folder packs go under Classes.</p>
-        <button type="button" className="solid" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
+        <button type="button" className="solid" onClick={() => fileRef.current?.click()} disabled={!api.ready || api.busy}>
           Choose files
         </button>
         <input
@@ -98,6 +98,7 @@ export function PapersPage({
           multiple
           accept=".pdf,.md,.markdown,.txt,application/pdf,text/markdown,text/plain"
           aria-label="Choose paper files"
+          disabled={!api.ready || api.busy}
           onChange={(event) => {
             void ingest([...(event.target.files ?? [])]);
             event.currentTarget.value = "";
@@ -141,7 +142,11 @@ export function PapersPage({
             </button>
           </div>
         </form>
-        <PapersBoard query={q ?? ""} />
+        {q?.trim() ? (
+          <PapersBoard query={q} />
+        ) : (
+          <p className="hint">Type a gene, drug, or method, then look it up. The shelf stays quiet until then.</p>
+        )}
       </section>
     </div>
   );

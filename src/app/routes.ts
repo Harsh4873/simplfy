@@ -1,3 +1,5 @@
+import { FEATURED_IDS } from "../lesson/paths";
+
 export const LESSON_STEPS = ["teach", "example", "practice", "say-back", "shelf", "papers"] as const;
 export const FILE_LESSON_STEPS = ["teach", "example", "practice", "say-back"] as const;
 
@@ -183,4 +185,9 @@ export function resumeLearnRoute(continueNoteId?: string, continueModuleId?: str
     return { name: "learn", id: continueModuleId, step: next };
   }
   return { name: "shelf" };
+}
+
+export function learnNavRoute(continueNoteId?: string, continueModuleId?: string, step?: string): Route {
+  if (continueNoteId || continueModuleId) return resumeLearnRoute(continueNoteId, continueModuleId, step);
+  return { name: "learn", id: FEATURED_IDS[0], step: "teach" };
 }

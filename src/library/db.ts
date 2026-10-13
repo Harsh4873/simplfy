@@ -135,6 +135,8 @@ export function openStudioDb(): Promise<IDBDatabase> {
       const db = request.result;
       db.onversionchange = () => {
         db.close();
+        if (typeof window === "undefined") return;
+        window.dispatchEvent(new Event("simplfy-db-version"));
       };
       resolve(db);
     };

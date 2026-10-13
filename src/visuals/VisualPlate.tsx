@@ -97,7 +97,7 @@ function LayeredSection({ spec }: { spec: LayeredSectionVisual }) {
         );
       })}
       {spec.annotation ? (
-        <Label x="36" y="288" fontSize="10.5" fill={vis.accent}>
+        <Label x="36" y="288" fontSize="10.5" fill={vis.accentInk}>
           {spec.annotation}
         </Label>
       ) : null}
@@ -172,15 +172,22 @@ function FlowMap({ spec }: { spec: FlowMapVisual }) {
   );
 }
 
+function fittedMonoSize(text: string, maxWidth: number, preferred: number): number {
+  const size = maxWidth / Math.max(text.length * 0.62, 1);
+  return Math.round(Math.min(preferred, size) * 10) / 10;
+}
+
 function GeneTrack({ spec }: { spec: GeneTrackVisual }) {
   const x = (pos: number) => 48 + ((pos - spec.start) / (spec.end - spec.start)) * 544;
   const ticks = 6;
+  const geneSize = fittedMonoSize(spec.gene, 330, 13);
+  const unitSize = fittedMonoSize(spec.unit, 200, 11);
   return (
     <PlateFrame>
-      <Label x="48" y="34" fontSize="13" mono weight={500}>
+      <Label x="48" y="34" fontSize={geneSize} mono weight={500}>
         {spec.gene}
       </Label>
-      <Label x="592" y="34" textAnchor="end" fontSize="11" mute>
+      <Label x="592" y="34" textAnchor="end" fontSize={unitSize} mute>
         {spec.unit}
       </Label>
       <line x1="48" y1="150" x2="592" y2="150" stroke={vis.ink} strokeWidth="2" />
@@ -199,7 +206,7 @@ function GeneTrack({ spec }: { spec: GeneTrackVisual }) {
         return (
           <g key={region.label}>
             <rect x={x1} y="136" width={Math.max(x2 - x1, 4)} height="28" fill={vis.accent} fillOpacity="0.14" stroke={vis.accent} strokeWidth={vis.sw} />
-            <Label x={(x1 + x2) / 2} y="126" textAnchor="middle" fontSize="11" weight={500} fill={vis.accent}>
+            <Label x={(x1 + x2) / 2} y="126" textAnchor="middle" fontSize="11" weight={500} fill={vis.accentInk}>
               {region.label}
             </Label>
           </g>
@@ -244,7 +251,7 @@ function NestedModels({ spec }: { spec: NestedModelsVisual }) {
         </Label>
       ))}
       <rect x="78" y="148" width="168" height="80" fill={vis.paper} stroke={vis.accent} strokeWidth={vis.sw} />
-      <Label x="90" y="170" fontSize="12" weight={500} fill={vis.accent}>
+      <Label x="90" y="170" fontSize="12" weight={500} fill={vis.accentInk}>
         {spec.reduced.label}
       </Label>
       {spec.reduced.params.map((param, i) => (
@@ -403,7 +410,7 @@ function MechanismMap({ spec }: { spec: MechanismMapVisual }) {
           <g key={`${edge.from}-${edge.to}`}>
             <line x1={sx} y1={sy} x2={ex} y2={ey} stroke={vis.ink} strokeWidth={vis.sw} markerEnd={`url(#${marker})`} />
             {edge.label ? (
-              <Label x={(sx + ex) / 2} y={(sy + ey) / 2 - 6} textAnchor="middle" fontSize="9.5" fill={vis.accent}>
+              <Label x={(sx + ex) / 2} y={(sy + ey) / 2 - 6} textAnchor="middle" fontSize="9.5" fill={vis.accentInk}>
                 {edge.label}
               </Label>
             ) : null}
@@ -425,7 +432,7 @@ function MechanismMap({ spec }: { spec: MechanismMapVisual }) {
               stroke={drug ? vis.accent : vis.ink}
               strokeWidth={vis.sw}
             />
-            <Label textAnchor="middle" y={node.sub ? -2 : 4} fontSize="11" weight={500} fill={drug ? vis.accent : vis.ink}>
+            <Label textAnchor="middle" y={node.sub ? -2 : 4} fontSize="11" weight={500} fill={drug ? vis.accentInk : vis.ink}>
               {node.label}
             </Label>
             {node.sub ? (

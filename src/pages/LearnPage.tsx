@@ -10,6 +10,7 @@ import { ConceptMap } from "../studio/ConceptMap";
 import { sayBackItem } from "../lesson/fromModule";
 import { PapersBoard } from "../papers/PapersBoard";
 import { cx } from "../ui/cx";
+import { onTabListKeyDown } from "../ui/tablist";
 import { ExternalLink } from "../ui/ExternalLink";
 import { textKey } from "../ui/textKey";
 
@@ -23,12 +24,15 @@ function StepNav({
   navigate: (route: Route) => void;
 }) {
   return (
-    <div className="step-track" role="tablist" aria-label="Lesson steps">
+    <div className="step-track" role="tablist" aria-label="Lesson steps" onKeyDown={onTabListKeyDown}>
       {LESSON_STEPS.map((item) => (
         <a
           key={item}
+          id={`lesson-tab-${item}`}
           role="tab"
           aria-selected={item === step}
+          aria-controls="lesson-panel"
+          tabIndex={item === step ? 0 : -1}
           className={cx("step-tab", item === step && "is-active")}
           href={toHash({ name: "learn", id, step: item })}
           onClick={(event) => {
@@ -233,6 +237,9 @@ function SayBackStep({
   const [parkNote, setParkNote] = useState<string | null>(null);
   const [parking, setParking] = useState(false);
   const parkGeneration = useRef(0);
+  const onDeck = Boolean(
+    parkedId || api.recall.some((row) => row.moduleId === module.id && row.checkId === "say-back" && !row.noteId),
+  );
 
   useEffect(() => {
     parkGeneration.current += 1;
@@ -264,12 +271,12 @@ function SayBackStep({
         <button
           type="button"
           className="ghost"
-          disabled={parking}
+          disabled={parking || onDeck}
           onClick={() => {
-            if (parking) return;
+            if (parking || onDeck) return;
             const generation = parkGeneration.current;
             setParking(true);
-            void api.missCheck(module.id, sayBackItem(module)).then((id) => {
+            void api.parkCheck(module.id, sayBackItem(module)).then((id) => {
               if (generation !== parkGeneration.current || !id) return;
               setParkedId(id);
               setParkNote("Parked on your recall deck.");
@@ -278,13 +285,15 @@ function SayBackStep({
             });
           }}
         >
-          Park this on my deck
+          {onDeck ? "On your deck" : "Park this on my deck"}
         </button>
         <button
           type="button"
           className="solid quiet"
+          disabled={parking}
           onClick={() => {
-            const card = api.recall.find((row) => row.moduleId === module.id && row.checkId === "say-back");
+            if (parking) return;
+            const card = api.recall.find((row) => row.moduleId === module.id && row.checkId === "say-back" && !row.noteId);
             const id = card?.id ?? parkedId;
             if (!id) {
               setParkNote("Park this on your deck first. Then you can clear it when you can say it.");
@@ -463,6 +472,7 @@ export function LearnPage({
         <p className="dek">{module.dek}</p>
       </header>
       <StepNav id={module.id} step={step} navigate={navigate} />
+      <div id="lesson-panel" role="tabpanel" aria-labelledby={`lesson-tab-${step}`}>
       {step === "teach" ? <TeachStep module={module} onNext={() => go("example")} /> : null}
       {step === "example" ? <ExampleStep module={module} onNext={() => go("practice")} /> : null}
       {step === "practice" ? <PracticeStep module={module} api={api} onNext={() => go("say-back")} /> : null}
@@ -479,6 +489,7 @@ export function LearnPage({
           }}
         />
       ) : null}
+      </div>
     </article>
   );
 }

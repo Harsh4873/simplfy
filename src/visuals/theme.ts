@@ -4,6 +4,7 @@ export const vis = {
   rule: "var(--line)",
   paper: "var(--card)",
   accent: "var(--accent)",
+  accentInk: "var(--accent-ink)",
   sw: 1.25,
   hair: 0.75,
   sans: 'IBM Plex Sans, "Helvetica Neue", Helvetica, sans-serif',

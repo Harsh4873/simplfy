@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseHash, resumeLearnRoute, resumeStepFromCanvas, routeDocumentTitle, toHash } from "../app/routes";
+import { learnNavRoute, parseHash, resumeLearnRoute, resumeStepFromCanvas, routeDocumentTitle, toHash } from "../app/routes";
 import { loadCatalog } from "../catalog/loadCatalog";
 import { lessonFromModule } from "../lesson/fromModule";
 import { lessonFromNote } from "../lesson/fromNote";
@@ -83,6 +83,14 @@ describe("hash routes", () => {
       id: "stats-lrt",
       step: "shelf",
     });
+    expect(learnNavRoute()).toEqual({ name: "learn", id: "tb-tnseq-transit", step: "teach" });
+    expect(learnNavRoute("note-9", undefined, "practice")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "practice",
+      kind: "file",
+    });
+    expect(resumeLearnRoute()).toEqual({ name: "shelf" });
     expect(
       resumeStepFromCanvas(
         [

@@ -36,7 +36,11 @@ export function recallFromMiss(moduleId: string, item: CheckItem): RecallSeed {
   };
 }
 
-/** Reuse the parked card for this check so a second click does not insert another id. */
+function catalogueCard(rows: RecallCard[], moduleId: string, item: CheckItem): RecallCard | undefined {
+  return rows.find((card) => card.moduleId === moduleId && card.checkId === item.id && !card.noteId);
+}
+
+/** Reuse the parked card for this check so a second miss does not insert another id. */
 export function recallCardForMiss(
   rows: RecallCard[],
   moduleId: string,
@@ -44,9 +48,7 @@ export function recallCardForMiss(
   now = Date.now(),
 ): RecallCard {
   const seed = recallFromMiss(moduleId, item);
-  const existing = rows.find(
-    (card) => card.moduleId === moduleId && card.checkId === item.id && !card.noteId,
-  );
+  const existing = catalogueCard(rows, moduleId, item);
   if (existing) {
     return {
       ...existing,
@@ -61,6 +63,29 @@ export function recallCardForMiss(
     ...seed,
     createdAt: now,
     misses: 1,
+    lastMissedAt: now,
+  };
+}
+
+/** Put a say-back card on the deck without counting the park as another miss. */
+export function recallCardForPark(
+  rows: RecallCard[],
+  moduleId: string,
+  item: CheckItem,
+  now = Date.now(),
+): RecallCard {
+  const existing = catalogueCard(rows, moduleId, item);
+  if (existing) {
+    return {
+      ...existing,
+      prompt: item.prompt,
+    };
+  }
+  return {
+    id: crypto.randomUUID(),
+    ...recallFromMiss(moduleId, item),
+    createdAt: now,
+    misses: 0,
     lastMissedAt: now,
   };
 }

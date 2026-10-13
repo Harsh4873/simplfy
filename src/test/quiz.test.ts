@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadCatalog } from "../catalog/loadCatalog";
-import { gradeAnswer, recallCardForMiss, recallFromMiss } from "../quiz/grade";
+import { gradeAnswer, recallCardForMiss, recallCardForPark, recallFromMiss } from "../quiz/grade";
 
 describe("check grading", () => {
   it("accepts the canonical choice and explains misses", () => {
@@ -36,5 +36,24 @@ describe("check grading", () => {
     expect(second.id).toBe(first.id);
     expect(second.misses).toBe(2);
     expect(second.lastMissedAt).toBe(20);
+  });
+
+  it("parks a say-back card without counting another miss", () => {
+    const item = {
+      id: "say-back",
+      kind: "conceptual" as const,
+      prompt: "Explain it",
+      choices: [],
+      answer: "In your own words",
+      why: "Because the point should stick.",
+    };
+    const parked = recallCardForPark([], "tb-rifampin", item, 10);
+    expect(parked.misses).toBe(0);
+    const again = recallCardForPark([parked], "tb-rifampin", item, 30);
+    expect(again.id).toBe(parked.id);
+    expect(again.misses).toBe(0);
+    expect(again.lastMissedAt).toBe(10);
+    const missed = recallCardForMiss([parked], "tb-rifampin", item, 40);
+    expect(missed.misses).toBe(1);
   });
 });

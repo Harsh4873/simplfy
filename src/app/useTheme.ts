@@ -9,19 +9,27 @@ function systemTheme(): Theme {
   return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 }
 
-export function readStoredTheme(): Theme {
+export function readExplicitTheme(): Theme | null {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "light" || stored === "dark") return stored;
   } catch {
     /* private mode */
   }
-  return systemTheme();
+  return null;
+}
+
+export function readStoredTheme(): Theme {
+  return readExplicitTheme() ?? systemTheme();
+}
+
+export function paintTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  document.documentElement.style.colorScheme = theme;
 }
 
 export function applyTheme(theme: Theme) {
-  document.documentElement.dataset.theme = theme;
-  document.documentElement.style.colorScheme = theme;
+  paintTheme(theme);
   try {
     localStorage.setItem(STORAGE_KEY, theme);
   } catch {
@@ -38,8 +46,24 @@ export function useTheme() {
   });
 
   useEffect(() => {
-    applyTheme(theme);
+    paintTheme(theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    const media = window.matchMedia("(prefers-color-scheme: light)");
+    const onChange = () => {
+      if (readExplicitTheme()) return;
+      setThemeState(media.matches ? "light" : "dark");
+    };
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    }
+    if (typeof media.addListener !== "function") return;
+    media.addListener(onChange);
+    return () => media.removeListener(onChange);
+  }, []);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);

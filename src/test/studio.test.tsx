@@ -7,7 +7,7 @@ import { MAX_FILE_BYTES } from "../library/parse";
 import { TOY_PAPER_TEXT } from "./toyPaper";
 
 async function openSources(user: ReturnType<typeof userEvent.setup>, tab: "decks" | "classes" | "papers" = "decks") {
-  await user.click(screen.getByRole("link", { name: /^sources$/i }));
+  await user.click(screen.getByRole("link", { name: /^sources/i }));
   if (tab !== "decks") {
     await user.click(screen.getByRole("tab", { name: new RegExp(`^${tab}$`, "i") }));
   }
@@ -16,6 +16,16 @@ async function openSources(user: ReturnType<typeof userEvent.setup>, tab: "decks
 describe("studio shell", () => {
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  it("skips to the page without replacing the hash", async () => {
+    const user = userEvent.setup();
+    window.location.hash = "#/shelf";
+    render(<Studio />);
+    expect(await screen.findByRole("heading", { level: 1, name: /^shelf$/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("link", { name: /skip to content/i }));
+    expect(window.location.hash).toBe("#/shelf");
+    expect(document.getElementById("main")).toHaveFocus();
   });
 
   it("opens a guided lesson for likelihood ratio test and rifampin", async () => {
@@ -352,12 +362,12 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.click(screen.getByRole("button", { name: /study this deck/i }));
     expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
     expect(screen.getAllByText(/picture|rho/i).length).toBeGreaterThan(0);
-    await user.click(screen.getByRole("link", { name: /^sources$/i }));
+    await user.click(screen.getByRole("link", { name: /^sources/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /decks/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^study$/i })).toBeInTheDocument();
     await user.click(screen.getByRole("link", { name: /^home$/i }));
     expect(screen.queryByRole("button", { name: /^study$/i })).not.toBeInTheDocument();
-    await user.click(screen.getByRole("link", { name: /^sources$/i }));
+    await user.click(screen.getByRole("link", { name: /^sources/i }));
     await user.click(screen.getByRole("button", { name: /pin to home/i }));
     await user.click(screen.getByRole("link", { name: /^home$/i }));
     expect(await screen.findByRole("button", { name: /^study$/i })).toBeInTheDocument();
@@ -378,7 +388,7 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     await user.click(screen.getByRole("button", { name: /study this deck/i }));
     expect(await screen.findByRole("heading", { name: /flip until it sticks/i })).toBeInTheDocument();
     expect(screen.getAllByText(/abstract/i).length).toBeGreaterThan(0);
-    await user.click(screen.getByRole("link", { name: /^sources$/i }));
+    await user.click(screen.getByRole("link", { name: /^sources/i }));
     await user.click(screen.getByRole("tab", { name: /^papers$/i }));
     expect(await screen.findByRole("heading", { level: 1, name: /^papers$/i })).toBeInTheDocument();
     expect(screen.getByText(/paper ·/i)).toBeInTheDocument();

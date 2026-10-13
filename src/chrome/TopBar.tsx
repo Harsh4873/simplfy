@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { libraryNoteRoute, isSourcesRoute, resumeLearnRoute, resumeStepFromCanvas, toHash, type Route } from "../app/routes";
+import { libraryNoteRoute, isSourcesRoute, learnNavRoute, resumeStepFromCanvas, toHash, type Route } from "../app/routes";
 import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
@@ -28,6 +28,7 @@ export function TopBar({
 }) {
   const searchRef = useRef<HTMLInputElement>(null);
   const searchRootRef = useRef<HTMLDivElement>(null);
+  const pointerInResultsRef = useRef(false);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const [popDismissed, setPopDismissed] = useState(false);
@@ -121,7 +122,7 @@ export function TopBar({
     else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
   }, [activeOptionId]);
 
-  const resumeRoute = resumeLearnRoute(
+  const learnRoute = learnNavRoute(
     api.continueNote?.id,
     api.continueModule?.id,
     resumeStepFromCanvas(api.studios, api.continueNote?.id, api.continueModule?.id),
@@ -131,7 +132,7 @@ export function TopBar({
     { route: { name: "home" }, label: "Home", match: route.name === "home" },
     { route: { name: "desk" }, label: "Sources", match: isSourcesRoute(route) },
     {
-      route: resumeRoute,
+      route: learnRoute,
       label: "Learn",
       match: route.name === "learn",
     },
@@ -141,7 +142,17 @@ export function TopBar({
 
   return (
     <header className="topbar">
-      <a className="skip" href="#main">
+      <a
+        className="skip"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          const main = document.getElementById("main");
+          if (!(main instanceof HTMLElement)) return;
+          main.classList.add("is-skip-target");
+          main.focus();
+        }}
+      >
         Skip to content
       </a>
       <button type="button" className="brand" onClick={() => navigate({ name: "home" })}>
@@ -174,14 +185,10 @@ export function TopBar({
           >
             {item.label}
             {item.label === "Sources" && sourceCount ? (
-              <span className="badge quiet" aria-hidden="true">
-                {sourceCount}
-              </span>
+              <span className="badge quiet">{sourceCount}</span>
             ) : null}
             {item.label === "Recall" && api.recall.length ? (
-              <span className="badge" aria-hidden="true">
-                {api.recall.length}
-              </span>
+              <span className="badge">{api.recall.length}</span>
             ) : null}
           </a>
         ))}
@@ -198,6 +205,17 @@ export function TopBar({
             value={api.query}
             onChange={(event) => api.setQuery(event.target.value)}
             onFocus={() => setPopDismissed(false)}
+            onBlur={() => {
+              window.setTimeout(() => {
+                const root = searchRootRef.current;
+                const active = document.activeElement;
+                const inside = Boolean(root && active instanceof Node && root.contains(active));
+                const pressed = pointerInResultsRef.current;
+                pointerInResultsRef.current = false;
+                if (inside || pressed) return;
+                setPopDismissed(true);
+              }, 0);
+            }}
             onKeyDown={(event) => {
               if (!trimmed) return;
               if (event.key === "ArrowDown") {
@@ -231,7 +249,12 @@ export function TopBar({
           <kbd>/</kbd>
         </div>
         {showPop ? (
-          <div className="search-pop">
+          <div
+            className="search-pop"
+            onPointerDown={() => {
+              pointerInResultsRef.current = true;
+            }}
+          >
             <ul id="studio-search-list" role="listbox" aria-label="Search hits">
               <li role="presentation">
                 <button

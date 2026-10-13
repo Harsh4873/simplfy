@@ -5,7 +5,7 @@ import type { StudioCanvas } from "../library/db";
 import { isPaperItem } from "../library/paperText";
 import { cx } from "../ui/cx";
 
-export function openSourceCanvas(canvas: StudioCanvas, api: StudioApi, navigate: (route: Route) => void) {
+export function openSourceCanvas(canvas: StudioCanvas, navigate: (route: Route) => void) {
   if (canvas.kind === "class" && canvas.collectionId) {
     navigate({ name: "notes", classId: canvas.collectionId });
     return;
@@ -16,11 +16,6 @@ export function openSourceCanvas(canvas: StudioCanvas, api: StudioApi, navigate:
     return;
   }
   if (canvas.kind === "note" && canvas.noteId) {
-    const cards = api.recall.filter((card) => card.noteId === canvas.noteId);
-    if (cards.length) {
-      navigate(recallNoteRoute(canvas.noteId));
-      return;
-    }
     navigate(libraryNoteRoute(canvas.noteId, canvas.collectionId));
     return;
   }
@@ -62,7 +57,7 @@ export function SourceCard({
           : "Catalogue lookup";
   return (
     <li className={cx("desk-card", canvas.pinned && "is-pinned")}>
-      <button type="button" className="desk-open" onClick={() => openSourceCanvas(canvas, api, navigate)}>
+      <button type="button" className="desk-open" onClick={() => openSourceCanvas(canvas, navigate)}>
         <span className="kicker">
           {kindLabel}
           {canvas.step ? ` · ${canvas.step}` : ""}

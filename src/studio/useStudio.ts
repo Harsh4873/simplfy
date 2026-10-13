@@ -3,7 +3,6 @@ import { indexModules, loadCatalog } from "../catalog/loadCatalog";
 import { searchStudio, type SearchHit } from "../catalog/search";
 import type { CheckItem, StudyModule } from "../catalog/types";
 import {
-  deleteCollectionRow,
   deleteLibraryItem,
   deleteRecallCard,
   deleteStudio,
@@ -38,12 +37,12 @@ import {
   stripGenericRoot,
   titleFromReadme,
 } from "../library/ingest";
-import { isolateAllClasses, seedClassStudios, seedNoteDeck } from "../library/spawn";
+import { isolateAllClasses, removeFiledCollection, removeFiledSource, seedClassStudios, seedNoteDeck } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
 import { MAX_CLASS_CARDS, titleFromDroppedText } from "../library/noteCards";
 import { libraryKindForSource, looksLikePaperText, paperToMarkdown } from "../library/paperText";
-import { recallCardForMiss } from "../quiz/grade";
+import { recallCardForMiss, recallCardForPark } from "../quiz/grade";
 import { useSimplfySync } from "../useSimplfySync";
 
 function skippedOversizeNote(count: number): string {
@@ -517,37 +516,22 @@ export function useStudio() {
   const removeLibrary = useCallback(
     async (id: string) => {
       if (!db) return;
-      await deleteLibraryItem(db, id);
-      await deleteStudio(db, `note:${id}`);
-      for (const card of recall.filter((row) => row.noteId === id)) {
-        await deleteRecallCard(db, card.id);
-      }
+      await removeFiledSource(db, id);
       await refresh(db);
       if (continueRef === `library:${id}`) {
         await remember("");
       }
     },
-    [continueRef, db, recall, refresh, remember],
+    [continueRef, db, refresh, remember],
   );
 
   const removeCollection = useCallback(
     async (id: string) => {
       if (!db) return;
-      const items = library.filter((item) => item.collectionId === id);
-      for (const item of items) {
-        await deleteLibraryItem(db, item.id);
-        await deleteStudio(db, `note:${item.id}`);
-      }
-      for (const canvas of studios.filter((row) => row.collectionId === id)) {
-        await deleteStudio(db, canvas.id);
-      }
-      for (const card of recall.filter((row) => row.collectionId === id)) {
-        await deleteRecallCard(db, card.id);
-      }
-      await deleteCollectionRow(db, id);
+      await removeFiledCollection(db, id);
       await refresh(db);
     },
-    [db, library, recall, refresh, studios],
+    [db, refresh],
   );
 
   const renameCollection = useCallback(
@@ -625,14 +609,16 @@ export function useStudio() {
     [byId, db, loaded.modules, refresh],
   );
 
-  const missCheck = useCallback(
-    async (moduleId: string, item: CheckItem) => {
+  const writeCheckCard = useCallback(
+    async (moduleId: string, item: CheckItem, mode: "miss" | "park") => {
       if (!db) return null;
       const lockKey = `${moduleId}:${item.id}`;
       if (parkLocks.current.has(lockKey)) return null;
       parkLocks.current.add(lockKey);
       try {
-        const card = recallCardForMiss(await listRecall(db), moduleId, item);
+        const rows = await listRecall(db);
+        const card =
+          mode === "park" ? recallCardForPark(rows, moduleId, item) : recallCardForMiss(rows, moduleId, item);
         await putRecallCard(db, card);
         await refresh(db);
         return card.id;
@@ -641,6 +627,16 @@ export function useStudio() {
       }
     },
     [db, refresh],
+  );
+
+  const missCheck = useCallback(
+    (moduleId: string, item: CheckItem) => writeCheckCard(moduleId, item, "miss"),
+    [writeCheckCard],
+  );
+
+  const parkCheck = useCallback(
+    (moduleId: string, item: CheckItem) => writeCheckCard(moduleId, item, "park"),
+    [writeCheckCard],
   );
 
   const bumpRecall = useCallback(
@@ -690,6 +686,7 @@ export function useStudio() {
     moveLibrary,
     ensureCollection,
     missCheck,
+    parkCheck,
     bumpRecall,
     clearRecall,
     remember,

@@ -1,4 +1,4 @@
-import { Component, useEffect, useRef, type ReactNode } from "react";
+import { Component, useEffect, useRef, useState, type FocusEvent, type ReactNode } from "react";
 import { TopBar } from "../chrome/TopBar";
 import { useRoute } from "../app/useRoute";
 import { isSourcesRoute, routeDocumentTitle, toHash, type Route } from "../app/routes";
@@ -27,14 +27,26 @@ function routeDetail(
   return undefined;
 }
 
+function releaseSkipTarget(event: FocusEvent<HTMLElement>) {
+  const next = event.relatedTarget;
+  if (next instanceof Node && event.currentTarget.contains(next)) return;
+  event.currentTarget.classList.remove("is-skip-target");
+}
+
 function scrollRouteToTop() {
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
   if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
 }
 
+function skipLinkHoldsFocus(main: HTMLElement | null): boolean {
+  return Boolean(main?.classList.contains("is-skip-target") && document.activeElement === main);
+}
+
 function focusRouteHeading() {
-  const heading = document.getElementById("main")?.querySelector("h1");
+  const main = document.getElementById("main");
+  if (!(main instanceof HTMLElement) || skipLinkHoldsFocus(main)) return;
+  const heading = main.querySelector("h1");
   if (!(heading instanceof HTMLElement)) return;
   heading.tabIndex = -1;
   heading.focus({ preventScroll: true });
@@ -57,7 +69,7 @@ class StageBoundary extends Component<{ resetKey: string; children: ReactNode },
   render() {
     if (this.state.error) {
       return (
-        <main id="main" className="stage" tabIndex={-1}>
+        <main id="main" className="stage" tabIndex={-1} onBlur={releaseSkipTarget}>
           <div className="page">
             <h1>This page hit a problem</h1>
             <p className="lede">The header is still available. Open another section, or reload if this page stays stuck.</p>
@@ -82,6 +94,7 @@ export function Studio() {
   const routeKey = toHash(route);
   const titleRef = useRef(title);
   titleRef.current = title;
+  const [libraryStale, setLibraryStale] = useState(false);
 
   useEffect(() => {
     document.title = titleRef.current;
@@ -102,6 +115,34 @@ export function Studio() {
   }, [routeKey, title, api.ready]);
 
   useEffect(() => {
+    let pending = 0;
+    const onVersion = () => {
+      window.clearTimeout(pending);
+      pending = window.setTimeout(() => {
+        let reload = false;
+        try {
+          reload = window.confirm(
+            "Simplfy updated its study library in another tab. Reload this tab to continue?",
+          );
+        } catch {
+          setLibraryStale(true);
+          return;
+        }
+        if (reload) {
+          window.location.reload();
+          return;
+        }
+        setLibraryStale(true);
+      }, 0);
+    };
+    window.addEventListener("simplfy-db-version", onVersion);
+    return () => {
+      window.clearTimeout(pending);
+      window.removeEventListener("simplfy-db-version", onVersion);
+    };
+  }, []);
+
+  useEffect(() => {
     const bar = document.querySelector(".topbar");
     if (!(bar instanceof HTMLElement)) return;
     const apply = () => {
@@ -120,6 +161,14 @@ export function Studio() {
   return (
     <div className="shell">
       <TopBar api={api} route={route} navigate={navigate} theme={theme} onToggleTheme={toggleTheme} />
+      {libraryStale ? (
+        <p className="banner miss" role="alert">
+          This tab lost its study library connection.
+          <button type="button" className="text-btn" onClick={() => window.location.reload()}>
+            Reload
+          </button>
+        </p>
+      ) : null}
       {api.notice ? (
         <p className="banner" role="status">
           {api.notice}
@@ -138,7 +187,7 @@ export function Studio() {
         </p>
       ) : null}
       <StageBoundary resetKey={routeKey}>
-        <main id="main" className="stage" tabIndex={-1}>
+        <main id="main" className="stage" tabIndex={-1} onBlur={releaseSkipTarget}>
           {route.name === "home" ? <HomePage api={api} navigate={navigate} /> : null}
           {isSourcesRoute(route) ? <SourcesPage api={api} route={route} navigate={navigate} /> : null}
           {route.name === "learn" && route.kind === "file" ? (

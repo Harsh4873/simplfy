@@ -360,10 +360,10 @@ export function NotesPage({
               Study deck. Add folder / drop a directory replaces this class with that pack.
             </p>
             <div className="step-nav">
-              <button type="button" className="text-btn" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
+              <button type="button" className="text-btn" onClick={() => fileRef.current?.click()} disabled={!api.ready || api.busy}>
                 Add files
               </button>
-              <button type="button" className="text-btn" onClick={() => folderRef.current?.click()} disabled={!api.ready}>
+              <button type="button" className="text-btn" onClick={() => folderRef.current?.click()} disabled={!api.ready || api.busy}>
                 Add folder
               </button>
             </div>
@@ -374,6 +374,7 @@ export function NotesPage({
               multiple
               accept=".pdf,.md,.markdown,.txt,.tex,application/pdf,text/markdown,text/plain"
               aria-label="Choose files"
+              disabled={!api.ready || api.busy}
               onChange={(event) => {
                 void ingest([...(event.target.files ?? [])], false);
                 event.currentTarget.value = "";
@@ -385,6 +386,7 @@ export function NotesPage({
               type="file"
               multiple
               aria-label="Choose folder"
+              disabled={!api.ready || api.busy}
               // @ts-expect-error webkitdirectory is the folder picker
               webkitdirectory=""
               onChange={(event) => {
@@ -484,10 +486,10 @@ export function NotesPage({
             use the README heading. Dropping a folder replaces that class’s files.
           </p>
           <div className="step-nav">
-            <button type="button" className="solid" onClick={() => folderRef.current?.click()} disabled={!api.ready}>
+            <button type="button" className="solid" onClick={() => folderRef.current?.click()} disabled={!api.ready || api.busy}>
               Choose folder
             </button>
-            <button type="button" className="ghost" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
+            <button type="button" className="ghost" onClick={() => fileRef.current?.click()} disabled={!api.ready || api.busy}>
               Choose files
             </button>
           </div>
@@ -498,6 +500,7 @@ export function NotesPage({
             multiple
             accept=".pdf,.md,.markdown,.txt,.tex,application/pdf,text/markdown,text/plain"
             aria-label="Choose files"
+            disabled={!api.ready || api.busy}
             onChange={(event) => {
               void ingest([...(event.target.files ?? [])], false);
               event.currentTarget.value = "";
@@ -509,6 +512,7 @@ export function NotesPage({
             type="file"
             multiple
             aria-label="Choose folder"
+            disabled={!api.ready || api.busy}
             // @ts-expect-error webkitdirectory is the folder picker
             webkitdirectory=""
             onChange={(event) => {

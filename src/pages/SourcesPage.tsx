@@ -3,6 +3,7 @@ import { isSourcesRoute, sourcesRoute } from "../app/routes";
 import { isPaperItem } from "../library/paperText";
 import type { StudioApi } from "../studio/useStudio";
 import { cx } from "../ui/cx";
+import { onTabListKeyDown } from "../ui/tablist";
 import { DeskPage } from "./DeskPage";
 import { NotesPage } from "./NotesPage";
 import { PapersPage } from "./PapersPage";
@@ -35,13 +36,16 @@ export function SourcesPage({
   return (
     <div className="sources-shell">
       <div className="source-tabs-wrap">
-        <div className="chips source-tabs" role="tablist" aria-label="Source type">
+        <div className="chips source-tabs" role="tablist" aria-label="Source type" onKeyDown={onTabListKeyDown}>
           {(["decks", "classes", "papers"] as const).map((name) => (
             <button
               key={name}
+              id={`source-tab-${name}`}
               type="button"
               role="tab"
               aria-selected={tab === name}
+              aria-controls="source-panel"
+              tabIndex={tab === name ? 0 : -1}
               className={cx("chip", tab === name && "is-active")}
               onClick={() => navigate(sourcesRoute(name))}
             >
@@ -68,9 +72,11 @@ export function SourcesPage({
           Learn is the bundled TB/stats tutor. Filing a class pack does not attach those plates.
         </p>
       </div>
+      <div id="source-panel" role="tabpanel" aria-labelledby={`source-tab-${tab}`}>
       {route.name === "desk" ? <DeskPage api={api} navigate={navigate} /> : null}
       {route.name === "notes" ? <NotesPage api={api} id={route.id} classId={route.classId} navigate={navigate} /> : null}
       {route.name === "papers" ? <PapersPage api={api} q={route.q} navigate={navigate} /> : null}
+      </div>
     </div>
   );
 }

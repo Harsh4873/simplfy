@@ -5,6 +5,7 @@ import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { lessonFromNote } from "../lesson/fromNote";
 import { cx } from "../ui/cx";
+import { onTabListKeyDown } from "../ui/tablist";
 import { textKey } from "../ui/textKey";
 
 function FileStepNav({
@@ -17,12 +18,21 @@ function FileStepNav({
   navigate: (route: Route) => void;
 }) {
   return (
-    <div className="step-track" role="tablist" aria-label="File lesson steps">
+    <div
+      className="step-track"
+      data-steps={FILE_LESSON_STEPS.length}
+      role="tablist"
+      aria-label="File lesson steps"
+      onKeyDown={onTabListKeyDown}
+    >
       {FILE_LESSON_STEPS.map((item) => (
         <a
           key={item}
+          id={`file-lesson-tab-${item}`}
           role="tab"
           aria-selected={item === step}
+          aria-controls="file-lesson-panel"
+          tabIndex={item === step ? 0 : -1}
           className={cx("step-tab", item === step && "is-active")}
           href={toHash(learnFileRoute(id, item))}
           onClick={(event) => {
@@ -73,6 +83,7 @@ export function FileLearnPage({
         <p className="dek">{lesson.dek}</p>
       </header>
       <FileStepNav id={item.id} step={step} navigate={navigate} />
+      <div id="file-lesson-panel" role="tabpanel" aria-labelledby={`file-lesson-tab-${step}`}>
       {step === "teach" ? (
         <div className="lesson-body">
           <section>
@@ -112,6 +123,7 @@ export function FileLearnPage({
           onSource={() => navigate(libraryNoteRoute(item.id, item.collectionId))}
         />
       ) : null}
+      </div>
     </article>
   );
 }

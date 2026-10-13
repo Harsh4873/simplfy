@@ -4,6 +4,7 @@ import { libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { RecallCard } from "../library/db";
 import { cx } from "../ui/cx";
+import { onTabListKeyDown } from "../ui/tablist";
 
 export function recallCursorAfterMiss(ids: string[], index: number): string | null {
   if (!ids.length) return null;
@@ -70,6 +71,20 @@ export function RecallPage({
 
   const face = useMemo(() => (card ? cardAnswer(api, card) : null), [api, card]);
   const scopeLabel = currentNote?.name ?? currentClass?.name;
+  const noteHead = noteDecks.slice(0, 8);
+  const selectedNote = noteId ? noteDecks.find((item) => item.id === noteId) : undefined;
+  const visibleNotes =
+    selectedNote && !noteHead.some((item) => item.id === selectedNote.id) ? [...noteHead, selectedNote] : noteHead;
+  const hasDeckTabs = api.collections.length > 0 || noteDecks.length > 0;
+  const selectedTabId = !hasDeckTabs
+    ? undefined
+    : noteId && visibleNotes.some((item) => item.id === noteId)
+      ? `recall-tab-n-${encodeURIComponent(noteId)}`
+      : classId && api.collections.some((row) => row.id === classId)
+        ? `recall-tab-c-${encodeURIComponent(classId)}`
+        : !noteId && !classId
+          ? "recall-tab-all"
+          : undefined;
 
   if (!card || !face) {
     return (
@@ -102,19 +117,29 @@ export function RecallPage({
         Recall{scopeLabel ? ` · ${scopeLabel}` : ""} · {index + 1} / {cards.length}
       </p>
       <h1>Flip until it sticks</h1>
-      {api.collections.length || noteDecks.length ? (
-        <div className="chips" role="tablist" aria-label="Recall by deck">
+      {hasDeckTabs ? (
+        <div className="chips" role="tablist" aria-label="Recall by deck" onKeyDown={onTabListKeyDown}>
           <button
+            id="recall-tab-all"
             type="button"
+            role="tab"
+            aria-selected={!classId && !noteId}
+            aria-controls="recall-panel"
+            tabIndex={!classId && !noteId ? 0 : -1}
             className={cx("chip", !classId && !noteId && "is-active")}
             onClick={() => navigate({ name: "recall" })}
           >
             All
           </button>
-          {noteDecks.slice(0, 8).map((item) => (
+          {visibleNotes.map((item) => (
             <button
               key={item.id}
+              id={`recall-tab-n-${encodeURIComponent(item.id)}`}
               type="button"
+              role="tab"
+              aria-selected={noteId === item.id}
+              aria-controls="recall-panel"
+              tabIndex={noteId === item.id ? 0 : -1}
               className={cx("chip", noteId === item.id && "is-active")}
               onClick={() => navigate(recallNoteRoute(item.id))}
             >
@@ -124,7 +149,12 @@ export function RecallPage({
           {api.collections.map((row) => (
             <button
               key={row.id}
+              id={`recall-tab-c-${encodeURIComponent(row.id)}`}
               type="button"
+              role="tab"
+              aria-selected={classId === row.id && !noteId}
+              aria-controls="recall-panel"
+              tabIndex={classId === row.id && !noteId ? 0 : -1}
               className={cx("chip", classId === row.id && !noteId && "is-active")}
               onClick={() => navigate({ name: "recall", classId: row.id })}
             >
@@ -133,6 +163,7 @@ export function RecallPage({
           ))}
         </div>
       ) : null}
+      <div id={hasDeckTabs ? "recall-panel" : undefined} role={hasDeckTabs ? "tabpanel" : undefined} aria-labelledby={selectedTabId}>
       <p className="lede">
         Front is the prompt. Back is the answer you should be able to say. “Still shaky” keeps the
         card and bumps the miss count. “Knew it” takes it off the deck.
@@ -159,6 +190,9 @@ export function RecallPage({
           </>
         )}
       </button>
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {flipped ? `Answer. ${face.answer}${face.why ? ` ${face.why}` : ""}` : ""}
+      </p>
       <div className="step-nav">
         <button
           type="button"
@@ -197,6 +231,7 @@ export function RecallPage({
         >
           {card.noteId ? "Open source" : "Open lesson"}
         </button>
+      </div>
       </div>
     </div>
   );

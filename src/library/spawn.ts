@@ -1,8 +1,13 @@
 import {
+  deleteCollectionRow,
+  deleteLibraryItem,
   deleteRecallCard,
   deleteStudio,
+  getCollection,
+  getLibraryItem,
   getStudio,
   listCollections,
+  listLibrary,
   listRecall,
   listStudios,
   putRecallCard,
@@ -195,4 +200,39 @@ export async function seedClassStudios(
   }
 
   return { moduleIds: [], paperQueries: [], noteCards: built.length, cardsCapped: builtPack.capped };
+}
+
+/** Drop one filed source and rebuild its class deck from what is still stored. */
+export async function removeFiledSource(db: IDBDatabase, id: string): Promise<void> {
+  const item = await getLibraryItem(db, id);
+  const folderId = item?.collectionId;
+  await deleteLibraryItem(db, id);
+  await deleteStudio(db, `note:${id}`);
+  for (const card of await listRecall(db)) {
+    if (card.noteId === id) await deleteRecallCard(db, card.id);
+  }
+  if (!folderId) return;
+  const folder = await getCollection(db, folderId);
+  if (!folder) return;
+  const classItems = (await listLibrary(db)).filter((row) => row.collectionId === folderId);
+  await seedClassStudios(db, folder, classItems);
+}
+
+/** Drop a class and every stored file, canvas, and card that still belongs to it. */
+export async function removeFiledCollection(db: IDBDatabase, id: string): Promise<void> {
+  const items = (await listLibrary(db)).filter((item) => item.collectionId === id);
+  const itemIds = new Set(items.map((item) => item.id));
+  for (const item of items) {
+    await deleteLibraryItem(db, item.id);
+    await deleteStudio(db, `note:${item.id}`);
+  }
+  for (const canvas of await listStudios(db)) {
+    if (canvas.collectionId === id) await deleteStudio(db, canvas.id);
+  }
+  for (const card of await listRecall(db)) {
+    if (card.collectionId === id || (card.noteId != null && itemIds.has(card.noteId))) {
+      await deleteRecallCard(db, card.id);
+    }
+  }
+  await deleteCollectionRow(db, id);
 }

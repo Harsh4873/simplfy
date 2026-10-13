@@ -64,7 +64,7 @@ export function DeskPage({
       >
         <p>Drop markdown or text files.</p>
         <p className="hint">Each file is its own deck. Folder packs go under Classes.</p>
-        <button type="button" className="ghost" onClick={() => fileRef.current?.click()} disabled={!api.ready}>
+        <button type="button" className="ghost" onClick={() => fileRef.current?.click()} disabled={!api.ready || api.busy}>
           Choose files
         </button>
         <input
@@ -74,6 +74,7 @@ export function DeskPage({
           multiple
           accept=".md,.markdown,.txt,.tex,text/markdown,text/plain"
           aria-label="Choose files"
+          disabled={!api.ready || api.busy}
           onChange={(event) => {
             void ingest([...(event.target.files ?? [])]);
             event.currentTarget.value = "";

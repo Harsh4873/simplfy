@@ -52,12 +52,13 @@ export function contextQuery(module?: StudyModule, extra = ""): string {
 
 export function lookupPapers(query: string, module?: StudyModule): PaperHit[] {
   const words = tokens(contextQuery(module, query));
+  if (words.length === 0) return [];
   return PAPERS.map((paper) => ({
     paper,
     ring: ringFor(paper.authors, paper.kind),
     score: scorePaper(paper, words),
   }))
-    .filter((hit) => (words.length === 0 ? true : hit.score > 0))
+    .filter((hit) => hit.score > 0)
     .sort((a, b) => {
       const ring = RING_ORDER.indexOf(a.ring) - RING_ORDER.indexOf(b.ring);
       if (ring !== 0) return ring;

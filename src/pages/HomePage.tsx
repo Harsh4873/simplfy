@@ -18,15 +18,13 @@ export function HomePage({
     navigate({ name: "learn", id: module.id, step: "teach" });
   };
 
-  const resume = () => {
-    navigate(
-      resumeLearnRoute(
-        api.continueNote?.id,
-        api.continueModule?.id,
-        resumeStepFromCanvas(api.studios, api.continueNote?.id, api.continueModule?.id),
-      ),
-    );
-  };
+  const resumeRoute = resumeLearnRoute(
+    api.continueNote?.id,
+    api.continueModule?.id,
+    resumeStepFromCanvas(api.studios, api.continueNote?.id, api.continueModule?.id),
+  );
+  const hasResume = Boolean(api.continueNote || api.continueModule);
+  const resume = () => navigate(resumeRoute);
 
   const featured = FEATURED_IDS.map((id) => api.byId.get(id)).filter((row): row is StudyModule => Boolean(row));
   const statsCount = api.modules.filter((module) => module.domain === "stats").length;
@@ -66,8 +64,12 @@ export function HomePage({
           <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
             Open Sources
           </button>
-          <button type="button" className="ghost" onClick={resume}>
-            Open Learn
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => navigate(hasResume ? resumeRoute : { name: "shelf" })}
+          >
+            {hasResume ? "Open Learn" : "Shelf"}
           </button>
         </div>
       </section>
