@@ -1,3 +1,4 @@
+import { ExternalLink } from "../ui/ExternalLink";
 import { RING_COPY } from "./authors";
 import { furtherLinks, groupHits, lookupPapers } from "./lookup";
 import type { StudyModule } from "../catalog/types";
@@ -25,9 +26,7 @@ export function PapersBoard({
           <ul className="paper-list">
             {group.hits.map((hit) => (
               <li key={hit.paper.id} className="paper-card">
-                <a href={hit.paper.url} target="_blank" rel="noreferrer">
-                  {hit.paper.title}
-                </a>
+                <ExternalLink href={hit.paper.url}>{hit.paper.title}</ExternalLink>
                 <p className="paper-meta">
                   {hit.paper.authors.slice(0, 6).join(", ")}
                   {hit.paper.authors.length > 6 ? " et al." : ""} · {hit.paper.year} · {hit.paper.venue}
@@ -49,9 +48,7 @@ export function PapersBoard({
         <ul className="look-links">
           {links.map((link) => (
             <li key={link.href}>
-              <a href={link.href} target="_blank" rel="noreferrer">
-                {link.label}
-              </a>
+              <ExternalLink href={link.href}>{link.label}</ExternalLink>
               <span className="muted"> — {link.hint}</span>
             </li>
           ))}

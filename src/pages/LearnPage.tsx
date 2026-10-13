@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VisualPlate } from "../visuals/VisualPlate";
 import { lessonFromModule } from "../lesson/fromModule";
 import type { StudyModule } from "../catalog/types";
@@ -10,6 +10,8 @@ import { ConceptMap } from "../studio/ConceptMap";
 import { sayBackItem } from "../lesson/fromModule";
 import { PapersBoard } from "../papers/PapersBoard";
 import { cx } from "../ui/cx";
+import { ExternalLink } from "../ui/ExternalLink";
+import { textKey } from "../ui/textKey";
 
 function StepNav({
   id,
@@ -53,8 +55,8 @@ function TeachStep({ module, onNext }: { module: StudyModule; onNext: () => void
       </aside>
       <section>
         <p className="kicker">In plain speech</p>
-        {overlay.plain.map((para) => (
-          <p key={para.slice(0, 48)} className="prose">
+        {overlay.plain.map((para, index) => (
+          <p key={textKey(para, index)} className="prose">
             {para}
           </p>
         ))}
@@ -67,8 +69,8 @@ function TeachStep({ module, onNext }: { module: StudyModule; onNext: () => void
       <section>
         <p className="kicker">Watch for</p>
         <ul className="watch-list">
-          {overlay.watchFor.map((item) => (
-            <li key={item.slice(0, 64)}>{item}</li>
+          {overlay.watchFor.map((item, index) => (
+            <li key={textKey(item, index)}>{item}</li>
           ))}
         </ul>
       </section>
@@ -227,10 +229,18 @@ function SayBackStep({
   const lesson = lessonFromModule(module);
   const [draft, setDraft] = useState("");
   const [revealed, setRevealed] = useState(false);
+  const [parkedId, setParkedId] = useState<string | null>(null);
+  const [parkNote, setParkNote] = useState<string | null>(null);
+  const [parking, setParking] = useState(false);
+  const parkGeneration = useRef(0);
 
   useEffect(() => {
+    parkGeneration.current += 1;
     setDraft("");
     setRevealed(false);
+    setParkedId(null);
+    setParkNote(null);
+    setParking(false);
   }, [module.id]);
 
   return (
@@ -254,7 +264,19 @@ function SayBackStep({
         <button
           type="button"
           className="ghost"
-          onClick={() => void api.missCheck(module.id, sayBackItem(module))}
+          disabled={parking}
+          onClick={() => {
+            if (parking) return;
+            const generation = parkGeneration.current;
+            setParking(true);
+            void api.missCheck(module.id, sayBackItem(module)).then((id) => {
+              if (generation !== parkGeneration.current || !id) return;
+              setParkedId(id);
+              setParkNote("Parked on your recall deck.");
+            }).finally(() => {
+              if (generation === parkGeneration.current) setParking(false);
+            });
+          }}
         >
           Park this on my deck
         </button>
@@ -263,12 +285,20 @@ function SayBackStep({
           className="solid quiet"
           onClick={() => {
             const card = api.recall.find((row) => row.moduleId === module.id && row.checkId === "say-back");
-            if (card) void api.clearRecall(card.id);
+            const id = card?.id ?? parkedId;
+            if (!id) {
+              setParkNote("Park this on your deck first. Then you can clear it when you can say it.");
+              return;
+            }
+            setParkedId(null);
+            setParkNote(null);
+            void api.clearRecall(id);
           }}
         >
           I can say this
         </button>
       </div>
+      {parkNote ? <p className="hint" role="status">{parkNote}</p> : null}
       {revealed ? (
         <aside className="callout model">
           <p className="kicker">A solid answer</p>
@@ -302,13 +332,13 @@ function ShelfStep({
       <p className="kicker">Reference shelf</p>
       <h2>{module.deepTitle}</h2>
       <div className="story">
-        {module.story.map((para) => (
-          <p key={para.slice(0, 48)}>{para}</p>
+        {module.story.map((para, index) => (
+          <p key={textKey(para, index)}>{para}</p>
         ))}
       </div>
       <div className="deep">
-        {module.deep.map((para) => (
-          <p key={para.slice(0, 48)}>{para}</p>
+        {module.deep.map((para, index) => (
+          <p key={textKey(para, index)}>{para}</p>
         ))}
       </div>
       {formulas(module).map((formula) => (
@@ -325,9 +355,7 @@ function ShelfStep({
           {module.sources.map((source) => (
             <li key={source.title}>
               {source.url ? (
-                <a href={source.url} target="_blank" rel="noreferrer">
-                  {source.title}
-                </a>
+                <ExternalLink href={source.url}>{source.title}</ExternalLink>
               ) : (
                 <span>{source.title}</span>
               )}

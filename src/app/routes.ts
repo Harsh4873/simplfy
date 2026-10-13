@@ -144,6 +144,35 @@ export function learnFileRoute(noteId: string, step: LessonStep = "teach"): Rout
   return { name: "learn", id: noteId, step, kind: "file" };
 }
 
+export function routeDocumentTitle(route: Route, detail?: string): string {
+  const name = detail?.trim();
+  let page = "Simplfy";
+  switch (route.name) {
+    case "home":
+      page = "Home";
+      break;
+    case "desk":
+      page = "Decks";
+      break;
+    case "learn":
+      page = name || "Learn";
+      break;
+    case "shelf":
+      page = name || "Shelf";
+      break;
+    case "papers":
+      page = name ? `Papers: ${name}` : "Papers";
+      break;
+    case "recall":
+      page = name || "Recall";
+      break;
+    case "notes":
+      page = name || "Classes";
+      break;
+  }
+  return `${page} · Simplfy`;
+}
+
 export function resumeLearnRoute(continueNoteId?: string, continueModuleId?: string, step?: string): Route {
   if (continueNoteId) {
     const next = step && isFileLessonStep(step) ? step : "teach";

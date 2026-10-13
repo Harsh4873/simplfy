@@ -124,6 +124,36 @@ export function syncableData(
   return bytes <= MAX_SYNC_RECORD_BYTES ? clean : null;
 }
 
+/** Cloud library rows omit the original file and the derived brief. */
+export function mergeRemoteLibraryRecord(
+  existing: Record<string, unknown> | undefined,
+  incoming: Record<string, unknown>,
+): Record<string, unknown> {
+  if (!existing) return incoming;
+  const next: Record<string, unknown> = { ...incoming };
+  if (!Object.prototype.hasOwnProperty.call(incoming, "blob") && Object.prototype.hasOwnProperty.call(existing, "blob")) {
+    next.blob = existing.blob;
+  }
+  // A replaced extract must not keep the previous brief. Field notes rebuild when brief is absent.
+  if (
+    existing.text === incoming.text
+    && !Object.prototype.hasOwnProperty.call(incoming, "brief")
+    && Object.prototype.hasOwnProperty.call(existing, "brief")
+  ) {
+    next.brief = existing.brief;
+  }
+  return next;
+}
+
+/** Sign-out clears the synced desk. Rows the cloud cannot restore stay on this device. */
+export function libraryRowKeptOnSignOut(value: Record<string, unknown>): boolean {
+  const blob = value.blob;
+  if (typeof blob === "object" && blob !== null) return true;
+  const id = syncRowId("library", value);
+  if (!id || !isValidSyncRow("library", id, value)) return false;
+  return syncableData("library", value) === null;
+}
+
 export function compareSyncVersion(
   left: Pick<SyncEnvelope, "updatedAtMs" | "clientId">,
   right: Pick<SyncEnvelope, "updatedAtMs" | "clientId">,

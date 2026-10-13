@@ -406,6 +406,18 @@ Xu asks if a knockout gets sicker when rif is in the flask. Hits are envelope an
     expect(screen.getByRole("button", { name: /study this deck/i })).toBeInTheDocument();
   });
 
+  it("reports a deck file that is over the studio limit", async () => {
+    const user = userEvent.setup();
+    render(<Studio />);
+    await openSources(user);
+    const input = await screen.findByLabelText(/^choose files$/i);
+    const big = new File(["hello"], "huge.md", { type: "text/markdown" });
+    Object.defineProperty(big, "size", { value: MAX_FILE_BYTES + 1 });
+    await user.upload(input, big);
+    expect(await screen.findByText(/exceeded the 12 mb studio limit/i)).toBeInTheDocument();
+    expect(screen.queryByText(/filed 0/i)).not.toBeInTheDocument();
+  });
+
   it("switches between light and dark themes", async () => {
     const user = userEvent.setup();
     render(<Studio />);

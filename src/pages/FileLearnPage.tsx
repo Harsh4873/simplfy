@@ -5,6 +5,7 @@ import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { lessonFromNote } from "../lesson/fromNote";
 import { cx } from "../ui/cx";
+import { textKey } from "../ui/textKey";
 
 function FileStepNav({
   id,
@@ -76,8 +77,8 @@ export function FileLearnPage({
         <div className="lesson-body">
           <section>
             <p className="kicker">In plain speech</p>
-            {lesson.plain.map((para) => (
-              <p key={para.slice(0, 48)} className="prose">
+            {lesson.plain.map((para, index) => (
+              <p key={textKey(para, index)} className="prose">
                 {para}
               </p>
             ))}
@@ -86,8 +87,8 @@ export function FileLearnPage({
           <section>
             <p className="kicker">Watch for</p>
             <ul className="watch-list">
-              {lesson.watchFor.map((row) => (
-                <li key={row.slice(0, 64)}>{row}</li>
+              {lesson.watchFor.map((row, index) => (
+                <li key={textKey(row, index)}>{row}</li>
               ))}
             </ul>
           </section>

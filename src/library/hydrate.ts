@@ -12,5 +12,6 @@ export function withBrief(item: LibraryItem, modules: StudyModule[]): LibraryIte
   if (!item.text?.trim()) return item;
   if (item.brief?.version === BRIEF_VERSION) return item;
   const brief = composeBrief(item.text, catalogForItem(item, modules));
-  return { ...item, brief, name: brief.title };
+  const name = item.name.trim() || brief.title;
+  return { ...item, brief, name };
 }

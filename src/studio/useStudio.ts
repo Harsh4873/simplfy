@@ -41,10 +41,14 @@ import {
 import { isolateAllClasses, seedClassStudios, seedNoteDeck } from "../library/spawn";
 import { MAX_FILE_BYTES, mimeForDroppedFile, parseDroppedFile } from "../library/parse";
 import { composeBrief } from "../md/compose";
-import { titleFromDroppedText } from "../library/noteCards";
+import { MAX_CLASS_CARDS, titleFromDroppedText } from "../library/noteCards";
 import { libraryKindForSource, looksLikePaperText, paperToMarkdown } from "../library/paperText";
-import { recallFromMiss } from "../quiz/grade";
+import { recallCardForMiss } from "../quiz/grade";
 import { useSimplfySync } from "../useSimplfySync";
+
+function skippedOversizeNote(count: number): string {
+  return `${count} file${count === 1 ? "" : "s"} exceeded the 12 MB studio limit and ${count === 1 ? "was" : "were"} skipped`;
+}
 
 export function useStudio() {
   const loaded = useMemo(() => loadCatalog(), []);
@@ -59,6 +63,7 @@ export function useStudio() {
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const ingestLock = useRef(Promise.resolve());
+  const parkLocks = useRef(new Set<string>());
 
   const refresh = useCallback(
     async (database: IDBDatabase) => {
@@ -284,9 +289,10 @@ export function useStudio() {
         if (standalone) {
           const filed: LibraryItem[] = [];
           let noteCards = 0;
+          let skippedOversize = 0;
           for (const file of batch) {
             if (file.size > MAX_FILE_BYTES) {
-              setNotice(`${file.name} exceeds the 12 MB studio limit.`);
+              skippedOversize += 1;
               continue;
             }
             const rel = stripGenericRoot(relPathOf(file));
@@ -318,6 +324,17 @@ export function useStudio() {
           }
           await refresh(db);
           const last = filed[filed.length - 1] ?? null;
+          if (!filed.length) {
+            const bits: string[] = [];
+            if (skippedOversize) bits.push(skippedOversizeNote(skippedOversize));
+            if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
+            setNotice(
+              bits.length
+                ? `${bits.join(". ")}.`
+                : "Nothing ingestible in that drop (skipped binaries, .git, node_modules).",
+            );
+            return null;
+          }
           if (last) await remember(`library:${last.id}`);
           const papers = filed.filter((row) => row.kind === "paper").length;
           const dumps = filed.length - papers;
@@ -330,6 +347,7 @@ export function useStudio() {
           ];
           if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"}`);
           bits.push("Study them from Sources, or pin to Home");
+          if (skippedOversize) bits.push(skippedOversizeNote(skippedOversize));
           if (truncated) bits.push(`kept ${batch.length} of ${files.length} (skipped binaries/repo junk, cap ${MAX_DROP_FILES})`);
           setNotice(`${bits.join(". ")}.`);
           return last;
@@ -422,11 +440,10 @@ export function useStudio() {
             : `Filed ${filed.length} note${filed.length === 1 ? "" : "s"} in ${folder.name}`,
         ];
         if (plan.noteCards) bits.push(`${plan.noteCards} recall card${plan.noteCards === 1 ? "" : "s"} from the notes`);
-        if (skippedOversize) {
-          bits.push(
-            `${skippedOversize} file${skippedOversize === 1 ? "" : "s"} exceeded the 12 MB studio limit and ${skippedOversize === 1 ? "was" : "were"} skipped`,
-          );
+        if (plan.cardsCapped) {
+          bits.push(`the class deck stopped at ${MAX_CLASS_CARDS} cards and later notes were left out`);
         }
+        if (skippedOversize) bits.push(skippedOversizeNote(skippedOversize));
         if (skippedUnreadable) {
           bits.push(
             `${skippedUnreadable} file${skippedUnreadable === 1 ? "" : "s"} could not be read and ${skippedUnreadable === 1 ? "was" : "were"} skipped`,
@@ -476,10 +493,12 @@ export function useStudio() {
       await putLibraryItem(db, item);
       await remember(`library:${item.id}`);
       const noteCards = await seedNoteDeck(db, item);
+      let cardsCapped = false;
       if (folder) {
         const stored = await listLibrary(db);
         const classItems = stored.filter((row) => row.collectionId === folder.id);
-        await seedClassStudios(db, folder, classItems);
+        const plan = await seedClassStudios(db, folder, classItems);
+        cardsCapped = plan.cardsCapped;
       }
       await refresh(db);
       const bits = [
@@ -488,6 +507,7 @@ export function useStudio() {
           : `Note kept in the local library${folder ? ` (${folder.name})` : ""}`,
       ];
       if (noteCards) bits.push(`${noteCards} recall card${noteCards === 1 ? "" : "s"} — Study from Sources or pin to Home`);
+      if (cardsCapped) bits.push(`the class deck stopped at ${MAX_CLASS_CARDS} cards and later notes were left out`);
       setNotice(`${bits.join(". ")}.`);
       return item;
     },
@@ -607,24 +627,20 @@ export function useStudio() {
 
   const missCheck = useCallback(
     async (moduleId: string, item: CheckItem) => {
-      if (!db) return;
-      const seed = recallFromMiss(moduleId, item);
-      const existing = recall.find(
-        (card) => card.moduleId === moduleId && card.checkId === item.id && !card.noteId,
-      );
-      const card: RecallCard = existing
-        ? { ...existing, misses: existing.misses + 1, lastMissedAt: Date.now(), prompt: item.prompt, collectionId: undefined }
-        : {
-            id: crypto.randomUUID(),
-            ...seed,
-            createdAt: Date.now(),
-            misses: 1,
-            lastMissedAt: Date.now(),
-          };
-      await putRecallCard(db, card);
-      await refresh(db);
+      if (!db) return null;
+      const lockKey = `${moduleId}:${item.id}`;
+      if (parkLocks.current.has(lockKey)) return null;
+      parkLocks.current.add(lockKey);
+      try {
+        const card = recallCardForMiss(await listRecall(db), moduleId, item);
+        await putRecallCard(db, card);
+        await refresh(db);
+        return card.id;
+      } finally {
+        parkLocks.current.delete(lockKey);
+      }
     },
-    [db, recall, refresh],
+    [db, refresh],
   );
 
   const bumpRecall = useCallback(

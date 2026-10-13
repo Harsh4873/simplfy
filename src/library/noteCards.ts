@@ -106,12 +106,12 @@ export function cardsFromMarkdown(
 ): Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[] {
   const cards: Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[] = [];
   const seen = new Set<string>();
-  const push = (prompt: string, answer: string, checkId: string) => {
+  const push = (prompt: string, answer: string, checkId: string, minAnswer = 24) => {
     const p = tidy(prompt);
     const a = tidy(answer);
-    if (p.length < 3 || a.length < 24) return;
+    if (p.length < 3 || a.length < minAnswer) return;
     if (cards.length >= MAX_CARDS_PER_FILE) return;
-    const key = p.toLowerCase();
+    const key = checkId.startsWith("todo-") ? `${checkId}\n${p.toLowerCase()}` : p.toLowerCase();
     if (seen.has(key)) return;
     seen.add(key);
     cards.push({
@@ -139,7 +139,16 @@ export function cardsFromMarkdown(
 
     for (const todo of body.matchAll(/^- \[[ xX]\] (.+)$/gm)) {
       const task = tidy(todo[1] ?? "");
-      if (task) push(`Todo from ${fileLabel}`, task, `todo-${slug(task)}`);
+      if (!task) continue;
+      const lead = task.split(/\s+/).slice(0, 8).join(" ");
+      const base = `todo-${slug(task)}`;
+      let checkId = base;
+      let n = 2;
+      while (cards.some((card) => card.checkId === `${itemId}:${checkId}`)) {
+        checkId = `${base}-${n}`;
+        n += 1;
+      }
+      push(`Todo from ${fileLabel}: ${lead}`, task, checkId, 1);
     }
 
     let boldCount = 0;
@@ -195,7 +204,10 @@ export function cardsFromNoteText(
   return fromMd.length ? fromMd : fromPaper;
 }
 
-export function cardsFromClassNotes(items: LibraryItem[]): Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[] {
+export function cardsFromClassNotes(items: LibraryItem[]): {
+  cards: Omit<RecallCard, "id" | "createdAt" | "misses" | "lastMissedAt" | "collectionId">[];
+  capped: boolean;
+} {
   const ranked = [...items].sort((a, b) => {
     const ra = packFileRank(a.relPath ?? a.name);
     const rb = packFileRank(b.relPath ?? b.name);
@@ -208,9 +220,9 @@ export function cardsFromClassNotes(items: LibraryItem[]): Omit<RecallCard, "id"
     const label = rel.split("/").pop() || item.name;
     const cards = cardsFromNoteText(item.text, item.id, label);
     for (const card of cards) {
-      if (out.length >= MAX_CLASS_CARDS) return out;
+      if (out.length >= MAX_CLASS_CARDS) return { cards: out, capped: true };
       out.push(card);
     }
   }
-  return out;
+  return { cards: out, capped: false };
 }

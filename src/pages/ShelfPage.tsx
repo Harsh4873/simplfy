@@ -6,6 +6,8 @@ import { ModuleCard } from "./ModuleCard";
 import { VisualPlate } from "../visuals/VisualPlate";
 import { lessonFromModule } from "../lesson/fromModule";
 import { cx } from "../ui/cx";
+import { ExternalLink } from "../ui/ExternalLink";
+import { textKey } from "../ui/textKey";
 
 export function ShelfPage({
   api,
@@ -66,14 +68,14 @@ export function ShelfPage({
         </aside>
         <VisualPlate spec={selected.visual} kicker={`Fig · ${selected.visual.kind.replaceAll("-", " ")}`} />
         <div className="story">
-          {selected.story.map((para) => (
-            <p key={para.slice(0, 48)}>{para}</p>
+          {selected.story.map((para, index) => (
+            <p key={textKey(para, index)}>{para}</p>
           ))}
         </div>
         <h2 className="section-title">{selected.deepTitle}</h2>
         <div className="deep">
-          {selected.deep.map((para) => (
-            <p key={para.slice(0, 48)}>{para}</p>
+          {selected.deep.map((para, index) => (
+            <p key={textKey(para, index)}>{para}</p>
           ))}
         </div>
         {(selected.formulas ?? []).map((formula) => (
@@ -89,9 +91,7 @@ export function ShelfPage({
             {selected.sources.map((source) => (
               <li key={source.title}>
                 {source.url ? (
-                  <a href={source.url} target="_blank" rel="noreferrer">
-                    {source.title}
-                  </a>
+                  <ExternalLink href={source.url}>{source.title}</ExternalLink>
                 ) : (
                   <span>{source.title}</span>
                 )}

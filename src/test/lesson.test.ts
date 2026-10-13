@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseHash, resumeLearnRoute, resumeStepFromCanvas, toHash } from "../app/routes";
+import { parseHash, resumeLearnRoute, resumeStepFromCanvas, routeDocumentTitle, toHash } from "../app/routes";
 import { loadCatalog } from "../catalog/loadCatalog";
 import { lessonFromModule } from "../lesson/fromModule";
 import { lessonFromNote } from "../lesson/fromNote";
@@ -16,6 +16,10 @@ describe("hash routes", () => {
     });
     expect(toHash({ name: "learn", id: "note-9", step: "teach", kind: "file" })).toBe("#/learn/file/note-9/teach");
     expect(parseHash("#/learn")).toEqual({ name: "shelf" });
+    expect(routeDocumentTitle({ name: "home" })).toBe("Home · Simplfy");
+    expect(routeDocumentTitle({ name: "learn", id: "stats-lrt", step: "teach" }, "Likelihood ratio test")).toBe(
+      "Likelihood ratio test · Simplfy",
+    );
     expect(parseHash("#/learn/stats-lrt/practice")).toEqual({
       name: "learn",
       id: "stats-lrt",

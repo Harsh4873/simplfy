@@ -9,7 +9,7 @@ import {
   type Collection,
   type LibraryItem,
 } from "../library/db";
-import { isolateClassFromCatalogue, seedClassStudios } from "../library/spawn";
+import { isolateClassFromCatalogue, seedClassStudios, seedNoteDeck } from "../library/spawn";
 
 const folder: Collection = { id: "class-1", name: "CSCE 627", createdAt: 1, updatedAt: 1 };
 
@@ -103,5 +103,51 @@ describe("class catalogue isolation", () => {
     const cards = await listRecall(db);
     expect(cards.every((row) => row.noteId === note.id || row.collectionId !== folder.id)).toBe(true);
     expect(cards.some((row) => row.id === "card-glue")).toBe(false);
+  });
+
+  it("refreshes a missed card when the note changes and drops a removed heading", async () => {
+    const db = await openStudioDb();
+    const item: LibraryItem = { ...note, id: "solo", collectionId: undefined };
+    await seedNoteDeck(db, item);
+    const before = await listRecall(db);
+    const card = before.find((row) => row.noteId === "solo" && /5-tuple/i.test(row.prompt));
+    expect(card).toBeTruthy();
+    await putRecallCard(db, { ...card!, misses: 4, prompt: "old prompt", answer: "old answer that was frozen" });
+    await putRecallCard(db, {
+      id: "gone",
+      moduleId: "note",
+      checkId: "solo:removed",
+      prompt: "Removed heading",
+      answer: "This answer should leave when the heading is gone.",
+      kind: "conceptual",
+      createdAt: 1,
+      misses: 2,
+      lastMissedAt: 1,
+      noteId: "solo",
+    });
+    await seedNoteDeck(db, {
+      ...item,
+      text: "# Last class\n\n## DFA 5-tuple\n\nA DFA is five parts: states, alphabet, transition, start, and accept states.\n",
+    });
+    const after = await listRecall(db);
+    const updated = after.find((row) => row.id === card!.id);
+    expect(updated?.misses).toBe(4);
+    expect(updated?.answer).toMatch(/five parts/i);
+    expect(after.some((row) => row.id === "gone")).toBe(false);
+
+    await putCollection(db, folder);
+    await seedClassStudios(db, folder, [note]);
+    const classCards = await listRecall(db);
+    const classCard = classCards.find((row) => row.noteId === note.id && /5-tuple/i.test(row.prompt));
+    expect(classCard).toBeTruthy();
+    await putRecallCard(db, { ...classCard!, misses: 3, prompt: "stale", answer: "stale answer" });
+    await seedClassStudios(db, folder, [{
+      ...note,
+      text: "# Last class\n\n## DFA 5-tuple\n\nA DFA is five parts: states, alphabet, transition, start, and accept states.\n",
+    }]);
+    const classAfter = await listRecall(db);
+    const classUpdated = classAfter.find((row) => row.id === classCard!.id);
+    expect(classUpdated?.misses).toBe(3);
+    expect(classUpdated?.answer).toMatch(/five parts/i);
   });
 });

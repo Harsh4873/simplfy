@@ -104,6 +104,11 @@ describe("visual plates", () => {
       const view = render(<VisualPlate spec={spec} kicker={`Fig · ${spec.kind}`} />);
       expect(view.container.querySelector(".plate")).toBeTruthy();
       expect(view.getByText(spec.caption)).toBeInTheDocument();
+      const svg = view.container.querySelector("svg");
+      const graphic = svg ?? view.container.querySelector(".grid-plate");
+      expect(graphic?.getAttribute("aria-hidden")).not.toBe("true");
+      expect(graphic?.getAttribute("aria-label")).toBe(spec.caption);
+      if (svg) expect(svg.getAttribute("role")).toBe("group");
       view.unmount();
     }
   });

@@ -45,8 +45,8 @@ export function HomePage({
           Simple words. One worked problem. Then it is your turn.
         </h1>
         <p className="lede">
-          Pick a topic in Learn, or file material under Sources — decks, classes, and papers — then
-          pin only what you want here. Search is always up top — press <kbd>/</kbd>.
+          Pick a topic in Learn, or file material under Sources: decks, classes, and papers. Then
+          pin only what you want here. Search is always up top.<span className="kbd-hint"> Press <kbd>/</kbd>.</span>
         </p>
         <div className="hero-stats">
           <span>

@@ -13,7 +13,7 @@ import {
 import type { SpawnPlan } from "./ingest";
 import { cardsFromClassNotes, cardsFromNoteText } from "./noteCards";
 
-export type SeedResult = SpawnPlan & { noteCards: number };
+export type SeedResult = SpawnPlan & { noteCards: number; cardsCapped: boolean };
 
 export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<number> {
   const now = Date.now();
@@ -34,7 +34,6 @@ export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<
   const keepKeys = new Set(built.map((card) => `${card.moduleId}:${card.checkId}`));
   for (const card of await listRecall(db)) {
     if (card.noteId !== item.id) continue;
-    if (card.misses > 0) continue;
     const key = `${card.moduleId}:${card.checkId}`;
     if (!keepKeys.has(key)) await deleteRecallCard(db, card.id);
   }
@@ -46,7 +45,12 @@ export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<
       (row) => row.moduleId === card.moduleId && row.checkId === card.checkId && row.noteId === item.id,
     );
     if (already) {
-      if (already.misses === 0) {
+      if (
+        already.prompt !== card.prompt
+        || already.answer !== card.answer
+        || already.noteId !== item.id
+        || already.collectionId !== item.collectionId
+      ) {
         await putRecallCard(db, {
           ...already,
           prompt: card.prompt,
@@ -138,7 +142,8 @@ export async function seedClassStudios(
     });
   }
 
-  const built = cardsFromClassNotes(items);
+  const builtPack = cardsFromClassNotes(items);
+  const built = builtPack.cards;
   const keepKeys = new Set(built.map((card) => `${card.moduleId}:${card.checkId}`));
 
   for (const card of await listRecall(db)) {
@@ -151,7 +156,6 @@ export async function seedClassStudios(
       await deleteRecallCard(db, card.id);
       continue;
     }
-    if (card.misses > 0) continue;
     const key = `${card.moduleId}:${card.checkId}`;
     if (!keepKeys.has(key)) await deleteRecallCard(db, card.id);
   }
@@ -163,12 +167,18 @@ export async function seedClassStudios(
       (row) => row.moduleId === card.moduleId && row.checkId === card.checkId && row.collectionId === folder.id,
     );
     if (already) {
-      if (already.misses === 0) {
+      if (
+        already.prompt !== card.prompt
+        || already.answer !== card.answer
+        || already.noteId !== card.noteId
+        || already.collectionId !== folder.id
+      ) {
         await putRecallCard(db, {
           ...already,
           prompt: card.prompt,
           answer: card.answer,
           noteId: card.noteId,
+          collectionId: folder.id,
         });
       }
       continue;
@@ -184,5 +194,5 @@ export async function seedClassStudios(
     stamp -= 1;
   }
 
-  return { moduleIds: [], paperQueries: [], noteCards: built.length };
+  return { moduleIds: [], paperQueries: [], noteCards: built.length, cardsCapped: builtPack.capped };
 }

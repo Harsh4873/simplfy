@@ -46,9 +46,61 @@ Track the prefix of 001; after accept, stay forever.
       createdAt: 1,
       relPath: "snapshots/2026-08-25.md",
     };
-    const cards = cardsFromClassNotes([living, snap]);
+    const { cards, capped } = cardsFromClassNotes([living, snap]);
+    expect(capped).toBe(false);
     expect(cards.some((card) => /Old topic/i.test(card.prompt))).toBe(false);
     expect(cards.some((card) => /Current topic/i.test(card.prompt))).toBe(true);
+  });
+
+  it("keeps each checklist item as its own card", () => {
+    const cards = cardsFromMarkdown(
+      `# Tasks
+
+- [ ] Email the teaching staff about the midterm review session
+- [ ] Read the chapter on regular languages before Friday
+- [ ] Short
+`,
+      "file-1",
+      "hw.md",
+    );
+    const todos = cards.filter((card) => card.checkId.includes(":todo-"));
+    expect(todos).toHaveLength(3);
+    expect(new Set(todos.map((card) => card.prompt)).size).toBe(3);
+    expect(todos.some((card) => card.answer === "Short")).toBe(true);
+  });
+
+  it("keeps checklist items that collapse to the same slug", () => {
+    const cards = cardsFromMarkdown(
+      `# Tasks
+
+- [ ] Read chapter 1.
+- [ ] Read chapter 1!
+- [ ] X
+`,
+      "file-1",
+      "hw.md",
+    );
+    const todos = cards.filter((card) => card.checkId.includes(":todo-"));
+    expect(todos.map((card) => card.answer)).toEqual(["Read chapter 1.", "Read chapter 1!", "X"]);
+    expect(new Set(todos.map((card) => card.checkId)).size).toBe(3);
+  });
+
+  it("stops a class deck at 40 cards and reports the cut", () => {
+    const items: LibraryItem[] = [0, 1, 2].map((file) => ({
+      id: `file-${file}`,
+      kind: "note",
+      name: `notes-${file}.md`,
+      mime: "text/markdown",
+      size: 10,
+      createdAt: 1,
+      relPath: `notes-${file}.md`,
+      text: Array.from({ length: 20 }, (_, n) =>
+        `## Topic ${file}-${n}\n\nThis section explains topic ${file} ${n} with enough detail to keep.`,
+      ).join("\n\n"),
+    }));
+    const { cards, capped } = cardsFromClassNotes(items);
+    expect(capped).toBe(true);
+    expect(cards).toHaveLength(40);
   });
 
   it("cuts cards from a lead paragraph and bold names", () => {

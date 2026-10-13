@@ -150,12 +150,12 @@ export function RecallPage({
           <>
             <p className="prompt">{face.answer}</p>
             {face.why ? <p className="hint">{face.why}</p> : null}
-            <p className="muted">Click to hide</p>
+            <p className="muted">Hide the answer</p>
           </>
         ) : (
           <>
             <p className="prompt">{card.prompt}</p>
-            <p className="muted">Click to flip</p>
+            <p className="muted">Show the answer</p>
           </>
         )}
       </button>

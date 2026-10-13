@@ -27,16 +27,34 @@ export function TopBar({
   onToggleTheme: () => void;
 }) {
   const searchRef = useRef<HTMLInputElement>(null);
+  const searchRootRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const [popDismissed, setPopDismissed] = useState(false);
   const trimmed = api.query.trim();
   const hits = api.hits.slice(0, 8);
+  const showPop = Boolean(trimmed) && !popDismissed;
   const rowCount = trimmed ? 1 + hits.length : 0;
+  const sourceCount =
+    api.library.length
+    + api.collections.filter((collection) => !api.library.some((item) => item.collectionId === collection.id)).length;
 
   useEffect(() => {
     activeRef.current = 0;
     setActive(0);
+    setPopDismissed(false);
   }, [trimmed]);
+
+  useEffect(() => {
+    if (!showPop) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const root = searchRootRef.current;
+      if (!root || !(event.target instanceof Node) || root.contains(event.target)) return;
+      setPopDismissed(true);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [showPop]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -155,9 +173,9 @@ export function TopBar({
             }}
           >
             {item.label}
-            {item.label === "Sources" && (api.library.length || api.collections.length) ? (
+            {item.label === "Sources" && sourceCount ? (
               <span className="badge quiet" aria-hidden="true">
-                {api.library.length + api.collections.length}
+                {sourceCount}
               </span>
             ) : null}
             {item.label === "Recall" && api.recall.length ? (
@@ -168,7 +186,7 @@ export function TopBar({
           </a>
         ))}
       </nav>
-      <div className="search-inline">
+      <div className="search-inline" ref={searchRootRef}>
         <label className="search-label" htmlFor="studio-search">
           Name a term
         </label>
@@ -179,16 +197,23 @@ export function TopBar({
             type="search"
             value={api.query}
             onChange={(event) => api.setQuery(event.target.value)}
+            onFocus={() => setPopDismissed(false)}
             onKeyDown={(event) => {
               if (!trimmed) return;
               if (event.key === "ArrowDown") {
                 event.preventDefault();
+                if (popDismissed) setPopDismissed(false);
                 moveActive(1);
               } else if (event.key === "ArrowUp") {
                 event.preventDefault();
+                if (popDismissed) setPopDismissed(false);
                 moveActive(-1);
               } else if (event.key === "Escape") {
                 event.preventDefault();
+                if (!popDismissed) {
+                  setPopDismissed(true);
+                  return;
+                }
                 api.setQuery("");
               } else if (event.key === "Enter") {
                 event.preventDefault();
@@ -199,13 +224,13 @@ export function TopBar({
             autoComplete="off"
             role="combobox"
             aria-autocomplete="list"
-            aria-expanded={rowCount > 0}
-            aria-controls={rowCount > 0 ? "studio-search-list" : undefined}
-            aria-activedescendant={activeOptionId}
+            aria-expanded={showPop}
+            aria-controls={showPop ? "studio-search-list" : undefined}
+            aria-activedescendant={showPop ? activeOptionId : undefined}
           />
           <kbd>/</kbd>
         </div>
-        {trimmed ? (
+        {showPop ? (
           <div className="search-pop">
             <ul id="studio-search-list" role="listbox" aria-label="Search hits">
               <li role="presentation">
@@ -291,7 +316,7 @@ export function TopBar({
                 disabled={api.sync.signingOut}
                 onClick={() => {
                   const confirmed = window.confirm(
-                    "Sign out of Simplfy on this device? Simplfy will finish syncing, then remove its private local study desk here. Other signed-in devices keep the synced copy.",
+                    "Sign out of Simplfy on this device? Simplfy will finish syncing, then remove the synced study desk here. Other signed-in devices keep the synced copy. Files and oversized notes that never reached the cloud stay on this device.",
                   );
                   if (confirmed) void api.sync.signOut();
                 }}

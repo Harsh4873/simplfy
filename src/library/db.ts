@@ -1,4 +1,5 @@
 import type { LabBrief } from "../md/types";
+import { libraryRowKeptOnSignOut, mergeRemoteLibraryRecord } from "../sync-core";
 
 export type LibraryKind = "file" | "note" | "paper";
 
@@ -295,10 +296,21 @@ export async function applyRemoteSyncRecord(
   metadata: SyncMetadata,
 ): Promise<void> {
   const tx = db.transaction([store, "syncMeta"], "readwrite");
-  if (value) tx.objectStore(store).put(value);
-  else tx.objectStore(store).delete(id);
+  const done = txDone(tx);
+  const objectStore = tx.objectStore(store);
+  if (value && store === "library") {
+    const incoming = value;
+    const request = objectStore.get(id) as IDBRequest<Record<string, unknown> | undefined>;
+    request.onsuccess = () => {
+      objectStore.put(mergeRemoteLibraryRecord(request.result, incoming));
+    };
+  } else if (value) {
+    objectStore.put(value);
+  } else {
+    objectStore.delete(id);
+  }
   tx.objectStore("syncMeta").put(metadata);
-  await txDone(tx);
+  await done;
 }
 
 export async function clearStudioData(db: IDBDatabase): Promise<void> {
@@ -306,4 +318,74 @@ export async function clearStudioData(db: IDBDatabase): Promise<void> {
   const tx = db.transaction(stores, "readwrite");
   stores.forEach((store) => tx.objectStore(store).clear());
   await txDone(tx);
+}
+
+function rowId(value: Record<string, unknown>): string | null {
+  return typeof value.id === "string" && value.id ? value.id : null;
+}
+
+function keepStudio(row: Record<string, unknown>, retainedIds: Set<string>, collectionIds: Set<string>): boolean {
+  if (typeof row.noteId === "string" && retainedIds.has(row.noteId)) return true;
+  return row.kind === "class" && typeof row.collectionId === "string" && collectionIds.has(row.collectionId);
+}
+
+function keepPref(row: Record<string, unknown>, retainedIds: Set<string>): boolean {
+  if (row.key !== "lastTopic" || typeof row.value !== "string" || !row.value.startsWith("library:")) return false;
+  return retainedIds.has(row.value.slice("library:".length));
+}
+
+/**
+ * Remove the synced desk without rewriting the library rows the cloud cannot restore.
+ * Their class, canvas, and recall rows stay so the source is still openable.
+ * Deletes run inside the read transaction so a failure cannot drop those files first.
+ */
+export async function clearDeskAfterSignOut(db: IDBDatabase): Promise<number> {
+  const tx = db.transaction([...SYNC_STORES, "syncMeta"], "readwrite");
+  const done = txDone(tx);
+  const requests = {
+    library: tx.objectStore("library").getAll() as IDBRequest<Record<string, unknown>[]>,
+    collections: tx.objectStore("collections").getAll() as IDBRequest<Record<string, unknown>[]>,
+    studios: tx.objectStore("studios").getAll() as IDBRequest<Record<string, unknown>[]>,
+    recall: tx.objectStore("recall").getAll() as IDBRequest<Record<string, unknown>[]>,
+    prefs: tx.objectStore("prefs").getAll() as IDBRequest<Record<string, unknown>[]>,
+  };
+  let kept = 0;
+  let remaining = Object.keys(requests).length;
+  const dropSynced = () => {
+    remaining -= 1;
+    if (remaining !== 0) return;
+    const libraryRows = requests.library.result;
+    const retained = libraryRows.filter(libraryRowKeptOnSignOut);
+    const retainedIds = new Set(retained.map(rowId).filter((id): id is string => id !== null));
+    const collectionIds = new Set(
+      retained
+        .map((row) => row.collectionId)
+        .filter((id): id is string => typeof id === "string" && id.length > 0),
+    );
+    for (const row of libraryRows) {
+      const id = rowId(row);
+      if (id && !retainedIds.has(id)) tx.objectStore("library").delete(id);
+    }
+    for (const row of requests.collections.result) {
+      const id = rowId(row);
+      if (id && !collectionIds.has(id)) tx.objectStore("collections").delete(id);
+    }
+    for (const row of requests.studios.result) {
+      const id = rowId(row);
+      if (id && !keepStudio(row, retainedIds, collectionIds)) tx.objectStore("studios").delete(id);
+    }
+    for (const row of requests.recall.result) {
+      const id = rowId(row);
+      if (id && !(typeof row.noteId === "string" && retainedIds.has(row.noteId))) tx.objectStore("recall").delete(id);
+    }
+    for (const row of requests.prefs.result) {
+      const key = typeof row.key === "string" ? row.key : "";
+      if (key && !keepPref(row, retainedIds)) tx.objectStore("prefs").delete(key);
+    }
+    tx.objectStore("syncMeta").clear();
+    kept = retained.length;
+  };
+  for (const request of Object.values(requests)) request.addEventListener("success", dropSynced);
+  await done;
+  return kept;
 }

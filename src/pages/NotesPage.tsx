@@ -2,6 +2,7 @@ import { FieldNoteDoc } from "../studio/FieldNoteDoc";
 import { folderOf, inferCollectionNameFromFiles, looksLikeFolderDrop, packFileRank, pickDropFiles } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
+import { MAX_CLASS_CARDS } from "../library/noteCards";
 import { isPaperItem } from "../library/paperText";
 import { isFileLessonStep, learnFileRoute, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
@@ -245,7 +246,90 @@ export function NotesPage({
     const noteDeck = api.recall.filter((card) => card.collectionId === collection.id && card.noteId);
     const folders = groupFiles(classItems);
     return (
-      <div className="page notes-page">
+      <div className="page notes-page notes-lead">
+        <div className="notes-stage">
+          <p className="kicker">Class</p>
+          <h1>{collection.name}</h1>
+          <p className="lede">
+            This class is only the files in the pack. An update folder replaces the previous files
+            and rebuilds flip cards from those notes. The TB/stats tutor stays under Learn — it
+            never joins this pack. Pin the class to Home.
+          </p>
+          <div className="step-nav">
+            <button type="button" className="solid" onClick={() => navigate({ name: "recall", classId: collection.id })}>
+              Recall this class
+            </button>
+            <button
+              type="button"
+              className="ghost"
+              onClick={() => {
+                const canvas = api.studios.find((row) => row.id === `class:${collection.id}`);
+                void (async () => {
+                  await api.touchClass(collection.id);
+                  await api.pinStudio(`class:${collection.id}`, !canvas?.pinned);
+                })();
+              }}
+            >
+              {api.studios.find((row) => row.id === `class:${collection.id}`)?.pinned ? "Unpin from Home" : "Pin to Home"}
+            </button>
+            <button
+              type="button"
+              className="ghost danger"
+              onClick={() => {
+                if (!window.confirm(`Remove the class "${collection.name}", its files, and their recall cards?`)) return;
+                void (async () => {
+                  await api.removeCollection(collection.id);
+                  navigate({ name: "notes" });
+                })();
+              }}
+            >
+              Remove class
+            </button>
+          </div>
+          <section>
+            <h2 className="section-title">This pack</h2>
+            {classItems.length === 0 ? (
+              <p className="hint">No files yet. Drop the update folder for this class.</p>
+            ) : (
+              <ul className="map-list">
+                {sortPackFiles(classItems).map((item) => (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      className="text-btn"
+                      onClick={() => navigate(libraryNoteRoute(item.id, collection.id))}
+                    >
+                      {fileLabel(item)}
+                    </button>
+                    {item.brief?.title && item.brief.title !== fileLabel(item) ? (
+                      <span className="muted"> — {item.brief.title}</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+          <section>
+            <h2 className="section-title">Deck from these notes</h2>
+            {noteDeck.length === 0 ? (
+              <p className="hint">Drop a markdown pack or a PDF with a text layer and we cut recall cards from headings, sections, tables, and todos.</p>
+            ) : (
+              <>
+                <p className="lede">
+                  {noteDeck.length} card{noteDeck.length === 1 ? "" : "s"} built from this class’s files.{" "}
+                  <button type="button" className="text-btn" onClick={() => navigate({ name: "recall", classId: collection.id })}>
+                    Recall this class
+                  </button>
+                </p>
+                {noteDeck.length >= MAX_CLASS_CARDS ? (
+                  <p className="hint">
+                    This class deck holds at most {MAX_CLASS_CARDS} cards. If the pack has more, later files were left out.
+                  </p>
+                ) : null}
+              </>
+            )}
+          </section>
+        </div>
         <aside className="notes-rail">
           <p className="kicker">
             <button type="button" className="text-btn" onClick={() => navigate({ name: "notes" })}>
@@ -359,123 +443,12 @@ export function NotesPage({
             ))
           )}
         </aside>
-        <div className="notes-stage">
-          <p className="kicker">Class</p>
-          <h1>{collection.name}</h1>
-          <p className="lede">
-            This class is only the files in the pack. An update folder replaces the previous files
-            and rebuilds flip cards from those notes. The TB/stats tutor stays under Learn — it
-            never joins this pack. Pin the class to Home.
-          </p>
-          <div className="step-nav">
-            <button type="button" className="solid" onClick={() => navigate({ name: "recall", classId: collection.id })}>
-              Recall this class
-            </button>
-            <button
-              type="button"
-              className="ghost"
-              onClick={() => {
-                const canvas = api.studios.find((row) => row.id === `class:${collection.id}`);
-                void (async () => {
-                  await api.touchClass(collection.id);
-                  await api.pinStudio(`class:${collection.id}`, !canvas?.pinned);
-                })();
-              }}
-            >
-              {api.studios.find((row) => row.id === `class:${collection.id}`)?.pinned ? "Unpin from Home" : "Pin to Home"}
-            </button>
-            <button
-              type="button"
-              className="ghost danger"
-              onClick={() => {
-                if (!window.confirm(`Remove the class "${collection.name}", its files, and their recall cards?`)) return;
-                void (async () => {
-                  await api.removeCollection(collection.id);
-                  navigate({ name: "notes" });
-                })();
-              }}
-            >
-              Remove class
-            </button>
-          </div>
-          <section>
-            <h2 className="section-title">This pack</h2>
-            {classItems.length === 0 ? (
-              <p className="hint">No files yet. Drop the update folder for this class.</p>
-            ) : (
-              <ul className="map-list">
-                {sortPackFiles(classItems).map((item) => (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      className="text-btn"
-                      onClick={() => navigate(libraryNoteRoute(item.id, collection.id))}
-                    >
-                      {fileLabel(item)}
-                    </button>
-                    {item.brief?.title && item.brief.title !== fileLabel(item) ? (
-                      <span className="muted"> — {item.brief.title}</span>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-          <section>
-            <h2 className="section-title">Deck from these notes</h2>
-            {noteDeck.length === 0 ? (
-              <p className="hint">Drop a markdown pack or a PDF with a text layer and we cut recall cards from headings, sections, tables, and todos.</p>
-            ) : (
-              <p className="lede">
-                {noteDeck.length} card{noteDeck.length === 1 ? "" : "s"} built from this class’s files.{" "}
-                <button type="button" className="text-btn" onClick={() => navigate({ name: "recall", classId: collection.id })}>
-                  Recall this class
-                </button>
-              </p>
-            )}
-          </section>
-        </div>
       </div>
     );
   }
 
   return (
-    <div className="page notes-page">
-      <aside className="notes-rail">
-        <p className="kicker">Classes</p>
-        {api.collections.length === 0 ? (
-          <p className="hint">No classes yet. Name one, or drop an update folder — README title or folder name becomes the class.</p>
-        ) : (
-          <ul className="lib-list">
-            {api.collections.map((row) => {
-              const count = api.library.filter((item) => item.collectionId === row.id).length;
-              return (
-                <li key={row.id}>
-                  <button type="button" className="lib-item" onClick={() => navigate({ name: "notes", classId: row.id })}>
-                    <span>{row.name}</span>
-                    <span className="muted">
-                      {count} file{count === 1 ? "" : "s"}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="ghost"
-                    onClick={() => {
-                      const canvas = api.studios.find((item) => item.id === `class:${row.id}`);
-                      void (async () => {
-                        await api.touchClass(row.id);
-                        await api.pinStudio(`class:${row.id}`, !canvas?.pinned);
-                      })();
-                    }}
-                  >
-                    {api.studios.find((item) => item.id === `class:${row.id}`)?.pinned ? "Unpin" : "Pin"}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </aside>
+    <div className="page notes-page notes-lead">
       <div className="notes-stage">
         <p className="kicker">Topic / class folders</p>
         <h1>Classes</h1>
@@ -545,6 +518,41 @@ export function NotesPage({
           />
         </div>
       </div>
+      <aside className="notes-rail">
+        <p className="kicker">Classes</p>
+        {api.collections.length === 0 ? (
+          <p className="hint">No classes yet. Name one, or drop an update folder — README title or folder name becomes the class.</p>
+        ) : (
+          <ul className="lib-list">
+            {api.collections.map((row) => {
+              const count = api.library.filter((item) => item.collectionId === row.id).length;
+              return (
+                <li key={row.id}>
+                  <button type="button" className="lib-item" onClick={() => navigate({ name: "notes", classId: row.id })}>
+                    <span>{row.name}</span>
+                    <span className="muted">
+                      {count} file{count === 1 ? "" : "s"}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="ghost"
+                    onClick={() => {
+                      const canvas = api.studios.find((item) => item.id === `class:${row.id}`);
+                      void (async () => {
+                        await api.touchClass(row.id);
+                        await api.pinStudio(`class:${row.id}`, !canvas?.pinned);
+                      })();
+                    }}
+                  >
+                    {api.studios.find((item) => item.id === `class:${row.id}`)?.pinned ? "Unpin" : "Pin"}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </aside>
     </div>
   );
 }

@@ -16,12 +16,14 @@ import type {
 import { along, densityPath, vis } from "./theme";
 
 const MarkerId = createContext("arr");
+const PlateCaption = createContext("Study figure");
 
 function PlateFrame({ children }: { children: ReactNode }) {
   const raw = useId().replace(/[^a-zA-Z0-9]/g, "");
   const marker = `arr${raw}`;
+  const caption = useContext(PlateCaption);
   return (
-    <svg className="viz" viewBox="0 0 640 300" role="img" aria-hidden="true">
+    <svg className="viz" viewBox="0 0 640 300" role="group" aria-label={caption}>
       <defs>
         <marker id={marker} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
           <path d="M1 1.5 L8.5 5 L1 8.5" fill="none" stroke={vis.ink} strokeWidth="1.35" />
@@ -621,7 +623,9 @@ export function VisualPlate({ spec, kicker }: { spec: VisualSpec; kicker: string
   return (
     <figure className="plate">
       <figcaption className="plate-kicker">{kicker}</figcaption>
-      {figure}
+      <div className="plate-scroll">
+        <PlateCaption.Provider value={spec.caption}>{figure}</PlateCaption.Provider>
+      </div>
       <p className="plate-caption">{spec.caption}</p>
     </figure>
   );

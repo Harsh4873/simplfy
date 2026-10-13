@@ -18,7 +18,7 @@ import { authPersistenceReady, firebaseAuth, googleProvider, simplfyFirestore } 
 import {
   SYNC_STORES,
   applyRemoteSyncRecord,
-  clearStudioData,
+  clearDeskAfterSignOut,
   getSyncMetadata,
   listSyncMetadata,
   listSyncStoreRows,
@@ -134,6 +134,7 @@ export function useSimplfySync(
   const pendingWritesRef = useRef(0);
   const listenersRef = useRef<Unsubscribe[]>([]);
   const tooLargeRef = useRef(new Set<string>());
+  const signOutNoteRef = useRef<string | undefined>(undefined);
 
   if (!clientIdRef.current) clientIdRef.current = createClientId();
 
@@ -330,6 +331,7 @@ export function useSimplfySync(
     }
 
     async function startSession(authUser: User, revision: number) {
+      signOutNoteRef.current = undefined;
       try {
         const membership = await resolveOwnerVault(simplfyFirestore, authUser);
         if (disposed || revision !== authRevision) return;
@@ -360,9 +362,9 @@ export function useSimplfySync(
         setUser(null);
         if (!authUser) {
           setStatus(navigator.onLine ? "signed-out" : "offline");
-          setMessage(navigator.onLine
+          setMessage(signOutNoteRef.current ?? (navigator.onLine
             ? "Sign in once to sync this study desk across devices."
-            : "Offline — this study desk is saved on this device.");
+            : "Offline — this study desk is saved on this device."));
           return;
         }
         void startSession(authUser, revision);
@@ -374,7 +376,7 @@ export function useSimplfySync(
 
     const handleOffline = () => {
       setStatus("offline");
-      setMessage("Offline — changes stay on this device and sync after reconnection.");
+      setMessage(signOutNoteRef.current ?? "Offline — changes stay on this device and sync after reconnection.");
     };
     const handleOnline = () => {
       const vaultId = activeVaultRef.current;
@@ -384,7 +386,7 @@ export function useSimplfySync(
       });
       else {
         setStatus("signed-out");
-        setMessage("Sign in once to sync this study desk across devices.");
+        setMessage(signOutNoteRef.current ?? "Sign in once to sync this study desk across devices.");
       }
     };
     window.addEventListener("offline", handleOffline);
@@ -432,12 +434,16 @@ export function useSimplfySync(
       await waitForPendingWrites(simplfyFirestore);
       stopListeners();
       activeVaultRef.current = null;
-      await clearStudioData(database);
+      const kept = await clearDeskAfterSignOut(database);
+      const keptNote = kept
+        ? `Signed out. Synced study material was cleared on this device. ${kept} source${kept === 1 ? "" : "s"} stayed here because the cloud cannot restore ${kept === 1 ? "it" : "them"}.`
+        : undefined;
+      signOutNoteRef.current = keptNote;
       await firebaseSignOut(firebaseAuth);
       await refresh(database);
       setLastSyncedAt(undefined);
       setStatus("signed-out");
-      setMessage("Signed out. This device’s private study desk was cleared.");
+      setMessage(keptNote ?? "Signed out. This device’s private study desk was cleared.");
     } catch (error) {
       setStatus("action-needed");
       setMessage(friendlyError(error));
