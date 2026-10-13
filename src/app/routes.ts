@@ -41,7 +41,8 @@ export function parseHash(hash: string): Route {
   if (head === "learn") {
     if (id === "file" && parts[2]) {
       const fileId = decodeURIComponent(parts[2] ?? "");
-      const next = LESSON_STEPS.includes(parts[3] as LessonStep) ? (parts[3] as LessonStep) : "teach";
+      const raw = parts[3] ?? "";
+      const next = (FILE_LESSON_STEPS as readonly string[]).includes(raw) ? (raw as LessonStep) : "teach";
       return { name: "learn", id: fileId, step: next, kind: "file" };
     }
     if (id) {
@@ -117,6 +118,20 @@ export function isLessonStep(value: string): value is LessonStep {
   return LESSON_STEPS.includes(value as LessonStep);
 }
 
+export function isFileLessonStep(value: string): value is (typeof FILE_LESSON_STEPS)[number] {
+  return (FILE_LESSON_STEPS as readonly string[]).includes(value);
+}
+
+export function resumeStepFromCanvas(
+  canvases: { id: string; step?: string }[],
+  continueNoteId?: string,
+  continueModuleId?: string,
+): string | undefined {
+  const id = continueNoteId ? `note:${continueNoteId}` : continueModuleId ? `lesson:${continueModuleId}` : "";
+  if (!id) return undefined;
+  return canvases.find((row) => row.id === id)?.step;
+}
+
 export function libraryNoteRoute(id: string, collectionId?: string): Route {
   return collectionId ? { name: "notes", classId: collectionId, id } : { name: "notes", id };
 }
@@ -129,8 +144,14 @@ export function learnFileRoute(noteId: string, step: LessonStep = "teach"): Rout
   return { name: "learn", id: noteId, step, kind: "file" };
 }
 
-export function resumeLearnRoute(continueNoteId?: string, continueModuleId?: string): Route {
-  if (continueNoteId) return learnFileRoute(continueNoteId);
-  if (continueModuleId) return { name: "learn", id: continueModuleId, step: "teach" };
+export function resumeLearnRoute(continueNoteId?: string, continueModuleId?: string, step?: string): Route {
+  if (continueNoteId) {
+    const next = step && isFileLessonStep(step) ? step : "teach";
+    return learnFileRoute(continueNoteId, next);
+  }
+  if (continueModuleId) {
+    const next = step && isLessonStep(step) ? step : "teach";
+    return { name: "learn", id: continueModuleId, step: next };
+  }
   return { name: "shelf" };
 }

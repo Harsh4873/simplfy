@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { libraryNoteRoute, isSourcesRoute, resumeLearnRoute, toHash, type Route } from "../app/routes";
+import { useEffect, useRef, useState } from "react";
+import { libraryNoteRoute, isSourcesRoute, resumeLearnRoute, resumeStepFromCanvas, toHash, type Route } from "../app/routes";
 import { cx } from "../ui/cx";
 import type { Theme } from "../app/useTheme";
 import type { StudioApi } from "../studio/useStudio";
@@ -27,6 +27,16 @@ export function TopBar({
   onToggleTheme: () => void;
 }) {
   const searchRef = useRef<HTMLInputElement>(null);
+  const activeRef = useRef(0);
+  const [active, setActive] = useState(0);
+  const trimmed = api.query.trim();
+  const hits = api.hits.slice(0, 8);
+  const rowCount = trimmed ? 1 + hits.length : 0;
+
+  useEffect(() => {
+    activeRef.current = 0;
+    setActive(0);
+  }, [trimmed]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -43,25 +53,67 @@ export function TopBar({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const openTopHit = () => {
-    const first = api.hits[0];
-    if (!first) return;
-    api.setQuery("");
-    if (first.kind === "module") {
-      void api.touchLesson(first.module, "teach");
-      navigate({ name: "learn", id: first.module.id, step: "teach" });
-    } else {
-      void api.remember(`library:${first.item.id}`);
-      const filed = api.library.find((item) => item.id === first.item.id);
-      navigate(libraryNoteRoute(first.item.id, filed?.collectionId));
+  const openRow = (index: number) => {
+    if (!trimmed) return;
+    if (index <= 0) {
+      void api.touchPapers(trimmed);
+      api.setQuery("");
+      navigate({ name: "papers", q: trimmed });
+      return;
     }
+    const hit = hits[index - 1];
+    if (!hit) return;
+    api.setQuery("");
+    if (hit.kind === "module") {
+      void api.touchLesson(hit.module, "teach");
+      navigate({ name: "learn", id: hit.module.id, step: "teach" });
+      return;
+    }
+    void api.remember(`library:${hit.item.id}`);
+    const filed = api.library.find((item) => item.id === hit.item.id);
+    navigate(libraryNoteRoute(hit.item.id, filed?.collectionId));
   };
+
+  const moveActive = (delta: number) => {
+    if (!rowCount) return;
+    const next = (activeRef.current + delta + rowCount) % rowCount;
+    activeRef.current = next;
+    setActive(next);
+  };
+
+  const optionId = (index: number) => {
+    if (!rowCount) return undefined;
+    if (index <= 0) return "search-opt-lookup";
+    const hit = hits[index - 1];
+    if (!hit) return "search-opt-lookup";
+    return hit.kind === "module" ? `search-opt-m-${hit.module.id}` : `search-opt-l-${hit.item.id}`;
+  };
+
+  const shown = rowCount ? Math.min(active, rowCount - 1) : 0;
+  const activeOptionId = optionId(shown);
+
+  useEffect(() => {
+    if (!activeOptionId) return;
+    const el = document.getElementById(activeOptionId);
+    const scroller = el?.closest(".search-pop");
+    if (!el || !(scroller instanceof HTMLElement)) return;
+    const top = el.offsetTop;
+    const bottom = top + el.offsetHeight;
+    if (top < scroller.scrollTop) scroller.scrollTop = top;
+    else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
+  }, [activeOptionId]);
+
+  const resumeRoute = resumeLearnRoute(
+    api.continueNote?.id,
+    api.continueModule?.id,
+    resumeStepFromCanvas(api.studios, api.continueNote?.id, api.continueModule?.id),
+  );
 
   const nav: { route: Route; label: string; match: boolean }[] = [
     { route: { name: "home" }, label: "Home", match: route.name === "home" },
     { route: { name: "desk" }, label: "Sources", match: isSourcesRoute(route) },
     {
-      route: resumeLearnRoute(api.continueNote?.id, api.continueModule?.id),
+      route: resumeRoute,
       label: "Learn",
       match: route.name === "learn",
     },
@@ -99,7 +151,6 @@ export function TopBar({
             href={toHash(item.route)}
             onClick={(event) => {
               event.preventDefault();
-              if (item.label === "Sources" && isSourcesRoute(route)) return;
               navigate(item.route);
             }}
           >
@@ -129,67 +180,96 @@ export function TopBar({
             value={api.query}
             onChange={(event) => api.setQuery(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === "Enter") openTopHit();
+              if (!trimmed) return;
+              if (event.key === "ArrowDown") {
+                event.preventDefault();
+                moveActive(1);
+              } else if (event.key === "ArrowUp") {
+                event.preventDefault();
+                moveActive(-1);
+              } else if (event.key === "Escape") {
+                event.preventDefault();
+                api.setQuery("");
+              } else if (event.key === "Enter") {
+                event.preventDefault();
+                openRow(Math.min(activeRef.current, Math.max(rowCount - 1, 0)));
+              }
             }}
             placeholder="TnSeq, prpD, CLT…"
             autoComplete="off"
+            role="combobox"
             aria-autocomplete="list"
+            aria-expanded={rowCount > 0}
+            aria-controls={rowCount > 0 ? "studio-search-list" : undefined}
+            aria-activedescendant={activeOptionId}
           />
           <kbd>/</kbd>
         </div>
-        {api.query.trim() ? (
-          <ul className="search-pop" role="listbox" aria-label="Search hits">
-            <li>
-              <button
-                type="button"
-                className="hit"
-                onClick={() => {
-                  const q = api.query.trim();
-                  void api.touchPapers(q);
-                  api.setQuery("");
-                  navigate({ name: "papers", q });
-                }}
-              >
-                <span className="domain library">Papers</span>
-                <span className="hit-title">Look up {api.query.trim()}</span>
-              </button>
-            </li>
-            {api.hits.slice(0, 8).map((hit) =>
-              hit.kind === "module" ? (
-                <li key={`m-${hit.module.id}`}>
-                  <button
-                    type="button"
-                    className="hit"
-                    onClick={() => {
-                      void api.touchLesson(hit.module, "teach");
-                      api.setQuery("");
-                      navigate({ name: "learn", id: hit.module.id, step: "teach" });
-                    }}
-                  >
-                    <span className={cx("domain", hit.module.domain)}>{hit.module.domain === "tb" ? "TB" : "Stats"}</span>
-                    <span className="hit-title">{hit.module.title}</span>
-                  </button>
-                </li>
-              ) : (
-                <li key={`l-${hit.item.id}`}>
-                  <button
-                    type="button"
-                    className="hit"
-                    onClick={() => {
-                      void api.remember(`library:${hit.item.id}`);
-                      api.setQuery("");
-                      const filed = api.library.find((item) => item.id === hit.item.id);
-                      navigate(libraryNoteRoute(hit.item.id, filed?.collectionId));
-                    }}
-                  >
-                    <span className="domain library">Local</span>
-                    <span className="hit-title">{hit.item.name}</span>
-                  </button>
-                </li>
-              ),
-            )}
-            {api.hits.length === 0 ? <li className="hint">No plates for that term.</li> : null}
-          </ul>
+        {trimmed ? (
+          <div className="search-pop">
+            <ul id="studio-search-list" role="listbox" aria-label="Search hits">
+              <li role="presentation">
+                <button
+                  type="button"
+                  role="option"
+                  id="search-opt-lookup"
+                  tabIndex={-1}
+                  aria-selected={shown === 0}
+                  className={cx("hit", shown === 0 && "is-active")}
+                  onMouseEnter={() => {
+                    activeRef.current = 0;
+                    setActive(0);
+                  }}
+                  onClick={() => openRow(0)}
+                >
+                  <span className="domain library">Papers</span>
+                  <span className="hit-title">Look up {trimmed}</span>
+                </button>
+              </li>
+              {hits.map((hit, index) =>
+                hit.kind === "module" ? (
+                  <li key={`m-${hit.module.id}`} role="presentation">
+                    <button
+                      type="button"
+                      role="option"
+                      id={`search-opt-m-${hit.module.id}`}
+                      tabIndex={-1}
+                      aria-selected={shown === index + 1}
+                      className={cx("hit", shown === index + 1 && "is-active")}
+                      onMouseEnter={() => {
+                        activeRef.current = index + 1;
+                        setActive(index + 1);
+                      }}
+                      onClick={() => openRow(index + 1)}
+                    >
+                      <span className={cx("domain", hit.module.domain)}>{hit.module.domain === "tb" ? "TB" : "Stats"}</span>
+                      <span className="hit-title">{hit.module.title}</span>
+                    </button>
+                  </li>
+                ) : (
+                  <li key={`l-${hit.item.id}`} role="presentation">
+                    <button
+                      type="button"
+                      role="option"
+                      id={`search-opt-l-${hit.item.id}`}
+                      tabIndex={-1}
+                      aria-selected={shown === index + 1}
+                      className={cx("hit", shown === index + 1 && "is-active")}
+                      onMouseEnter={() => {
+                        activeRef.current = index + 1;
+                        setActive(index + 1);
+                      }}
+                      onClick={() => openRow(index + 1)}
+                    >
+                      <span className="domain library">Local</span>
+                      <span className="hit-title">{hit.item.name}</span>
+                    </button>
+                  </li>
+                ),
+              )}
+            </ul>
+            {hits.length === 0 ? <p className="hint">No plates for that term.</p> : null}
+          </div>
         ) : null}
       </div>
       <div className="top-actions">

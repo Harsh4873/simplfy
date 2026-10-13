@@ -27,6 +27,7 @@ export async function seedNoteDeck(db: IDBDatabase, item: LibraryItem): Promise<
     pinned: existing?.pinned ?? false,
     createdAt: existing?.createdAt ?? now,
     updatedAt: now,
+    ...(existing?.step ? { step: existing.step } : {}),
   });
 
   const built = cardsFromNoteText(item.text, item.id, item.name);
@@ -133,6 +134,7 @@ export async function seedClassStudios(
       pinned: existing?.pinned ?? false,
       createdAt: existing?.createdAt ?? now,
       updatedAt: now,
+      ...(existing?.step ? { step: existing.step } : {}),
     });
   }
 

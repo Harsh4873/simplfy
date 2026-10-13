@@ -98,11 +98,7 @@ export function searchStudio(
 }
 
 export function relatedModules(module: StudyModule, byId: Map<string, StudyModule>): StudyModule[] {
-  const direct = module.related
+  return module.related
     .map((id) => byId.get(id))
     .filter((item): item is StudyModule => Boolean(item));
-  const extra = [...byId.values()].filter(
-    (item) => item.domain === module.domain && item.id !== module.id && !direct.some((d) => d.id === item.id),
-  );
-  return [...direct, ...extra].slice(0, 10);
 }

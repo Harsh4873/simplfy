@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { loadCatalog } from "../catalog/loadCatalog";
-import { searchCatalog, searchStudio } from "../catalog/search";
+import { indexModules, loadCatalog } from "../catalog/loadCatalog";
+import { relatedModules, searchCatalog, searchStudio } from "../catalog/search";
 
 describe("search", () => {
   const { modules } = loadCatalog();
@@ -25,5 +25,14 @@ describe("search", () => {
       { id: "n1", name: "granuloma scrap", text: "caseum is hypoxic and acidic" },
     ]);
     expect(hits.some((hit) => hit.kind === "library" && hit.item.id === "n1")).toBe(true);
+  });
+
+  it("maps only the declared related plates", () => {
+    const byId = indexModules(modules);
+    const sparse = modules.find((module) => module.related.length > 0 && module.related.length < 10);
+    expect(sparse).toBeTruthy();
+    const related = relatedModules(sparse!, byId);
+    expect(related.map((row) => row.id)).toEqual(sparse!.related.filter((id) => byId.has(id)));
+    expect(related.length).toBeLessThan(10);
   });
 });

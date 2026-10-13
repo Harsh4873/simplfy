@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseHash, toHash } from "../app/routes";
+import { parseHash, resumeLearnRoute, resumeStepFromCanvas, toHash } from "../app/routes";
 import { loadCatalog } from "../catalog/loadCatalog";
 import { lessonFromModule } from "../lesson/fromModule";
 import { lessonFromNote } from "../lesson/fromNote";
@@ -44,6 +44,52 @@ describe("hash routes", () => {
     expect(parseHash("#/recall/n/note-9")).toEqual({ name: "recall", noteId: "note-9" });
     expect(toHash({ name: "recall", noteId: "note-9" })).toBe("#/recall/n/note-9");
     expect(parseHash("#/decks")).toEqual({ name: "desk" });
+    expect(parseHash("#/learn/file/note-9/say-back")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "say-back",
+      kind: "file",
+    });
+    expect(parseHash("#/learn/file/note-9/papers")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "teach",
+      kind: "file",
+    });
+    expect(parseHash("#/learn/file/note-9/shelf")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "teach",
+      kind: "file",
+    });
+    expect(resumeLearnRoute("note-9", undefined, "practice")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "practice",
+      kind: "file",
+    });
+    expect(resumeLearnRoute("note-9", "stats-lrt", "papers")).toEqual({
+      name: "learn",
+      id: "note-9",
+      step: "teach",
+      kind: "file",
+    });
+    expect(resumeLearnRoute(undefined, "stats-lrt", "shelf")).toEqual({
+      name: "learn",
+      id: "stats-lrt",
+      step: "shelf",
+    });
+    expect(
+      resumeStepFromCanvas(
+        [
+          { id: "lesson:stats-lrt", step: "practice" },
+          { id: "note:note-9", step: "say-back" },
+        ],
+        "note-9",
+        "stats-lrt",
+      ),
+    ).toBe("say-back");
+    expect(resumeStepFromCanvas([{ id: "lesson:stats-lrt", step: "papers" }], undefined, "stats-lrt")).toBe("papers");
   });
 });
 

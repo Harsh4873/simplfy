@@ -5,6 +5,18 @@ import type { StudioApi } from "../studio/useStudio";
 import type { RecallCard } from "../library/db";
 import { cx } from "../ui/cx";
 
+export function recallCursorAfterMiss(ids: string[], index: number): string | null {
+  if (!ids.length) return null;
+  const current = Math.min(Math.max(index, 0), ids.length - 1);
+  return ids[(current + 1) % ids.length] ?? null;
+}
+
+export function recallCursorAfterKnown(ids: string[], index: number): string | null {
+  if (ids.length <= 1) return null;
+  const current = Math.min(Math.max(index, 0), ids.length - 1);
+  return ids[(current + 1) % ids.length] ?? null;
+}
+
 function cardAnswer(api: StudioApi, card: RecallCard): { title: string; answer: string; why: string } {
   if (card.answer) {
     const note = card.noteId ? api.library.find((item) => item.id === card.noteId) : undefined;
@@ -36,14 +48,22 @@ export function RecallPage({
   noteId?: string;
   navigate: (route: Route) => void;
 }) {
-  const [index, setIndex] = useState(0);
+  const deckKey = `${noteId ?? ""}|${classId ?? ""}`;
+  const [cursor, setCursor] = useState<{ deck: string; id: string | null }>({ deck: deckKey, id: null });
   const [flipped, setFlipped] = useState(false);
+  if (cursor.deck !== deckKey) {
+    setCursor({ deck: deckKey, id: null });
+    setFlipped(false);
+  }
   const cards = noteId
     ? api.recall.filter((card) => card.noteId === noteId)
     : classId
       ? api.recall.filter((card) => card.collectionId === classId && card.noteId)
       : api.recall;
-  const card = cards[Math.min(index, Math.max(cards.length - 1, 0))];
+  const cursorId = cursor.deck === deckKey ? cursor.id : null;
+  const found = cursorId ? cards.findIndex((row) => row.id === cursorId) : 0;
+  const index = found >= 0 ? found : 0;
+  const card = cards[index];
   const currentClass = classId ? api.collections.find((row) => row.id === classId) : undefined;
   const currentNote = noteId ? api.library.find((item) => item.id === noteId) : undefined;
   const noteDecks = api.library.filter((item) => api.recall.some((card) => card.noteId === item.id));
@@ -74,15 +94,12 @@ export function RecallPage({
     );
   }
 
-  const next = () => {
-    setFlipped(false);
-    setIndex((n) => (n + 1) % cards.length);
-  };
+  const ids = cards.map((row) => row.id);
 
   return (
     <div className="page recall-page">
       <p className="kicker">
-        Recall{scopeLabel ? ` · ${scopeLabel}` : ""} · {Math.min(index, cards.length - 1) + 1} / {cards.length}
+        Recall{scopeLabel ? ` · ${scopeLabel}` : ""} · {index + 1} / {cards.length}
       </p>
       <h1>Flip until it sticks</h1>
       {api.collections.length || noteDecks.length ? (
@@ -147,8 +164,9 @@ export function RecallPage({
           type="button"
           className="solid quiet"
           onClick={() => {
-            void api.clearRecall(card.id);
+            setCursor({ deck: deckKey, id: recallCursorAfterKnown(ids, index) });
             setFlipped(false);
+            void api.clearRecall(card.id);
           }}
         >
           Knew it
@@ -157,8 +175,9 @@ export function RecallPage({
           type="button"
           className="ghost"
           onClick={() => {
+            setCursor({ deck: deckKey, id: recallCursorAfterMiss(ids, index) });
+            setFlipped(false);
             void api.bumpRecall(card.id);
-            next();
           }}
         >
           Still shaky

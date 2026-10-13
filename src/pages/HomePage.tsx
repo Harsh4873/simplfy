@@ -1,7 +1,7 @@
 import { FEATURED_IDS, STUDY_PATHS } from "../lesson/paths";
 import { lessonFromModule } from "../lesson/fromModule";
 import type { StudyModule } from "../catalog/types";
-import { LESSON_STEPS, STEP_META, resumeLearnRoute, type Route } from "../app/routes";
+import { LESSON_STEPS, STEP_META, resumeLearnRoute, resumeStepFromCanvas, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import { ModuleCard } from "./ModuleCard";
 import { SourceCard } from "./SourceCard";
@@ -16,6 +16,16 @@ export function HomePage({
   const open = (module: StudyModule) => {
     void api.touchLesson(module, "teach");
     navigate({ name: "learn", id: module.id, step: "teach" });
+  };
+
+  const resume = () => {
+    navigate(
+      resumeLearnRoute(
+        api.continueNote?.id,
+        api.continueModule?.id,
+        resumeStepFromCanvas(api.studios, api.continueNote?.id, api.continueModule?.id),
+      ),
+    );
   };
 
   const featured = FEATURED_IDS.map((id) => api.byId.get(id)).filter((row): row is StudyModule => Boolean(row));
@@ -56,7 +66,7 @@ export function HomePage({
           <button type="button" className="solid" onClick={() => navigate({ name: "desk" })}>
             Open Sources
           </button>
-          <button type="button" className="ghost" onClick={() => navigate(resumeLearnRoute(api.continueNote?.id, api.continueModule?.id))}>
+          <button type="button" className="ghost" onClick={resume}>
             Open Learn
           </button>
         </div>
@@ -66,15 +76,11 @@ export function HomePage({
         <section className="continue-strip" aria-label="Pinned">
           <p className="kicker">On Home</p>
           {api.continueModule ? (
-            <button type="button" className="solid" onClick={() => open(api.continueModule!)}>
+            <button type="button" className="solid" onClick={resume}>
               Resume {api.continueModule.title}
             </button>
           ) : api.continueNote ? (
-            <button
-              type="button"
-              className="solid"
-              onClick={() => navigate(resumeLearnRoute(api.continueNote?.id))}
-            >
+            <button type="button" className="solid" onClick={resume}>
               Resume {api.continueNote.name}
             </button>
           ) : null}

@@ -35,7 +35,7 @@ export function Studio() {
           {api.errors.length} catalogue file{api.errors.length === 1 ? "" : "s"} failed validation. See the console.
         </p>
       ) : null}
-      <main id="main" className="stage">
+      <main id="main" className="stage" tabIndex={-1}>
         {route.name === "home" ? <HomePage api={api} navigate={navigate} /> : null}
         {isSourcesRoute(route) ? <SourcesPage api={api} route={route} navigate={navigate} /> : null}
         {route.name === "learn" && route.kind === "file" ? (

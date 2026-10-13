@@ -158,6 +158,21 @@ export function useStudio() {
     [remember, upsertCanvas],
   );
 
+  const touchFileLesson = useCallback(
+    async (note: { id: string; name: string; collectionId?: string }, step?: string) => {
+      await remember(`library:${note.id}`);
+      await upsertCanvas({
+        id: `note:${note.id}`,
+        kind: "note",
+        title: note.name,
+        noteId: note.id,
+        step,
+        collectionId: note.collectionId,
+      });
+    },
+    [remember, upsertCanvas],
+  );
+
   const touchPapers = useCallback(
     async (query: string, title?: string, collectionId?: string) => {
       const q = query.trim();
@@ -663,6 +678,7 @@ export function useStudio() {
     clearRecall,
     remember,
     touchLesson,
+    touchFileLesson,
     touchClass,
     touchPapers,
     pinStudio,

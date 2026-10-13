@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { recallCursorAfterKnown, recallCursorAfterMiss } from "../pages/RecallPage";
 import {
   listLibrary,
   listStudios,
@@ -10,6 +11,21 @@ import {
 } from "../library/db";
 import { parseDroppedFile, mimeForDroppedFile } from "../library/parse";
 import { extractTerms, firstLineTitle } from "../library/fieldNote";
+
+describe("recall cursor", () => {
+  it("advances to the next card from the list before a miss moves it", () => {
+    expect(recallCursorAfterMiss(["a", "b"], 1)).toBe("a");
+    expect(recallCursorAfterMiss(["a", "b", "c"], 2)).toBe("a");
+    expect(recallCursorAfterMiss(["a", "b", "c"], 0)).toBe("b");
+    expect(recallCursorAfterMiss(["only"], 0)).toBe("only");
+  });
+
+  it("leaves the following card in place after a known card is removed", () => {
+    expect(recallCursorAfterKnown(["a", "b", "c"], 1)).toBe("c");
+    expect(recallCursorAfterKnown(["a", "b", "c"], 2)).toBe("a");
+    expect(recallCursorAfterKnown(["only"], 0)).toBeNull();
+  });
+});
 
 describe("local library", () => {
   it("round-trips a desk canvas through IndexedDB", async () => {

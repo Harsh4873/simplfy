@@ -1,5 +1,5 @@
 import type { Route } from "../app/routes";
-import { isLessonStep, learnFileRoute, libraryNoteRoute, recallNoteRoute } from "../app/routes";
+import { isFileLessonStep, isLessonStep, learnFileRoute, libraryNoteRoute, recallNoteRoute } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { StudioCanvas } from "../library/db";
 import { isPaperItem } from "../library/paperText";
@@ -47,6 +47,7 @@ export function SourceCard({
   const paper = note ? isPaperItem(note) : false;
   const lesson = canvas.kind === "lesson" ? canvas : undefined;
   const learnStep = lesson?.step && isLessonStep(lesson.step) ? lesson.step : "teach";
+  const fileStep = canvas.step && isFileLessonStep(canvas.step) ? canvas.step : "teach";
   const kindLabel =
     canvas.kind === "lesson"
       ? "Lesson"
@@ -82,7 +83,7 @@ export function SourceCard({
           </button>
         ) : null}
         {canvas.kind === "note" && canvas.noteId ? (
-          <button type="button" className="ghost" onClick={() => navigate(learnFileRoute(canvas.noteId!))}>
+          <button type="button" className="ghost" onClick={() => navigate(learnFileRoute(canvas.noteId!, fileStep))}>
             Learn this file
           </button>
         ) : null}
@@ -116,7 +117,28 @@ export function SourceCard({
         <button type="button" className="ghost" onClick={() => void api.pinStudio(canvas.id, !canvas.pinned)}>
           {canvas.pinned ? "Unpin" : "Pin to Home"}
         </button>
-        <button type="button" className="ghost danger" onClick={() => void api.removeStudio(canvas.id)}>
+        <button
+          type="button"
+          className="ghost danger"
+          onClick={() => {
+            if (canvas.kind === "note" && canvas.noteId) {
+              const label = note?.name || canvas.title;
+              if (!window.confirm(`Remove "${label}" and its recall cards from this desk?`)) return;
+              void api.removeLibrary(canvas.noteId);
+              return;
+            }
+            if (canvas.kind === "class" && canvas.collectionId) {
+              const label =
+                collectionName ||
+                api.collections.find((row) => row.id === canvas.collectionId)?.name ||
+                canvas.title;
+              if (!window.confirm(`Remove the class "${label}", its files, and their recall cards?`)) return;
+              void api.removeCollection(canvas.collectionId);
+              return;
+            }
+            void api.removeStudio(canvas.id);
+          }}
+        >
           Remove
         </button>
       </div>

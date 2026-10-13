@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { Studio } from "../studio/Studio";
 import { listLibrary, listRecall, listStudios, openStudioDb } from "../library/db";
 import { MAX_FILE_BYTES } from "../library/parse";
@@ -14,13 +14,17 @@ async function openSources(user: ReturnType<typeof userEvent.setup>, tab: "decks
 }
 
 describe("studio shell", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("opens a guided lesson for likelihood ratio test and rifampin", async () => {
     const user = userEvent.setup();
     render(<Studio />);
     const search = await screen.findByLabelText(/name a term/i);
     await user.clear(search);
     await user.type(search, "likelihood ratio test");
-    await user.keyboard("{Enter}");
+    await user.keyboard("{ArrowDown}{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /likelihood ratio test/i })).toBeInTheDocument();
     expect(screen.getByText(/reduced model is a subset of the full parameter space/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /extra toppings on a pizza/i })).toBeInTheDocument();
@@ -30,7 +34,7 @@ describe("studio shell", () => {
 
     await user.clear(search);
     await user.type(search, "rifampin");
-    await user.keyboard("{Enter}");
+    await user.keyboard("{ArrowDown}{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /rifampin and rpob/i })).toBeInTheDocument();
     expect(screen.getAllByText(/s450l/i).length).toBeGreaterThan(0);
   });
@@ -70,7 +74,7 @@ describe("studio shell", () => {
     const search = await screen.findByLabelText(/name a term/i);
     await user.clear(search);
     await user.type(search, "TRANSIT");
-    await user.keyboard("{Enter}");
+    await user.keyboard("{ArrowDown}{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /tnseq and transit/i })).toBeInTheDocument();
     await user.click(screen.getByRole("tab", { name: /papers/i }));
     expect(await screen.findByText(/ioerger lab/i)).toBeInTheDocument();
@@ -86,7 +90,7 @@ describe("studio shell", () => {
     const search = await screen.findByLabelText(/name a term/i);
     await user.clear(search);
     await user.type(search, "prpD");
-    await user.click(screen.getByRole("button", { name: /look up prpd/i }));
+    await user.keyboard("{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /^papers$/i })).toBeInTheDocument();
     expect(screen.getByText(/^ioerger lab$/i)).toBeInTheDocument();
     expect(screen.getByText(/griffin/i)).toBeInTheDocument();
@@ -104,7 +108,7 @@ describe("studio shell", () => {
     const search = await screen.findByLabelText(/name a term/i);
     await user.clear(search);
     await user.type(search, "central limit theorem");
-    await user.keyboard("{Enter}");
+    await user.keyboard("{ArrowDown}{Enter}");
     expect(await screen.findByRole("heading", { level: 1, name: /normal law and the central limit theorem/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /crowd of dice/i })).toBeInTheDocument();
   });
@@ -166,6 +170,7 @@ describe("studio shell", () => {
   });
 
   it("replaces leftover class files when you drop an update folder", async () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
     const user = userEvent.setup();
     render(<Studio />);
     await openSources(user, "classes");
@@ -201,6 +206,7 @@ describe("studio shell", () => {
   });
 
   it("keeps omitted originals when a replacement update exceeds the file cap", async () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
     const user = userEvent.setup();
     render(<Studio />);
     await openSources(user, "classes");
@@ -249,6 +255,7 @@ describe("studio shell", () => {
   }, 30000);
 
   it("keeps omitted originals when a replacement update skips an oversized file", async () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
     const user = userEvent.setup();
     render(<Studio />);
     await openSources(user, "classes");

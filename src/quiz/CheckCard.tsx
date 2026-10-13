@@ -25,8 +25,13 @@ export function CheckCard({
       {item.figureHint ? <p className="hint">{item.figureHint}</p> : null}
       <div className="choices" role="group" aria-label="Answers">
         {item.choices.map((choice, index) => {
-          const state =
-            !result || picked !== choice ? "" : result.ok ? "is-ok" : "is-miss";
+          const state = !result
+            ? ""
+            : choice === item.answer
+              ? "is-ok"
+              : picked === choice
+                ? "is-miss"
+                : "";
           return (
             <button
               key={choice}
@@ -40,12 +45,18 @@ export function CheckCard({
               }}
             >
               <span className="idx">{index + 1}</span>
-              {choice}
+              <span>
+                {choice}
+                {state === "is-ok" ? <span className="choice-tag">Correct</span> : null}
+                {state === "is-miss" ? <span className="choice-tag">Incorrect</span> : null}
+              </span>
             </button>
           );
         })}
       </div>
-      {result ? <p className={result.ok ? "why ok" : "why miss"}>{result.why}</p> : null}
+      <p className={result ? (result.ok ? "why ok" : "why miss") : "why"} role="status">
+        {result?.why ?? ""}
+      </p>
     </div>
   );
 }

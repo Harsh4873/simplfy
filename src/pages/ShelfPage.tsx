@@ -29,7 +29,6 @@ export function ShelfPage({
   }, [api.hits, api.modules, api.query, domain]);
 
   const open = (module: StudyModule) => {
-    void api.touchLesson(module, "teach");
     navigate({ name: "shelf", id: module.id });
   };
 
@@ -115,7 +114,7 @@ export function ShelfPage({
         <h1>Shelf</h1>
         <p className="lede">
           Every bundled plate, as an encyclopedia. Open one to read the dense notes, or start the
-          five-step lesson from there. Type in the header to filter.
+          six-step lesson from there. Type in the header to filter.
         </p>
         <div className="chips" role="group" aria-label="Domain">
           {(["all", "stats", "tb"] as const).map((item) => (

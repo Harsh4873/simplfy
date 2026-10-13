@@ -56,8 +56,8 @@ export function FileLearnPage({
 
   useEffect(() => {
     if (!api.ready) return;
-    void api.remember(`library:${item.id}`);
-  }, [api.ready, api.remember, item.id]);
+    void api.touchFileLesson({ id: item.id, name: item.name, collectionId: item.collectionId }, step);
+  }, [api.ready, api.touchFileLesson, item.id, item.name, item.collectionId, step]);
 
   const go = (next: LessonStep) => navigate(learnFileRoute(item.id, next));
 

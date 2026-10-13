@@ -1,9 +1,9 @@
 import { FieldNoteDoc } from "../studio/FieldNoteDoc";
-import { folderOf, looksLikeFolderDrop, packFileRank } from "../library/ingest";
+import { folderOf, inferCollectionNameFromFiles, looksLikeFolderDrop, packFileRank, pickDropFiles } from "../library/ingest";
 import { filesFromDataTransfer } from "../library/drop";
 import { relatedForLibraryItem } from "../library/fieldNote";
 import { isPaperItem } from "../library/paperText";
-import { learnFileRoute, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
+import { isFileLessonStep, learnFileRoute, libraryNoteRoute, recallNoteRoute, type Route } from "../app/routes";
 import type { StudioApi } from "../studio/useStudio";
 import type { LibraryItem } from "../library/db";
 import { cx } from "../ui/cx";
@@ -63,7 +63,26 @@ export function NotesPage({
 
   const typedName = () => nameRef.current?.value ?? "";
 
+  const confirmReplace = async (files: File[], willReplace: boolean) => {
+    if (!willReplace) return true;
+    const batch = pickDropFiles(files);
+    if (!batch.length) return true;
+    let target = collection;
+    if (!target) {
+      const inferred = (await inferCollectionNameFromFiles(batch, typedName())).trim();
+      target = api.collections.find((row) => row.name.toLowerCase() === inferred.toLowerCase());
+    }
+    if (!target) return true;
+    const hasFiles = api.library.some((item) => item.collectionId === target.id);
+    if (!hasFiles) return true;
+    return window.confirm(
+      `Replace the files in "${target.name}"? A complete folder drop deletes class files that are not in the drop, along with their recall cards.`,
+    );
+  };
+
   const ingest = async (files: File[], replace?: boolean) => {
+    const willReplace = replace ?? looksLikeFolderDrop(files);
+    if (!(await confirmReplace(files, willReplace))) return;
     const last = await api.addFiles(files, {
       collectionId: collection?.id,
       collectionName: typedName(),
@@ -125,7 +144,15 @@ export function NotesPage({
         </aside>
         <div className="notes-stage">
           <div className="step-nav">
-            <button type="button" className="solid" onClick={() => navigate(learnFileRoute(file.id))}>
+            <button
+              type="button"
+              className="solid"
+              onClick={() => {
+                const saved = api.studios.find((row) => row.id === `note:${file.id}`)?.step;
+                const step = saved && isFileLessonStep(saved) ? saved : "teach";
+                navigate(learnFileRoute(file.id, step));
+              }}
+            >
               Learn this file
             </button>
             {api.recall.some((card) => card.noteId === file.id) ? (
@@ -316,7 +343,10 @@ export function NotesPage({
                       <button
                         type="button"
                         className="ghost danger"
-                        onClick={() => void api.removeLibrary(item.id)}
+                        onClick={() => {
+                          if (!window.confirm(`Remove "${label}" and its recall cards from this desk?`)) return;
+                          void api.removeLibrary(item.id);
+                        }}
                         aria-label={`Remove ${label}`}
                       >
                         Remove
@@ -358,6 +388,7 @@ export function NotesPage({
               type="button"
               className="ghost danger"
               onClick={() => {
+                if (!window.confirm(`Remove the class "${collection.name}", its files, and their recall cards?`)) return;
                 void (async () => {
                   await api.removeCollection(collection.id);
                   navigate({ name: "notes" });
