@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAC · Slides 5 onward</title>
+<style>
+  :root {
+    --bg: #0a0a12;
+    --txt: #f0f0f5;
+    --accent: #8aa0ff;
+    --dim: #9090a0;
+    --border: #2a2a3a;
+    --green: #7ee7b0;
+    --orange: #ffb88c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    line-height: 1.5;
+    padding: 24px 28px 90px;
+    min-height: 100vh;
+  }
+  .top {
+    max-width: 820px;
+    margin: 0 auto 20px;
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .top h1 { font-size: 22px; color: var(--accent); font-weight: 500; margin-bottom: 6px; }
+  .top .meta { font-size: 14px; color: var(--dim); margin-top: 4px; }
+  .script { max-width: 820px; margin: 0 auto; }
+  .section { margin-bottom: 28px; padding: 18px 22px; border: 1px solid var(--border); border-radius: 12px; background: rgba(15, 19, 28, 0.7); }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .scenario-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); background: rgba(40, 44, 58, 0.6); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; }
+  .section h2 { font-size: 18px; color: var(--accent); font-weight: 500; }
+  .sub { font-size: 15px; color: var(--dim); margin-top: 12px; margin-bottom: 0; }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  .highlight { color: var(--orange); }
+  .question { color: var(--green); }
+  .controls { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10, 10, 18, 0.95); border-top: 1px solid var(--border); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--dim); }
+  .key { background: rgba(136, 160, 255, 0.1); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; font-size: 12px; color: var(--accent); }
+  #settingsPanel { display: none; position: fixed; top: 60px; right: 20px; background: rgba(15, 19, 28, 0.95); border: 1px solid var(--border); border-radius: 10px; padding: 16px; z-index: 100; max-width: 260px; }
+  #settingsPanel label { font-size: 13px; display: block; margin-bottom: 8px; }
+  #settingsPanel input[type="range"] { width: 100%; }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 16px 0; }
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    max-width: 820px;
+    margin: 0 auto 16px;
+    padding: 4px 0 12px;
+    background: var(--bg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tab {
+    flex: 1 1 240px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--dim);
+    background: rgba(15, 19, 28, 0.7);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+  }
+  .tab.active {
+    color: var(--txt);
+    border-color: var(--accent);
+    background: rgba(138, 160, 255, 0.14);
+  }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel[hidden] { display: none; }
+  .cue { color: var(--dim); }
+
+  .jump { color: var(--accent); font-size: 16px; padding: 6px 10px; text-decoration: none; border: 1px solid var(--border); border-radius: 6px; }
+  .section { scroll-margin-top: 85px; }
+  .controls { gap: 12px; flex-wrap: wrap; }
+  button { cursor: pointer; font: inherit; }
+  .control-button { color: var(--accent); background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; }
+  @media(max-width: 600px) { body { padding: 16px 16px 120px; } .section { padding: 16px; } .controls { padding: 10px 16px; } }
+</style>
+</head>
+<body>
+<header class="top"><h1>WAC · Literature Review</h1><div class="meta">Slides 5 onward · October 14, 2026 deck</div><div class="meta">Main talk: 5–7 · References: 8–10 · Q&amp;A: 11 · Backups: 12–14</div></header>
+<nav class="tabs" aria-label="Jump to slide"><a class="jump" href="#slide-5">5</a>
+<a class="jump" href="#slide-6">6</a>
+<a class="jump" href="#slide-7">7</a>
+<a class="jump" href="#slide-8-10">8-10</a>
+<a class="jump" href="#slide-11">11</a>
+<a class="jump" href="#slide-12">12</a>
+<a class="jump" href="#slide-13">13</a>
+<a class="jump" href="#slide-14">14</a>
+</nav><main class="script">
+<section class="section" id="slide-5"><div class="section-header"><span class="scenario-tag">Slide 5</span><h2>Workload Estimation</h2></div><p class="sub">Why are manual estimates unreliable?</p>
+<p>The next theme is workload estimation. <span class="highlight">Knowing when something is due doesn't tell us how long it will take.</span></p>
+<p>The first issue is the planning fallacy. We can be too optimistic about how quickly we'll finish. A calendar can show the deadline clearly, but that doesn't help much if the amount of work we put into it is already too low.</p>
+<p>The second issue is memory. We use past assignments to estimate new ones, but what we remember can change the estimate. How we break the task down matters too. So the estimate can be too low or too high.</p>
+<p>Then there's the difference between effort and duration. Something might take two hours of actual work, but those two hours can be spread across several days. And even if we know the effort, we might still put off an unpleasant task until the deadline is close.</p>
+<p>For WAC, that means <span class="highlight">the estimate should be adjustable</span>. We want to help students spread their work out realistically, while still letting them change the estimate as they learn more about the assignment.</p>
+</section>
+<section class="section" id="slide-6"><div class="section-header"><span class="scenario-tag">Slide 6</span><h2>Time Management Tools</h2></div><p class="sub">How do existing tools support planning?</p>
+<p>The third theme looks at tools students can use to manage their time. We looked at making work visible, reserving time, and how that time is shown.</p>
+<p>A term chart can show assignments from several courses together. That helps us see the work in one place. But <span class="highlight">seeing a busy week isn't the same as changing our plan</span>.</p>
+<p>Reserving time has a similar limit. In the focus-block study on this slide, more blocks didn't mean more work was finished for people who were already using them. So we can't just count calendar blocks and assume the tool is working.</p>
+<p>The way we display time matters too. The timeline study changed how quickly people completed the task, but not their accuracy. And the blurred calendar example showed uncertainty about attendance. It wasn't measuring effort, so we shouldn't treat it as evidence that blur would communicate workload.</p>
+<p>The last point is keeping tracking easy. If students have to keep logging and retyping everything, that's more work on top of the assignment. We want WAC to fit the habits they already have and let them control their reminders.</p>
+</section>
+<section class="section" id="slide-7"><div class="section-header"><span class="scenario-tag">Slide 7</span><h2>What we learned from the review</h2></div><p class="sub">Three things we want to carry into WAC.</p>
+<p>These themes leave us with three things to carry into the design.</p>
+<p>First, <span class="highlight">make estimates editable</span>. Students should understand what an effort estimate means and be able to adjust it. It shouldn't look like an exact prediction of when they'll finish.</p>
+<p>Second, <span class="highlight">keep tracking manageable</span>. We want to reduce repeated entry, leave room for downtime, and give students control over reminders. Filling every open part of the calendar isn't the goal.</p>
+<p>Third, <span class="highlight">test the weekly plan</span>. We want to compare WAC with a calendar that only shows deadlines. Do students notice the busy days? Do they choose to start earlier? That's what we still need to test, rather than assuming the workload display will help.</p>
+</section>
+<section class="section" id="slide-8-10"><div class="section-header"><span class="scenario-tag">Slide 8-10</span><h2>References</h2></div><p class="sub">Slides 8, 9, and 10 · Move through these briefly.</p>
+<p>These are the references we used in the presentation. They cover the three themes and the design implications we just discussed.</p>
+</section>
+<section class="section" id="slide-11"><div class="section-header"><span class="scenario-tag">Slide 11</span><h2>Thank you · Q&A</h2></div><p class="sub">Finish here. Use the remaining slides only if they come up.</p>
+<p>That's our literature review and what we're taking from it for WAC. Thank you. <span class="question">What questions do you have?</span></p>
+</section>
+<section class="section" id="slide-12"><div class="section-header"><span class="scenario-tag">Slide 12</span><h2>Our research question</h2></div><p class="sub">Backup · If someone asks what we plan to test.</p>
+<p>Our question is: <span class="question">does seeing the workload change how students plan their week?</span> We're adding estimated effort alongside the deadlines students already track. We want to find out whether that helps them notice busy days and plan their work earlier.</p>
+</section>
+<section class="section" id="slide-13"><div class="section-header"><span class="scenario-tag">Slide 13</span><h2>Showing effort</h2></div><p class="sub">Backup · Point to each of the three examples.</p>
+<p>These are three possible ways to show effort beside a deadline. The first uses plus signs, the second uses border colors, and the third uses different markers.</p>
+<p>They're design options for us to compare. With plus signs, we need to know what each plus means. With colors and markers, we need to see whether students can read the effort levels quickly and compare assignments. We haven't selected a winner.</p>
+</section>
+<section class="section" id="slide-14"><div class="section-header"><span class="scenario-tag">Slide 14</span><h2>Showing a busy week</h2></div><p class="sub">Backup · Point to the heatmap, all-day view, and flexible chunks.</p>
+<p>These concepts look at the week as a whole. We have a heatmap with chunks, an all-day workload view, and flexible chunks.</p>
+<p>The question is which view makes the busy parts of the week easiest to notice and plan around. We also want to see whether students understand the chunks as estimates they can change, rather than fixed appointments.</p>
+</section>
+</main>
+<div class="controls"><div><button class="control-button" id="settingsToggle" aria-controls="settingsPanel" aria-expanded="false">Settings (S)</button> <button class="control-button" id="resetScroll">Top (R)</button></div><div>Font: <span id="fontSize">26</span>px</div></div>
+<div id="settingsPanel"><label for="fontSizeSlider">Font size: <span id="fsVal">26</span>px</label><input type="range" id="fontSizeSlider" min="16" max="42" value="26" step="2"><hr><label><input type="checkbox" id="autoScroll"> Auto-scroll</label><label for="autoSpeed">Speed: <span id="asVal">30</span> px/s</label><input type="range" id="autoSpeed" min="20" max="80" value="30" step="2"></div>
+<script>
+const fsSlider = document.getElementById('fontSizeSlider');
+const panel = document.getElementById('settingsPanel');
+const toggle = document.getElementById('settingsToggle');
+const auto = document.getElementById('autoScroll');
+const speed = document.getElementById('autoSpeed');
+let frame = null, previous = null, position = 0;
+function toggleSettings() {
+  const open = toggle.getAttribute('aria-expanded') !== 'true';
+  panel.style.display = open ? 'block' : 'none';
+  toggle.setAttribute('aria-expanded', String(open));
+}
+function stopScroll() {
+  cancelAnimationFrame(frame); frame = null; previous = null; auto.checked = false;
+}
+function resetScroll() { stopScroll(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+function scrollFrame(now) {
+  if (previous !== null) {
+    position += Math.min(now - previous, 100) * Number(speed.value) / 1000;
+    window.scrollTo(0, position);
+  }
+  previous = now;
+  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 1) { stopScroll(); return; }
+  frame = requestAnimationFrame(scrollFrame);
+}
+fsSlider.addEventListener('input', () => {
+  document.body.style.fontSize = fsSlider.value + 'px';
+  document.getElementById('fontSize').textContent = fsSlider.value;
+  document.getElementById('fsVal').textContent = fsSlider.value;
+});
+speed.addEventListener('input', () => { document.getElementById('asVal').textContent = speed.value; });
+toggle.addEventListener('click', toggleSettings);
+document.getElementById('resetScroll').addEventListener('click', resetScroll);
+auto.addEventListener('change', () => {
+  if (auto.checked) { position = window.scrollY; previous = null; frame = requestAnimationFrame(scrollFrame); }
+  else stopScroll();
+});
+document.querySelectorAll('.jump').forEach(link => link.addEventListener('click', stopScroll));
+window.addEventListener('wheel', stopScroll, {passive: true});
+window.addEventListener('touchstart', stopScroll, {passive: true});
+document.addEventListener('keydown', event => {
+  if (event.target?.matches?.('input, textarea, select, button, [contenteditable="true"]') || event.ctrlKey || event.metaKey || event.altKey) return;
+  if (event.key.toLowerCase() === 's') { event.preventDefault(); toggleSettings(); }
+  if (event.key.toLowerCase() === 'r') { event.preventDefault(); resetScroll(); }
+});
+</script></body></html>
