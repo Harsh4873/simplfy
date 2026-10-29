@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Domain Experts, Design Novices · Presentation script</title>
+<title>WAC Phase 5 · Presentation script</title>
 <style>
   :root {
     --bg: #0a0a12;
@@ -83,7 +83,14 @@
   .cue { color: var(--dim); }
 
   .jump { color: var(--accent); font-size: 16px; padding: 6px 10px; text-decoration: none; border: 1px solid var(--border); border-radius: 6px; }
-  .section { scroll-margin-top: 85px; }
+  .section, details { scroll-margin-top: 85px; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; }
+  .jump { white-space: nowrap; flex-shrink: 0; }
+  .jump:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cue { margin: 0 0 16px; line-height: 1.5; }
+  summary { color: var(--accent); font-size: 18px; cursor: pointer; padding: 12px 0; }
+  details > .sub { margin: 10px 0 20px; }
+  .spoken { text-wrap: pretty; }
   .controls { gap: 12px; flex-wrap: wrap; }
   button { cursor: pointer; font: inherit; }
   .control-button { color: var(--accent); background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; }
@@ -91,37 +98,91 @@
 </style>
 </head>
 <body>
-<header class="top"><h1>Domain Experts, Design Novices</h1><div class="meta">October 20, 2026 · Primary summary · Slides 1–5</div><div class="meta">About 3–4 minutes</div></header>
-<nav class="tabs" aria-label="Jump to slide"><a class="jump" href="#slide-1" aria-label="Slide 1: Domain Experts, Design Novices">1</a>
-<a class="jump" href="#slide-2" aria-label="Slide 2: A year with four community teams">2</a>
-<a class="jump" href="#slide-3" aria-label="Slide 3: Community knowledge shaped the design">3</a>
-<a class="jump" href="#slide-4" aria-label="Slide 4: What this means for participatory design">4</a>
-<a class="jump" href="#slide-5" aria-label="Slide 5: The missing participant perspective">5</a>
-</nav>
+<header class="top"><h1>Workload-Aware Calendar · Phase 5</h1><div class="meta">October 29, 2026 · Design specification and rationale</div><div class="meta">Whole-deck script · 643 spoken words · About 4½–5 minutes, plus questions</div><p class="sub">Numbers match the slide positions in Google Slides. Slides 4–8 are skipped. The mockups on 14–17 currently follow Q&amp;A.</p></header>
+<nav class="tabs" aria-label="Jump to slide"><a class="jump" href="#slide-1" aria-label="Slide 1: Workload Aware Calendar">1</a>
+<a class="jump" href="#slide-2" aria-label="Slide 2: Introduction to WAC">2</a>
+<a class="jump" href="#slide-3" aria-label="Slide 3: Design Goals &amp; Requirements">3</a>
+<a class="jump" href="#slide-9" aria-label="Slide 9: Core Chrome Extension Specifications">9</a>
+<a class="jump" href="#slide-10" aria-label="Slide 10: Cognitive &amp; Estimation Rationale">10</a>
+<a class="jump" href="#slide-11" aria-label="Slide 11: Accessibility &amp; Social Issues">11</a>
+<a class="jump" href="#slide-12" aria-label="Slide 12: Testing the Chrome Extension">12</a>
+<a class="jump" href="#slide-13" aria-label="Slide 13: Thank you / Q&amp;A">13</a>
+<a class="jump" href="#slide-14" aria-label="Slide 14: Preliminary Design: plan and review">14</a>
+<a class="jump" href="#slide-15" aria-label="Slide 15: Preliminary Design: Google Calendar">15</a>
+<a class="jump" href="#slide-16" aria-label="Slide 16: Other Potential Designs: pattern and shape">16</a>
+<a class="jump" href="#slide-17" aria-label="Slide 17: Other Potential Designs: clock and pointed shapes">17</a>
+<a class="jump" href="#references">References</a><a class="jump" href="#skipped">Skipped slides</a></nav>
 <main class="script">
-<section class="section" id="slide-1"><div class="section-header"><span class="scenario-tag">Slide 1</span><h2>Domain Experts, Design Novices</h2></div>
-<p>Howdy. This paper looks at what people bring to design when they already know the community but are new to design methods. It focuses on participatory design, where the people affected by a problem help shape the solution.</p>
-<p>The main argument is that community knowledge matters throughout that process. Knowing the people and understanding their everyday lives can shape how a workshop runs and what comes out of it. That&#x27;s the idea I want to focus on.</p>
+<section class="section" id="slide-1"><div class="section-header"><span class="scenario-tag">Slide 1 · Title slide · 15 sec</span><h2>Workload Aware Calendar</h2></div>
+<p class="sub cue">Title and team introduction.</p>
+<p class="spoken">Howdy. We’re Group 0, and this is our Phase Five design for the Workload-Aware Calendar, or WAC. We’re building a Chrome extension to help students see the work behind their deadlines and plan when to do it.</p>
 </section>
-<section class="section" id="slide-2"><div class="section-header"><span class="scenario-tag">Slide 2</span><h2>A year with four community teams</h2></div>
-<p>The researchers followed 15 facilitators across four teams for about a year. These teams worked in libraries, schools, a community college, and a community organization. They were developing resources to help people deal with misinformation.</p>
-<p>The researchers used surveys, group interviews, and some workshop observations. They looked for patterns in how facilitators described and carried out their work. The teams also had design guidance and support. That matters because the study is about how people use their community experience while learning to lead design.</p>
+<section class="section" id="slide-2"><div class="section-header"><span class="scenario-tag">Slide 2 · 25 sec</span><h2>Introduction to WAC</h2></div>
+<p class="sub cue">Follow Canvas → WAC → Calendar, then the student’s adjustment arrow.</p>
+<p class="spoken">A calendar tells us when an assignment is due, but we still have to figure out how much work it needs. In this diagram, assignment information goes into WAC, and WAC adds deadlines and workload to the calendar. The student can then adjust the estimate. That feedback matters because the same assignment can take different people different amounts of time.</p>
 </section>
-<section class="section" id="slide-3"><div class="section-header"><span class="scenario-tag">Slide 3</span><h2>Community knowledge shaped the design</h2></div>
-<p>The authors connect community and shared culture to four other values. The first is trust. Existing relationships helped people speak openly, including disagreeing with an idea.</p>
-<p>The second is learning together. Participants brought knowledge that helped change the work. Their role went beyond reacting to something the facilitator had already decided.</p>
-<p>The third is respect and shared influence. Facilitators tried to make room for the community&#x27;s ways of doing things. One group built its design activities into a community event, which made participation fit that setting.</p>
-<p>Finally, they wanted solutions people could keep using. The work had to fit everyday routines. Across these values, the authors show how knowing a community can shape the design process itself.</p>
+<section class="section" id="slide-3"><div class="section-header"><span class="scenario-tag">Slide 3 · 25 sec</span><h2>Design Goals &amp; Requirements</h2></div>
+<p class="sub cue">Three cards: integration, ease of use, visual clarity. The deck skips slides 4–8 next.</p>
+<p class="spoken">We have three requirements. It should fit into Google Calendar and load assignment information without making students type everything again. Estimates should be easy to change, and students should control their reminders. Finally, workload should be readable alongside the course colors. We’re using low, medium, and high effort labels, with plus signs and optional patterns.</p>
 </section>
-<section class="section" id="slide-4"><div class="section-header"><span class="scenario-tag">Slide 4</span><h2>What this means for participatory design</h2></div>
-<p>The authors suggest two ways to support people who are new to leading design. First, be open about what you don&#x27;t know. In one example, a facilitator made a mistake, accepted a participant&#x27;s correction, and changed a later activity. That shows what it can look like to let feedback affect the work.</p>
-<p>Second, give communities room to participate in ways that fit them. A design session can take a different form depending on who is involved.</p>
-<p>For HCI, this means taking community expertise seriously when deciding who can lead design and how participation should happen. These are lessons from this study, with room for more research.</p>
+<section class="section" id="slide-9"><div class="section-header"><span class="scenario-tag">Slide 9 · 30 sec</span><h2>Core Chrome Extension Specifications</h2></div>
+<p class="sub cue">Four sections: data, visual cues, reminders, work blocks.</p>
+<p class="spoken">For the prototype, we can use sample assignments with the same fields as Canvas: title, due date, points, and description. Each gets an initial effort estimate that the student can override. The calendar adds workload cues while keeping course colors. Students choose how many reminders they want and schedule smaller work blocks before the deadline. Those are the main pieces we want to connect.</p>
 </section>
-<section class="section" id="slide-5"><div class="section-header"><span class="scenario-tag">Slide 5</span><h2>The missing participant perspective</h2></div>
-<p>The main limitation is whose perspective we hear. The study tells us a lot about the people leading the workshops, but it doesn&#x27;t include the participants&#x27; own accounts. The researchers observed some sessions, which helps, but we still have a limited picture of how participants experienced the process.</p>
-<p>That leaves me with this question: how would we know participants had a real say? I would want to hear from them and see how their input changed a decision. That&#x27;s what would help connect the facilitators&#x27; intentions to the participants&#x27; experience.</p>
+<section class="section" id="slide-10"><div class="section-header"><span class="scenario-tag">Slide 10 · 25 sec</span><h2>Cognitive &amp; Estimation Rationale</h2></div>
+<p class="sub cue">Explain the design choices. No need to read every citation or the numerical example.</p>
+<p class="spoken">The reason for putting this together is to make weekly planning easier. Students can see their workload across courses instead of keeping track of it all in their heads. Using a familiar calendar should also make the transition easier. The estimate is a starting point, so correcting it needs to be quick. We still need to test whether these choices actually make planning easier.</p>
 </section>
+<section class="section" id="slide-11"><div class="section-header"><span class="scenario-tag">Slide 11 · 25 sec</span><h2>Accessibility &amp; Social Issues</h2></div>
+<p class="sub cue">Text and patterns on the left; workload and stress on the right.</p>
+<p class="spoken">For accessibility, effort needs to be understandable without distinguishing colors. That’s why we pair course colors with text and optional patterns. We also want students to keep time open for things outside class. Adjustable reminders and earlier work blocks are meant to support that. Reducing stress is a goal of the design, and we shouldn’t treat it as a result we’ve already demonstrated.</p>
+</section>
+<section class="section" id="slide-12"><div class="section-header"><span class="scenario-tag">Slide 12 · 30 sec</span><h2>Testing the Chrome Extension</h2></div>
+<p class="sub cue">Study comparison → measures → Phase 6. Dates shown: November 19 and December 3–4.</p>
+<p class="spoken">Our next step is to compare planning with WAC turned off and on. The same students try both versions using sample assignments. We’ll look at how difficult planning feels, whether they schedule work earlier, how they use reminders, and whether the workload cues are clear. Phase Six is the implementation checkpoint on November nineteenth, followed by the final presentation and demo in early December.</p>
+</section>
+<section class="section" id="slide-13"><div class="section-header"><span class="scenario-tag">Slide 13 · Pause</span><h2>Thank you / Q&amp;A</h2></div>
+<p class="sub cue">The current deck places Q&amp;A here. Slides 14–17 follow it and are not skipped. Use those scripts if you continue to the mockups.</p>
+<p class="spoken">Thank you. We’d like your feedback on whether the workload cues make sense and whether this would help you plan your own week.</p>
+</section>
+<section class="section" id="slide-14"><div class="section-header"><span class="scenario-tag">Slide 14 · 40 sec · after Q&amp;A in the deck</span><h2>Preliminary Design: plan and review</h2></div>
+<p class="sub cue">Walk left to right: assignment list → split work → review and publish.</p>
+<p class="spoken">Here’s what that flow looks like. On the left, students can see estimated effort, time already planned, and assignments that still need time. In the middle, this literature review has a three-hour estimate. Choosing sixty-minute blocks splits it into three sessions around the calendar’s existing events. On the right, the student reviews those blocks. Saving keeps the plan local until they choose Publish plan.</p>
+</section>
+<section class="section" id="slide-15"><div class="section-header"><span class="scenario-tag">Slide 15 · 20 sec · after Q&amp;A in the deck</span><h2>Preliminary Design: Google Calendar</h2></div>
+<p class="sub cue">Point to the three literature-review blocks in Thursday’s column.</p>
+<p class="spoken">After publishing, those three work blocks appear in Google Calendar. You can see them here on Thursday, between the existing events. The assignment now has specific time set aside before it’s due. This is the connection we’re trying to make between seeing the workload and deciding when to work on it.</p>
+</section>
+<section class="section" id="slide-16"><div class="section-header"><span class="scenario-tag">Slide 16 · 20 sec · after Q&amp;A in the deck</span><h2>Other Potential Designs: pattern and shape</h2></div>
+<p class="sub cue">Top: one, two, or three stripes. Bottom: one, two, or three notches.</p>
+<p class="spoken">We also explored different ways to show effort. The top version uses stripes inside the event. The bottom changes the edge with notches. Both keep the event’s color. We’d want to compare how easily students understand these cues, especially when the calendar is crowded. These are alternatives we’re considering.</p>
+</section>
+<section class="section" id="slide-17"><div class="section-header"><span class="scenario-tag">Slide 17 · 20 sec · after Q&amp;A in the deck</span><h2>Other Potential Designs: clock and pointed shapes</h2></div>
+<p class="sub cue">Top: partially filled clock icons. Bottom: rounded and pointed event shapes.</p>
+<p class="spoken">These are two more alternatives. The top uses small clock-like icons with different amounts filled in. The bottom changes the event shape. Both try to make workload visible at a glance. We still need to check whether people understand the meaning without having to stop and decode each symbol.</p>
+</section>
+<section class="section" id="references"><div class="section-header"><span class="scenario-tag">Slides 18–20</span><h2>References</h2></div><p class="sub cue">Reference pages only. No prepared narration. Keep these available if someone asks about a citation.</p></section>
+<details id="skipped"><summary>Skipped slides 4–8 · optional backup script</summary><p class="sub cue">These slides are marked skipped in the current deck. Open this only if you return to them.</p><section class="section" id="slide-4"><div class="section-header"><span class="scenario-tag">Slide 4 · Currently skipped</span><h2>Platform &amp; Data Architecture</h2></div>
+<p class="sub cue">Same Canvas → WAC → Calendar flow as slide 2.</p>
+<p class="spoken">We chose a Chrome extension on Google Calendar so students can keep using a familiar platform. For the prototype, sample assignments use the fields available from Canvas. That lets us try the planning flow with a consistent set of tasks.</p>
+</section>
+<section class="section" id="slide-5"><div class="section-header"><span class="scenario-tag">Slide 5 · Currently skipped</span><h2>Core Design Thesis</h2></div>
+<p class="sub cue">Large statement about effort beside deadlines.</p>
+<p class="spoken">Our main idea is to put estimated effort beside deadlines so students can plan their week earlier. Making that information visible is the design goal. The study will tell us how useful it actually is.</p>
+</section>
+<section class="section" id="slide-6"><div class="section-header"><span class="scenario-tag">Slide 6 · Currently skipped</span><h2>Platform, Visuals &amp; Human Factors</h2></div>
+<p class="sub cue">Three circles.</p>
+<p class="spoken">The design connects calendar cues, assignment information and work blocks, and settings for reminders and accessibility. Those pieces need to work together so a student can move from noticing a busy week to making a plan.</p>
+</section>
+<section class="section" id="slide-7"><div class="section-header"><span class="scenario-tag">Slide 7 · Currently skipped</span><h2>Visual Modifications on Google Calendar</h2></div>
+<p class="sub cue">Top: plus signs. Middle: colored borders. Bottom: notched shapes.</p>
+<p class="spoken">The top example adds plus signs while keeping the existing course color. The middle uses colored borders, which introduce another color meaning. The bottom changes the shape. Our current specification favors text with optional patterns, while the later slides keep other visual ideas available for comparison.</p>
+</section>
+<section class="section" id="slide-8"><div class="section-header"><span class="scenario-tag">Slide 8 · Currently skipped</span><h2>Scheduling Work &amp; Busy-Week View</h2></div>
+<p class="sub cue">Left: large blocks. Upper right: all-day items. Lower right: shorter work blocks.</p>
+<p class="spoken">On the left, large blocks take up much of the day. The alternatives on the right keep a summary near the top and use shorter blocks for actual work time. We want students to notice a busy period while still being able to see the rest of their schedule.</p>
+</section>
+</details>
 </main>
 <div class="controls"><div><button class="control-button" id="settingsToggle" aria-controls="settingsPanel" aria-expanded="false">Settings (S)</button> <button class="control-button" id="resetScroll">Top (R)</button></div><div>Font: <span id="fontSize">26</span>px</div></div>
 <div id="settingsPanel"><label for="fontSizeSlider">Font size: <span id="fsVal">26</span>px</label><input type="range" id="fontSizeSlider" min="16" max="42" value="26" step="2"><hr><label><input type="checkbox" id="autoScroll"> Auto-scroll</label><label for="autoSpeed">Speed: <span id="asVal">30</span> px/s</label><input type="range" id="autoSpeed" min="20" max="80" value="30" step="2"></div>
