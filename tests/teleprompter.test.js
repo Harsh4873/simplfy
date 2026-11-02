@@ -30,34 +30,34 @@ function swipe(d, dx, dy) {
 }
 afterEach(() => dom?.window.close());
 
-test('cards stop at both ends of the five-slide deck', () => {
+test('cards stop at both ends of the four question cards', () => {
   const d = open();
   expect(shown(d)).toEqual(['slide-1']);
   expect(d.getElementById('previousCard').disabled).toBe(true);
-  for (let i = 0; i < 3; i++) d.getElementById('nextCard').click();
-  expect(shown(d)).toEqual(['slide-4']);
+  for (let i = 0; i < 2; i++) d.getElementById('nextCard').click();
+  expect(shown(d)).toEqual(['slide-3']);
   for (let i = 0; i < 20; i++) d.getElementById('nextCard').click();
-  expect(shown(d)).toEqual(['slide-5']);
+  expect(shown(d)).toEqual(['slide-4']);
   expect(d.getElementById('nextCard').disabled).toBe(true);
   d.getElementById('resetScroll').click();
   expect(shown(d)).toEqual(['slide-1']);
-  expect(d.getElementById('slide-6')).toBeNull();
+  expect(d.getElementById('slide-5')).toBeNull();
 });
 
 test('scroll view shows all active slides and remembers the mode', () => {
-  const d = open('#slide-4');
-  expect(shown(d)).toEqual(['slide-4']);
+  const d = open('#slide-3');
+  expect(shown(d)).toEqual(['slide-3']);
   d.getElementById('scrollView').click();
-  expect(shown(d)).toHaveLength(5);
+  expect(shown(d)).toHaveLength(4);
   expect(d.getElementById('cardControls').hidden).toBe(true);
   expect(d.getElementById('autoScroll').disabled).toBe(false);
   expect(dom.window.localStorage.getItem('tele-reading-view')).toBe('scroll');
   for (const card of d.querySelectorAll('main > section')) {
-    const atOrAfter = ['slide-4', 'slide-5'].includes(card.id);
+    const atOrAfter = ['slide-3', 'slide-4'].includes(card.id);
     card.getBoundingClientRect = () => ({bottom: atOrAfter ? 500 : -20});
   }
   d.getElementById('cardView').click();
-  expect(shown(d)).toEqual(['slide-4']);
+  expect(shown(d)).toEqual(['slide-3']);
   expect(d.getElementById('autoScroll').disabled).toBe(true);
 });
 
@@ -77,13 +77,13 @@ test('horizontal swipes navigate while vertical scrolling and slider keys do not
 
 test('jump links choose cards and saved scroll mode restores continuous reading', () => {
   const d = open();
-  d.querySelector('a[href="#slide-5"]').click();
-  expect(shown(d)).toEqual(['slide-5']);
-  expect(dom.window.location.hash).toBe('#slide-5');
-  expect(d.querySelector('[aria-current="step"]').hash).toBe('#slide-5');
-  expect(d.getElementById('cardStatus').textContent).toContain('Slide 5');
+  d.querySelector('a[href="#slide-4"]').click();
+  expect(shown(d)).toEqual(['slide-4']);
+  expect(dom.window.location.hash).toBe('#slide-4');
+  expect(d.querySelector('[aria-current="step"]').hash).toBe('#slide-4');
+  expect(d.getElementById('cardStatus').textContent).toContain('Slide 4');
   dom.window.close();
   const restored = open('', 'scroll');
-  expect(shown(restored)).toHaveLength(5);
+  expect(shown(restored)).toHaveLength(4);
   expect(restored.getElementById('scrollView').getAttribute('aria-pressed')).toBe('true');
 });
