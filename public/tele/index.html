@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>W(h)ither Spatial Hypertext · Question context</title>
+<title>Phase 6 progress update · Teleprompter</title>
 <style>
   :root {
     --bg: #fff;
@@ -111,16 +111,24 @@
 </style>
 </head>
 <body>
-<header class="top"><h1>W(h)ither Spatial Hypertext?</h1><div class="meta">Tuesday, November 3 · Anderson</div></header>
+<header class="top"><h1>Phase 6: Implementation and Progress Update</h1><div class="meta">November 19 · six minutes, questions included · black is the line to say · red is the rubric item it covers</div></header>
 <div class="reader-tools" id="readerTools">
 <div class="view-switch" role="group" aria-label="Reading view">
 <button type="button" class="control-button" id="scrollView" aria-pressed="true" aria-controls="script">Scroll</button>
 <button type="button" class="control-button" id="cardView" aria-pressed="false" aria-controls="script">Flashcards</button>
 </div>
-<nav class="tabs" aria-label="Jump to question"><a class="jump" href="#slide-1" aria-label="Question 1: Gone quiet, or renamed?">1</a>
-<a class="jump" href="#slide-2" aria-label="Question 2: Who makes sense of the notes?">2</a>
-<a class="jump" href="#slide-3" aria-label="Question 3: A private thinking tool?">3</a>
-<a class="jump" href="#slide-4" aria-label="Question 4: Loose structure in a team">4</a></nav>
+<nav class="tabs" aria-label="Jump to slide"><a class="jump" href="#slide-1" aria-label="Slide 1: Progress update">1</a>
+<a class="jump" href="#slide-2" aria-label="Slide 2: The goal">2</a>
+<a class="jump" href="#slide-3" aria-label="Slide 3: Accessibility">3</a>
+<a class="jump" href="#slide-4" aria-label="Slide 4: Tags, not borders">4</a>
+<a class="jump" href="#slide-5" aria-label="Slide 5: Week plan">5</a>
+<a class="jump" href="#slide-6" aria-label="Slide 6: Shapes set aside">6</a>
+<a class="jump" href="#slide-7" aria-label="Slide 7: Side panel snapshot">7</a>
+<a class="jump" href="#slide-8" aria-label="Slide 8: Work blocks snapshot">8</a>
+<a class="jump" href="#slide-9" aria-label="Slide 9: What the build does">9</a>
+<a class="jump" href="#slide-10" aria-label="Slide 10: Why it diverged">10</a>
+<a class="jump" href="#slide-11" aria-label="Slide 11: Still open">11</a>
+<a class="jump" href="#slide-12" aria-label="Slide 12: Study plan">12</a></nav>
 <div class="card-controls" id="cardControls" hidden>
 <button type="button" class="control-button" id="previousCard" aria-label="Previous card">← Previous</button>
 <span id="cardStatus" role="status" aria-live="polite" aria-atomic="true"></span>
@@ -130,32 +138,64 @@
 </div>
 <main class="script" id="script">
 <section class="section" id="slide-1">
-<p class="question">If spatial hypertext was never defined tightly, what would count as evidence that the work has gone quiet, rather than just showing up under another name?</p>
-<p class="label">Answer</p>
-<p class="answer">Quiet would mean people stopped arranging notes so the layout itself carries meaning. A new name does not count. If a tool still lets placement mean something, that is the same practice. Dormant fits better if the only current public tools are two Mac apps and most papers only mention the idea in passing.</p>
-<p class="label">Context</p>
-<p class="context">Page 107. He quotes Seven Hypertexts that spatial hypertext has become dormant. Dormant means the research has gone quiet. He says the problem is not enough tools, and no clear place to put the practice into work people already do. There was never one short definition, and he says that looseness helped. The Itinerary of King John was not built as spatial hypertext, but he says it potentially is.</p>
+<p class="question">We are Group 0. This is the Phase 6 progress update for Workload-Aware Calendar, a Chrome extension on Google Calendar. We will cover progress to date, the interface snapshots, how the design evolved, and why we diverged from the Phase 5 plan. Questions fit inside the six minutes.</p>
+<p class="label">Rubric</p>
+<p class="answer">Progress, interface snapshots, design evolution, divergence, and a talk a reviewer can follow without being in the room.</p>
 </section>
 <section class="section" id="slide-2">
-<p class="question">If a model starts suggesting how the notes should be grouped, who is making sense of the material, and when is that suggestion too early?</p>
-<p class="label">Answer</p>
-<p class="answer">The person is still making sense of it if they can ignore the suggestion. It gets too early when the model names the groups before anyone has arranged the notes. That locks a structure before you know what the notes are for. VIKI's rule was the person goes first.</p>
-<p class="label">Context</p>
-<p class="context">Pages 104 and 107. Premature formalisation means committing to a structure before you understand the problem. In VIKI the person lays the notes out first. A parser, a program that tries to recognize structure from the layout, only suggests groups if you ask. It does not create the layout. On page 107 he says language models might talk to these tools. He does not test that here.</p>
+<p class="question">The goal is unchanged. Show estimated effort beside the deadline, mark a heavy day, and start larger work earlier. Assignments come in, WAC holds the plan, and the student can change it before it hits the calendar.</p>
+<p class="label">Rubric</p>
+<p class="answer">Progress to date, measured against the original plan.</p>
 </section>
 <section class="section" id="slide-3">
-<p class="question">If the map mostly works for the person who built it, should spatial hypertext stay a private thinking tool?</p>
-<p class="label">Answer</p>
-<p class="answer">It can stay private while you are still figuring the problem out. That is the point of leaving the structure loose. It should not stay private if someone else is supposed to read the result. Then you need a form you can hand over, and he says the field only got part of the way there.</p>
-<p class="label">Context</p>
-<p class="context">Pages 105 to 107. He asks if the result is a mind palace only the maker can use. Shipman said the maker and the reader are often the same people, so familiarity covers the ambiguity. A general reader does not have that. VKB never really solved how to hand someone a finished piece. Tinderbox gets part of the way there.</p>
+<p class="question">Accessibility is part of the design. Plus signs and stripes say low, medium, or high, and the course color stays the course, so effort is never color alone. Early blocks and a reminder count leave time that is not packed with classwork.</p>
+<p class="label">Rubric</p>
+<p class="answer">Accessible. The requirement is written on the slide, not only spoken.</p>
 </section>
 <section class="section" id="slide-4">
-<p class="question">Where would leaving the structure loose help a team, and where would it hide a decision everyone else needs to see?</p>
-<p class="label">Answer</p>
-<p class="answer">Loose helps while the team is still sorting what the problem is, because naming the structure too soon locks a guess. It hides a decision when the group has already chosen something and the map still looks open, so other people cannot see what was decided.</p>
-<p class="label">Context</p>
-<p class="context">Page 107. He says the strength is exploring a problem and drawing out its shape before the structure is settled. He also says there is no clear place to build that practice into work people already do. Tinderbox and Storyspace are the only two current public tools he names, and both are Mac only.</p>
+<p class="question">The event design evolved to tags and stripes. We set aside colored borders because they clash with the course color and fail when someone cannot use color.</p>
+<p class="label">Rubric</p>
+<p class="answer">Design evolution, and the rationale for that divergence.</p>
+</section>
+<section class="section" id="slide-5">
+<p class="question">We set aside the full-day heatmap because it crowds out free time. We kept a mark for colliding deadlines, and we place work in earlier open time instead of on the due day.</p>
+<p class="label">Rubric</p>
+<p class="answer">Design evolution, and why that earlier plan was dropped.</p>
+</section>
+<section class="section" id="slide-6">
+<p class="question">The clock fill and the pointed pill were earlier ideas, and we did not ship them. Shape is easy to miss, and it does not carry effort for a color-blind reader. The build uses the tag and the stripe.</p>
+<p class="label">Rubric</p>
+<p class="answer">Divergence from previous design plans, with the reason.</p>
+</section>
+<section class="section" id="slide-7">
+<p class="question">This snapshot is the running side panel on Google Calendar, the week of November 15. It flags a busy Monday, December 7, two deadlines and about six hours, and it points Find time at earlier open days. Literature review is on the list, with the plus buttons.</p>
+<p class="label">Rubric</p>
+<p class="answer">Progress to date, shown as an interface snapshot.</p>
+</section>
+<section class="section" id="slide-8">
+<p class="question">This second snapshot is Work blocks beside that same week. Course events keep their color. The WAC blocks are striped, and the list can be published. The busy note is Thursday, December 10, about five hours.</p>
+<p class="label">Rubric</p>
+<p class="answer">Interface snapshot. Say what is on the screen so the slide stands alone.</p>
+</section>
+<section class="section" id="slide-9">
+<p class="question">Preferences set the block length, the hours per day, and the reminder count. Tags and stripes show the tier, the course color still means the course, and one click changes it. The close-up reads three plus, High, on a stripe. Blocks sit on the mini calendar in the panel.</p>
+<p class="label">Rubric</p>
+<p class="answer">Progress, a snapshot, and effort that is not color alone.</p>
+</section>
+<section class="section" id="slide-10">
+<p class="question">We diverged from the Phase 5 plan for three reasons. No live Canvas, because students cannot use that API, so details are typed or taken from the PDF. Not in the Chrome Web Store, because this is a study interface, not a product. Stripes are on the website only, not in the phone app.</p>
+<p class="label">Rubric</p>
+<p class="answer">Rationale for divergence from the previous design.</p>
+</section>
+<section class="section" id="slide-11">
+<p class="question">Still open: clearer marks, a simpler flow, and the user study. The study has not been run. The task breakdown is updated for who owns the remaining work, and that document is the other ten percent of this phase.</p>
+<p class="label">Rubric</p>
+<p class="answer">Honest progress, plus the updated task breakdown.</p>
+</section>
+<section class="section" id="slide-12">
+<p class="question">This is the study plan, not a result. Ask how they handle deadlines now, show the extension, then watch them use it and compare ease and mental load. No participants yet. That is the update.</p>
+<p class="label">Rubric</p>
+<p class="answer">Do not claim the evaluation is finished. It is the next phase.</p>
 </section>
 </main>
 <div class="controls"><div><button class="control-button" id="settingsToggle" aria-controls="settingsPanel" aria-expanded="false">Settings (S)</button> <button class="control-button" id="resetScroll">Top (R)</button></div><div>Font: <span id="fontSize">26</span>px</div></div>

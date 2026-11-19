@@ -30,25 +30,25 @@ function swipe(d, dx, dy) {
 }
 afterEach(() => dom?.window.close());
 
-test('cards stop at both ends of the four question cards', () => {
+test('cards stop at both ends of the twelve progress slides', () => {
   const d = open();
   expect(shown(d)).toEqual(['slide-1']);
   expect(d.getElementById('previousCard').disabled).toBe(true);
   for (let i = 0; i < 2; i++) d.getElementById('nextCard').click();
   expect(shown(d)).toEqual(['slide-3']);
   for (let i = 0; i < 20; i++) d.getElementById('nextCard').click();
-  expect(shown(d)).toEqual(['slide-4']);
+  expect(shown(d)).toEqual(['slide-12']);
   expect(d.getElementById('nextCard').disabled).toBe(true);
   d.getElementById('resetScroll').click();
   expect(shown(d)).toEqual(['slide-1']);
-  expect(d.getElementById('slide-5')).toBeNull();
+  expect(d.getElementById('slide-13')).toBeNull();
 });
 
 test('scroll view shows all active slides and remembers the mode', () => {
   const d = open('#slide-3');
   expect(shown(d)).toEqual(['slide-3']);
   d.getElementById('scrollView').click();
-  expect(shown(d)).toHaveLength(4);
+  expect(shown(d)).toHaveLength(12);
   expect(d.getElementById('cardControls').hidden).toBe(true);
   expect(d.getElementById('autoScroll').disabled).toBe(false);
   expect(dom.window.localStorage.getItem('tele-reading-view')).toBe('scroll');
@@ -84,6 +84,23 @@ test('jump links choose cards and saved scroll mode restores continuous reading'
   expect(d.getElementById('cardStatus').textContent).toContain('Slide 4');
   dom.window.close();
   const restored = open('', 'scroll');
-  expect(shown(restored)).toHaveLength(4);
+  expect(shown(restored)).toHaveLength(12);
   expect(restored.getElementById('scrollView').getAttribute('aria-pressed')).toBe('true');
+});
+
+test('slides 1 through 12 say the Phase 6 rubric out loud', () => {
+  const d = open();
+  const sections = [...d.querySelectorAll('main > section')];
+  expect(sections.map(s => s.id)).toEqual(Array.from({length: 12}, (_, i) => `slide-${i + 1}`));
+  const spoken = sections.map(s => s.querySelector('.question').textContent).join(' ');
+  for (const line of [
+    'progress to date',
+    'interface snapshots',
+    'how the design evolved',
+    'diverged from the Phase 5 plan',
+    'never color alone',
+    'task breakdown',
+    'not a result',
+  ]) expect(spoken.toLowerCase()).toContain(line.toLowerCase());
+  for (const section of sections) expect(section.querySelector('.label').textContent).toBe('Rubric');
 });
